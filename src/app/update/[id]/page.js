@@ -35,6 +35,7 @@ const Update = () => {
         console.log(result);
         const lastId = result.id;
         router.push(`/read/${lastId}`);
+        router.refresh();
       });
   };
   return (
@@ -45,7 +46,7 @@ const Update = () => {
           name="title"
           defaultValue={title}
           placeholder="title"
-          onChange={(e) => e.target.value}></input>
+          onChange={(e) => setTitle(e.target.value)}></input>
       </p>
 
       <p>
@@ -53,7 +54,7 @@ const Update = () => {
           name="body"
           defaultValue={body}
           placeholder="body"
-          onChange={(e) => setTitle(e.target.value)}></textarea>
+          onChange={(e) => setBody(e.target.value)}></textarea>
       </p>
       <input type="submit" value="Update"></input>
     </form>
