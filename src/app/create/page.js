@@ -7,6 +7,7 @@ const Create = () => {
   return (
     <form
       onSubmit={(e) => {
+        console.log(process.env.NEXT_PUBLIC_API_URL);
         e.preventDefault();
         const title = e.target.title.value;
         const body = e.target.body.value;
@@ -17,13 +18,13 @@ const Create = () => {
           },
           body: JSON.stringify({ title, body }),
         };
-        fetch(`http://localhost:9999/topics/`, obtions)
+        fetch(process.env.NEXT_PUBLIC_API_URL + `topics/`, obtions)
           .then((res) => res.json())
           .then((result) => {
             console.log(result);
-            const lastid = result.id;
+            const lastId = result.id;
 
-            router.push(`/read/${lastid}`);
+            router.push(`/read/${lastId}`);
             router.refresh();
           });
       }}>
