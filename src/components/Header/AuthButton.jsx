@@ -20,10 +20,12 @@ export default function AuthButton({ name }) {
         </div>
       ) : (
         <>
-          <button className=" text-sm" onClick={() => setLoggedIn(true)}>
-            로그인 버튼
+          <button className=" text-sm" onClick={() => router.push("/login")}>
+            로그인
           </button>
-          <button className=" text-sm">회원가입</button>
+          <button className=" text-sm" onClick={() => router.push("/sign")}>
+            회원가입
+          </button>
         </>
       )}
     </div>
