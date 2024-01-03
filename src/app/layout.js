@@ -1,28 +1,24 @@
-import Link from "next/link";
 import { Control } from "./Control";
+import "./globals.css";
+import Header from "@/components/Header/Header";
+import Footer from "./../components/Footer/Footer";
+import Contact from "./../components/Contact/Contact";
 
-export default async function RootLayout({ children }) {
-  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "topics", {
-    cache: "no-store",
-  });
-  const topics = await resp.json();
-
+export const metadata = {
+  title: "origin project",
+  description: "오리진 프로젝트",
+  keywords: ["origin"],
+};
+export default function RootLayout({ children }) {
   return (
     <html>
       <body>
-        <h1>WEB</h1>
+        <Header />
 
-        <ol>
-          {topics.map((topic) => {
-            return (
-              <li key={topic.id}>
-                <Link href={`/read/${topic.id}`}>{topic.title}</Link>
-              </li>
-            );
-          })}
-        </ol>
         {children}
-        <Control />
+
+        <Contact />
+        <Footer />
       </body>
     </html>
   );

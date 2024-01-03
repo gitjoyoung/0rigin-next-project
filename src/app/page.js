@@ -1,11 +1,29 @@
 import Image from "next/image";
 import CreatePage from "./create/page";
+import Header from "@/components/Header/Header";
+import Contact from "@/components/Contact/Contact";
+import Footer from "@/components/Footer/Footer";
+import Link from "next/link";
+import { Control } from "./Control";
 
-export default function Home() {
+export default async function Home() {
+  const resp = await fetch(process.env.NEXT_PUBLIC_API_URL + "topics", {
+    cache: "no-store",
+  });
+  const topics = await resp.json();
+
   return (
     <>
-      <h3> hellow</h3>
-      <Image src="/next.svg" alt="이미지" height={300} width={200}></Image>
+      <ol>
+        {topics.map((topic) => {
+          return (
+            <li key={topic.id}>
+              <Link href={`/read/${topic.id}`}>{topic.title}</Link>
+            </li>
+          );
+        })}
+      </ol>
+      <Control />
     </>
   );
 }
