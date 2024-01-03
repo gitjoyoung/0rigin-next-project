@@ -1,36 +1,20 @@
 import Link from "next/link";
 import React from "react";
 import AuthButton from "./AuthButton";
+import { headerNav } from "./../../constants/index";
 
 export default function Header() {
   return (
-    <header className="flex justify-between items-center py-5 px-6 w-[100%]">
-      <h1 className="text-3xl font-bold">Origin</h1>
-      <nav className="flex items-start justify-between w-72  gap-3 ">
-        <Link
-          href={`/read/1`}
-          className="md:text-lg xs:text-xs lg:text-lg  font-bold "
-        >
-          <h4>메뉴1</h4>
-        </Link>
-        <Link
-          href={`/read/2`}
-          className="md:text-lg xs:text-xs lg:text-lg  font-bold "
-        >
-          <h4>메뉴1</h4>
-        </Link>
-        <Link
-          href={`/read/3`}
-          className="md:text-lg xs:text-xs lg:text-lg  font-bold "
-        >
-          <h4>메뉴1</h4>
-        </Link>
-        <Link
-          href={`/read/4`}
-          className="md:text-lg xs:text-xs lg:text-lg  font-bold "
-        >
-          <h4>메뉴1</h4>
-        </Link>
+    <header className="flex justify-between  items-center py-5 px-6 w-full">
+      <Link href={"/"} className="text-4xl font-bold ">
+        Origin
+      </Link>
+      <nav className="flex items-center justify-center gap-4 text-gray-600 ">
+        {headerNav.map((nav, key) => (
+          <Link key={key} href={nav.url} className="text-md  ">
+            {nav.title}
+          </Link>
+        ))}
       </nav>
       <AuthButton />
     </header>
