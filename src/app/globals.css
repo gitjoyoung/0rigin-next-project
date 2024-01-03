@@ -26,7 +26,7 @@ button:active {
 }
 
 @layer base {
-  body {
+  main {
     font-family: 'Arial', sans-serif;
     font-size: 16px;
     line-height: 1.5;
@@ -36,12 +36,11 @@ button:active {
     margin: 0 auto;
     justify-content: center;
   }
-  @media screen and (min-width: 600px) {
-    body {
+
+  @media screen and (min-width: 830px) {
+    main {
       min-width: 1000px;
       max-width: 1200px;
     }
   }
 }
-
-
