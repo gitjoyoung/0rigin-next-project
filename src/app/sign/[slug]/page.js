@@ -1,4 +1,5 @@
 "use client";
+// pages/sign/[[...slug]].js
 
 import Sign from "@/components/Auth/Sign/Sign";
 import TermsOfService from "@/components/Auth/Sign/TermsOfService";
