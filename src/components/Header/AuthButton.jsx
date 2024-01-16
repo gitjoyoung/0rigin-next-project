@@ -7,7 +7,7 @@ export default function AuthButton({ name }) {
 
   const [isLoggedIn, setLoggedIn] = useState(false);
   return (
-    <div className=" text-sm flex gap-3 w-48 justify-end">
+    <div className=" text-sm flex gap-3 items-center w-48 justify-end">
       {isLoggedIn ? (
         <div>
           <p>{`${name}님 반갑습니다`}</p>
