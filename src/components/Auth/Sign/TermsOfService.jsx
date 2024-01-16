@@ -7,9 +7,11 @@ export default function TermsOfService({ onTermsAgreed }) {
   const terms = termsContent;
 
   const [checkTerm, setCheckTerm] = useState(false);
+
   const handleCheckboxChange = () => {
     setCheckTerm(!checkTerm);
   };
+
   function movePage() {
     if (checkTerm) {
       onTermsAgreed();
@@ -26,7 +28,7 @@ export default function TermsOfService({ onTermsAgreed }) {
           <p>{terms}</p>
         </div>
       </div>
-      <div className="flex m-3 gap-3">
+      <div className="flex m-5 gap-3 ">
         <input
           type="checkbox"
           checked={checkTerm}
@@ -34,13 +36,13 @@ export default function TermsOfService({ onTermsAgreed }) {
           className="  scale-150 "
           value="asd"
         />
-        <p>이용약관에 동의하기</p>
+        <a onClick={handleCheckboxChange}>이용약관에 동의하기</a>
       </div>
       <div className="flex  items-center justify-center gap-4">
-        <button className="p-2 w-[100px] " onClick={movePage}>
+        <button className="p-2 w-[200px] " onClick={movePage}>
           확인
         </button>
-      
+
       </div>
     </section>
   );
