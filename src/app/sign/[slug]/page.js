@@ -1,7 +1,7 @@
 "use client";
 // pages/sign/[[...slug]].js
 
-import Sign from "@/components/Auth/Sign/Sign";
+import Sign from "@/components/Auth/Sign/SignForm";
 import TermsOfService from "@/components/Auth/Sign/TermsOfService";
 import { useState } from "react";
 

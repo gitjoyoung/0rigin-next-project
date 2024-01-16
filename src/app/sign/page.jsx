@@ -8,7 +8,7 @@ const SignPage = () => {
       alreadyMemberMessage: "이미 회원이신가요?",
     },
     login: {
-      href: "/",
+      href: "/login",
       buttonText: "이미 회원입니다.",
     },
     signup: {
