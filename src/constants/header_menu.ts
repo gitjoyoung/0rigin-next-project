@@ -1,4 +1,4 @@
-const headerNav = [
+const headerNav = Object.freeze([
    {
       title: '소개',
       url: '/introduce',
@@ -15,6 +15,6 @@ const headerNav = [
       title: 'contact',
       url: '/contact',
    },
-]
+])
 
 export default headerNav
