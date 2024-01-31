@@ -4,9 +4,11 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import BoardList from '@/components/Board/BoradList'
+import Pagination from './Pagination'
 
 interface BoardContentProps {
    page: number
+   tap: string
 }
 
 interface BoardItem {
@@ -19,10 +21,10 @@ interface BoardItem {
    nickname: string
    no: number
 }
-export default function BoardContent({ page }: BoardContentProps) {
+export default function BoardContent({ page, tap }: BoardContentProps) {
    const [boardData, setBoardData] = useState([])
    const router = useRouter()
-   const [selectedItem, setSelectedItem] = useState('normal')
+   const [selectedTap, setSelectedTap] = useState(tap)
 
    const fetchBoardData = async () => {
       const options = {
@@ -45,40 +47,44 @@ export default function BoardContent({ page }: BoardContentProps) {
       return <>빈 페이지</>
    }
    return (
-      <section className="max-w-[720px]">
-         <div className="flex justify-between mt-2 ">
+      <section className="w-full ">
+         <div className="flex justify-between mt-2  items-center">
             <ul className="flex gap-1 font-bold">
                <li
                   role="presentation"
-                  className={`p-1 ${
-                     selectedItem === 'normal' ??
-                     'border border-black border-b-0'
+                  className={`p-2 
+                  hover:bg-black
+                  hover:text-white
+                  ${
+                     selectedTap === 'normal'
+                        ? 'border border-black border-b-0'
+                        : 'border border-white border-b-0'
                   }`}
                   onClick={() => {
-                     setSelectedItem('normal')
+                     setSelectedTap('normal')
                      // router.refresh();
                   }}
                >
-                  실시간
+                  <p>실시간</p>
                </li>
                <li
                   role="presentation"
-                  className={`p-1 ${
-                     selectedItem === 'special' ??
-                     ' border border-black border-b-0'
+                  className={`p-2 
+                  hover:bg-black
+                  hover:text-white
+                  ${
+                     selectedTap === 'special'
+                        ? ' border border-black border-b-0'
+                        : 'border border-white border-b-0'
                   }`}
                   onClick={() => {
-                     setSelectedItem('special')
+                     setSelectedTap('special')
                      // router.refresh();
                   }}
                >
-                  초월글
+                  <p>추천글(개발중...)</p>
                </li>
             </ul>
-
-            <button type="submit" onClick={() => router.push('/board/create')}>
-               글쓰기
-            </button>
          </div>
 
          <div className="border border-black ">
@@ -101,6 +107,12 @@ export default function BoardContent({ page }: BoardContentProps) {
                   </div>
                ))}
          </div>
+         <Pagination
+            totalPages={1001212}
+            onPageChange={(e) => {
+               console.log(e)
+            }}
+         />
       </section>
    )
 }

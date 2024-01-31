@@ -56,9 +56,9 @@ export default function Banner() {
             </div>
          </div>
 
-         <div className=' border border-black md:w-5/12 w-full p-1 '>
-            <h1 className='font-bold'>베스트 게시글</h1>
-            <ul className='m-1 text-sm'>
+         <div className=' border border-black md:w-5/12 w-full p-2 '>
+            <h1 className='font-bold '>베스트 게시글 TOP 5</h1>
+            <ul className='m-2 text-sm '>
                {data.map(({ title, body, image }, index) => (
                   <li
                      key={index}
@@ -71,7 +71,10 @@ export default function Banner() {
                      }}
                   >
                      <h2 className='  line-clamp-2 max-w-prose '>{title}</h2>
-                     <h3 className='  '>추천수</h3>
+                     <div className='flex gap-2 text-gray-500 text-xs '>
+                        <h3 className=' '>추천수 : 22</h3>
+                        <h3 className='  '>조회수 : 22</h3>
+                     </div>
                   </li>
                ))}
             </ul>

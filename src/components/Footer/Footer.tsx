@@ -1,4 +1,4 @@
-import footerNav from '@/constants/Main/footerNav'
+import footerNav from '@/constants/home/footerNav'
 import Link from 'next/link'
 import React from 'react'
 

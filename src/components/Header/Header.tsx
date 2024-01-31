@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import React, { Fragment, useState } from 'react'
-import headerNav from '@/constants/Main/headerNav'
+import headerNav from '@/constants/home/headerNav'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBurger, faX, faBell } from '@fortawesome/free-solid-svg-icons'
 import { Transition } from '@headlessui/react'
@@ -86,10 +86,10 @@ export default function Header() {
                   }}
                >
                   <AuthButton name={undefined} />
-                  {headerNav.map((nav, key) => (
-                     <Link key={key} href={nav.url}>
-                        <p className="hover:text-gray-900 hover:font-semibold text-md font-normal my-2">
-                           {nav.title}
+                  {headerNav.map(({ id, url, title }) => (
+                     <Link key={id} href={url}>
+                        <p className="hover:text-gray-900 hover:font-semibold textid,-md font-normal id2">
+                           {title}
                         </p>
                      </Link>
                   ))}

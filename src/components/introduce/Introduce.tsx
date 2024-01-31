@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import React, { useRef } from 'react'
-import INTRODUCE_TEXT from '@/constants/Introduce/IntroduceText'
+import INTRODUCE_TEXT from '@/constants/introduce/introduceText'
 import CommunityStats from './CommunityStats'
 
 export default function Introduce() {
@@ -14,17 +14,17 @@ export default function Introduce() {
       })
    }
    const sectionsRef = {
-      sectionOne: useRef(null),
-      sectionTwo: useRef(null),
-      sectionThree: useRef(null),
+      story: useRef(null),
+      welcome: useRef(null),
+      numbers: useRef(null),
    }
    return (
-      <section className="flex flex-col   items-center bg-blue-500 text-white text-center">
+      <section className="flex flex-col   items-center bg-blue-500 text-center text-white relative">
          {/* 마스코트 이미지와 환영 인사 */}
 
          <div
-            ref={sectionsRef.sectionOne}
-            className="flex flex-col items-center max-w-[600px] gap-3 h-[100vh] justify-center  "
+            ref={sectionsRef.story}
+            className="flex flex-col items-center max-w-[600px] gap-3 h-[100vh] justify-center  text-center"
          >
             <Image
                src="/mascot/winksaurus.png"
@@ -40,7 +40,7 @@ export default function Introduce() {
 
          {/*  환영 인사 */}
          <div
-            ref={sectionsRef.sectionTwo}
+            ref={sectionsRef.welcome}
             className="flex flex-col items-center justify-center max-w-[600px] gap-3 h-[100vh]"
          >
             <h1 className="text-2xl font-bold">
@@ -53,7 +53,7 @@ export default function Introduce() {
 
          {/* 사이트 통계 */}
          <div
-            ref={sectionsRef.sectionThree}
+            ref={sectionsRef.numbers}
             className="flex flex-col items-center justify-center gap-3 w-full h-[100vh]"
          >
             <h1 className="text-2xl font-bold">
@@ -64,16 +64,19 @@ export default function Introduce() {
             <CommunityStats />
          </div>
 
-         <nav className=" flex-col   flex right-10 gap-1 fixed  top-1/2">
-            {Object.entries(sectionsRef).map(([key, ref]) => (
-               <button
-                  key={key}
-                  type="button"
-                  onClick={() => scrollToSection(ref)}
-               >
-                  {key}
-               </button>
-            ))}
+         <nav className=" bottom-10 mr-5 self-end sticky ">
+            <div className="flex flex-col gap-1">
+               {Object.entries(sectionsRef).map(([key, ref]) => (
+                  <button
+                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-300 focus:outline-none focus:ring  border-white"
+                     key={key}
+                     type="button"
+                     onClick={() => scrollToSection(ref)}
+                  >
+                     {key}
+                  </button>
+               ))}
+            </div>
          </nav>
       </section>
    )
