@@ -10,10 +10,10 @@ interface Props {
 }
 
 export default function Ticker({
-   point = 0,
-   visitor = 0,
-   post = 0,
-   member = 0,
+   point = 100000,
+   visitor = 1111110,
+   post = 11110,
+   member = 1171,
 }: Props) {
    const [backAnimation, setBackAnimation] = useState('')
 
@@ -27,18 +27,35 @@ export default function Ticker({
       return () => clearTimeout(timer)
    }, [point, visitor, post, member])
 
+   const formatValue = (value: number): string => {
+      const suffixes = ['', 'K', 'M', 'B']
+      let index = 0
+      let updatedValue = value
+
+      while (updatedValue >= 1000 && index < suffixes.length - 1) {
+         updatedValue /= 1000
+         index += 1
+      }
+
+      const formattedValue = updatedValue.toFixed(1)
+      return formattedValue.endsWith('.0')
+         ? `${formattedValue.slice(0, -2)}${suffixes[index]}`
+         : `${formattedValue}${suffixes[index]}`
+   }
+
    return (
       <aside
-         className={`px-2 flex gap-2 justify-between ${backAnimation} bg-black fill-in-animation items-center w-full text-white text-xs`}
+         className={` flex gap-2 justify-between ${backAnimation} bg-black fill-in-animation items-center w-full text-white text-xs  `}
       >
          <div className="flex ">
-            <p className="border-r px-2">익일 포인트 현황 {point}</p>
-            <p className="border-r px-2">수령 된 포인트 현황 {point}</p>
+            <p className="border-r px-1">익일 포인트 :{formatValue(point)}</p>
          </div>
          <div className="flex ">
-            <p className="border-r px-2">오늘 방문자 {visitor}</p>
-            <p className="border-r  px-2">게시글 {post}</p>
-            <p className="px-2">회원 수 {member}</p>
+            <p className="border-r border-l px-1 ">
+               방문자 {formatValue(visitor)}
+            </p>
+            <p className="border-r  px-1">게시글 {formatValue(post)}</p>
+            <p className="px-2">회원 수 {formatValue(member)}</p>
          </div>
       </aside>
    )
