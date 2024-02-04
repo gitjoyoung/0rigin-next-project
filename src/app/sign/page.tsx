@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-const SignPage = () => {
+function SignPage() {
    const content = {
       welcomeMessage: `오리진 커뮤니티에 오신 것을 환영합니다 !`,
       registration: {
@@ -23,10 +23,12 @@ const SignPage = () => {
          <h3>{content.registration.question}</h3>
          <div className="flex gap-8 items-center">
             <Link href={content.login.href}>
-               <button className="p-2">{content.login.buttonText}</button>
+               <button type="button" className="p-2">
+                  {content.login.buttonText}
+               </button>
             </Link>
             <Link href={content.signup.href}>
-               <button className="p-2 font-semibold">
+               <button type="button" className="p-2 font-semibold">
                   {content.signup.buttonText}
                </button>
             </Link>
