@@ -1,14 +1,15 @@
 import axios from 'axios'
 
+interface Login {
+   id: string
+   name: string
+}
 /**
  * 로그인 요청 통신 함수
  * @param userId
  * @param password
  */
-const fetchLogin = async (
-   userId: string,
-   password: string,
-): Promise<any | null> => {
+const fetchLogin = async (userId, password): Promise<Login | null> => {
    const options = {
       url: `${process.env.NEXT_PUBLIC_API_URL}users?userid=${userId}&password=${password}`,
       method: 'get',
