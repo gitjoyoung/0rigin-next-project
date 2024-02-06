@@ -1,13 +1,14 @@
 'use client'
 
-import BoardComment from '@/components/Board/BoardCommentsList'
+import BoardComment from '@/components/Board/Comment/BoardCommentsList'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import dayjs from 'dayjs'
-import BoardModal from './BoardModal'
+import Link from 'next/link'
+import BoardModal from '../BoardModal'
 import BoardReadTitle from './BoardReadTitle'
 
 export default function BoardRead({ postid }) {
@@ -35,6 +36,7 @@ export default function BoardRead({ postid }) {
       fetchReadData()
       window.scrollTo(0, 0)
    }, [])
+
    /** 모달 관련 */
    const [isModalOpen, setIsModalOpen] = useState(false)
    const [modalMode, setModalMode] = useState<'edit' | 'delete'>('edit')
@@ -48,6 +50,14 @@ export default function BoardRead({ postid }) {
       setIsModalOpen(true)
    }
 
+   if (readData === null) {
+      return <>없음</>
+   }
+   const { title, nickname, like, unlike, body, timestamp } = readData
+   const date = timestamp
+      ? dayjs(timestamp).format('YYYY.MM.DD HH:mm:ss')
+      : '날자 없음'
+
    const fetchUpdateLike = async (isLike) => {
       const updatedValue = isLike ? readData.like + 1 : readData.unlike + 1
       const evaluationType = isLike ? 'like' : 'unlike'
@@ -57,26 +67,14 @@ export default function BoardRead({ postid }) {
          data: { [evaluationType]: updatedValue },
       }
       try {
-         const res = await axios(options)
-         const { data } = res
-         console.log(data)
-
-         fetchReadData()
+         const { data } = await axios(options)
+         setReadData(data)
       } catch (error) {
          console.log(error)
       }
    }
-
-   if (readData === null) {
-      return <>없음</>
-   }
-   const { title, nickname, like, unlike, body, timestamp } = readData
-   const date = timestamp
-      ? dayjs(timestamp).format('YYYY.MM.DD HH:mm:ss')
-      : '날자 없음'
-
    return (
-      <section className="  mt-1" ref={topRef}>
+      <section className="  mt-1 " ref={topRef}>
          {isModalOpen && (
             <BoardModal
                id={postid}
@@ -91,7 +89,7 @@ export default function BoardRead({ postid }) {
             like={like}
             date={date}
          />
-         <div className="flex justify-end gap-3 my-2">
+         <div className="flex justify-end gap-3 my-2 ">
             <button className="px-3 py-1" type="button" onClick={handleEdit}>
                수정
             </button>
@@ -100,7 +98,7 @@ export default function BoardRead({ postid }) {
             </button>
          </div>
          <div
-            className="min-h-[30vh]"
+            className="min-h-[30vh] px-2"
             dangerouslySetInnerHTML={{ __html: body }}
          />
          <div className="flex justify-center gap-6 mt-5 mb-5">
@@ -126,13 +124,20 @@ export default function BoardRead({ postid }) {
          </div>
 
          <BoardComment postid={postid} />
-         <div className="flex justify-between p-1">
-            <button type="button"> 이전 글</button>
-            <button type="button" onClick={() => router.push('/board')}>
+         <div className="flex justify-between p-1 items-center">
+            <Link href={`/board/read/${parseInt(postid, 10) - 1} `}>
+               <p> 이전 글</p>
+            </Link>
+            <button
+               type="button"
+               className="px-2 py-2"
+               onClick={() => router.push('/board')}
+            >
                목록
             </button>
-
-            <button type="button"> 다음 글</button>
+            <Link href={`/board/read/${parseInt(postid, 10) + 1}`}>
+               <p>다음 글</p>
+            </Link>
          </div>
       </section>
    )

@@ -6,27 +6,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/navigation'
 import ImagePicker from './ImagePicker'
+import dayjs from 'dayjs'
 
-export default function BoardCreateForm(props) {
+interface Props {
+   nickname?: string
+   password?: string
+   title?: string
+   body?: string
+}
+
+export default function BoardCreateForm({
+   nickname,
+   password,
+   title,
+   body,
+}: Props) {
+   const [propsFormData, setPropsFormData] = useState({
+      nickname,
+      password,
+      title,
+      body,
+   })
+
    const router = useRouter()
    const [showPassword, setShowPassword] = useState(false)
    const editorRef = useRef(null)
    const [imageFiles, setImageFiles] = useState([])
-
-   const [propsFormData, setPropsFormData] = useState({
-      nickname: '',
-      password: '',
-      title: '',
-      body: '',
-   })
-
-   // useEffect(() => {
-   //    if (props) {
-   //       setPropsFormData({
-   //          ...props,
-   //       })
-   //    }
-   // }, [props])
+   const [text, setText] = useState('')
 
    const handleShowPassword = () => {
       setShowPassword(!showPassword)
@@ -35,7 +41,7 @@ export default function BoardCreateForm(props) {
    const fetchCreate = async (e) => {
       e.preventDefault()
 
-      const timestamp = new Date().toISOString()
+      const timestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')
       const dataObject = {
          nickname: e.target.nickname.value,
          password: e.target.password.value,
@@ -63,25 +69,6 @@ export default function BoardCreateForm(props) {
       } catch (error) {
          console.log('error :', error)
       }
-   }
-
-   // 이미지를 보여주기 위해 div에 추가하는 함수
-   const handleImageAdd = (newImages) => {
-      // 새로운 이미지만을 contentEditable div에 추가하는 함수
-      const appendNewImagesToEditor = () => {
-         newImages.forEach((image) => {
-            const imgTag = `<img src="${image.src}" alt="${image.alt}" style="max-width:100%;"/>`
-            if (editorRef.current) {
-               editorRef.current.innerHTML += imgTag
-            }
-         })
-      }
-
-      // 먼저 새 이미지를 editor에 추가
-      appendNewImagesToEditor()
-
-      // 그 후 상태 업데이트
-      setImageFiles((prevImages) => [...prevImages, ...newImages])
    }
 
    return (
@@ -127,9 +114,7 @@ export default function BoardCreateForm(props) {
             {/* 이미지 업로드 */}
             <ImagePicker
                name="이미지 업로드"
-               label={undefined}
                imageFiles={imageFiles}
-               handleImageAdd={handleImageAdd}
                setImageFiles={setImageFiles}
             />
             {/* 내용 contentEditTable 로 태그를 추가함 */}

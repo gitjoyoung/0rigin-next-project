@@ -44,6 +44,8 @@ export default function BoardComment({ postid }: BoardCommentProps) {
       fetchCommentData()
    }, [])
 
+
+
    return (
       <div className=" my-2">
          <div className="border-b border-t border-black flex justify-between text-xs  p-1">
@@ -63,7 +65,7 @@ export default function BoardComment({ postid }: BoardCommentProps) {
          {commentList.length > 0 &&
             commentList.map(({ comment, nickname, timestamp, id }) => (
                <div
-                  key={id}
+                  key={id + timestamp}
                   className="flex  flex-wrap  border-b last:border-b-0 text-sm"
                >
                   <div className="p-2 border-r">
