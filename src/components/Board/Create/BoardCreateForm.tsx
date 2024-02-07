@@ -57,26 +57,79 @@ export default function BoardCreateForm({
       }
    }
 
-   const handleKeyPress = (e, index) => {
-      if (e.key === 'Enter') {
-         e.preventDefault() // 기본 엔터 동작 방지
-         if (index === divs.length - 1) {
-            addDiv()
-         } else {
-            divRefs.current[index + 1].focus()
-         }
-      } else if (e.key === 'Backspace' && divs.length > 1 && index !== 0) {
+   function moveCaretToEnd(element) {
+      // element가 contentEditable인지 확인
+      if (!element.contentEditable || element.contentEditable === 'false') {
+         return
+      }
+
+      element.focus() // 우선 element에 포커스를 맞춥니다.
+      const range = document.createRange() // 새로운 Range 객체를 생성합니다.
+      const selection = window.getSelection() // 현재 선택 영역에 대한 Selection 객체를 가져옵니다.
+      range.selectNodeContents(element) // element의 내용을 range의 선택 영역으로 설정합니다.
+      range.collapse(false) // 선택 영역의 끝으로 커서를 이동합니다. (false는 끝을 의미)
+      selection.removeAllRanges() // 현재 선택된 영역을 모두 제거합니다.
+      selection.addRange(range) // 새로운 선택 영역(커서 위치)을 추가합니다.
+   }
+
+   // Enter 키 처리
+   const handleEnterKey = (e, index) => {
+      e.preventDefault()
+      if (index === divs.length - 1) {
+         addDiv()
+      } else {
+         divRefs.current[index + 1].focus()
+      }
+   }
+
+   // Backspace 키 처리
+   const handleBackspaceKey = (e, index) => {
+      if (divs.length > 1 && index !== 0) {
          const currentContent = divRefs.current[index].innerText.trim()
          if (currentContent === '') {
             e.preventDefault()
             deleteDiv(index)
+            setTimeout(() => divRefs.current[index - 1]?.focus(), 0)
          }
       }
    }
 
-   const handleShowPassword = () => {
-      setShowPassword(!showPassword)
+   // ArrowUp 키 처리
+   const handleArrowUpKey = (e, index) => {
+      e.preventDefault()
+      if (index > 0) {
+         moveCaretToEnd(divRefs.current[index - 1])
+      }
    }
+
+   // ArrowDown 키 처리
+   const handleArrowDownKey = (e, index) => {
+      e.preventDefault()
+      if (index < divs.length - 1) {
+         moveCaretToEnd(divRefs.current[index + 1])
+      }
+   }
+   const handleKeyPress = (e, index) => {
+      // 각 키별로 처리 함수 분리
+      switch (e.key) {
+         case 'Enter':
+            handleEnterKey(e, index)
+            break
+         case 'Backspace':
+            handleBackspaceKey(e, index)
+            break
+         case 'ArrowUp':
+            handleArrowUpKey(e, index)
+            break
+         case 'ArrowDown':
+            handleArrowDownKey(e, index)
+            break
+         default:
+            // 다른 키 이벤트에 대해서는 기본 동작 수행
+            break
+      }
+   }
+
    /**
     * 글쓰기 폼을 서버로 전송하는 함수
     */
@@ -111,25 +164,33 @@ export default function BoardCreateForm({
                <input
                   defaultValue={propsFormData.nickname}
                   autoComplete="current-password"
-                  className="border max-w-[200px] p-2  nh"
+                  className="border max-w-[180px] p-2  nh"
                   type="text"
                   name="nickname"
                   placeholder="닉네임"
+                  maxLength={8}
                />
-               <input
-                  autoComplete="current-password"
-                  className="border max-w-[200px] p-2 "
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  placeholder="비밀번호"
-               />
-               <button key="button" type="button" onClick={handleShowPassword}>
-                  {showPassword ? (
-                     <FontAwesomeIcon icon={faEye} />
-                  ) : (
-                     <FontAwesomeIcon icon={faEyeSlash} />
-                  )}
-               </button>
+               <div className="relative border max-w-[160px]">
+                  <input
+                     autoComplete="current-password"
+                     className="p-2 w-full"
+                     type={showPassword ? 'text' : 'password'}
+                     name="password"
+                     placeholder="비밀번호"
+                     maxLength={8}
+                  />
+                  <button
+                     type="button"
+                     onClick={() => setShowPassword(!showPassword)}
+                     className="absolute border-transparent inset-y-0 right-0 p-2 flex items-center"
+                  >
+                     {showPassword ? (
+                        <FontAwesomeIcon icon={faEye} />
+                     ) : (
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                     )}
+                  </button>
+               </div>
             </div>
             {/* 제목 */}
             <input
