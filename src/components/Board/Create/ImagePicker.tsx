@@ -1,30 +1,29 @@
 'use client'
 
 import IMAGE_PICKER_CONFIG from '@/constants/board/imagePicker'
+import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
-import React, { ChangeEvent, useRef } from 'react'
+import React, { ChangeEvent, useEffect, useRef } from 'react'
 
 type ImageState = {
    src: string
    alt: string
    size: string
-   base64: string
 }
 interface Props {
-   name: string
    setImageFiles: React.Dispatch<React.SetStateAction<ImageState[]>>
    imageFiles: ImageState[]
 }
 
-export default function ImagePicker({
-   name,
-   imageFiles,
-   setImageFiles,
-}: Props) {
+export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
    /** 이미지 데이타 저장 */
 
    /** 파일 입력 요소 input 버튼을 참조하기 위해 */
    const imageInput = useRef<HTMLInputElement>(null)
+
+   useEffect(() => {
+      console.log(imageFiles)
+   }, [imageFiles])
 
    /** handlePickClick 업로드 버튼을 누르면 파일 업로드 인풋 태그를 참조하는 함수 */
    const handlePickClick = () => {
@@ -58,18 +57,7 @@ export default function ImagePicker({
       return true
    }
    /** 이미지를 base64로 인코딩하는 함수 */
-   const encodeImageToBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-         const reader = new FileReader()
-         reader.readAsDataURL(file)
-         reader.onload = () => {
-            resolve(reader.result)
-         }
-         reader.onerror = (error) => {
-            reject(error)
-         }
-      })
-   }
+
    /** 파일 업로드시 로직 */
    const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
       const { files } = event.target
@@ -91,14 +79,28 @@ export default function ImagePicker({
       }
 
       /** 서버로 보낼 배열을 만듬 */
+      const options = {
+         maxSizeMB: 1,
+         maxWidthOrHeight: 1920,
+         useWebWorker: true,
+      }
+
       const newImages: ImageState[] = await Promise.all(
-         filteredFiles.map(async (file) => ({
-            src: URL.createObjectURL(file),
-            alt: file.name,
-            size: returnFileSize(file.size),
-            base64: (await encodeImageToBase64(file)) as string,
-         })),
-      )
+         Array.from(files).map(async (file) => {
+            try {
+               const compressedFile = await imageCompression(file, options)
+               return {
+                  src: URL.createObjectURL(compressedFile),
+                  alt: compressedFile.name,
+                  size: returnFileSize(compressedFile.size),
+                  blob: compressedFile, // 압축된 이미지의 Blob 데이터 포함
+               }
+            } catch (error) {
+               console.log(error)
+               return null // 오류 발생시 null 반환
+            }
+         }),
+      ).then((images) => images.filter((image) => image !== null)) // null 제거
 
       setImageFiles(newImages) // 기존 이미지 배열에 새로운 이미지들을 추가
    }
@@ -119,20 +121,22 @@ export default function ImagePicker({
                   return (
                      <div
                         key={alt}
-                        className="border flex p-0.5 flex-col items-center text-center text-sm w-[160px]"
+                        className="border flex p-0.5 flex-col items-center text-center text-sm w-[160px] h-[160px] relative"
                      >
-                        <div className="w-[150px] h-[150px] relative ">
-                           <Image src={src} alt={alt} fill />
-                           <button
-                              type="button"
-                              onClick={() => handleImageRemove(alt)}
-                              className="absolute top-0 right-0 bg-opacity-0 border-opacity-0 hover:bg-opacity-100 hover:border-opacity-100 bg-black  text-black hover:text-white px-1 font-bold text-center"
-                           >
-                              X
-                           </button>
+                        <Image src={src} alt={alt} fill />
+                        <button
+                           type="button"
+                           onClick={() => handleImageRemove(alt)}
+                           className="absolute top-0 right-0 bg-opacity-0 outline-none border-none hover:bg-opacity-100 hover:border-opacity-100 bg-black  text-black hover:text-white px-1 font-bold text-center"
+                        >
+                           X
+                        </button>
+                        <div className="bg-white w-full absolute bottom-0">
+                           <p className="line-clamp-1 break-all">{alt}</p>
+                           <p className="line-clamp-1 break-all">
+                              사이즈: {size}
+                           </p>
                         </div>
-                        <p className="line-clamp-1 break-all">{alt}</p>
-                        <p className="line-clamp-1 break-all">사이즈: {size}</p>
                      </div>
                   )
                })}
@@ -141,9 +145,9 @@ export default function ImagePicker({
             <input
                className="hidden"
                type="file"
-               id={name}
+               id="imageInput"
                accept="image/png, image/jpeg"
-               name={name}
+               name="imageInput"
                ref={imageInput}
                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleImageUpload(e)
