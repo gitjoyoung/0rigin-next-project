@@ -1,23 +1,28 @@
 'use client'
 
 import IMAGE_PICKER_CONFIG from '@/constants/board/imagePicker'
-import validFileSize, {
-   validFileTypes,
+import {
+   validFileSize,
+   validateFile,
 } from '@/utils/boardValidators/imageValidators'
 import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
 import React, { ChangeEvent, useRef } from 'react'
 
 type ImageState = {
-   src: string
-   alt: string
-   size: string
+   url: string
+   blob?: Blob
 }
 interface Props {
    setImageFiles?: React.Dispatch<React.SetStateAction<ImageState[]>>
    imageFiles?: ImageState[]
 }
-
+/**
+ * 이미지를 업로드하고 미리보기를 제공하는 컴포넌트
+ * @param setImageFiles : 이미지 파일을 저장하는 state를 변경하는 함수
+ * @param imageFiles : 이미지 파일을 저장하는 state
+ * @returns
+ */
 export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
    /** 파일 입력 요소 input 버튼을 참조하기 위해 */
    const imageInput = useRef<HTMLInputElement>(null)
@@ -27,41 +32,43 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
       imageInput.current.click()
    }
 
-   /** 파일 업로드시 로직 */
+   /**
+    * 이미지 파일 업로드 이벤트 핸들러
+    * @param event : 이미지 파일 업로드 이벤트
+    * @returns
+    */
    const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
       const { files } = event.target
 
       if (!files || files.length === 0) {
          return // 파일 선택 취소시 함수 종료
       }
-
-      const filteredFiles = Array.from(files).filter((file) => {
-         const isValidFileType = validFileTypes(
-            file,
-            IMAGE_PICKER_CONFIG.IMAGES_TYPES,
-         )
-         return isValidFileType
-      })
       // 이미지 파일 개수가 제한을 초과한 경우 함수 종료
-      if (filteredFiles.length > IMAGE_PICKER_CONFIG.MAX_FILE_COUNT) {
+      if (files.length > IMAGE_PICKER_CONFIG.MAX_FILE_COUNT) {
          return
       }
+      // 이미지 파일을 필터링하여 유효한 파일만 배열에 추가
+      const filteredFiles = Array.from(files).filter((file) => {
+         return validateFile(file)
+      })
 
-      /** 서버로 보낼 배열을 만듬 */
+      // 미리보기 이미지 압축 옵션
       const options = {
          maxSizeMB: 1,
          maxWidthOrHeight: 1920,
          useWebWorker: true,
       }
 
+      // 압축된 이미지 배열
       const newImages: ImageState[] = await Promise.all(
-         Array.from(files).map(async (file) => {
+         filteredFiles.map(async (file) => {
             try {
-               const compressedFile = await imageCompression(file, options)
+               const compressedFile: Blob = await imageCompression(
+                  file,
+                  options,
+               )
                return {
-                  src: URL.createObjectURL(compressedFile),
-                  alt: compressedFile.name,
-                  size: validFileSize(compressedFile.size),
+                  url: URL.createObjectURL(compressedFile),
                   blob: compressedFile, // 압축된 이미지의 Blob 데이터 포함
                }
             } catch (error) {
@@ -69,14 +76,18 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
                return null // 오류 발생시 null 반환
             }
          }),
-      ).then((images) => images.filter((image) => image !== null)) // null 제거
-      setImageFiles(newImages) // 기존 이미지 배열에 새로운 이미지들을 추가
-   }
+      ).then((images) => images.filter((image) => image !== null)) // 압축이 완료된 이미지만 필터링
 
-   // 이미지 삭제  해당 이미지를 배열에서 제거
-   const handleImageRemove = (altToRemove: string) => {
+      // 기존 이미지 배열에 새로운 이미지 배열을 추가
+      setImageFiles((prevImages: ImageState[]) => [...prevImages, ...newImages])
+   }
+   /**
+    * 이미지 삭제 핸들러
+    * @param src : 이미지 URL.createObjectURL
+    */
+   const handleImageRemove = (url: string) => {
       setImageFiles((prevImages: ImageState[]) =>
-         prevImages.filter((image) => image.alt !== altToRemove),
+         prevImages.filter((image) => image.url !== url),
       )
    }
    return (
@@ -84,24 +95,24 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
          <div className="shrink items-center flex  overflow-x-auto">
             {!imageFiles && <p>선택된 이미지 없음.</p>}
             {imageFiles &&
-               imageFiles.map(({ src, alt, size }) => {
+               imageFiles.map(({ url, blob }) => {
                   return (
                      <div
-                        key={alt}
+                        key={blob.name}
                         className="border flex p-0.5 flex-col items-center text-center text-sm w-[160px] h-[160px] relative"
                      >
-                        <Image src={src} alt={alt} fill />
+                        <Image src={url} alt={blob.name} fill />
                         <button
                            type="button"
-                           onClick={() => handleImageRemove(alt)}
+                           onClick={() => handleImageRemove(url)}
                            className="absolute top-0 right-0 bg-opacity-0 outline-none border-none hover:bg-opacity-100 hover:border-opacity-100 bg-black  text-black hover:text-white px-1 font-bold text-center"
                         >
                            X
                         </button>
                         <div className="bg-white w-full absolute bottom-0">
-                           <p className="line-clamp-1 break-all">{alt}</p>
+                           <p className="line-clamp-1 break-all">{blob.name}</p>
                            <p className="line-clamp-1 break-all">
-                              사이즈: {size}
+                              사이즈: {validFileSize(blob.size)}
                            </p>
                         </div>
                      </div>
