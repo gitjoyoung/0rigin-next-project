@@ -1,34 +1,22 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-'use client'
-
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import React from 'react'
 
 type Props = {
    title: string
 }
 export default function BoardHeader({ title }: Props) {
-   const router = useRouter()
    return (
-      <div className="my-3 flex justify-between">
+      <div className="my-3 flex justify-between relative px-1">
          <div>
-            <div
-               onClick={() => router.refresh()}
-               onKeyDown={() => {}}
-               aria-label="Refresh"
-            >
-               <h1 className="text-3xl font-bold">{title} 게시판</h1>
-            </div>
+            <Link href="/board" className="text-3xl font-bold">
+               {title} 게시판
+            </Link>
             <p>{title} 게시판입니다</p>
          </div>
-         <div className="self-center">
-            <button
-               className="px-5 py-3"
-               type="submit"
-               onClick={() => router.push('/board/create')}
-            >
-               글쓰기
-            </button>
+         <div className="absolute right-0 bottom-0 border border-black  shadow-md  flex items-center">
+            <Link href="/board/create" className="px-4 py-2 ">
+               <p className=" font-bold"> 글쓰기</p>
+            </Link>
          </div>
       </div>
    )

@@ -1,9 +1,12 @@
 'use client'
 
 import IMAGE_PICKER_CONFIG from '@/constants/board/imagePicker'
+import validFileSize, {
+   validFileTypes,
+} from '@/utils/boardValidators/imageValidators'
 import imageCompression from 'browser-image-compression'
 import Image from 'next/image'
-import React, { ChangeEvent, useEffect, useRef } from 'react'
+import React, { ChangeEvent, useRef } from 'react'
 
 type ImageState = {
    src: string
@@ -11,52 +14,18 @@ type ImageState = {
    size: string
 }
 interface Props {
-   setImageFiles: React.Dispatch<React.SetStateAction<ImageState[]>>
-   imageFiles: ImageState[]
+   setImageFiles?: React.Dispatch<React.SetStateAction<ImageState[]>>
+   imageFiles?: ImageState[]
 }
 
 export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
-   /** 이미지 데이타 저장 */
-
    /** 파일 입력 요소 input 버튼을 참조하기 위해 */
    const imageInput = useRef<HTMLInputElement>(null)
-
-   useEffect(() => {
-      console.log(imageFiles)
-   }, [imageFiles])
 
    /** handlePickClick 업로드 버튼을 누르면 파일 업로드 인풋 태그를 참조하는 함수 */
    const handlePickClick = () => {
       imageInput.current.click()
    }
-   /**  파일 사이즈를 반환하는 함수 */
-   const returnFileSize = (number: number): string => {
-      if (number < 1024) {
-         return `${number.toString()}bytes`
-      }
-      if (number >= 1024 && number < 1048576) {
-         return `${(number / 1024).toFixed(1)}KB`
-      }
-      if (number >= 1048576) {
-         return `${(number / 1048576).toFixed(1)}MB`
-      }
-      return '' // Add this line to return a value at the end of the function
-   }
-   /** 파일 타입을 검사하는 함수  */
-   const validFileTypes = (file: File, type: string[]) => {
-      const isWithinFileSizeLimit =
-         file.size <= IMAGE_PICKER_CONFIG.MAX_FILE_SIZE
-
-      if (!type.includes(file.type) || !isWithinFileSizeLimit) {
-         alert(
-            `${type} 이미지만 업로드하고, 파일 크기는 ${IMAGE_PICKER_CONFIG.MAX_FILE_SIZE}보다 작아야 합니다.`,
-         )
-         return false
-      }
-
-      return true
-   }
-   /** 이미지를 base64로 인코딩하는 함수 */
 
    /** 파일 업로드시 로직 */
    const handleImageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +61,7 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
                return {
                   src: URL.createObjectURL(compressedFile),
                   alt: compressedFile.name,
-                  size: returnFileSize(compressedFile.size),
+                  size: validFileSize(compressedFile.size),
                   blob: compressedFile, // 압축된 이미지의 Blob 데이터 포함
                }
             } catch (error) {
@@ -101,7 +70,6 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
             }
          }),
       ).then((images) => images.filter((image) => image !== null)) // null 제거
-
       setImageFiles(newImages) // 기존 이미지 배열에 새로운 이미지들을 추가
    }
 
@@ -110,7 +78,6 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
       setImageFiles((prevImages: ImageState[]) =>
          prevImages.filter((image) => image.alt !== altToRemove),
       )
-      console.log(imageFiles)
    }
    return (
       <div className="flex flex-col gap-2">
