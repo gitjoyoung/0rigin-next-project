@@ -15,12 +15,13 @@ export default function Header() {
       setIsMenuOpen(!isMenuOpen)
    }
    return (
-      <header className="flex justify-between p-3  w-full border-b mt-1 mb-2 border-black  shadow-md">
+      <header className="flex justify-between p-2 sm:p-3  w-full border-b mt-1 mb-2 border-black  shadow-md">
          <Link href="/">
-            <h1 className="md:text-4xl  font-bold ">0rigin</h1>
+            <h1 className="md:text-4xl text-xl font-bold ">0rigin</h1>
          </Link>
-         <div className="flex-1 sm:flex lg:flex md:flex hidden justify-between">
-            <nav className="flex  items-end gap-8 text-gray-600 pl-16">
+
+         <div className="flex-1 hidden md:flex justify-between ml-10">
+            <nav className="flex  items-end gap-8 text-gray-600 ">
                {headerNav.map(({ title, url }) => (
                   <Link key={title} href={url}>
                      <p className="hover:text-gray-900 hover:font-semibold text-md font-normal ">
@@ -29,22 +30,30 @@ export default function Header() {
                   </Link>
                ))}
             </nav>
-            <div className=" flex items-end gap-5">
-               <SearchButton />
-               <AuthButton name={undefined} />
-            </div>
          </div>
 
-         <div className="flex gap-2 items-end sm:hidden">
-            {/* 알림 버튼 */}
-            <button type="button" onClick={toggleMenu} aria-label="알림">
-               <FontAwesomeIcon icon={faBell} shake />
-            </button>
+         <div className="flex items-end gap-5">
+            {/* 검색 버튼 항상 표시 */}
+            <SearchButton />
 
-            {/* 햄버거 메뉴 버튼 */}
-            <button type="button" onClick={toggleMenu} aria-label="메뉴 토글">
-               <FontAwesomeIcon icon={faBurger} size="lg" />
-            </button>
+            {/* AuthButton은 모바일에서 숨김 처리 */}
+            <div className="hidden sm:flex">
+               <AuthButton name={undefined} />
+            </div>
+
+            {/* 모바일 화면 버튼 */}
+            <div className="sm:hidden flex gap-2 items-center">
+               <button type="button" aria-label="알림">
+                  <FontAwesomeIcon icon={faBell} />
+               </button>
+               <button
+                  type="button"
+                  onClick={toggleMenu}
+                  aria-label="메뉴 토글"
+               >
+                  <FontAwesomeIcon icon={faBurger} size="lg" />
+               </button>
+            </div>
          </div>
 
          {/* 배경 클릭으로 메뉴 닫기 */}
