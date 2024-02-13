@@ -5,11 +5,13 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import dayjs from 'dayjs'
 import Link from 'next/link'
-import BoardModal from '../BoardModal'
+import BoardModal from './BoardModal'
 import BoardReadTitle from './BoardReadTitle'
+import BoardUpdateButton from './BoardUpdateButton'
+import MDEditor from '@uiw/react-md-editor'
 
 export default function BoardRead({ postid }) {
    const router = useRouter()
@@ -79,28 +81,26 @@ export default function BoardRead({ postid }) {
             <BoardModal
                id={postid}
                onClose={() => setIsModalOpen(false)}
-               deleteFlag={modalMode === 'delete'}
-               editFlag={modalMode === 'edit'}
+               flag={modalMode}
             />
          )}
+
+         {/* 글제목 */}
          <BoardReadTitle
             title={title}
             nickname={nickname}
             like={like}
             date={date}
          />
-         <div className="flex justify-end gap-3 my-2 ">
-            <button className="px-3 py-1" type="button" onClick={handleEdit}>
-               수정
-            </button>
-            <button className="px-3 py-1" type="button" onClick={handleDelete}>
-               삭제
-            </button>
-         </div>
-         <div
-            className="min-h-[30vh] px-2"
-            dangerouslySetInnerHTML={{ __html: body }}
+         {/* 글 수정  , 삭제 버튼 */}
+         <BoardUpdateButton
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
          />
+         {/* 글내용 */}
+
+         <MDEditor.Markdown source={body} />
+         {/* 싫어요,좋아요  버튼 */}
          <div className="flex justify-center gap-6 mt-5 mb-5">
             <div className="flex flex-col justify-center items-center">
                <div className="flex gap-2 items-center">
@@ -108,7 +108,7 @@ export default function BoardRead({ postid }) {
                   <p> {-unlike || 0}</p>
                </div>
                <button type="button" onClick={() => fetchUpdateLike(false)}>
-                  내리 꽂기
+                  싫어요
                </button>
             </div>
             <div className="flex flex-col justify-center items-center">
@@ -118,7 +118,7 @@ export default function BoardRead({ postid }) {
                </div>
 
                <button type="button" onClick={() => fetchUpdateLike(true)}>
-                  추천 하기
+                  좋아요
                </button>
             </div>
          </div>

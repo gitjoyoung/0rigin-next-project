@@ -1,5 +1,5 @@
 import BoardContent from '@/components/Board/BoardContent'
-import BoardRead from '@/components/Board/BoardRead'
+import BoardRead from '@/components/Board/Read/BoardRead'
 import { Suspense } from 'react'
 import BoardHeader from '@/components/Board/BoardHeader'
 import Loading from './loding'
@@ -11,8 +11,8 @@ export default function Read({ params }: { params: { id: string } }) {
     * 2. 해당 글의 id를 받아서 게시글을 불러온다.
     * 3. board contetnt 서는 현재 클릭한 글의 백그라운드컬러로 표시한다.
     * 4. board read 에서는 현재의 글의 내용을 보여주고 댓글을 달수있게 한다.
-    * 
-    * 
+    *
+    *
     */
    return (
       <Suspense fallback={<Loading />}>
