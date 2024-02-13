@@ -9,37 +9,37 @@ interface Content {
    type: string
    content: string
 }
-type ImageState = {
-   src: string
-   alt: string
-   size: string
-}
 
 export default function BoardEditor() {
-   const [content, setContent] = useState<Content[]>([
-      { id: 'content-1', type: 'text', content: '' },
-   ])
-   const [ImageFiles, setImageFiles] = useState<ImageState[]>([])
+   // 이미지 배열
+   const [ImageFiles, setImageFiles] = useState([])
+
+   // editRef를 생성
    const editRef = useRef<HTMLDivElement>(null)
 
+   // 이미지 배열이 변경될 때마다 useEffect 실행
    useEffect(() => {
       if (editRef.current) {
-         // 기존의 이미지들을 클리어
-         // 이미지 파일 배열을 순회하며 <img> 태그 생성 및 추가
+         const existingImages = editRef.current.querySelectorAll('img')
+         existingImages.forEach((img) => img.remove())
+
+         // 새로운 ImageFiles 배열을 순회하며 모든 이미지를 추가합니다.
          ImageFiles.forEach((item) => {
             const img = document.createElement('img')
-            img.src = item.src
-            img.alt = '이미지 설명'
-            img.width = 300
-            img.height = 200
-            img.style.objectFit = 'contain'
-            img.className = 'py-2'
+            img.src = item.url // 이미지 URL
+            img.alt = '이미지 설명' // 대체 텍스트
+            img.width = 300 // 이미지 너비
+            img.height = 200 // 이미지 높이
+            img.style.objectFit = 'contain' // 이미지 스타일
+            img.className = 'py-2' // CSS 클래스
 
+            // editRef.current에 이미지를 추가합니다.
             editRef.current.appendChild(img)
          })
       }
    }, [ImageFiles])
 
+   // 데이터 출력 예시
    const handleDate = () => {
       const updatedContent = []
 
@@ -69,7 +69,6 @@ export default function BoardEditor() {
          })
       }
 
-      setContent(updatedContent)
       console.log(JSON.stringify(updatedContent))
    }
 
@@ -82,14 +81,14 @@ export default function BoardEditor() {
             />
          </div>
          <div
-            className="flex flex-col overflow-y-scroll p-3 min-h-[500px] text-black"
+            className="flex flex-col overflow-y-scroll p-2 min-h-[500px] text-black"
             suppressContentEditableWarning
             contentEditable
             ref={editRef}
          />
 
          <button type="button" onClick={handleDate} className="p-3">
-            임시버튼
+            출력 버튼
          </button>
       </div>
    )
