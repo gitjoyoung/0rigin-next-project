@@ -7,21 +7,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBurger, faX, faBell } from '@fortawesome/free-solid-svg-icons'
 import { Transition } from '@headlessui/react'
 import AuthButton from './AuthButton'
-import SearchButton from './SearchButton'
+import SearchBox from './SearchBox'
 
 export default function Header() {
    const [isMenuOpen, setIsMenuOpen] = useState(false)
    const toggleMenu = () => {
       setIsMenuOpen(!isMenuOpen)
    }
+
    return (
-      <header className="flex justify-between p-2 sm:p-3  w-full border-b mt-1 mb-2 border-black  shadow-md">
+      <header className="flex justify-between p-1 sm:p-3 items-end  w-full border-b mt-1 mb-2 border-black  shadow-md">
+         {/* 로고 */}
          <Link href="/">
             <h1 className="md:text-4xl text-xl font-bold ">0rigin</h1>
          </Link>
 
+         {/* 메뉴 리스트 */}
          <div className="flex-1 hidden md:flex justify-between ml-10">
-            <nav className="flex  items-end gap-8 text-gray-600 ">
+            <nav className="flex items-end gap-8 text-gray-600 ">
                {headerNav.map(({ title, url }) => (
                   <Link key={title} href={url}>
                      <p className="hover:text-gray-900 hover:font-semibold text-md font-normal ">
@@ -31,22 +34,29 @@ export default function Header() {
                ))}
             </nav>
          </div>
+         {/* 서치바 */}
+         <div className="flex-1 max-w-48 mx-3">
+            <SearchBox />
+         </div>
 
+         {/* 로그인 버튼 */}
          <div className="flex items-end gap-5">
-            {/* 검색 버튼 항상 표시 */}
-            <SearchButton />
-
-            {/* AuthButton은 모바일에서 숨김 처리 */}
-            <div className="hidden sm:flex">
+            {/* 로그인 회원가입 버튼 모바일에서 숨김 처리 */}
+            <div className="hidden md:flex ">
                <AuthButton name={undefined} />
             </div>
 
             {/* 모바일 화면 버튼 */}
-            <div className="sm:hidden flex gap-2 items-center">
-               <button type="button" aria-label="알림">
-                  <FontAwesomeIcon icon={faBell} />
+            <div className="md:hidden flex gap-1 items-center">
+               <button
+                  type="button"
+                  aria-label="알림"
+                  onClick={() => console.log('알림')}
+               >
+                  <FontAwesomeIcon icon={faBell} size="lg" />
                </button>
                <button
+                  className="border-none"
                   type="button"
                   onClick={toggleMenu}
                   aria-label="메뉴 토글"
