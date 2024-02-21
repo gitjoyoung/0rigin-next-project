@@ -60,13 +60,10 @@ export default function SignForm() {
       if (!isPasswordValid) {
          return
       }
-
       await fetchSignUp({
-         userid,
+         userid: `${userid}@0rigin.com`,
          password,
          gender,
-      }).then(() => {
-         router.push('/login')
       })
    }
 
@@ -159,7 +156,7 @@ export default function SignForm() {
                />
                <p className="text-xs">*비밀번호를 재입력해 주세요</p>
 
-               <button className="my-4 p-2 " type="submit">
+               <button className=" my-4 p-2 " type="submit">
                   회원가입
                </button>
             </form>

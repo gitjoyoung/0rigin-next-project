@@ -1,15 +1,13 @@
 'use client'
 
-import TERMS_CONTENT from '@/constants/auth/termsContentText'
+import { TERMS_CONTENT } from '@/constants/auth/signUpTermsText'
 import React, { useState } from 'react'
 
-type TermsOfServiceProps = {
+type Props = {
    onTermsAgreed: () => void
 }
 
-export default function TermsOfService({ onTermsAgreed }: TermsOfServiceProps) {
-   const terms: string = TERMS_CONTENT
-
+export default function TermsOfService({ onTermsAgreed }: Props) {
    // 이용약관 동의 체크박스
    const [checkTerm, setCheckTerm] = useState<boolean>(false)
 
@@ -18,7 +16,7 @@ export default function TermsOfService({ onTermsAgreed }: TermsOfServiceProps) {
     * @returns {void}
     */
    const handleCheckboxChange = (): void => {
-      setCheckTerm(!checkTerm)
+      setCheckTerm((current) => !current)
    }
    /**
     * 회원가입 페이지로 이동
@@ -35,9 +33,9 @@ export default function TermsOfService({ onTermsAgreed }: TermsOfServiceProps) {
    return (
       <section className=" flex flex-col items-center m-3">
          <div className=" ">
-            <h2 className="font-bold text-lg">이용약관</h2>
+            <h2 className="font-bold text-lg">이용 약관</h2>
             <div className=" border border-gray-300 rounded-lg h-48  p-2 overflow-y-auto">
-               <p>{terms}</p>
+               <p>{TERMS_CONTENT}</p>
             </div>
          </div>
          <div className="m-2 ">
