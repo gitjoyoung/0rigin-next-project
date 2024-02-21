@@ -2,14 +2,13 @@ import {
    doc,
    runTransaction,
    collection,
-   getDocs,
    serverTimestamp,
    setDoc,
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 
 /**
- * 카운터 업데이트 및 순번 계산
+ * 현재글이 몇번째 글인지 순번 계산
  * @param db
  * @returns
  */
@@ -40,25 +39,19 @@ const addPostDataWithNumber = async (postData, number) => {
    return newPostRef.id
 }
 
-export const firebaseFetchData = async (postData) => {
+export const updatePost = async (postData) => {
    try {
-      // 카운터 업데이트 및 순번 계산
-      const number = await updateCounterAndGetNumber()
+      // 현재 최신 글 순번 가져오기
+      const postNumber = await updateCounterAndGetNumber()
 
-      // 게시물 데이터 Firestore에 저장
-      const postId = await addPostDataWithNumber(postData, number)
+      // 게시물 업로드 Firestore에 저장
+      const postId = await addPostDataWithNumber(postData, postNumber)
 
       console.log(
-         `Post added successfully with ID: ${postId} and Number: ${number}`,
+         `Post added successfully with ID: ${postId} and Number: ${postNumber}`,
       )
+      return postNumber
    } catch (e) {
       console.error('Failed to add post with numbering: ', e)
    }
-}
-
-export const firebaseFetchRes = () => async () => {
-   const querySnapshot = await getDocs(collection(db, 'posts'))
-   querySnapshot.forEach((item) => {
-      console.log(`${item.id} => ${JSON.stringify(item.data())}`)
-   })
 }
