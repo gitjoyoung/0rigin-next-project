@@ -1,12 +1,12 @@
-'use client';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import pepe from '@/assets/sadpepe.jpg'; // 이미지 예시
-import { useRouter } from 'next/navigation';
+'use client'
+import Image from 'next/image'
+import React, { useEffect, useState } from 'react'
+import pepe from '@/assets/sadpepe.jpg' // 이미지 예시
+import { useRouter } from 'next/navigation'
 // 추가 이미지 경로들...
 
 export default function Banner() {
-   const router = useRouter();
+   const router = useRouter()
    const data = [
       {
          title: '자연 속의 아름다운 풍경',
@@ -28,57 +28,64 @@ export default function Banner() {
          title: '모험과 스포츠',
          body: '모험과 스포츠 활동을 통해 미지의 대자연을 탐험하세요. 하이킹, 서핑, 스노클링 등 다양한 액티비티를 체험해보세요.',
       },
-   ];
+   ]
 
-   const [selectedPost, setSelectedPost] = useState(0);
+   const [selectedPost, setSelectedPost] = useState(0)
 
    useEffect(() => {
       const timer = setInterval(() => {
-         setSelectedPost((prevIndex) => (prevIndex + 1) % data.length);
-      }, 2000); // 2초마다 인덱스 변경
-      return () => clearInterval(timer); // 컴포넌트 언마운트 시 타이머 정리
-   }, []);
+         setSelectedPost((prevIndex) => (prevIndex + 1) % data.length)
+      }, 2000) // 2초마다 인덱스 변경
+      return () => clearInterval(timer) // 컴포넌트 언마운트 시 타이머 정리
+   }, [])
 
    return (
-      <section className='w-full flex flex-wrap justify-center border border-black   transition-'>
-         <div className=' w-full md:w-7/12 '>
-            <h1 className='hidden'>베스트 인기글 프리뷰</h1>
-            <div className='relative w-full  h-56   '>
-               <Image alt='개구리' src={pepe} layout='fill' objectFit='cover' placeholder='blur' />
-               <div className='   absolute bottom-0 w-full   bg-gradient-to-t from-black pt-5 p-4  text-white '>
-                  <h1 className='text-2xl font-bold line-clamp-2 max-w-prose '>
+      <section className="w-full  flex flex-wrap justify-center border border-black   ">
+         <div className=" w-full  md:w-7/12 ">
+            <div className="relative w-full  h-56 z-0   ">
+               <Image
+                  alt="개구리"
+                  src={pepe}
+                  fill
+                  objectFit="cover"
+                  placeholder="blur"
+               />
+               <div className="   absolute bottom-0 w-full   bg-gradient-to-t from-black pt-5 p-4  text-white ">
+                  <h1 className="text-2xl font-bold line-clamp-2 max-w-prose ">
                      {data[selectedPost].title}
                   </h1>
-                  <p className=' break-words text-sm line-clamp-2 max-w-prose  '>
+                  <p className=" break-words text-sm line-clamp-2 max-w-prose  ">
                      {data[selectedPost].body} /
                   </p>
                </div>
             </div>
          </div>
 
-         <div className=' border border-black md:w-5/12 w-full p-2 '>
-            <h1 className='font-bold '>베스트 게시글 TOP 5</h1>
-            <ul className='m-2 text-sm '>
+         <div className=" border border-black md:w-5/12 w-full p-2 ">
+            <h1 className="font-bold ">베스트 게시글 TOP 5</h1>
+            <ul className="m-2 text-sm ">
                {data.map(({ title, body, image }, index) => (
                   <li
                      key={index}
                      className={`border flex justify-between mt-1 p-1 ${
-                        selectedPost === index ? 'bg-gray-200 font-bold' : 'text-sm'
+                        selectedPost === index
+                           ? 'bg-gray-200 font-bold'
+                           : 'text-sm'
                      }`}
                      onClick={() => {
-                        setSelectedPost(index); // 클릭 시 상태를 현재 인덱스로 설정
-                        router.push('board/read/dae6');
+                        setSelectedPost(index) // 클릭 시 상태를 현재 인덱스로 설정
+                        router.push('board/read/dae6')
                      }}
                   >
-                     <h2 className='  line-clamp-2 max-w-prose '>{title}</h2>
-                     <div className='flex gap-2 text-gray-500 text-xs '>
-                        <h3 className=' '>추천수 : 22</h3>
-                        <h3 className='  '>조회수 : 22</h3>
+                     <h2 className="  line-clamp-2 max-w-prose ">{title}</h2>
+                     <div className="flex gap-2 text-gray-500 text-xs ">
+                        <h3 className=" ">추천수 : 22</h3>
+                        <h3 className="  ">조회수 : 22</h3>
                      </div>
                   </li>
                ))}
             </ul>
          </div>
       </section>
-   );
+   )
 }
