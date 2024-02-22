@@ -51,7 +51,7 @@ export default function Introduce() {
             </p>
          </div>
 
-         {/* 사이트 통계 */}
+         {/* 숫자로 보는 0rigin */}
          <div
             ref={sectionsRef.numbers}
             className="flex flex-col items-center justify-center gap-3 w-full h-[100vh]"

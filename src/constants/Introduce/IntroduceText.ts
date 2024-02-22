@@ -1,13 +1,16 @@
 const INTRODUCE_TEXT = Object.freeze({
    story: {
+      src: 'https://source.unsplash.com/1600x900/?nature,water',
       title: '0rigin의 탄생',
-      body: `0rigin은 "내가 아는 것은 내가 아무것도 모른다는 것뿐이다"는 철학적 명제에 기반을 둔 커뮤니티입니다. 이 곳은 모든 사람이 자유롭게 모든 주제에 대해 의견을 공유하고 토론할 수 있는 열린 공간입니다. 다양한 관점을 수용하고 정제함으로써, 0rigin 커뮤니티는 지적 탐구와 더불어 창의적인 사고를 촉진하기 위한 공간입니다. 이를 통해 0rigin 만의 대체불가한 정체성을 구축합니다.`,
+      body: `0rigin은 "내가 아는 것은 내가 아무것도 모른다는 것뿐이다"는 철학적 명제에 기반을 둔 커뮤니티입니다. `,
    },
    welcome: {
+      src: 'https://source.unsplash.com/1600x900/?nature,water',
       title: '0rigin에 오신 것을 환영합니다',
-      body: `0rigin 커뮤니티에 오신 것을 진심으로 환영합니다.  0rigin은 개인의 독특한 생각과 경험을 소중히 여기는 공간입니다. 다양한 배경을 지닌 사람들이 모여 서로의 생각을 나누고, 삶의 여러 모습에 대해 함께 생각해보고 토론합니다. '내가 아는 것은 내가 아무것도 모른다는 것뿐이다'는 우리의 핵심 가치 아래, 다양한 경험과 생각, 철학적 질문을 마음껏 나눌 수 있습니다. 이곳에서 다른 이들의 생각을 듣고, 그들로부터 새로운 것을 배우는 소중한 경험을 하시기 바랍니다`,
+      body: `0rigin 커뮤니티에 오신 것을 진심으로 환영합니다.  `,
    },
    numbers: {
+      src: 'https://source.unsplash.com/1600x900/?nature,water',
       title: '숫자로 보는 0rigin',
       body: '0rigin은 지속적인 성장을 추구합니다.',
    },
