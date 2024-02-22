@@ -1,6 +1,6 @@
 'use client'
 
-import BoardCreateForm from '@/components/Board/BoardCreateForm'
+import BoardCreateForm from '@/components/Board/Create/BoardCreateForm'
 
 function Update({ params }: { params: { id: string } }) {
    const postid = params.id

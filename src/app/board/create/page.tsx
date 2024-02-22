@@ -1,13 +1,7 @@
-import BoardCreateForm from '@/components/Board/BoardCreateForm'
-import BoardCreateTipBox from '@/components/Board/BoardCreateTipbox'
+import BoardCreateForm from '@/components/Board/Create/BoardCreateForm'
 
 function Create() {
-   return (
-      <div className="flex">
-         <BoardCreateTipBox />
-         <BoardCreateForm />
-      </div>
-   )
+   return <BoardCreateForm />
 }
 
 export default Create
