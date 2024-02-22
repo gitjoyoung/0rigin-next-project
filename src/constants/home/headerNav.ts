@@ -10,11 +10,6 @@ const HEADER_NAV = Object.freeze([
       url: '/board',
    },
    {
-      id: 'mypage',
-      title: '마이페이지',
-      url: '/mypage',
-   },
-   {
       id: 'contact',
       title: 'contact',
       url: '/contact',
