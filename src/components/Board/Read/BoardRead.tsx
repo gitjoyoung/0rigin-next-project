@@ -76,7 +76,7 @@ export default function BoardRead({ postid }) {
       }
    }
    return (
-      <section className="  mt-1 " ref={topRef}>
+      <section className="mt-1 " ref={topRef}>
          {isModalOpen && (
             <BoardModal
                id={postid}
@@ -97,9 +97,8 @@ export default function BoardRead({ postid }) {
             handleDelete={handleDelete}
             handleEdit={handleEdit}
          />
-         {/* 글내용 */}
-
-         <MDEditor.Markdown source={body} />
+         {/* 글내용 마크다운 뷰어 */}
+         <MDEditor.Markdown className="px-1" source={body} />
          {/* 싫어요,좋아요  버튼 */}
          <div className="flex justify-center gap-6 mt-5 mb-5">
             <div className="flex flex-col justify-center items-center">

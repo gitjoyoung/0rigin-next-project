@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/navigation'
-import dayjs from 'dayjs'
-import fetchCreateForm from '@/app/api/board/create'
-import BoardEditor from './BoardEditor'
+import MarkDownEditor from './MarkDownEditor'
+import FormSubmitButton from './FormSubmitButton'
+import BoardEditorHelpBox from './BoardEditorHelpBox'
+import { updatePost } from '@/app/api/board/updatePostApi'
 
 interface Props {
    nickname?: string
@@ -21,44 +22,42 @@ export default function BoardCreateForm({
    title,
    body,
 }: Props) {
+   // 글 수정을 고려한 데이터
    const [propsFormData, setPropsFormData] = useState({
       nickname,
       password,
       title,
       body,
    })
-
+   // 라우터 이동
    const router = useRouter()
+   // 패스 워드
    const [showPassword, setShowPassword] = useState(false)
 
    // 글쓰기 폼의 내용을 저장하는 state
-   const [content, setContent] = useState([
-      { id: `div-0`, type: 'text', content: '' },
-   ])
+   const [content, setContent] = useState(body || '') // 글쓰기 폼의 내용을 저장하는 state
 
    // 글쓰기 폼 제출
    const handleFormSubmit = async (e) => {
       e.preventDefault()
 
-      const timestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')
       const dataObject = {
          nickname: e.target.nickname.value,
          password: e.target.password.value,
          title: e.target.title.value,
          body: content,
-         timestamp: Number(timestamp), // Convert the timestamp to a number
          isPublic: true,
          category: 'any',
       }
 
-      await fetchCreateForm(dataObject).then((data) =>
-         router.push(`/board/read/${data.id}`),
+      await updatePost(dataObject).then((postNumber) =>
+         router.push(`/board/read/${postNumber}`),
       )
    }
 
    return (
-      <section className=" border  w-full sm:min-w-[900px] p-3  ">
-         <h1 className="text-4xl "> 글쓰기 </h1>
+      <section className=" border  w-full sm:min-w-[900px]   sm:px-10 px-1 py-2  ">
+         <h1 className="text-4xl my-3 "> 글쓰기 </h1>
          <form
             className="w-full flex flex-col gap-2"
             onSubmit={(e) => handleFormSubmit(e)}
@@ -73,6 +72,7 @@ export default function BoardCreateForm({
                   name="nickname"
                   placeholder="닉네임"
                   maxLength={8}
+                  required
                />
                <div className="relative border max-w-[160px]">
                   <input
@@ -82,6 +82,7 @@ export default function BoardCreateForm({
                      name="password"
                      placeholder="비밀번호"
                      maxLength={8}
+                     required
                   />
                   <button
                      type="button"
@@ -103,13 +104,17 @@ export default function BoardCreateForm({
                type="text"
                name="title"
                placeholder="제목"
+               required
             />
 
             {/* 내용 contentEditTable 로 태그를 추가함 */}
-            <BoardEditor />
+            {/* <BoardEditor /> */}
+            <BoardEditorHelpBox />
+
+            <MarkDownEditor content={content} setContent={setContent} />
 
             {/* 제출 버튼 */}
-            <div className="flex gap-6 justify-end p-1 mt-3 mb-3">
+            <div className="flex gap-6 justify-end p-1 m-3">
                <button
                   type="button"
                   onClick={() => router.back()}
@@ -117,9 +122,7 @@ export default function BoardCreateForm({
                >
                   취소 하기
                </button>
-               <button type="submit" className="p-3">
-                  제출 하기{' '}
-               </button>
+               <FormSubmitButton label="제출 하기" />
             </div>
          </form>
       </section>

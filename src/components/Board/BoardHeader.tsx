@@ -14,8 +14,8 @@ export default function BoardHeader({ title }: Props) {
             <p>{title} 게시판입니다</p>
          </div>
          <div className="absolute right-0 bottom-0 border border-black  shadow-md  flex items-center">
-            <Link href="/board/create" className="px-4 py-2 ">
-               <p className=" font-bold"> 글쓰기</p>
+            <Link href="/board/create" className="px-4 py-2 font-bold">
+               글쓰기
             </Link>
          </div>
       </div>

@@ -4,27 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import dayjs from 'dayjs'
 
-interface BoardListProps {
-   title: string
-   timestamp: Date
-   views: number
-   like: number
-   comments: number
-   id: string
-   nickname: string
-   no: number
-}
-
 export default function BoardList({
    title,
-   timestamp,
+   createdAt,
    views,
    like,
    comments,
    id,
    nickname,
    no,
-}: BoardListProps) {
+}) {
    /** 작성 날짜 */
    const formatNumberWithUnit = (number: number): string => {
       let unit = ''
@@ -47,14 +36,10 @@ export default function BoardList({
    }
    /** 작성 날자  */
    function formatDate(): string {
-      const now = dayjs()
-      const postDate = dayjs(timestamp)
-      if (now.format('YYYY.MM.DD') === postDate.format('YYYY.MM.DD')) {
-         return postDate.format('HH:mm')
-      }
-      return postDate.format('YY.MM.DD')
+      const postDate = dayjs(createdAt).format('YYYY년 MM월 DD일 HH:mm:ss')
+      return postDate
    }
-   const formattedDate = timestamp ? formatDate() : '12:42'
+   const formattedDate = createdAt ? formatDate() : '12:42'
 
    return (
       <section className="flex items-center  flex-wrap p-2  ">
