@@ -1,10 +1,11 @@
 import Header from '@/components/Header/Header'
-import Ticker from '@/components/Header/Ticker'
 import { inter } from '@/app/ui/fonts'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import './globals.css'
+import './ui/globals.css'
 import Footer from '@/components/Footer/Footer'
+import AuthSession from './api/providers/AuthSession'
+import Ticker from '@/components/Ticker/Ticker'
 
 config.autoAddCss = false
 
@@ -19,16 +20,19 @@ export default function RootLayout({
    children: React.ReactNode
 }) {
    return (
-      <html lang="en">
+      <html lang="en" className="dark">
          <body>
-            <Ticker />
-            <Header />
-            <main
-               className={`${inter.className} antialiased min-h-[100vh] w-full `}
-            >
-               {children}
-            </main>
-            <Footer />
+            <AuthSession>
+               <div id="modal-root" />
+               <Ticker />
+               <Header />
+               <main
+                  className={`${inter.className} antialiased min-h-full w-full `}
+               >
+                  {children}
+               </main>
+               <Footer />
+            </AuthSession>
          </body>
       </html>
    )
