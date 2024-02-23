@@ -45,7 +45,7 @@ export const fetchPosts = async () => {
          createdAt: snapshot.data().createdAt.toDate(),
          number: snapshot.data().number,
          title: snapshot.data().title,
-         category: 'any', // Include the missing category property
+         category: snapshot.data().category || 'any', // Include the missing category property
       }))
       console.log('posts : ', posts)
       // 가져온 데이터를 반환하거나 상태에 저장합니다.
@@ -81,7 +81,7 @@ export const fetchPostById = async (postId) => {
             createdAt: postData.createdAt.toDate(),
             number: postData.number,
             title: postData.title,
-            category: 'any',
+            category: postData.category || 'any',
          }
          return post
       }
@@ -90,5 +90,45 @@ export const fetchPostById = async (postId) => {
       // 오류가 발생한 경우, 오류를 콘솔에 기록합니다.
       console.error('Error fetching post:', error)
       throw error // 또는 오류를 호출자에게 전파합니다.
+   }
+}
+
+/**
+ * 개발중...
+ * 배너 영역에 들어갈 인기글 특정 조건에 맞는 최대 5개의 게시물 가져오기
+ * @param {string} condition 특정 조건
+ * @returns {Promise<Post[]>} 조건에 맞는 게시물 배열을 반환합니다.
+ */
+export const fetchTopPosts = async () => {
+   // 'posts' 컬렉션에 대한 쿼리를 생성합니다.
+   // 특정 조건을 추가하고, 5개 문서로 제한합니다.
+   const postsQuery = query(
+      collection(db, 'posts'),
+      orderBy('number', 'desc'),
+      limit(5),
+      // Add your specific condition here
+      // 예시: where('category', '==', condition)
+   )
+
+   try {
+      // 쿼리를 실행하여 문서 스냅샷을 가져옵니다.
+      const querySnapshot = await getDocs(postsQuery)
+
+      // 각 문서의 데이터를 배열에 저장합니다.
+      const posts: Post[] = querySnapshot.docs.map((snapshot) => ({
+         id: snapshot.id,
+         nickname: snapshot.data().nickname,
+         content: snapshot.data().content,
+         createdAt: snapshot.data().createdAt.toDate(),
+         number: snapshot.data().number,
+         title: snapshot.data().title,
+         category: snapshot.data().title || 'any',
+      }))
+
+      // 가져온 데이터를 반환하거나 상태에 저장합니다.
+      return posts
+   } catch (error) {
+      console.error('Error fetching posts:', error)
+      // 오류 처리를 여기서 수행합니다.
    }
 }
