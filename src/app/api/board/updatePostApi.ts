@@ -7,12 +7,8 @@ import {
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 
-/**
- * 현재글이 몇번째 글인지 순번 계산
- * @param db
- * @returns
- */
-const updateCounterAndGetNumber = async () => {
+// 포스트 넘버링
+const postNumbering = async () => {
    const counterRef = doc(db, 'counters', 'postsCounter')
    const newCount = await runTransaction(db, async (transaction) => {
       const counterSnap = await transaction.get(counterRef)
@@ -28,7 +24,8 @@ const updateCounterAndGetNumber = async () => {
    })
    return newCount
 }
-const addPostDataWithNumber = async (postData, number) => {
+// 포스트 추가
+const addPost = async (postData, number) => {
    const newPostRef = doc(collection(db, 'posts'))
    const newPostData = {
       ...postData,
@@ -39,19 +36,29 @@ const addPostDataWithNumber = async (postData, number) => {
    return newPostRef.id
 }
 
-export const updatePost = async (postData) => {
+// 포스트 수정 함수
+const editPost = async (postId, updatedData) => {
+   const postRef = doc(db, 'posts', postId)
+   await updateDoc(postRef, updatedData)
+}
+
+// 게시물 삭제 함수
+const deletePost = async (postId) => {
+   const postRef = doc(db, 'posts', postId)
+   await deleteDoc(postRef)
+}
+
+// 생성 핸들링 함수
+const updatePost = async (postData) => {
    try {
       // 현재 최신 글 순번 가져오기
-      const postNumber = await updateCounterAndGetNumber()
-
+      const postNumber = await postNumbering()
       // 게시물 업로드 Firestore에 저장
-      const postId = await addPostDataWithNumber(postData, postNumber)
-
-      console.log(
-         `Post added successfully with ID: ${postId} and Number: ${postNumber}`,
-      )
-      return postNumber
+      const postId = await addPost(postData, postNumber)
+      return postId
    } catch (e) {
-      console.error('Failed to add post with numbering: ', e)
+      return null
    }
 }
+
+export default updatePost
