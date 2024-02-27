@@ -1,55 +1,41 @@
 'use client'
 
-import axios from 'axios'
+import { addComment } from '@/app/api/board/commentApi'
 import React, { useRef } from 'react'
 
 interface BoardCommentFormProps {
-   postid: string
+   postID: string
    onCommentSubmit: () => void
 }
 export default function BoardCommentForm({
-   postid,
+   postID,
    onCommentSubmit,
 }: BoardCommentFormProps) {
    const commentFormRef = useRef(null)
 
+   // 필드 초기화
+   const clearFormFields = () => {
+      commentFormRef.current.comment.value = ''
+   }
    const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       const nickname = commentFormRef.current.nickname.value
       const password = commentFormRef.current.password.value
       const comment = commentFormRef.current.comment.value
-      const timestamp = new Date().toISOString()
 
-      const fetchSubmitComment = async (formData) => {
-         try {
-            const res = await axios.post(
-               `${process.env.NEXT_PUBLIC_API_URL}comment`,
-               formData,
-            )
-            console.log('submitComment', res.data)
-            onCommentSubmit()
-         } catch (error) {
-            console.log(error)
-         }
-      }
-
-      const clearFormFields = () => {
-         commentFormRef.current.comment.value = ''
-      }
       const formData = {
-         postid,
+         postID,
          nickname,
          password,
          comment,
-         timestamp,
-         isPublic: true,
-         like: 0,
-         unlike: 0,
       }
-      console.log(formData)
       try {
-         await fetchSubmitComment(formData)
-         clearFormFields()
+         const reponse = await addComment(postID, formData)
+         if (reponse) {
+            console.log('댓글이 등록되었습니다')
+            clearFormFields()
+            onCommentSubmit()
+         }
       } catch (error) {
          console.log(error)
       }
