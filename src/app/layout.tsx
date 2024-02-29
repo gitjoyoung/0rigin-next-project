@@ -4,8 +4,8 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import './ui/globals.css'
 import Footer from '@/components/Footer/Footer'
-import AuthSession from './api/providers/AuthSession'
 import Ticker from '@/components/Ticker/Ticker'
+import AuthSession from './api/providers/AuthSession'
 
 config.autoAddCss = false
 

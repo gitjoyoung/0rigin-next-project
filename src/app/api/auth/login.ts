@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 interface Login {
    id: string
    name: string
+   email: string
 }
 /**
  * 로그인 요청 통신 함수
@@ -12,12 +13,14 @@ interface Login {
  */
 export const fetchLogin = (userId, password): Promise<Login | null> => {
    const email = userId.includes('@') ? userId : `${userId}@0rigin.com`
-   console.log('fetchLogin', userId, email, password)
+   console.log('fetchLogin data :', userId, email, password)
+
    return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
          console.log(userCredential)
          // 필요한 경우 userCredential.user에서 Login 타입 객체로 변환
          const loginResult: Login = {
+            email: userCredential.user.email,
             id: userCredential.user.uid,
             name: userCredential.user.displayName || '사용자 이름',
          }
