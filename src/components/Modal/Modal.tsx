@@ -12,7 +12,7 @@ function UI({ setOpen }: { setOpen: ModalState }) {
    return (
       <div className="absolute top-0 flex flex-col items-center justify-center w-full h-[100vh] bg-opacity-45 bg-gray-500 z-10 ">
          <div className="p-20 bg-white border shadow-2xl border-black border-solid rounded-md">
-            <p className="mb-10 text-xl text-center">빅픽처팀 개발자 모집중!</p>
+            <p className="mb-10 text-xl text-center">모달 제목입니다</p>
             <div className="flex justify-between">
                <button
                   type="button"
