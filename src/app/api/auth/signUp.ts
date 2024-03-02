@@ -1,5 +1,8 @@
 import { auth } from '@/lib/firebase'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import {
+   createUserWithEmailAndPassword,
+   fetchSignInMethodsForEmail,
+} from 'firebase/auth'
 
 type UserData = {
    userid: string
@@ -11,7 +14,7 @@ type UserData = {
  * 회원가입 요청
  * @param userData
  */
-const fetchSignUp = (userData: UserData) => {
+export const fetchSignUp = (userData: UserData) => {
    return createUserWithEmailAndPassword(
       auth,
       userData.userid,
@@ -27,5 +30,17 @@ const fetchSignUp = (userData: UserData) => {
          return null
       })
 }
-
-export default fetchSignUp
+export const checkEmailDuplicate = (userId) => {
+   const email = userId.includes('@') ? userId : `${userId}@0rigin.com`
+   return fetchSignInMethodsForEmail(auth, email)
+      .then((signInMethods) => {
+         // signInMethods 배열이 비어있지 않다면, 해당 이메일로 가입할 수 있는 방법이 존재한다는 의미입니다.
+         // 즉, 이미 해당 이메일로 가입된 사용자가 있다는 것을 의미합니다.
+         return signInMethods.length > 0
+      })
+      .catch((error) => {
+         console.error('Error checking email duplication: ', error)
+         // 에러 처리 로직
+         throw error
+      })
+}

@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import {
    validateGender,
    validatePassword,
    validateUserId,
 } from '@/utils/authValidators/validation'
-import fetchSignUp from '@/app/api/auth/signUp'
+import { fetchSignUp, checkEmailDuplicate } from '@/app/api/auth/signUp'
 
 export default function SignForm() {
    const router = useRouter()
@@ -28,9 +27,7 @@ export default function SignForm() {
          return false
       }
       try {
-         await axios
-            .get(`${process.env.NEXT_PUBLIC_API_URL}users?userid=${userId}`)
-            .then((res) => res.data > 0)
+         await checkEmailDuplicate(userId)
       } catch (error) {
          alert(`response error: ${error}`)
          return false
