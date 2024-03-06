@@ -43,24 +43,21 @@ export default function SignForm() {
     */
    const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-
-      const isGenderValid = validateGender(gender)
-      if (!isGenderValid) {
-         return
-      }
-      const isUserIdValid = await checkDuplicateUserId(userid)
-      if (!isUserIdValid) {
-         return
-      }
-
-      const isPasswordValid = validatePassword(password, confirmPassword)
-      if (!isPasswordValid) {
+      if (
+         !validateGender(gender) ||
+         !(await checkDuplicateUserId(userid)) ||
+         !validatePassword(password, confirmPassword)
+      ) {
          return
       }
       await fetchSignUp({
          userid: `${userid}@0rigin.com`,
          password,
          gender,
+      }).then((user) => {
+         if (user) {
+            router.push('/login')
+         }
       })
    }
 
