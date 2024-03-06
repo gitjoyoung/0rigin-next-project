@@ -7,15 +7,14 @@ function Update({ params }: { params: { id: string } }) {
 
    const data = {
       nickname: '수정',
-      password: '',
       title: '수정제목',
       body: '수정내용',
    }
    return (
       <section>
          <BoardCreateForm
+            postid={postid}
             nickname={data.nickname}
-            password={data.password}
             title={data.title}
             body={data.body}
          />
