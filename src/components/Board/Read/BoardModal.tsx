@@ -1,14 +1,14 @@
-import axios from 'axios'
+import { deletePost } from '@/app/api/board/updatePostApi'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useEffect } from 'react'
 
 interface Props {
    onClose: () => void
-   id: string
+   postId: string
    flag: 'delete' | 'edit'
 }
 
-export default function BoardModal({ onClose, id, flag }: Props) {
+export default function BoardModal({ onClose, postId, flag }: Props) {
    const inputRef = useRef<HTMLInputElement>(null)
    const router = useRouter()
 
@@ -23,11 +23,11 @@ export default function BoardModal({ onClose, id, flag }: Props) {
    const handleUpdate = async () => {
       try {
          if (flag === 'delete') {
-            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}board/${id}`)
+            deletePost(postId)
             onClose()
             router.push('/board')
          } else if (flag === 'edit') {
-            router.push(`/board/update/${id}`)
+            router.push(`/board/update/${postId}`)
             onClose()
          }
       } catch (error) {
@@ -67,7 +67,7 @@ export default function BoardModal({ onClose, id, flag }: Props) {
             </div>
             <div className="mt-3 text-center flex flex-col items-center gap-2">
                <h1 className="text-lg leading-6 font-medium text-gray-900">
-                  {`${id}번 글 ${flag === 'delete' ? '삭제하기' : '수정하기'}`}
+                  {`${postId}번 글 ${flag === 'delete' ? '삭제하기' : '수정하기'}`}
                </h1>
                <p className="text-sm text-gray-500">비밀번호를 입력해주세요.</p>
 

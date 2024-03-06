@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import React from 'react'
 
-export default function BoardNavButton({ postId, router }) {
+export default function BoardNavButton({ postID, router }) {
    return (
       <div className="flex justify-between p-1 items-center">
-         <Link href={`/board/read/${parseInt(postId, 10) - 1} `}>
+         <Link href={`/board/read/${parseInt(postID, 10) - 1} `}>
             <p> 이전 글</p>
          </Link>
          <button
@@ -14,7 +14,7 @@ export default function BoardNavButton({ postId, router }) {
          >
             목록
          </button>
-         <Link href={`/board/read/${parseInt(postId, 10) + 1}`}>
+         <Link href={`/board/read/${parseInt(postID, 10) + 1}`}>
             <p>다음 글</p>
          </Link>
       </div>
