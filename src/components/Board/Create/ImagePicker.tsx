@@ -53,30 +53,25 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
       })
 
       // 미리보기 이미지 압축 옵션
-      const options = {
-         maxSizeMB: 1,
-         maxWidthOrHeight: 1920,
-         useWebWorker: true,
-      }
-
-      // 압축된 이미지 배열
-      const newImages: ImageState[] = await Promise.all(
-         filteredFiles.map(async (file) => {
-            try {
-               const compressedFile: Blob = await imageCompression(
-                  file,
-                  options,
-               )
-               return {
-                  url: URL.createObjectURL(compressedFile),
-                  blob: compressedFile, // 압축된 이미지의 Blob 데이터 포함
+      const newImages: ImageState[] = (
+         await Promise.all(
+            filteredFiles.map(async (file) => {
+               try {
+                  const compressedFile: Blob = await imageCompression(
+                     file,
+                     options,
+                  )
+                  return {
+                     url: URL.createObjectURL(compressedFile),
+                     blob: compressedFile, // 압축된 이미지의 Blob 데이터 포함
+                  }
+               } catch (error) {
+                  console.log(error)
+                  return null // 오류 발생시 null 반환
                }
-            } catch (error) {
-               console.log(error)
-               return null // 오류 발생시 null 반환
-            }
-         }),
-      ).then((images) => images.filter((image) => image !== null)) // 압축이 완료된 이미지만 필터링
+            }),
+         )
+      ).filter((image): image is ImageState => image !== null)
 
       // 기존 이미지 배열에 새로운 이미지 배열을 추가
       setImageFiles((prevImages: ImageState[]) => [...prevImages, ...newImages])
@@ -94,14 +89,14 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
       <div className="flex flex-col gap-2">
          <div className="shrink items-center flex  overflow-x-auto">
             {!imageFiles && <p>선택된 이미지 없음.</p>}
-            {imageFiles &&
+            {/* {imageFiles &&
                imageFiles.map(({ url, blob }) => {
                   return (
                      <div
-                        key={blob.name}
+                        key={url}
                         className="border flex p-0.5 flex-col items-center text-center text-sm w-[160px] h-[160px] relative"
                      >
-                        <Image src={url} alt={blob.name} fill />
+                        <Image src={url} alt={blob.name || ''} fill />
                         <button
                            type="button"
                            onClick={() => handleImageRemove(url)}
@@ -117,7 +112,7 @@ export default function ImagePicker({ imageFiles, setImageFiles }: Props) {
                         </div>
                      </div>
                   )
-               })}
+               })} */}
          </div>
          <div className="border p-1 ">
             <input

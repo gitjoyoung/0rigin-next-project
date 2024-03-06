@@ -1,49 +1,41 @@
-/* eslint-disable react/self-closing-comp */
-import React, { useState } from 'react'
+import React from 'react'
 import remarkBreaks from 'remark-breaks'
-import MDEditor, { commands } from '@uiw/react-md-editor'
 import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
-import { validateFile } from '@/utils/boardValidators/imageValidators'
+import {
+   generateErrorMessage,
+   validateFile,
+} from '@/utils/boardValidators/imageValidators'
 import imageCompression from 'browser-image-compression'
-import { uploadImageToFirebase } from '@/app/api/board/create'
+import rehypeSanitize from 'rehype-sanitize'
+import dynamic from 'next/dynamic'
+import { ContextStore, commands } from '@uiw/react-md-editor'
+import uploadImageToFirebase from '@/app/api/board/imageApi'
+import { PhotoIcon } from '@heroicons/react/20/solid'
 
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
+type OnChange = (
+   value?: string,
+   event?: React.ChangeEvent<HTMLTextAreaElement>,
+   state?: ContextStore,
+) => void
 interface Props {
    content: string
    setContent: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function App({ content, setContent }: Props) {
-   //    setContent(
-   //       `# New Line Problem
-
-   // * Some
-   // * List
-   // * Items
-
-   // I want to render the below 5 new lines without effecting the other elements in this markdown string.
-
-   // [Start of 5 lines]
-
-   // [End of 5 lines]
-
-   // \`\`\`js
-   // const helloWorld = () => {
-   //   console.log("i also want this code block to work fine")
-
-   // }
-   // \`\`\``,
-   //    )
+   const onChange = React.useCallback<OnChange>((val) => {
+      console.log(val)
+      setContent(val || '')
+   }, [])
    const uploadImageCommand = {
       name: 'upload-image',
       keyCommand: 'upload-image',
       buttonProps: { 'aria-label': 'Upload image' },
       icon: (
          <svg width="12" height="12" viewBox="0 0 16 16">
-            <path
-               fillRule="evenodd"
-               d="M13 2a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h10zM5.5 9.5l2.5-3 3.5 4.5H3l2.5-4zm6-6H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"
-            ></path>
+            <PhotoIcon />
          </svg>
       ),
       execute: () => {
@@ -58,9 +50,10 @@ export default function App({ content, setContent }: Props) {
             }
             // 유효하지 않은 파일일 경우 함수 종료
             if (!validateFile(file)) {
+               const errorMessage = generateErrorMessage()
+               alert(errorMessage)
                return
             }
-
             const options = {
                maxSizeMB: 1,
                maxWidthOrHeight: 1920,
@@ -70,7 +63,7 @@ export default function App({ content, setContent }: Props) {
                const compressedFile = await imageCompression(file, options)
                const realUrl = await await uploadImageToFirebase(compressedFile)
                setContent(
-                  (prevMarkdown) => `${prevMarkdown}![image](${realUrl})\n`,
+                  (prevMarkdown) => `${prevMarkdown}![image](${realUrl})`,
                )
             } catch (error) {
                alert('이미지 업로드에 실패했습니다.')
@@ -80,26 +73,25 @@ export default function App({ content, setContent }: Props) {
       },
    }
    return (
-      <div>
+      <div className="">
          <MDEditor
             height={500}
             value={content}
-            onChange={setContent}
+            onChange={onChange}
             commands={[
-               uploadImageCommand,
+               commands.title,
                commands.bold,
                commands.unorderedListCommand,
-               commands.code,
                commands.hr,
-               commands.italic,
-               commands.link,
-               commands.quote,
-               commands.title,
                commands.divider,
-               commands.hr,
+               commands.code,
+               commands.quote,
+               commands.divider,
+               uploadImageCommand,
             ]}
             previewOptions={{
                remarkPlugins: [remarkBreaks],
+               rehypePlugins: [[rehypeSanitize]],
             }}
          />
       </div>

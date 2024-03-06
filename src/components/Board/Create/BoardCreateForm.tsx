@@ -1,34 +1,27 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import { useRouter } from 'next/navigation'
+import { updatePost } from '@/app/api/board/updatePostApi'
 import MarkDownEditor from './MarkDownEditor'
 import FormSubmitButton from './FormSubmitButton'
 import BoardEditorHelpBox from './BoardEditorHelpBox'
-import { updatePost } from '@/app/api/board/updatePostApi'
 
 interface Props {
+   postid?: string
    nickname?: string
-   password?: string
    title?: string
    body?: string
 }
 
 export default function BoardCreateForm({
+   postid,
    nickname,
-   password,
    title,
    body,
 }: Props) {
-   // 글 수정을 고려한 데이터
-   const [propsFormData, setPropsFormData] = useState({
-      nickname,
-      password,
-      title,
-      body,
-   })
    // 라우터 이동
    const router = useRouter()
    // 패스 워드
@@ -40,13 +33,11 @@ export default function BoardCreateForm({
    // 글쓰기 폼 제출
    const handleFormSubmit = async (e) => {
       e.preventDefault()
-
       const dataObject = {
          nickname: e.target.nickname.value,
          password: e.target.password.value,
          title: e.target.title.value,
-         body: content,
-         isPublic: true,
+         content,
          category: 'any',
       }
 
@@ -65,7 +56,7 @@ export default function BoardCreateForm({
             {/* 아이디 비밀번호 */}
             <div className="flex flex-wrap items-center gap-2 mt-2 mb-2 text-sm ">
                <input
-                  defaultValue={propsFormData.nickname}
+                  defaultValue={nickname}
                   autoComplete="current-password"
                   className="border max-w-[180px] p-2  nh"
                   type="text"
@@ -99,7 +90,7 @@ export default function BoardCreateForm({
             </div>
             {/* 제목 */}
             <input
-               defaultValue={propsFormData.title}
+               defaultValue={title}
                className="border p-2  text-sm "
                type="text"
                name="title"
