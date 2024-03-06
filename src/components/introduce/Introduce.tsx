@@ -5,8 +5,8 @@ import React, { useRef } from 'react'
 import INTRODUCE_TEXT from '@/constants/introduce/introduceText'
 import CommunityStats from './CommunityStats'
 
-export default function Introduce() {
-   const scrollToSection = (ref) => {
+export default function Introduce({ infoData }) {
+   const scrollToSection = (ref: React.MutableRefObject<null>) => {
       ref.current.scrollIntoView({
          behavior: 'smooth',
          block: 'start',
@@ -19,7 +19,10 @@ export default function Introduce() {
       numbers: useRef(null),
    }
    return (
-      <section className="flex flex-col   items-center bg-blue-500 text-center text-white relative">
+      <section
+         className="flex flex-col   items-center 
+      bg-gradient-to-r from-blue-500 via-sky-400 to-blue-500 text-center text-white relative"
+      >
          {/* 마스코트 이미지와 환영 인사 */}
 
          <div
@@ -61,9 +64,8 @@ export default function Introduce() {
             </h1>
             <p className="px-3"> {INTRODUCE_TEXT.numbers.body} </p>
             <p>마지막 업데이트: 24.04.23</p>
-            <CommunityStats />
+            <CommunityStats infoData={infoData} />
          </div>
-
          <nav className=" bottom-10 mr-5 self-end sticky ">
             <div className="flex flex-col gap-1">
                {Object.entries(sectionsRef).map(([key, ref]) => (
