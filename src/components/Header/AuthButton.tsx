@@ -1,46 +1,27 @@
 'use client'
 
-import { fetchLogout } from '@/app/api/auth/login'
-import { auth } from '@/lib/firebase'
-import { onAuthStateChanged } from 'firebase/auth'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 export default function AuthButton() {
    const router = useRouter()
-   const [userId, setUserId] = useState('')
-   const [isLoggedIn, setIsLoggedIn] = useState(false)
-   const [isLoading, setIsLoading] = useState(true)
 
-   useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-         if (user) {
-            setUserId(user.email)
-            setIsLoggedIn(true)
-         } else {
-            setIsLoggedIn(false)
-         }
-         // 로그인 상태 확인이 완료되면 로딩 상태를 false로 설정
-         setIsLoading(false)
-      })
-
-      return () => unsubscribe()
-   }, [])
-
-   if (isLoading) {
+   const { data: session, status } = useSession()
+   if (status === 'loading') {
       return <div>로딩 중...</div> // 또는 로딩 인디케이터를 표시할 수 있습니다.
    }
 
    return (
       <div className=" text-sm flex gap-3 items-center ">
-         {isLoggedIn ? (
+         {session ? (
             <div className="flex-col">
-               <p>{`${userId}`}</p>
+               <p>{`${session.user.email}`}</p>
                <div className="flex gap-2 justify-end">
                   <button
                      type="button"
                      className="text-xs "
-                     onClick={fetchLogout}
+                     onClick={() => signOut({ callbackUrl: '/' })}
                   >
                      로그아웃
                   </button>

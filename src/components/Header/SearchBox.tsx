@@ -1,49 +1,42 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useRef } from 'react'
 
 export default function SearchBox() {
    const router = useRouter()
-   const pathname = usePathname()
-   const [search, setSearch] = useState('')
+   const searchInputRef = useRef<HTMLInputElement | null>(null)
 
-   /**
-    * 검색 페이지 이동
-    */
+   // 검색 버튼 페이지 이동
    const handleSearch = async () => {
-      // 검색어가 없을 경우 검색하지 않음
-      const searchTrim = search.trim()
-      if (!searchTrim) {
-         return
-      }
-      // 검색어에 공백이 있을 경우 공백을 +로 치환 (네이버 구글 쿼리 참조)
+      const searchTrim = searchInputRef.current?.value.trim()
+      if (searchTrim == null) return
+
       const processedSearchTerm = searchTrim.replace(/\s+/g, '+')
+      await router.push(`/search/${processedSearchTerm}`)
 
-      router.push(`/search/${processedSearchTerm}`)
+      if (searchInputRef.current) {
+         searchInputRef.current.value = '' // 입력 필드 초기화
+      }
    }
-
-   /**
-    * 엔터키 입력시 검색
-    * @param e
-    */
-   const handleKeyDown = (e) => {
+   // 키보드 입력
+   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
          handleSearch()
       }
    }
    return (
-      <section className="flex items-center justify-center text-sm relative  ">
+      <section className="flex items-center justify-center text-sm   ">
          <input
+            ref={searchInputRef}
             spellCheck={false}
-            className="border p-0.5 flex-grow w-auto"
+            className="border p-0.5 "
             type="text"
-            onChange={(e) => setSearch(e.target.value as string)}
             onKeyDown={handleKeyDown}
             placeholder="검색"
          />
          <button
-            className="p-0.5 absolute right-0 "
+            className="p-0.5 flex-none border border-black"
             onClick={handleSearch}
             type="submit"
          >

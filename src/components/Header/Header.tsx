@@ -1,14 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import headerNav from '@/constants/home/headerNav'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBurger, faX, faBell } from '@fortawesome/free-solid-svg-icons'
-import { Popover, Transition } from '@headlessui/react'
+import { faBurger } from '@fortawesome/free-solid-svg-icons'
 import AuthButton from './AuthButton'
 import SearchBox from './SearchBox'
 import NavModal from './NavModal'
+import AlramButton from './AlramButton'
 
 export default function Header() {
    // 모달 상태
@@ -23,7 +23,7 @@ export default function Header() {
             <h1 className="md:text-4xl text-xl font-bold ">0rigin</h1>
          </Link>
          {/* 메뉴 네비게이터 */}
-         <nav className="flex-1 hidden md:flex  ml-10 flex items-end gap-8 text-gray-600 ">
+         <nav className="flex-1 hidden md:flex  ml-10  items-end gap-8 text-gray-600 ">
             {headerNav.map(({ title, url }) => (
                <Link key={title} href={url}>
                   <p className="hover:text-gray-900 hover:font-semibold text-md font-normal ">
@@ -45,18 +45,10 @@ export default function Header() {
 
             {/* MOBILE 화면  버튼 */}
             <div className="md:hidden  flex gap-2 items-center">
-               {/* 알림버튼 개발 중 */}
-               <button
-                  className="flex gap-1"
-                  type="button"
-                  aria-label="알림 버튼"
-               >
-                  <p className="text-xs">{1}</p>{' '}
-                  <FontAwesomeIcon icon={faBell} size="lg" />
-               </button>
+               <AlramButton />
                <div className="relative">
                   <button
-                     className="border p-1 "
+                     className=" p-1 "
                      type="button"
                      onClick={toggleModal}
                      aria-label="메뉴 버튼"
