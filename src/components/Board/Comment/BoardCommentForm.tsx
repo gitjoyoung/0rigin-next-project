@@ -4,11 +4,11 @@ import { addComment } from '@/app/api/board/commentApi'
 import React, { useRef } from 'react'
 
 interface BoardCommentFormProps {
-   postID: string
+   postId: string
    onCommentSubmit: () => void
 }
 export default function BoardCommentForm({
-   postID,
+   postId,
    onCommentSubmit,
 }: BoardCommentFormProps) {
    const commentFormRef = useRef(null)
@@ -24,13 +24,13 @@ export default function BoardCommentForm({
       const comment = commentFormRef.current.comment.value
 
       const formData = {
-         postID,
+         postId,
          nickname,
          password,
          comment,
       }
       try {
-         const reponse = await addComment(postID, formData)
+         const reponse = await addComment(postId, formData)
          if (reponse) {
             console.log('댓글이 등록되었습니다')
             clearFormFields()

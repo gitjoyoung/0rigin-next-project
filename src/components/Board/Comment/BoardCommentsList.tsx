@@ -5,15 +5,15 @@ import { getComments } from '@/app/api/board/commentApi'
 import BoardCommentForm from './BoardCommentForm'
 import BoardCommentItem from './BoardCommentItem'
 
-interface BoardCommentProps {
-   postID: string // Add the 'postID' property to the interface
+interface Props {
+   postId: string
 }
 
-export default function BoardComment({ postID }: BoardCommentProps) {
+export default function BoardComment({ postId }: Props) {
    const [commentList, setCommentList] = useState([])
 
    const fetchCommentData = async () => {
-      const commentData = await getComments(postID)
+      const commentData = await getComments(postId)
       if (commentData) {
          setCommentList(commentData)
       }
@@ -52,7 +52,7 @@ export default function BoardComment({ postID }: BoardCommentProps) {
             ))}
 
          {/* 댓글 작성 폼 */}
-         <BoardCommentForm postID={postID} onCommentSubmit={fetchCommentData} />
+         <BoardCommentForm postId={postId} onCommentSubmit={fetchCommentData} />
       </div>
    )
 }
