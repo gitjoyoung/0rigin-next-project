@@ -1,19 +1,15 @@
 import { auth } from '@/lib/firebase'
+import { Login } from '@/types/authTypes'
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 
-interface Login {
-   id: string
-   name: string
-   email: string
-}
 /**
  * 로그인 요청 통신 함수
  * @param userId
  * @param password
  */
-export const fetchLogin = (userId, password): Promise<Login | null> => {
+export const fetchLogin = (userId, password) => {
+   // 이메일 형식인지 확인 아니라면 0rigin.com 도메인 추가
    const email = userId.includes('@') ? userId : `${userId}@0rigin.com`
-   console.log('fetchLogin data :', userId, email, password)
 
    return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -22,7 +18,7 @@ export const fetchLogin = (userId, password): Promise<Login | null> => {
          const loginResult: Login = {
             email: userCredential.user.email,
             id: userCredential.user.uid,
-            name: userCredential.user.displayName || '사용자 이름',
+            name: userCredential.user.displayName,
          }
          return loginResult // 로그인 성공 시 Login 객체 반환
       })

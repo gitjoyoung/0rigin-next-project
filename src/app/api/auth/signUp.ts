@@ -1,13 +1,35 @@
-import { auth } from '@/lib/firebase'
+import { auth, db } from '@/lib/firebase'
+import { UserData } from '@/types/authTypes'
 import {
    createUserWithEmailAndPassword,
    fetchSignInMethodsForEmail,
 } from 'firebase/auth'
+import { addDoc, collection, doc, runTransaction } from 'firebase/firestore'
 
-type UserData = {
-   userid: string
-   password: string
-   gender: string
+// 회원가입 시 유저 카운트 증가
+const updateUsersCount = async () => {
+   const counterRef = doc(db, 'counters', 'usersCounter')
+   const newCount = await runTransaction(db, async (transaction) => {
+      const counterSnap = await transaction.get(counterRef)
+      let currentCount = 0
+      if (!counterSnap.exists()) {
+         transaction.set(counterRef, { count: 1 })
+         currentCount = 1
+      } else {
+         currentCount = counterSnap.data().count + 1
+         transaction.update(counterRef, { count: currentCount })
+      }
+      return currentCount
+   })
+   return newCount
+}
+
+// 회원가입 시 추가 정보 저장
+const saveUserData = (userId, additionalUserData) => {
+   return addDoc(collection(db, 'users'), {
+      uid: userId,
+      ...additionalUserData,
+   })
 }
 
 /**
@@ -22,6 +44,8 @@ export const fetchSignUp = (userData: UserData) => {
    )
       .then((userCredential) => {
          const { user } = userCredential
+         saveUserData(user.uid, userData)
+         updateUsersCount()
          return user
       })
       .catch((error) => {
