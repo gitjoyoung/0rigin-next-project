@@ -1,21 +1,15 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React from 'react'
 import headerNav from '@/constants/home/headerNav'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBurger } from '@fortawesome/free-solid-svg-icons'
+
 import AuthButton from './AuthButton'
 import SearchBox from './SearchBox'
-import NavModal from './NavModal'
-import AlramButton from './AlramButton'
+import MobileAlramButton from './Mobile/MobileAlramButton'
+import MobileMenuButton from './Mobile/MobileMenuButton'
 
 export default function Header() {
-   // 모달 상태
-   const [isModalOpen, setIsModalOpen] = useState(false)
-   // 모달 스위치
-   const toggleModal = () => setIsModalOpen((prevState) => !prevState)
-
    return (
       <header className="flex justify-between p-1 sm:p-3 items-end  w-full border-b mt-1 mb-2 border-black  shadow-md">
          {/* 로고 */}
@@ -45,31 +39,13 @@ export default function Header() {
 
             {/* MOBILE 화면  버튼 */}
             <div className="md:hidden  flex gap-2 items-center">
-               <AlramButton />
-               <div className="relative">
-                  <button
-                     className=" p-1 "
-                     type="button"
-                     onClick={toggleModal}
-                     aria-label="메뉴 버튼"
-                  >
-                     <FontAwesomeIcon icon={faBurger} size="lg" />
-                  </button>
-                  {/* 모달 애니메이션  */}
-                  <NavModal
-                     isModalOpen={isModalOpen}
-                     toggleModal={toggleModal}
-                  />
-               </div>
+               <MobileAlramButton />
+               <MobileMenuButton />
+               {/* 모달 애니메이션  */}
             </div>
          </div>
 
          {/* 모달 배경 */}
-         <div
-            className={`fixed  inset-0 z-40 ${isModalOpen ? 'block' : 'hidden'}`}
-            onClick={toggleModal}
-            aria-hidden="true"
-         />
       </header>
    )
 }

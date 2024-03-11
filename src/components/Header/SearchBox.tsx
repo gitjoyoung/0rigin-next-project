@@ -1,5 +1,6 @@
 'use client'
 
+import { ROUTES } from '@/constants/route'
 import { useRouter } from 'next/navigation'
 import React, { useRef } from 'react'
 
@@ -13,7 +14,7 @@ export default function SearchBox() {
       if (searchTrim == null) return
 
       const processedSearchTerm = searchTrim.replace(/\s+/g, '+')
-      await router.push(`/search/${processedSearchTerm}`)
+      await router.push(`${ROUTES.SEARCH}/${processedSearchTerm}`)
 
       if (searchInputRef.current) {
          searchInputRef.current.value = '' // 입력 필드 초기화

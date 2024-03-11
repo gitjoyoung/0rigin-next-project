@@ -4,14 +4,14 @@ import { faX } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { Transition } from '@headlessui/react'
 import HEADER_NAV from '@/constants/home/headerNav'
-import AuthButton from './AuthButton'
+import AuthButton from '../AuthButton'
 
 interface Props {
    isModalOpen: boolean
    toggleModal: () => void
 }
 
-export default function NavModal({ isModalOpen, toggleModal }: Props) {
+export default function MobileNavModal({ isModalOpen, toggleModal }: Props) {
    return (
       <>
          {/* 모달 애니메이션  */}
@@ -27,8 +27,8 @@ export default function NavModal({ isModalOpen, toggleModal }: Props) {
          >
             {/* 모달 */}
             <div className="absolute  right-0 w-[200px]  max-w-sm border pb-3 border-black bg-white p-2 shadow-md z-50">
+               {/* 모달 닫기 버튼 */}
                <div className="text-right">
-                  {/* 모달 닫기 버튼 */}
                   <button
                      type="button"
                      className="px-1"
@@ -38,9 +38,10 @@ export default function NavModal({ isModalOpen, toggleModal }: Props) {
                      <FontAwesomeIcon icon={faX} size="lg" />
                   </button>
                </div>
+
+               {/* 모바일 화면 로그인,  회원가입 */}
                <div className="flex flex-col gap-3">
-                  {/* 모바일 화면 로그인,  회원가입 */}
-                  <div className="flex justify-center border gap-1 py-2">
+                  <div className="flex justify-center border gap-2 py-2">
                      <AuthButton />
                   </div>
                   {/* 모바일 화면 네비게이터 */}
