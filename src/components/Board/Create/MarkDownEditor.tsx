@@ -1,7 +1,7 @@
-import React from 'react'
+'use client'
+
+import React, { useCallback } from 'react'
 import remarkBreaks from 'remark-breaks'
-import '@uiw/react-md-editor/markdown-editor.css'
-import '@uiw/react-markdown-preview/markdown.css'
 import {
    generateErrorMessage,
    validateFile,
@@ -12,23 +12,27 @@ import dynamic from 'next/dynamic'
 import { ContextStore, commands } from '@uiw/react-md-editor'
 import uploadImageToFirebase from '@/app/api/board/imageApi'
 import { PhotoIcon } from '@heroicons/react/20/solid'
+import '@uiw/react-md-editor/markdown-editor.css'
+import '@uiw/react-markdown-preview/markdown.css'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
+
 type OnChange = (
    value?: string,
    event?: React.ChangeEvent<HTMLTextAreaElement>,
    state?: ContextStore,
 ) => void
+
 interface Props {
    content: string
    setContent: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function App({ content, setContent }: Props) {
-   const onChange = React.useCallback<OnChange>((val) => {
-      console.log(val)
+   const onChange = useCallback<OnChange>((val) => {
       setContent(val || '')
    }, [])
+
    const uploadImageCommand = {
       name: 'upload-image',
       keyCommand: 'upload-image',
@@ -73,27 +77,29 @@ export default function App({ content, setContent }: Props) {
       },
    }
    return (
-      <div className="">
-         <MDEditor
-            height={500}
-            value={content}
-            onChange={onChange}
-            commands={[
-               commands.title,
-               commands.bold,
-               commands.unorderedListCommand,
-               commands.hr,
-               commands.divider,
-               commands.code,
-               commands.quote,
-               commands.divider,
-               uploadImageCommand,
-            ]}
-            previewOptions={{
-               remarkPlugins: [remarkBreaks],
-               rehypePlugins: [[rehypeSanitize]],
-            }}
-         />
+      <div>
+         <div className="custom-list ">
+            <MDEditor
+               height={500}
+               value={content}
+               onChange={onChange}
+               commands={[
+                  commands.title,
+                  commands.bold,
+                  commands.unorderedListCommand,
+                  commands.hr,
+                  commands.divider,
+                  commands.code,
+                  commands.quote,
+                  commands.divider,
+                  uploadImageCommand,
+               ]}
+               previewOptions={{
+                  remarkPlugins: [remarkBreaks],
+                  rehypePlugins: [[rehypeSanitize]],
+               }}
+            />
+         </div>
       </div>
    )
 }
