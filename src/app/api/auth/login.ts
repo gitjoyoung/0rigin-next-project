@@ -7,13 +7,12 @@ import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
  * @param userId
  * @param password
  */
-export const fetchLogin = (userId, password) => {
+export const fetchLogin = (userId, password): Promise<Login | null> => {
    // 이메일 형식인지 확인 아니라면 0rigin.com 도메인 추가
    const email = userId.includes('@') ? userId : `${userId}@0rigin.com`
 
    return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-         console.log(userCredential)
          // 필요한 경우 userCredential.user에서 Login 타입 객체로 변환
          const loginResult: Login = {
             email: userCredential.user.email,
@@ -28,7 +27,7 @@ export const fetchLogin = (userId, password) => {
       })
 }
 
-export const fetchLogout = () => {
+export const fetchLogout = (): Promise<void> => {
    return signOut(auth)
       .then(() => {
          console.log('로그아웃 성공')
