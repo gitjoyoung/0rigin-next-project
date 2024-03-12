@@ -1,54 +1,63 @@
 /* eslint-disable import/prefer-default-export */
 import { db } from '@/lib/firebase'
+import { CommentData } from '@/types/commentTypes'
+import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import {
    collection,
    doc,
    serverTimestamp,
-   setDoc,
-   updateDoc,
    deleteDoc,
    getDocs,
    query,
    orderBy,
+   addDoc,
 } from 'firebase/firestore'
 
 // 댓글 추가
-export const addComment = async (postId, commentData) => {
-   const commentRef = doc(collection(db, 'comment', postId, 'comments'))
+export const updateAddComment = async (
+   postId: string,
+   commentData: any,
+): Promise<string> => {
+   const commentsCollectionRef = collection(db, 'comments', postId, 'comments')
    const newCommentData = {
       ...commentData,
-      createdAt: serverTimestamp(),
+      createdAt: serverTimestamp(), // 서버 타임스탬프로 createdAt 필드 설정
    }
-   await setDoc(commentRef, newCommentData)
-   return commentRef.id
-}
-
-// 댓글 수정
-export const updateComment = async (postId, commentId, updatedData) => {
-   const commentRef = doc(
-      collection(db, 'comment', postId, 'comments', commentId),
-   )
-   await updateDoc(commentRef, updatedData)
+   // `addDoc` 함수를 사용하여 새 댓글 데이터를 컬렉션에 추가합니다.
+   const docRef = await addDoc(commentsCollectionRef, newCommentData)
+   return docRef.id // 생성된 댓글 문서의 ID를 반환합니다.
 }
 
 // 댓글 삭제
-export const deleteComment = async (postId, commentId) => {
+export const updateDeleteComment = async (
+   postId: string,
+   commentId: string,
+): Promise<void> => {
    const commentRef = doc(
-      collection(db, 'comment', postId, 'comments', commentId),
+      collection(db, 'comments', postId, 'comments', commentId),
    )
-   await deleteDoc(commentRef)
+   try {
+      await deleteDoc(commentRef)
+   } catch (error) {
+      console.error('Error removing document: ', error)
+   }
 }
 
-// 댓글 보기
-export const getComments = async (postId) => {
-   const commentsRef = collection(db, 'comment', postId, 'comments')
-   const q = query(commentsRef, orderBy('createdAt', 'asc')) // 'createdAt' 필드로 내림차순 정렬
+// 댓글 가져오기
+export const fetchComments = async (postId): Promise<CommentData[]> => {
+   const commentsCollectionRef = collection(db, 'comments', postId, 'comments')
+   const q = query(commentsCollectionRef, orderBy('createdAt', 'asc')) // 'createdAt' 필드로 오름차순 정렬
    const querySnapshot = await getDocs(q)
    const comments = []
 
    if (querySnapshot.size > 0) {
-      querySnapshot.forEach((doc) => {
-         comments.push({ id: doc.id, ...doc.data() })
+      querySnapshot.forEach((res) => {
+         const data = res.data()
+         comments.push({
+            id: res.id,
+            ...data,
+            createdAt: formatCustomDate(data.createdAt?.toDate()),
+         })
       })
    }
 

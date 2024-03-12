@@ -2,7 +2,7 @@ import { db } from '@/lib/firebase'
 import { doc, getDoc, increment, updateDoc } from 'firebase/firestore'
 
 // 댓글 추가
-export const increaseLike = async (postId): Promise<number> => {
+export const updateIncreaseLike = async (postId: string): Promise<number> => {
    const postRef = doc(db, 'posts', postId) // 'posts' 컬렉션에서 postId에 해당하는 문서 참조 가져오기
 
    try {
@@ -20,7 +20,9 @@ export const increaseLike = async (postId): Promise<number> => {
    return 0 // Add a return statement at the end of the function to return a default value of 0
 }
 
-export const increaseDislike = async (postId) => {
+export const updateIncreaseDislike = async (
+   postId: string,
+): Promise<number> => {
    const postRef = doc(db, 'posts', postId) // 'posts' 컬렉션에서 postId에 해당하는 문서 참조 가져오기
 
    try {

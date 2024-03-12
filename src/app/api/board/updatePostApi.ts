@@ -1,6 +1,5 @@
 import {
    doc,
-   runTransaction,
    collection,
    serverTimestamp,
    setDoc,
@@ -14,8 +13,8 @@ import {
 import { db } from '@/lib/firebase'
 import { CreatePostData } from '@/types/boardTypes'
 
-// 포스트 넘버링
-const postNumbering = async (): Promise<number> => {
+// 포스트 넘버링 내부 함수
+const fetchLastPostIndex = async (): Promise<number> => {
    try {
       const postsQuery = query(
          collection(db, 'posts'),
@@ -27,8 +26,8 @@ const postNumbering = async (): Promise<number> => {
       if (!counterSnapshot.empty) {
          const numberAsString = counterSnapshot.docs[0].data().number
          // 반환값이 문자열이므로 숫자로 변환하여 반환
-         const number = parseInt(numberAsString, 10)
-         return number
+         const lastPostNumber = parseInt(numberAsString, 10)
+         return lastPostNumber
       }
       return 0
    } catch (error) {
@@ -38,11 +37,11 @@ const postNumbering = async (): Promise<number> => {
 }
 
 // 포스트 추가
-const addPost = async (postData: CreatePostData, number: number) => {
-   console.log('addPost postData', postData)
-   console.log('addPost number', number)
+const updateAddPost = async (
+   postData: CreatePostData,
+   number: number,
+): Promise<string> => {
    const incrementedNumber = number + 1
-   console.log(incrementedNumber)
    const newPostRef = doc(collection(db, 'posts'), incrementedNumber.toString())
 
    const newPostData = {
@@ -59,21 +58,24 @@ const addPost = async (postData: CreatePostData, number: number) => {
    }
 }
 // 글 생성 핸들링 함수
-export const updatePost = async (postData): Promise<string> => {
-   const postNumber = await postNumbering()
+export const updatePost = async (postData: CreatePostData): Promise<string> => {
+   const postNumber = await fetchLastPostIndex()
    // 게시물 업로드 Firestore에 저장
-   const postId = await addPost(postData, postNumber)
+   const postId = await updateAddPost(postData, postNumber)
    return postId
 }
 
 // 게시물 수정 함수
-export const editPost = async (postId, updatedData) => {
+export const updateEditPost = async (
+   postId: string,
+   updatedData: Partial<CreatePostData>,
+): Promise<void> => {
    const postRef = doc(db, 'posts', postId)
    await updateDoc(postRef, updatedData)
 }
 
 // 게시물 삭제 함수
-export const deletePost = async (postId) => {
+export const updateDeletePost = async (postId: string): Promise<void> => {
    const postRef = doc(db, 'posts', postId)
    await deleteDoc(postRef)
 }
