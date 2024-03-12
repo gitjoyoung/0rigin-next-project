@@ -5,10 +5,13 @@ import {
    createUserWithEmailAndPassword,
    fetchSignInMethodsForEmail,
 } from 'firebase/auth'
-import { addDoc, collection } from 'firebase/firestore'
+import { DocumentReference, addDoc, collection } from 'firebase/firestore'
 
 // 회원가입 시 추가 정보 저장
-const addUserDatabase = (userId, additionalUserData): Promise<void> => {
+const addUserDatabase = (
+   userId: string,
+   additionalUserData: UserData,
+): Promise<DocumentReference> => {
    return addDoc(collection(db, 'users'), {
       uid: userId,
       ...additionalUserData,
@@ -19,7 +22,9 @@ const addUserDatabase = (userId, additionalUserData): Promise<void> => {
  * 회원가입 요청
  * @param userData
  */
-export const fetchSignUp = (userData: UserData): Promise<any> => {
+export const fetchSignUp = (
+   userData: UserData,
+): Promise<UserCredential | null> => {
    return createUserWithEmailAndPassword(
       auth,
       userData.userid,
@@ -36,7 +41,7 @@ export const fetchSignUp = (userData: UserData): Promise<any> => {
       })
 }
 export const checkEmailDuplicate = (
-   userId,
+   userId: string,
 ): Promise<UserCredential | boolean> => {
    const email = userId.includes('@') ? userId : `${userId}@0rigin.com`
    return fetchSignInMethodsForEmail(auth, email)
