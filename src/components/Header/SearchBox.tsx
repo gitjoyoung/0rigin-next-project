@@ -31,7 +31,7 @@ export default function SearchBox() {
          <input
             ref={searchInputRef}
             spellCheck={false}
-            className="border p-0.5 "
+            className="border p-0.5 w-full"
             type="text"
             onKeyDown={handleKeyDown}
             placeholder="검색"

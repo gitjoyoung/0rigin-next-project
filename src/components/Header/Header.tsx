@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import React from 'react'
 import headerNav from '@/constants/home/headerNav'
-
 import AuthButton from './AuthButton'
 import SearchBox from './SearchBox'
 import MobileAlramButton from './Mobile/MobileAlramButton'
@@ -26,8 +25,9 @@ export default function Header() {
                </Link>
             ))}
          </nav>
+
          {/* 서치바 */}
-         <div className="flex-1 max-w-48 mx-3">
+         <div className="flex-1 flex justify-end px-2">
             <SearchBox />
          </div>
          {/* 반응형 네비게이션 */}

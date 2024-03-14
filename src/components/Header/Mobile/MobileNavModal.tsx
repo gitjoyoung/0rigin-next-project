@@ -25,7 +25,7 @@ export default function MobileNavModal({ isModalOpen, toggleModal }: Props) {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
          >
-            {/* 모달 */}
+            {/* 메뉴 네비게이터 모달 */}
             <div className="absolute  right-0 w-[200px]  max-w-sm border pb-3 border-black bg-white p-2 shadow-md z-50">
                {/* 모달 닫기 버튼 */}
                <div className="text-right">

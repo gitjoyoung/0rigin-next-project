@@ -11,7 +11,7 @@ export default function MobileMenuButton() {
    return (
       <div className="relative">
          <button
-            className=" p-1 "
+            className=" border-none "
             type="button"
             onClick={toggleModal}
             aria-label="메뉴 버튼"
