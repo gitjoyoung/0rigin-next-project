@@ -1,49 +1,84 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Fragment } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { ROUTES } from '@/constants/route'
+import { Dialog, Transition } from '@headlessui/react'
+import { useModalStore } from '@/store/modal'
 
-type ModalState = Dispatch<SetStateAction<boolean>>
 interface ModalProps {
-   readonly isOpen: boolean
-   readonly setOpen: ModalState
+   readonly title: string
+   readonly content: string
+   readonly path: string
 }
-function UI({ setOpen }: { setOpen: ModalState }) {
+function ModalUi({ title, content, path }: ModalProps) {
    const router = useRouter()
+   const close = useModalStore((state) => state.close)
+
    return (
-      <div className="absolute top-0 flex flex-col items-center justify-center w-full h-[100vh] bg-opacity-45 bg-gray-500 z-10 ">
-         <div className="p-20 bg-white border shadow-2xl border-black border-solid rounded-md">
-            <p className="mb-10 text-xl text-center">모달 제목입니다</p>
-            <div className="flex justify-between">
-               <button
-                  type="button"
-                  className="border border-black border-solid rounded-md p-3.5 bg-white hover:font-bold "
-                  onClick={() => {
-                     router.push(ROUTES.HOME)
-                     setOpen(false)
-                  }}
-               >
-                  <span className="text-inherit">확인</span>
-               </button>
-               <button
-                  type="button"
-                  className="border border-black border-solid rounded-md p-3.5 bg-white hover:font-bold "
-                  onClick={() => setOpen((prev) => !prev)}
-               >
-                  <span className="text-inherit">돌아가기</span>
-               </button>
+      <Transition appear show as={Fragment}>
+         <Dialog as="div" className="relative z-10" onClose={close}>
+            <Transition.Child
+               as={Fragment}
+               enter="ease-out duration-300"
+               enterFrom="opacity-0"
+               enterTo="opacity-100"
+               leave="ease-in duration-200"
+               leaveFrom="opacity-100"
+               leaveTo="opacity-0"
+            >
+               <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+               <div className="flex min-h-full items-center justify-center p-4 text-center">
+                  <Transition.Child
+                     as={Fragment}
+                     enter="ease-out duration-300"
+                     enterFrom="opacity-0 scale-95"
+                     enterTo="opacity-100 scale-100"
+                     leave="ease-in duration-200"
+                     leaveFrom="opacity-100 scale-100"
+                     leaveTo="opacity-0 scale-95"
+                  >
+                     <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-sm bg-white p-6 text-left align-middle shadow-xl transition-all">
+                        <Dialog.Title
+                           as="h3"
+                           className="text-lg font-medium  leading-6 text-gray-900"
+                        >
+                           {title}
+                        </Dialog.Title>
+                        <div className="mt-2">
+                           <p className="text-sm text-gray-500">{content}</p>
+                        </div>
+
+                        <div className="mt-4 flex justify-end">
+                           <button
+                              type="button"
+                              className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              onClick={() => {
+                                 router.push(path)
+                                 close()
+                              }}
+                           >
+                              확인
+                           </button>
+                        </div>
+                     </Dialog.Panel>
+                  </Transition.Child>
+               </div>
             </div>
-         </div>
-      </div>
+         </Dialog>
+      </Transition>
    )
 }
-// 이 모달은 createPortal 를 활용한 전역 모달입니다
-// isOpen 상태에 따라 모달을 렌더링합니다
-function Modal({ isOpen, setOpen }: ModalProps) {
-   if (!isOpen) return null
-   return createPortal(
-      <UI setOpen={setOpen} />,
-      document.getElementById('modal-root') as HTMLDivElement,
-   )
+
+function Modal({ title, content, path }: ModalProps) {
+   const isOpen = useModalStore((state) => state.isOpen)
+   return isOpen
+      ? createPortal(
+           <ModalUi title={title} content={content} path={path} />,
+           document.getElementById('modal-root') as HTMLDivElement,
+        )
+      : null
 }
+
 export default Modal
