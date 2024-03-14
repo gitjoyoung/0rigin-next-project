@@ -10,6 +10,14 @@ module.exports = {
 
    theme: {
       extend: {
+         typography: {
+            DEFAULT: {
+               css: {
+                  color: '#000', // 검정색으로 변경
+                  backgorundColor: 'black', // 흰색으로 변경
+               },
+            },
+         },
          keyframes: {
             from: { transform: 'rotateY(0deg) scale(2.0)' },
             to: { transform: 'rotateY(360deg) scale(1.0)' },
@@ -24,5 +32,5 @@ module.exports = {
          },
       },
    },
-   plugins: [],
+   plugins: [require('@tailwindcss/typography')],
 }
