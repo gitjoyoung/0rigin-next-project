@@ -12,15 +12,13 @@ export const fetchTickerCounts = async (): Promise<TickerCounts> => {
    const countCollectionRef = collection(db, 'count')
    const snapshot = await getDocs(countCollectionRef)
    const results: TickerCounts = {
-      post: { count: 0 },
-      visit: { count: 0 },
-      user: { count: 0 },
+      post: 0,
+      visit: 0,
+      user: 0,
    }
 
    snapshot.docs.forEach((document) => {
-      results[document.id as keyof TickerCounts] = {
-         count: document.data().count,
-      }
+      results[document.id as keyof TickerCounts] = document.data().count
    })
 
    return results

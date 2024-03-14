@@ -1,41 +1,27 @@
 import { db } from '@/lib/firebase'
 import { doc, getDoc, increment, updateDoc } from 'firebase/firestore'
 
-// 댓글 추가
-export const updateIncreaseLike = async (postId: string): Promise<number> => {
-   const postRef = doc(db, 'posts', postId) // 'posts' 컬렉션에서 postId에 해당하는 문서 참조 가져오기
-
-   try {
-      await updateDoc(postRef, {
-         like: increment(1), // 'likes' 필드의 현재 값에서 1 증가
-      })
-      const updatedDoc = await getDoc(postRef)
-      if (updatedDoc.exists()) {
-         console.log(' like:', updatedDoc.data().like) // 업데이트된 'like' 필드 값 출력
-         return updatedDoc.data().like // 업데이트된 'like' 필드 값 출력
-      }
-   } catch (error) {
-      console.error('Error updating likes:', error)
-   }
-   return 0 // Add a return statement at the end of the function to return a default value of 0
-}
-
-export const updateIncreaseDislike = async (
+// 좋아요 싫어요 증가
+export const updateReactionCount = async (
    postId: string,
-): Promise<number> => {
+   reactionType: 'like' | 'dislike',
+): Promise<{ like: number; dislike: number }> => {
    const postRef = doc(db, 'posts', postId) // 'posts' 컬렉션에서 postId에 해당하는 문서 참조 가져오기
 
    try {
       await updateDoc(postRef, {
-         dislike: increment(1), // 'dislikes' 필드의 현재 값에서 1 증가
+         [reactionType]: increment(1), // 'like' 또는 'dislike' 필드의 현재 값에서 1 증가
       })
       const updatedDoc = await getDoc(postRef)
       if (updatedDoc.exists()) {
-         console.log(' dislike:', updatedDoc.data()) // 업데이트된 'like' 필드 값 출력
-         return updatedDoc.data().dislike
+         const data = updatedDoc.data()
+         return {
+            like: data.like || 0, // 데이터에 'like' 필드가 없는 경우 0을 기본값으로 사용
+            dislike: data.dislike || 0, // 데이터에 'dislike' 필드가 없는 경우 0을 기본값으로 사용
+         }
       }
    } catch (error) {
-      console.error('Error updating dislikes:', error)
+      console.error(`Error updating ${reactionType}:`, error)
    }
-   return 0
+   return { like: 0, dislike: 0 }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { db } from '@/lib/firebase'
-import { CommentData } from '@/types/commentTypes'
+import { CommentData, CreateCommentData } from '@/types/commentTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import {
    collection,
@@ -14,9 +14,9 @@ import {
 } from 'firebase/firestore'
 
 // 댓글 추가
-export const updateAddComment = async (
+export const AddComment = async (
    postId: string,
-   commentData: any,
+   commentData: CreateCommentData,
 ): Promise<string> => {
    const commentsCollectionRef = collection(db, 'comments', postId, 'comments')
    const newCommentData = {
@@ -29,7 +29,7 @@ export const updateAddComment = async (
 }
 
 // 댓글 삭제
-export const updateDeleteComment = async (
+export const DeleteComment = async (
    postId: string,
    commentId: string,
 ): Promise<void> => {
