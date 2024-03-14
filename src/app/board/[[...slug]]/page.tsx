@@ -1,20 +1,35 @@
-import { fetchPosts } from '@/app/api/board/fetchPostApi'
+import { fetchLatestPostId, fetchPosts } from '@/app/api/board/fetchPostApi'
 import BoardContent from '@/components/Board/BoardContent'
 import BoardHeader from '@/components/Board/BoardHeader'
-import { Fragment, Suspense } from 'react'
+import Pagination from '@/components/Board/Pagination'
+import BoardRead from '@/components/Board/Read/BoardRead'
 
-export default async function Page({ params }: { params: { slug: string } }) {
-   const slug = params?.slug?.[0] ?? '1'
-   const page = /^\d+$/.test(slug) ? parseInt(slug, 10) : 1
-   console.log('board page', page)
-   const postData = await fetchPosts()
+interface Params {
+   params: {
+      slug: string[]
+   } // Assuming PostType is your post object type
+}
+
+function validateSlug(value: string): boolean {
+   return /^\d+$/.test(value)
+}
+export default async function Page({ params }: Params) {
+   // 슬러그 처리
+   const [pageSlug, postSlug] = params.slug ?? ['1']
+   const page: number = validateSlug(pageSlug) ? parseInt(pageSlug, 10) : 1
+   const postId = validateSlug(postSlug) ? postSlug : null
+
+   // 게시물 목록 가져오기 ssr 처리
+   const lastpostId = await fetchLatestPostId()
+   const posts = await fetchPosts(page, lastpostId)
 
    return (
       <>
          <BoardHeader title="왁자지껄" />
-         <Suspense fallback={<div>게시물 로딩중</div>}>
-            <BoardContent postData={postData} tap="normal" page={page} />
-         </Suspense>
+         {postId && <BoardRead postId={postId} page={page} />}
+
+         <BoardContent postData={posts} page={page} />
+         <Pagination page={page} lastpostId={lastpostId} />
       </>
    )
 }
