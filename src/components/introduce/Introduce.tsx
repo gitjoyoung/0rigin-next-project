@@ -3,8 +3,8 @@
 import React, { useRef } from 'react'
 import INTRODUCE_TEXT from '@/constants/introduce/introduceText'
 import { TickerCounts } from '@/types/tickerTypes'
+import Image from 'next/image'
 import CommunityStats from './CommunityStats'
-import ThreeScene from './ThreeScene'
 
 interface Props {
    counts: TickerCounts
@@ -35,9 +35,12 @@ export default function Introduce({ counts }: Props) {
                className="flex flex-col items-center max-w-[600px] gap-3 h-[100vh] 
                justify-center text-center animate-fadeIn"
             >
-               <div className="min:h-[140px] h-[180px]">
-                  <ThreeScene />
-               </div>
+               <Image
+                  src="/mascot/winksaurus.png"
+                  width={300}
+                  height={300}
+                  alt="윙크사우로스"
+               />
                <h1 className="text-2xl font-bold">
                   {INTRODUCE_TEXT.story.title}
                </h1>
