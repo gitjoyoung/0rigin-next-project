@@ -1,3 +1,5 @@
+'use client'
+
 import { ROUTES } from '@/constants/route'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import {
    validateGender,
    validatePassword,
@@ -8,14 +7,15 @@ import {
 import { fetchSignUp, checkEmailDuplicate } from '@/app/api/auth/signUp'
 import { ROUTES } from '@/constants/route'
 import { updateIncrementCount } from '@/app/api/board/tickerApi'
+import Modal from '@/components/Modal/ModalStore'
+import { useModalStore } from '@/store/modal'
 
 export default function SignForm() {
-   const router = useRouter()
    const [userid, setUserid] = useState('')
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
    const [gender, setGender] = useState('')
-
+   const open = useModalStore((state) => state.open)
    /**
     * 아이디 중복 확인
     * @param userId
@@ -56,15 +56,19 @@ export default function SignForm() {
          password,
          gender,
       }).then((user) => {
+         if (!user) return
          updateIncrementCount('post')
-         if (user) {
-            router.push(ROUTES.LOGIN)
-         }
+         open()
       })
    }
 
    return (
       <section className="w-full flex justify-center">
+         <Modal
+            title="회원가입 완료"
+            content="회원 가입을 완료 하였습니다! 로그인 페이지로 이동합니다."
+            path={ROUTES.LOGIN}
+         />
          <div className="border p-10 flex items-center flex-col gap-6 m-3 w-full max-w-[500px]">
             <h1 className="font-bold text-2xl">회원가입</h1>
             <h3 className="text-xl">
