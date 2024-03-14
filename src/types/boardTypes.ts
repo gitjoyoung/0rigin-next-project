@@ -25,5 +25,13 @@ interface EditPostData {
    password: string
    id: string
 }
+interface TopPost {
+   id: string
+   title: string
+   content: string
+   like?: number
+   dislike?: number
+   view?: number
+}
 
-export type { Post, CreatePostData, EditPostData }
+export type { Post, CreatePostData, EditPostData, TopPost }
