@@ -1,6 +1,6 @@
 import Header from '@/components/Header/Header'
 import { inter } from '@/app/ui/fonts'
-import { config } from '@fortawesome/fontawesome-svg-core'
+import { config, icon } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import './ui/globals.css'
 import Footer from '@/components/Footer/Footer'
@@ -15,6 +15,7 @@ export const metadata = {
    title: '0rigin project',
    description: '제로리진 프로젝트',
    keywords: ['origin', '0rigin'],
+   icon: '/favicon.ico',
 }
 export default function RootLayout({
    children,
@@ -32,7 +33,7 @@ export default function RootLayout({
                <Ticker />
                <Header />
                <main
-                  className={`${inter.className} antialiased min-h-[80vh] w-full relative `}
+                  className={`${inter.className} antialiased min-h-[80vh] w-full`}
                >
                   {children}
                </main>
