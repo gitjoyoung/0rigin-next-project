@@ -7,8 +7,8 @@ import {
 import { fetchSignUp, checkEmailDuplicate } from '@/app/api/auth/signUp'
 import { ROUTES } from '@/constants/route'
 import { updateIncrementCount } from '@/app/api/board/tickerApi'
-import Modal from '@/components/Modal/ModalStore'
 import { useModalStore } from '@/store/modal'
+import Modal from '@/components/Modal/Modal'
 
 export default function SignForm() {
    const [userid, setUserid] = useState('')
