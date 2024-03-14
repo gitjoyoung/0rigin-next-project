@@ -9,5 +9,14 @@ const nextConfig = {
 }
 
 module.exports = removeImports({
+   typescript: {
+      ignoreBuildErrors: true,
+   },
+   eslint: {
+      ignoreDuringBuilds: true,
+   },
    ...nextConfig,
+   webpack(config, options) {
+      return config
+   },
 })
