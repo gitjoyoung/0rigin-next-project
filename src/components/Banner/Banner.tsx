@@ -21,20 +21,20 @@ export default function Banner({ topData }: Props) {
          }, 2500)
 
       return () => timer && clearInterval(timer)
-   }, [topData?.length])
+   }, [topData])
 
-   if (!topData?.length) {
+   if (!topData) {
       return null
    }
    return (
-      <section className="w-full  flex flex-wrap justify-center  border border-black   ">
+      <section className="w-full mx-0.5 my-1 flex flex-wrap justify-center  border border-black   ">
          {/*  게시물 프리뷰 */}
          <div className=" w-full  md:w-7/12 md:border-r border-black ">
             <div className="relative w-full  h-56 z-0  ">
                <Link href={`/board/read/${topData[selectedPost].id}`}>
                   <Image
-                     alt="개구리"
-                     src="/sadpepe.jpg"
+                     alt="윙크 사우로스"
+                     src="/mascot/winksaurus.png"
                      fill
                      objectFit="cover"
                   />
