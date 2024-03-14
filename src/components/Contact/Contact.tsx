@@ -18,20 +18,21 @@ export default function Contact() {
                {CONTACT_INFO.title}
             </h1>
             <div className="flex flex-wrap  gap-6 w-full ">
-               <div className="flex-1  md:h-auto w-full h-64 rounded-lg overflow-hidden shadow-md bg-black relative">
-                  <picture>
+               <div className="flex-1  md:h-auto w-full h-64  overflow-hidden shadow-md bg-black relative">
+                  {/* webp 이미지 */}
+                  {/* <picture>
                      <source
                         type="image/webp"
                         srcSet="/webp/winkContact.webp"
                      />
-                     <Image src="/webp/winkContact.png" fill alt="apple logo" />
-                  </picture>
+                  </picture> */}
+                  <Image src="/mascot/winksaurus.png" fill alt="apple logo" />
                </div>
 
                <div className="grid grid-cols-1  gap-6 md:w-auto  w-full ">
                   <button
                      type="button"
-                     className="p-6 bg-white rounded-lg shadow-md"
+                     className="p-6 bg-white  shadow-md"
                      onClick={() => {
                         navigator.clipboard.writeText(CONTACT_INFO.email)
                      }}
@@ -51,7 +52,7 @@ export default function Contact() {
                   {/* 전화번호 */}
                   <button
                      type="button"
-                     className="p-6 bg-white rounded-lg shadow-md"
+                     className="p-6 bg-white  shadow-md"
                      onClick={() => {
                         navigator.clipboard.writeText(CONTACT_INFO.phoneNumber)
                      }}
@@ -71,7 +72,7 @@ export default function Contact() {
                   {/* 주소 */}
                   <button
                      type="button"
-                     className="p-6 bg-white rounded-lg shadow-md"
+                     className="p-6 bg-white  shadow-md"
                      onClick={() => {
                         navigator.clipboard.writeText(CONTACT_INFO.address)
                      }}
