@@ -18,7 +18,7 @@ export default async function Home() {
       <section>
          <div className="flex flex-wrap justify-between border border-black p-1 ">
             <Banner topData={topData} />
-            <BoardContent postData={postData} tap="normal" page={1} />
+            <BoardContent postData={postData} page={1} />
          </div>
       </section>
    )
