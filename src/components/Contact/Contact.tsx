@@ -85,7 +85,9 @@ export default function Contact() {
                         />
                         <h2 className="text-xl font-semibold">주소</h2>
                      </div>
-                     <p className="text-gray-700 ">{CONTACT_INFO.address}</p>
+                     <p className="text-gray-700 text-left">
+                        {CONTACT_INFO.address}
+                     </p>
                   </button>
                </div>
             </div>
