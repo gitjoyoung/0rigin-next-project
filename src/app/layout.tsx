@@ -1,6 +1,6 @@
 import Header from '@/components/Header/Header'
 import { inter } from '@/app/ui/fonts'
-import { config, icon } from '@fortawesome/fontawesome-svg-core'
+import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import './ui/globals.css'
 import Footer from '@/components/Footer/Footer'
