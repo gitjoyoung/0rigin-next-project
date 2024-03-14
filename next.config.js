@@ -7,6 +7,13 @@ const nextConfig = {
       defaultLocale: 'ko',
    },
 }
+if (process.env.NEXT_PUBLIC_NODE_ENV === 'prod') {
+   nextConfig.compiler = {
+      removeConsole: {
+         exclude: ['error', 'warn'],
+      },
+   }
+}
 
 module.exports = removeImports({
    typescript: {
