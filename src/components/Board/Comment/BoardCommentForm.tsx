@@ -1,16 +1,15 @@
 'use client'
 
-import { addComment } from '@/app/api/board/commentApi'
+import { AddComment } from '@/app/api/board/commentApi'
+import { CreateCommentData } from '@/types/commentTypes'
 import React, { useRef } from 'react'
 
-interface BoardCommentFormProps {
+interface Props {
    postId: string
-   onCommentSubmit: () => void
+   onCommentSubmit: (id: string) => void
 }
-export default function BoardCommentForm({
-   postId,
-   onCommentSubmit,
-}: BoardCommentFormProps) {
+export default function BoardCommentForm({ postId, onCommentSubmit }: Props) {
+   // 댓글 폼 참조
    const commentFormRef = useRef(null)
 
    // 필드 초기화
@@ -23,18 +22,18 @@ export default function BoardCommentForm({
       const password = commentFormRef.current.password.value
       const comment = commentFormRef.current.comment.value
 
-      const formData = {
+      const formData: CreateCommentData = {
          postId,
          nickname,
          password,
          comment,
       }
       try {
-         const reponse = await addComment(postId, formData)
+         const reponse = await AddComment(postId, formData)
          if (reponse) {
             console.log('댓글이 등록되었습니다')
             clearFormFields()
-            onCommentSubmit()
+            onCommentSubmit(postId)
          }
       } catch (error) {
          console.log(error)

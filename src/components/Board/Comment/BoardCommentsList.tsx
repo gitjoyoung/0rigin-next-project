@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { getComments } from '@/app/api/board/commentApi'
+import { CommentData } from '@/types/commentTypes'
+import { fetchComments } from '@/app/api/board/commentApi'
 import BoardCommentForm from './BoardCommentForm'
 import BoardCommentItem from './BoardCommentItem'
 
@@ -9,18 +10,22 @@ interface Props {
    postId: string
 }
 
-export default function BoardComment({ postId }: Props) {
-   const [commentList, setCommentList] = useState([])
+// Use the commentData object in your code
 
-   const fetchCommentData = async () => {
-      const commentData = await getComments(postId)
+export default function BoardComment({ postId }: Props) {
+   const [commentListData, setCommentListData] = useState<CommentData[] | null>(
+      null,
+   )
+
+   const fetchCommentData = async (Id) => {
+      const commentData = await fetchComments(Id)
       if (commentData) {
-         setCommentList(commentData)
+         setCommentListData(commentData)
       }
    }
    useEffect(() => {
-      fetchCommentData()
-   }, [])
+      fetchCommentData(postId)
+   }, [postId])
 
    return (
       <div className=" my-2">
@@ -28,28 +33,39 @@ export default function BoardComment({ postId }: Props) {
          <div className="border-b border-t border-black flex justify-between text-xs  p-1">
             <div className="flex text-gray-700 items-center ">
                <h1>전체 코멘트</h1>
-               <span className="text-red-500">{commentList.length}</span>
+               <span className="text-red-500">
+                  {commentListData && commentListData.length}
+               </span>
                <span>개</span>
             </div>
             <button
                type="button"
-               onClick={fetchCommentData}
+               onClick={() => fetchCommentData(postId)}
                className="text-blue-500"
             >
                새로고침
             </button>
          </div>
          {/* 댓글 리스트 */}
-         {commentList.length > 0 &&
-            commentList.map(({ comment, nickname, timestamp, id }) => (
-               <BoardCommentItem
-                  key={id}
-                  comment={comment}
-                  nickname={nickname}
-                  timestamp={timestamp}
-                  id={id}
-               />
-            ))}
+         {commentListData &&
+            commentListData.map(
+               ({
+                  comment,
+                  nickname,
+                  createdAt,
+                  id,
+                  postId: board,
+               }: CommentData) => (
+                  <BoardCommentItem
+                     key={id}
+                     comment={comment}
+                     nickname={nickname}
+                     createdAt={createdAt}
+                     id={id}
+                     postId={board}
+                  />
+               ),
+            )}
 
          {/* 댓글 작성 폼 */}
          <BoardCommentForm postId={postId} onCommentSubmit={fetchCommentData} />

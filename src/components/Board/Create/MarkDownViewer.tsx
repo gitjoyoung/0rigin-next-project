@@ -7,7 +7,7 @@ const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
 })
 export default function MarkDownViewer({ content }) {
    return (
-      <div className="custom-list whitespace-pre-line px-3 sm:px-6">
+      <div className="custom-list whitespace-pre-line p-1 my-3 min-h-56">
          <MarkdownPreview source={content} />
       </div>
    )

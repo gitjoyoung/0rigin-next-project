@@ -1,10 +1,9 @@
 'use client'
 
 import BoardComment from '@/components/Board/Comment/BoardCommentsList'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
-import { BoardReadData } from '@/types/boardTypes'
+import { useEffect, useState } from 'react'
+import { fetchPostById } from '@/app/api/board/fetchPostApi'
+import { Post } from '@/types/boardTypes'
 import BoardModal from './BoardModal'
 import BoardReadTitle from './BoardReadTitle'
 import BoardUpdateButton from './BoardUpdateButton'
@@ -13,15 +12,19 @@ import BoardNavButton from './BoardNavButton'
 import MarkDownViewer from '../Create/MarkDownViewer'
 
 interface Props {
-   readData: BoardReadData
    postId: string
+   page: number
 }
 
-export default function BoardRead({
-   readData: { title, nickname, like, dislike, content, createdAt },
-   postId,
-}: Props) {
-   const router = useRouter()
+export default function BoardRead({ postId, page }: Props) {
+   const [readData, setReadData] = useState<Post | null>(null)
+
+   useEffect(() => {
+      fetchPostById(postId).then((data) => {
+         setReadData(data)
+      })
+   }, [postId])
+
    /** 모달 관련 */
    const [isModalOpen, setIsModalOpen] = useState(false)
    const [modalMode, setModalMode] = useState<'edit' | 'delete'>('edit')
@@ -34,11 +37,10 @@ export default function BoardRead({
       setModalMode('delete')
       setIsModalOpen(true)
    }
-   if (title === null) {
-      return <div>로딩중...</div>
+   if (readData === null) {
+      return null
    }
    // 데이타가 있을때
-   const date = formatCustomDate(createdAt)
 
    return (
       <section className="mt-1 ">
@@ -53,10 +55,10 @@ export default function BoardRead({
 
          {/* 글제목 */}
          <BoardReadTitle
-            title={title}
-            nickname={nickname}
-            like={like}
-            date={date}
+            title={readData.title}
+            nickname={readData.nickname}
+            like={readData.like}
+            date={readData.createdAt}
          />
          {/* 글 수정  , 삭제 버튼 */}
          <BoardUpdateButton
@@ -64,14 +66,19 @@ export default function BoardRead({
             handleEdit={handleEdit}
          />
          {/* 글내용 마크다운 뷰어 */}
-         <MarkDownViewer content={content} />
+         <MarkDownViewer content={readData.content} />
 
          {/* 싫어요,좋아요  버튼 */}
-         <BoardLikeButton postId={postId} like={like} dislike={dislike} />
+         <BoardLikeButton
+            postId={postId}
+            like={readData.like}
+            dislike={readData.dislike}
+         />
 
          {/* 댓글 컴포넌트  */}
          <BoardComment postId={postId} />
-         <BoardNavButton router={router} postID={postId} />
+         {/* 이전 목록 다음 글 이동 */}
+         <BoardNavButton page={page} postID={postId} />
       </section>
    )
 }

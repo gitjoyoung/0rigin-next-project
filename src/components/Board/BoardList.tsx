@@ -1,36 +1,21 @@
 import React from 'react'
+import { Post } from '@/types/boardTypes'
 import BoardListItem from './BoardListItem'
 
-interface BoardPost {
-   id: string
-   body: string
-   category: string
-   createdAt: string
-   isPublic: boolean
-   nickname: string
-   number: number
-   title: string
+interface Props {
+   postData: Post[]
+   page: number
 }
-
-export default function BoardList({ boardData }: { boardData: BoardPost[] }) {
+export default function BoardList({ postData, page }: Props) {
    return (
       <div className="border border-black min-h-96 ">
-         {Array.isArray(boardData) &&
-            boardData.map((item: BoardPost) => (
+         {Array.isArray(postData) &&
+            postData.map((item: Post) => (
                <div
-                  key={item.number}
-                  className="border-b last:border-b-0 hover:bg-gray-100  "
+                  key={item.createdAt.toString()}
+                  className={`border-b last:border-b-0  hover:bg-gray-100 `}
                >
-                  <BoardListItem
-                     title={item.title}
-                     createdAt={item.createdAt}
-                     views={item.number}
-                     like={item.number}
-                     comments={item.number}
-                     id={item.id}
-                     nickname={item.nickname}
-                     no={item.number}
-                  />
+                  <BoardListItem item={item} page={page} />
                </div>
             ))}
       </div>

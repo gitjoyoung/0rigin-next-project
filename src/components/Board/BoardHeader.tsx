@@ -1,19 +1,18 @@
 import Link from 'next/link'
-import React from 'react'
 
-type Props = {
-   title: string
-}
-export default function BoardHeader({ title }: Props) {
+export default function BoardHeader({ title }) {
    return (
-      <div className="my-3 flex justify-between relative px-1">
-         <div>
+      <div
+         className="my-2 flex  justify-between relative
+      items-center  px-1 border-b py-2 border-black"
+      >
+         <div className="flex-col flex gap-1">
             <Link href="/board" className="text-3xl font-bold">
                {title} 게시판
             </Link>
-            <p>{title} 게시판입니다</p>
+            <p className="text-sm">재미있는 게시글을 작성해 보세요</p>
          </div>
-         <div className="absolute right-0 bottom-0 border border-black  shadow-md  flex items-center">
+         <div className=" right-0 border border-black  shadow-md  flex items-center">
             <Link href="/board/create" className="px-4 py-2 font-bold">
                글쓰기
             </Link>

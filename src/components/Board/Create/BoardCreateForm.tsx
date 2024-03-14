@@ -7,12 +7,18 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { updatePost } from '@/app/api/board/updatePostApi'
 import { ROUTES } from '@/constants/route'
 import { CreatePostData } from '@/types/boardTypes'
+import { updateIncrementCount } from '@/app/api/board/tickerApi'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import sanitize from 'rehype-sanitize'
+import stringify from 'rehype-stringify'
 import MarkDownEditor from './MarkDownEditor'
 import FormSubmitButton from './FormSubmitButton'
 import BoardEditorHelpBox from './BoardEditorHelpBox'
 
 interface Props {
-   editData: CreatePostData
+   editData?: CreatePostData
 }
 
 export default function BoardCreateForm({ editData }: Props) {
@@ -22,26 +28,34 @@ export default function BoardCreateForm({ editData }: Props) {
    const [showPassword, setShowPassword] = useState(false)
 
    // 글쓰기 폼의 내용을 저장하는 state
-   const [content, setContent] = useState() // 글쓰기 폼의 내용을 저장하는 state
+   const [content, setContent] = useState('') // 글쓰기 폼의 내용을 저장하는 state
 
    // 글쓰기 폼 제출
    const handleFormSubmit = async (e) => {
       e.preventDefault()
+      const sanitizedContent = await unified()
+         .use(remarkParse) // Markdown 문서를 파싱
+         .use(remarkRehype) // 파싱된 Markdown을 HTML로 변환
+         .use(sanitize) // HTML 살균
+         .use(stringify) // HTML을 문자열로 변환
+         .process(content) // 사용자 입력 content 처리
+
+      const resultHtml = String(sanitizedContent.value)
+
       const dataObject: CreatePostData = {
          nickname: e.target.nickname.value,
          password: e.target.password.value,
          title: e.target.title.value,
-         content,
+         content: resultHtml,
       }
-
-      await updatePost(dataObject).then((postNumber) =>
-         router.push(`${ROUTES.BOARD_READ}/${postNumber}`),
-      )
+      await updatePost(dataObject).then((postNumber) => {
+         updateIncrementCount('post')
+         router.push(`${ROUTES.BOARD}/1/${postNumber}`)
+      })
    }
 
    return (
-      <section className=" border  w-full sm:min-w-[900px]   sm:px-10 px-1 py-2  ">
-         <h1 className="text-4xl my-3 "> 글쓰기 </h1>
+      <section className=" w-full  px-1 py-2  ">
          <form
             className="w-full flex flex-col gap-2"
             onSubmit={(e) => handleFormSubmit(e)}

@@ -29,9 +29,12 @@ interface Props {
 }
 
 export default function App({ content, setContent }: Props) {
-   const onChange = useCallback<OnChange>((val) => {
-      setContent(val || '')
-   }, [])
+   const onChange = useCallback<OnChange>(
+      (val) => {
+         setContent(val || '')
+      },
+      [setContent],
+   )
 
    const uploadImageCommand = {
       name: 'upload-image',
