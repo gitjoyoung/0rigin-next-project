@@ -6,6 +6,8 @@ import {
    validateUserId,
 } from '@/utils/authValidators/validation'
 import { fetchSignUp, checkEmailDuplicate } from '@/app/api/auth/signUp'
+import { ROUTES } from '@/constants/route'
+import { updateIncrementCount } from '@/app/api/board/tickerApi'
 
 export default function SignForm() {
    const router = useRouter()
@@ -29,7 +31,6 @@ export default function SignForm() {
       try {
          await checkEmailDuplicate(userId)
       } catch (error) {
-         alert(`response error: ${error}`)
          return false
       }
 
@@ -55,8 +56,9 @@ export default function SignForm() {
          password,
          gender,
       }).then((user) => {
+         updateIncrementCount('post')
          if (user) {
-            router.push('/login')
+            router.push(ROUTES.LOGIN)
          }
       })
    }

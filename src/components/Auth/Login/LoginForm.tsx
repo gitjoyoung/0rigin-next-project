@@ -1,29 +1,36 @@
-'use client'
-
-import { fetchLogin } from '@/app/api/auth/login'
+import { ROUTES } from '@/constants/route'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useState, FormEvent, ChangeEvent } from 'react'
 
 export default function Login() {
    const router = useRouter()
 
    // 로그인 form 정보
-   const [id, setId] = useState('')
-   const [password, setPassword] = useState('')
-   const [error, setError] = useState('')
+   const [id, setId] = useState<string>('')
+   const [password, setPassword] = useState<string>('')
+   const [error, setError] = useState<string>('')
 
    /**
     * 폼 제출 함수
     * @param e
     * @returns
     */
-   const handleLoginSubmit = async (e) => {
+   const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
-      const response = await fetchLogin(id, password)
-      if (response) {
-         router.push('/')
+      const credentials = {
+         id,
+         password,
+      }
+
+      const response = await signIn('credentials', {
+         redirect: false,
+         ...credentials,
+      })
+      if (response && response.status === 200) {
+         router.push(ROUTES.HOME)
       } else {
          setError('아이디 또는 비밀번호가 일치하지 않습니다.')
       }
@@ -40,7 +47,7 @@ export default function Login() {
                   key="id"
                   type="text"
                   placeholder="ID"
-                  onChange={(e) => {
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
                      setId(e.target.value)
                      setError('')
                   }}
@@ -50,7 +57,7 @@ export default function Login() {
                   key="password"
                   type="password"
                   placeholder="Password"
-                  onChange={(e) => {
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
                      setPassword(e.target.value)
                      setError('')
                   }}
@@ -65,10 +72,10 @@ export default function Login() {
             </form>
 
             <div className=" text-sm flex gap-5 ">
-               <Link className="border p-2" href="/sign">
+               <Link className="border p-2" href={ROUTES.SIGN}>
                   회원가입
                </Link>
-               <Link className="border p-2" href="/login/forget">
+               <Link className="border p-2" href={ROUTES.FORGET}>
                   비밀번호 분실
                </Link>
             </div>
