@@ -2,20 +2,28 @@ interface Post {
    id: string
    nickname: string
    content: string
-   createdAt: Date
-   number: number
-   title: string
-   category: string
-}
-
-interface BoardReadData {
-   title: string
-   nickname: string
-   like: number
-   dislike: number
-   content: string
    createdAt: string
-   postId: string
+   title: string
+   comments?: number
+   category?: string
+   like?: number
+   dislike?: number
+   views?: number
 }
 
-export type { BoardReadData, Post }
+interface CreatePostData {
+   nickname: string
+   password?: string
+   title: string
+   content: string
+}
+
+interface EditPostData {
+   postId: string
+   title: string
+   content: string
+   password: string
+   id: string
+}
+
+export type { Post, CreatePostData, EditPostData }
