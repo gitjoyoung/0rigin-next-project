@@ -4,10 +4,10 @@ export const ROUTES = {
    LOGIN: '/login',
    FORGET: '/login/forget',
    SIGN: '/sign',
+   SIGN_UP: '/sign/signup',
    MYPAGE: '/mypage',
    //    게시판 관련
    BOARD: '/board',
-   BOARD_READ: '/board/read',
    BOARD_WRITE: '/board/write',
    BOARD_UPDATE: '/board/update',
    // 검색

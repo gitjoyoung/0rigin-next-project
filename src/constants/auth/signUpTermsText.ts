@@ -1,3 +1,21 @@
+import { ROUTES } from '../route'
+
+export const SIGN_UP_TERMS = {
+   welcomeMessage: `오리진 커뮤니티에 오신 것을 환영합니다! `,
+   registration: {
+      question: '자신의 내면과 우주의 무한함을 탐험할 준비가 되셨나요?',
+      alreadyMemberMessage: '이미 이 길을 걷고 계시군요 !! 로그인 하기',
+   },
+   login: {
+      href: ROUTES.LOGIN,
+      buttonText: '이미 회원입니다.',
+   },
+   signup: {
+      href: ROUTES.SIGN_UP,
+      buttonText: '네 회원가입할래요!',
+   },
+}
+
 export const TERMS_CONTENT = `
 제1조 (서비스의 목적)
 본 서비스는 회원에게 제로리진(0rigin)이 제공하는 다양한 콘텐츠 및 기능을 통한 창의적인 활동과 소통의 기회를 제공하기 위해 제공됩니다.
