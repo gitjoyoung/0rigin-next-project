@@ -1,10 +1,15 @@
 import dayjs from 'dayjs'
 
-const formatCustomDate = (createdAt, formating): string => {
-   // 'YYYY년 MM월 DD일 HH:mm:ss'
+const formatCustomDate = (createdAt): string => {
    if (!createdAt) return '시간 없음'
-   const postDate = dayjs(createdAt).format(formating)
-   return postDate
+
+   const today = dayjs().startOf('day')
+   const postDate = dayjs(createdAt)
+
+   if (postDate.isSame(today, 'day')) {
+      return postDate.format('HH:mm:ss')
+   }
+   return postDate.format('YY.MM.DD')
 }
 
 export default formatCustomDate
