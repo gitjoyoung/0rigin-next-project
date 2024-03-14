@@ -1,14 +1,25 @@
+import { Post } from '@/types/boardTypes'
 import Banner from '@/components/Banner/Banner'
 import BoardContent from '@/components/Board/BoardContent'
+import {
+   fetchLatestPostId,
+   fetchPosts,
+   fetchTopPosts,
+} from './api/board/fetchPostApi'
+import { updateIncrementCount } from './api/board/tickerApi'
 
 export default async function Home() {
+   const lastpostId = await fetchLatestPostId()
+   const postData: Post[] = await fetchPosts(1, lastpostId)
+   const topData = await fetchTopPosts()
+   await updateIncrementCount('visit')
+
    return (
-      <>
-         <Banner />
-         <div className="flex flex-wrap justify-between border my-3 border-black p-1 ">
-            <BoardContent tap="normal" page={0} />
-            <BoardContent tap="special" page={0} />
+      <section>
+         <div className="flex flex-wrap justify-between border border-black p-1 ">
+            <Banner topData={topData} />
+            <BoardContent postData={postData} tap="normal" page={1} />
          </div>
-      </>
+      </section>
    )
 }

@@ -5,6 +5,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import './ui/globals.css'
 import Footer from '@/components/Footer/Footer'
 import Ticker from '@/components/Ticker/Ticker'
+import { Suspense } from 'react'
+import { NavigationEvents } from '@/components/Router/navigation-events'
 import AuthSession from './api/providers/AuthSession'
 
 config.autoAddCss = false
@@ -24,10 +26,13 @@ export default function RootLayout({
          <body>
             <AuthSession>
                <div id="modal-root" />
+               <Suspense fallback={null}>
+                  <NavigationEvents />
+               </Suspense>
                <Ticker />
                <Header />
                <main
-                  className={`${inter.className} antialiased min-h-full w-full `}
+                  className={`${inter.className} antialiased min-h-[80vh] w-full relative `}
                >
                   {children}
                </main>
