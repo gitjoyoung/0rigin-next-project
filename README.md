@@ -9,10 +9,11 @@
 2022.01 ~ 2024.03
 
 ## 배포 주소
-배포 전
+
+[배포](https://0rigin-next-project-ten.vercel.app/)
 
 ## 프로젝트 소개
-
+![프리뷰 이미지](public/preview/board.png)
 0rigin project는 AI가 대체할 수 없는 인간의 고유한 가치를 토론하는 커뮤니티입니다!
 
 ## 시작 가이드
