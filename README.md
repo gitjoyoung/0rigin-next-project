@@ -10,11 +10,22 @@
 
 ## 배포 주소
 
-[배포](https://0rigin-next-project-ten.vercel.app/)
+[https://0rigin-next-project-ten.vercel.app/](https://0rigin-next-project-ten.vercel.app/)
 
 ## 프로젝트 소개
 ![프리뷰 이미지](public/preview/board.png)
 0rigin project는 AI가 대체할 수 없는 인간의 고유한 가치를 토론하는 커뮤니티입니다!
+
+
+## 기능별 페이지
+
+### main
+![메인 이미지](public/preview/main.png)
+### login
+![프리뷰 이미지](public/preview/login.png)
+### sign up
+![프리뷰 이미지](public/preview/sign.png)
+![프리뷰 이미지](public/preview/signform.png)
 
 ## 시작 가이드
 
