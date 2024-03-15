@@ -1,4 +1,4 @@
-import { deletePost } from '@/app/api/board/updatePostApi'
+import { updateDeletePost } from '@/app/api/board/updatePostApi'
 import { ROUTES } from '@/constants/route'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useEffect } from 'react'
@@ -24,7 +24,7 @@ export default function BoardModal({ onClose, postId, flag }: Props) {
    const handleUpdate = async () => {
       try {
          if (flag === 'delete') {
-            deletePost(postId)
+            updateDeletePost(postId)
             onClose()
             router.push(ROUTES.BOARD)
          } else if (flag === 'edit') {
