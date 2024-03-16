@@ -35,9 +35,11 @@ button:active {
    .custom-button:active {
       @apply bg-#ddd;
    }
-   .custom-list ul,
-   .custom-list ol {
+   .markdown-list ul{
       list-style: disc;
+   }
+   .markdown-list ol {
+      list-style: decimal;
    }
 }
 

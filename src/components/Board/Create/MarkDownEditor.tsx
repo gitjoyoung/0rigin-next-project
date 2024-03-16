@@ -31,7 +31,7 @@ interface Props {
 export default function App({ content, setContent }: Props) {
    const onChange = useCallback<OnChange>(
       (val) => {
-         setContent(val || '')
+         setContent(val || '/n/n/n/n/n/n/n/n/n/n')
       },
       [setContent],
    )
@@ -80,29 +80,27 @@ export default function App({ content, setContent }: Props) {
       },
    }
    return (
-      <div>
-         <div className="custom-list ">
-            <MDEditor
-               height={500}
-               value={content}
-               onChange={onChange}
-               commands={[
-                  commands.title,
-                  commands.bold,
-                  commands.unorderedListCommand,
-                  commands.hr,
-                  commands.divider,
-                  commands.code,
-                  commands.quote,
-                  commands.divider,
-                  uploadImageCommand,
-               ]}
-               previewOptions={{
-                  remarkPlugins: [remarkBreaks],
-                  rehypePlugins: [[rehypeSanitize]],
-               }}
-            />
-         </div>
+      <div data-color-mode="light" className="markdown-list ">
+         <MDEditor
+            height={500}
+            value={content}
+            onChange={onChange}
+            commands={[
+               commands.title,
+               commands.bold,
+               commands.unorderedListCommand,
+               commands.hr,
+               commands.divider,
+               commands.code,
+               commands.quote,
+               commands.divider,
+               uploadImageCommand,
+            ]}
+            previewOptions={{
+               remarkPlugins: [remarkBreaks],
+               rehypePlugins: [[rehypeSanitize]],
+            }}
+         />
       </div>
    )
 }
