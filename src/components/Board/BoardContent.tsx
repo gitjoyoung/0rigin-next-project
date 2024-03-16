@@ -3,31 +3,11 @@
 import React, { useState } from 'react'
 import { Post } from '@/types/boardTypes'
 import BoardList from './BoardList'
+import { BoardTapButton } from './BoardTapButton'
 
 interface Props {
    postData: Post[]
    page: number
-}
-function TapMenu({ text, tapName, setSelectedTap, selectedTap }) {
-   return (
-      <li
-         role="presentation"
-         className={`p-2 
-   hover:bg-black
-   hover:text-white
-   ${
-      selectedTap === tapName
-         ? 'border border-black border-b-0'
-         : 'border border-white border-b-0'
-   }`}
-         onClick={() => {
-            setSelectedTap(tapName)
-            // router.refresh();
-         }}
-      >
-         <p className="font-bold">{text}</p>
-      </li>
-   )
 }
 
 export default function BoardContent({ postData, page }: Props) {
@@ -37,14 +17,14 @@ export default function BoardContent({ postData, page }: Props) {
       <section className="px-0.5 w-full">
          {/* 게시판 태그 일반글 추천글 */}
          <ul className="flex gap-1 ">
-            <TapMenu
+            <BoardTapButton
                text="실시간"
                tapName="normal"
                setSelectedTap={setSelectedTap}
                selectedTap={selectedTap}
             />
-            <TapMenu
-               text="추천글(개발중...)"
+            <BoardTapButton
+               text="추천글"
                tapName="best"
                setSelectedTap={setSelectedTap}
                selectedTap={selectedTap}
