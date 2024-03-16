@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useRef } from 'react'
-import INTRODUCE_TEXT from '@/constants/introduce/introduceText'
 import { TickerCounts } from '@/types/tickerTypes'
 import Image from 'next/image'
+import INTRODUCE_TEXT from '@/constants/introduce/introduceText'
 import CommunityStats from './CommunityStats'
 
 interface Props {
