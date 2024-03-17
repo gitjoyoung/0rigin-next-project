@@ -28,7 +28,7 @@ export default function BoardModal({ onClose, postId, flag }: Props) {
             onClose()
             router.push(ROUTES.BOARD)
          } else if (flag === 'edit') {
-            router.push(`${ROUTES.BOARD_UPDATE}${postId}`)
+            router.push(`${ROUTES.BOARD_UPDATE}/${postId}`)
             onClose()
          }
       } catch (error) {

@@ -1,25 +1,18 @@
-'use client'
-
+import { fetchPostById } from '@/app/api/board/fetchPostApi'
 import BoardCreateForm from '@/components/Board/Create/BoardCreateForm'
+import { CreatePostData, Post } from '@/types/boardTypes'
+import { Metadata } from 'next'
 
-function Update({ params }: { params: { id: string } }) {
-   const postid = params.id
-
-   const data = {
-      nickname: '수정',
-      title: '수정제목',
-      body: '수정내용',
-   }
-   return (
-      <section>
-         <BoardCreateForm
-            postid={postid}
-            nickname={data.nickname}
-            title={data.title}
-            body={data.body}
-         />
-      </section>
-   )
+export const metadata: Metadata = {
+   title: '0rigin 게시물 수정',
 }
 
-export default Update
+export default async function Update({ params }: { params: { id: string } }) {
+   const postid: string = params.id
+   console.log('postid:', postid)
+   const { nickname, title, content }: Post = await fetchPostById(postid)
+   const editData: CreatePostData = { nickname, title, content }
+   // 임시
+
+   return <BoardCreateForm editData={editData} />
+}

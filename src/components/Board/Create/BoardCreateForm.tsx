@@ -28,7 +28,7 @@ export default function BoardCreateForm({ editData }: Props) {
    const [showPassword, setShowPassword] = useState(false)
 
    // 글쓰기 폼의 내용을 저장하는 state
-   const [content, setContent] = useState('') // 글쓰기 폼의 내용을 저장하는 state
+   const [content, setContent] = useState(editData?.content || '') // 글쓰기 폼의 내용을 저장하는 state
 
    // 글쓰기 폼 제출
    const handleFormSubmit = async (e) => {
