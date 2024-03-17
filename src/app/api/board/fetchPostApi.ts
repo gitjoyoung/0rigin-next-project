@@ -31,11 +31,13 @@ export const fetchLatestPostId = async (): Promise<number> => {
 export const fetchPosts = async (
    page: number = 1,
    last: number = 1,
-   limitCount: number = 20,
+   limitCount: number = 1,
 ): Promise<Post[] | null> => {
    // 게시글 가져올 수 있는 최대 개수
-
+   console.log(page, last, limitCount)
+   console.log(last - (page - 1) * limitCount)
    // 'posts' 컬렉션에 대한 쿼리를 생성 startAt을 사용하여 페이징 처리
+   // 삭제된 게시물이 있으면 페이징에 문제가 생기는 에러가 있음
    const postsQuery = query(
       collection(db, 'posts'),
       orderBy('number', 'desc'),
