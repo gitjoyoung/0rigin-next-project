@@ -10,22 +10,36 @@
 
 ## 배포 주소
 
-[https://0rigin-next-project-ten.vercel.app/](https://0rigin-next-project-ten.vercel.app/)
+[https://0rigin.vercel.app/](https://0rigin.vercel.app/)
 
 ## 프로젝트 소개
+
 ![프리뷰 이미지](public/preview/board.png)
 0rigin project는 AI가 대체할 수 없는 인간의 고유한 가치를 토론하는 커뮤니티입니다!
 
-
 ## 기능별 페이지
 
-### main
+### 홈 페이지
+
 ![메인 이미지](public/preview/main.png)
-### login
+
+### 게시판
+![게시판 이미지](public/preview/board.png)
+![게시판 이미지](public/preview/read.png)
+![글쓰기 이미지](public/preview/write.png)
+
+
+### 로그인
+
 ![프리뷰 이미지](public/preview/login.png)
-### sign up
+
+### 회원 가입 동의 , 회원가입
+
 ![프리뷰 이미지](public/preview/sign.png)
 ![프리뷰 이미지](public/preview/signform.png)
+
+### 게시판
+
 
 ## 시작 가이드
 
