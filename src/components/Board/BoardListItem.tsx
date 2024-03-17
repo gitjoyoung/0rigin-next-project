@@ -10,8 +10,6 @@ interface Props {
 }
 
 export default function BoardListItem({ item, page }: Props) {
-   /** 작성 날자  */
-
    const { id, title, nickname, createdAt, like, views, comments } = item
    return (
       <section className="flex items-center  flex-wrap p-2  ">
@@ -25,7 +23,6 @@ export default function BoardListItem({ item, page }: Props) {
                <p className="text-gray-400 text-sm mx-1">[{comments || 100}]</p>
             </Link>
             {/* 조회수 , 추천수가 많은 경우  아이콘 보이기  */}
-            {/* <FontAwesomeIcon icon={faStar} /> */}
          </div>
          <ul className=" flex gap-2 text-xs text-gray-400  ">
             <li className="font-bold">{nickname || '닉네임'}</li>
