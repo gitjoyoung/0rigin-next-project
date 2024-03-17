@@ -1,5 +1,10 @@
 import { SIGN_UP_TERMS } from '@/constants/auth/signUpTermsText'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+   title: '0rigin 회원가입 약관',
+}
 
 function SignPage() {
    return (

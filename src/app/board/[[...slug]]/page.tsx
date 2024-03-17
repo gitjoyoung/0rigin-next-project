@@ -3,6 +3,11 @@ import BoardContent from '@/components/Board/BoardContent'
 import BoardHeader from '@/components/Board/BoardHeader'
 import Pagination from '@/components/Board/Pagination'
 import BoardRead from '@/components/Board/Read/BoardRead'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+   title: '0rigin 게시판',
+}
 
 interface Params {
    params: {
@@ -21,13 +26,13 @@ export default async function Page({ params }: Params) {
 
    // 게시물 목록 가져오기 ssr 처리
    const lastpostId = await fetchLatestPostId()
-   const posts = await fetchPosts(page, lastpostId)
+   console.log(page, lastpostId)
+   const posts = await fetchPosts(page, lastpostId, 20)
 
    return (
       <>
          <BoardHeader title="왁자지껄" />
          {postId && <BoardRead postId={postId} page={page} />}
-
          <BoardContent postData={posts} page={page} />
          <Pagination page={page} lastpostId={lastpostId} />
       </>

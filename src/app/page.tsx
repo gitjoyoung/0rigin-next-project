@@ -1,12 +1,17 @@
 import { Post } from '@/types/boardTypes'
 import Banner from '@/components/Banner/Banner'
 import BoardContent from '@/components/Board/BoardContent'
+import { Metadata } from 'next'
 import {
    fetchLatestPostId,
    fetchPosts,
    fetchTopPosts,
 } from './api/board/fetchPostApi'
 import { updateIncrementCount } from './api/board/tickerApi'
+
+export const metadata: Metadata = {
+   title: '0rigin 홈',
+}
 
 export default async function Home() {
    const lastpostId = await fetchLatestPostId()
