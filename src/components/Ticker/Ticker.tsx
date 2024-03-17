@@ -14,8 +14,7 @@ export default function Ticker() {
    const fetchData = async () => {
       const data = await fetchTickerCounts()
       if (data === null) return
-      // setCount(data) 이전 데이터를 유지하면서 새로운 데이터를 추가
-      setCount((prev) => ({ ...prev, ...data }))
+      setCount(data)
    }
    // css 애니메이션
    useEffect(() => {
