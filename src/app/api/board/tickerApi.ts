@@ -8,6 +8,7 @@ import {
    updateDoc,
 } from 'firebase/firestore'
 
+// 카운트 정보 가져오기
 export const fetchTickerCounts = async (): Promise<TickerCounts> => {
    const countCollectionRef = collection(db, 'count')
    const snapshot = await getDocs(countCollectionRef)
@@ -23,7 +24,7 @@ export const fetchTickerCounts = async (): Promise<TickerCounts> => {
 
    return results
 }
-
+// 카운트 정보 업데이트
 export const updateIncrementCount = async (category: string): Promise<void> => {
    const infoRef = doc(db, 'count', category)
    try {
