@@ -1,8 +1,3 @@
-interface ValidationResult {
-   success: boolean
-   message?: string
-}
-
 /**
  * 아이디 유효성 검사
  * @param {string} userId
@@ -46,30 +41,24 @@ export const validateUserId = (userId: string): boolean => {
 export const validatePassword = (
    password: string,
    confirmPassword: string,
-): ValidationResult => {
+): boolean => {
    const regex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,12}$/
 
    if (password.length < 8 || password.length > 12) {
-      return {
-         success: false,
-         message: '비밀번호는 8자 이상 12자 이하로 입력해야 합니다.',
-      }
+      alert('비밀번호는 8자 이상 12자 이하로 입력해야 합니다.')
+      return false
    }
    if (!regex.test(password)) {
-      return {
-         success: false,
-         message: '비밀번호는 영어 대소문자, 숫자, 특수문자를 포함해야 합니다.',
-      }
+      alert('비밀번호는 영어 대소문자, 숫자, 특수문자를 포함해야 합니다.')
+      return false
    }
    if (password !== confirmPassword) {
-      return {
-         success: false,
-         message: '비밀번호와 확인 비밀번호가 일치하지 않습니다.',
-      }
+      alert('비밀번호와 확인 비밀번호가 일치하지 않습니다.')
+      return false
    }
 
-   return { success: true }
+   return true
 }
 
 export const validateEmail = (email: string): boolean => {
