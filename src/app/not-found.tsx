@@ -2,7 +2,7 @@ import { ROUTES } from '@/constants/route'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function Custom404() {
+export default function NotFound() {
    return (
       <div className="flex flex-col items-center mt-[10vh] h-[100vh] w-full">
          <Image
