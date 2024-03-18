@@ -45,7 +45,6 @@ export default function TermsOfService({ onTermsAgreed }: Props) {
                   checked={checkTerm}
                   onChange={handleCheckboxChange}
                   className="scale-150 mx-2"
-                  value="asd"
                   id="agree"
                />
                0rigin 이용약관에 동의하기

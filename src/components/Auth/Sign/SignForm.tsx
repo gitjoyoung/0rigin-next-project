@@ -4,61 +4,41 @@ import {
    validatePassword,
    validateUserId,
 } from '@/utils/authValidators/validation'
-import { fetchSignUp, checkEmailDuplicate } from '@/app/api/auth/signUp'
+import { fetchSignUp } from '@/app/api/auth/signUp'
 import { ROUTES } from '@/constants/route'
 import { updateIncrementCount } from '@/app/api/board/tickerApi'
 import { useModalStore } from '@/store/modal'
 import Modal from '@/components/Modal/Modal'
 
 export default function SignForm() {
-   const [userid, setUserid] = useState('')
+   const [userId, setUserId] = useState('')
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
    const [gender, setGender] = useState('')
    const open = useModalStore((state) => state.open)
-   /**
-    * 아이디 중복 확인
-    * @param userId
-    * @returns
-    * - 중복이면 false
-    */
-   const checkDuplicateUserId = async (userId: string): Promise<boolean> => {
-      // 아이디 형식 확인
-      const idCheck = validateUserId(userId)
-      if (!idCheck) {
-         return false
-      }
-      try {
-         await checkEmailDuplicate(userId)
-      } catch (error) {
-         return false
-      }
 
-      return true
-   }
-
-   /**
-    *  폼 제출 함수
-    * @param e
-    * @returns
-    */
    const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       if (
          !validateGender(gender) ||
-         !(await checkDuplicateUserId(userid)) ||
+         !validateUserId(userId) ||
          !validatePassword(password, confirmPassword)
       ) {
          return
       }
+
       await fetchSignUp({
-         userid: `${userid}@0rigin.com`,
+         userId: `${userId}@0rigin.com`,
          password,
          gender,
-      }).then((user) => {
-         if (!user) return
-         updateIncrementCount('post')
-         open()
+      }).then((credential) => {
+         if (credential instanceof Error) {
+            alert(credential.message) // 오류 메시지를 alert로 보여줌
+         } else {
+            alert(`회원가입 성공! UID: ${credential}`)
+            updateIncrementCount('user')
+            open()
+         }
       })
    }
 
@@ -128,8 +108,8 @@ export default function SignForm() {
                   type="text"
                   placeholder="아이디"
                   className="border border-gray-300 p-2"
-                  value={userid}
-                  onChange={(e) => setUserid(e.target.value)}
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
                />
                <p className="text-xs mb-2">*영어 4~12자 소문자+숫자 가능</p>
 
