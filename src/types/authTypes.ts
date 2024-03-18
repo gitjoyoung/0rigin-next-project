@@ -5,7 +5,7 @@ export interface Login {
 }
 
 export interface UserData {
-   userid: string
+   userId: string
    password: string
    gender: string
 }
