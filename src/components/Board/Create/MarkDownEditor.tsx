@@ -31,7 +31,7 @@ interface Props {
 export default function App({ content, setContent }: Props) {
    const onChange = useCallback<OnChange>(
       (val) => {
-         setContent(val || '/n/n/n/n/n/n/n/n/n/n')
+         setContent(val || '')
       },
       [setContent],
    )
