@@ -39,7 +39,7 @@ export default function Header() {
             </div>
 
             {/* MOBILE 화면  버튼 */}
-            <div className="md:hidden  flex gap-2 items-center">
+            <div className="md:hidden flex gap-3 items-center mx-1">
                <MobileAlramButton />
                <MobileMenuButton />
                {/* 모달 애니메이션  */}
