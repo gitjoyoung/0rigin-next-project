@@ -26,7 +26,6 @@ export default async function Page({ params }: Params) {
 
    // 게시물 목록 가져오기 ssr 처리
    const lastpostId = await fetchLatestPostId()
-   console.log(page, lastpostId)
    const posts = await fetchPosts(page, lastpostId, 20)
 
    return (
