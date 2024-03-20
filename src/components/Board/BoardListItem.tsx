@@ -3,6 +3,7 @@ import React from 'react'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { formatNumberWithUnit } from '@/utils/boardValidators/formatNumberWithUnit'
 import { Post } from '@/types/boardTypes'
+import { ROUTES } from '@/constants/route'
 
 interface Props {
    item: Post
@@ -10,17 +11,28 @@ interface Props {
 }
 
 export default function BoardListItem({ item, page }: Props) {
-   const { id, title, nickname, createdAt, like, views, comments } = item
+   const {
+      id,
+      title,
+      nickname,
+      createdAt,
+      like = 0,
+      views = 0,
+      comments = 0,
+   } = item
+
    return (
       <section className="flex items-center  flex-wrap p-2  ">
          <div className="flex-auto gap-2 justify-start flex  w-72">
             <p className="border text-sm  px-0.5 ">{id}</p>
             <Link
                className="flex gap-2 items-center"
-               href={`/board/${page}/${id}`}
+               href={`${ROUTES.BOARD}/${page}/${id}`}
             >
                <h1 className="line-clamp-1 ">{title}</h1>
-               <p className="text-gray-400 text-sm mx-1">[{comments || 100}]</p>
+               <p className="text-gray-400 text-sm mx-1">
+                  {comments > 0 ? `[${comments}]` : ''}
+               </p>
             </Link>
             {/* 조회수 , 추천수가 많은 경우  아이콘 보이기  */}
          </div>
