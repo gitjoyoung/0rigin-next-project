@@ -1,6 +1,6 @@
 import { auth, db } from '@/lib/firebase'
 import { UserData } from '@/types/authTypes'
-import { UserCredential, createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { DocumentReference, addDoc, collection } from 'firebase/firestore'
 
 // 회원가입 시 추가 정보 저장
@@ -25,7 +25,9 @@ export const fetchSignUp = (userData: UserData): Promise<string | Error> => {
       userData.password,
    )
       .then((userCredential) => {
-         return userCredential.user.uid
+         const userId = userCredential.user.uid
+         addUserDatabase(userId, userData)
+         return userId
       })
       .catch((error) => {
          const errorObj = new Error()
