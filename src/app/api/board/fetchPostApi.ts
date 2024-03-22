@@ -14,13 +14,16 @@ import { Post } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { getCommentCount } from './commentApi'
 
-export const fetchLatestPostId = async (): Promise<number> => {
+export const fetchLatestPostId = async (): Promise<number | null> => {
    const lastQuery = query(
       collection(db, 'posts'),
       orderBy('number', 'desc'),
       limit(1),
    )
    const lastQuerySnapshot = await getDocs(lastQuery)
+   if (lastQuerySnapshot.empty) {
+      return null
+   }
    const last: number = lastQuerySnapshot.docs[0].data().number
    return last
 }
@@ -124,10 +127,13 @@ export const fetchTopPosts = async (limited = 5): Promise<Post[] | null> => {
       orderBy('like', 'desc'),
       limit(limited),
    )
+
    try {
       // 쿼리를 실행하여 문서 스냅샷을 가져옵니다.
       const querySnapshot = await getDocs(postsQuery)
-
+      if (querySnapshot.empty) {
+         return null
+      }
       // 각 문서의 데이터를 배열에 저장합니다.
       const posts: Post[] = querySnapshot.docs.map((snapshot) => ({
          id: snapshot.id,

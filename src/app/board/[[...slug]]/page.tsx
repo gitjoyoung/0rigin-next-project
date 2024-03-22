@@ -23,17 +23,16 @@ export default async function Page({ params }: Params) {
    const [pageSlug, postSlug] = params.slug ?? ['1']
    const page: number = validateSlug(pageSlug) ? parseInt(pageSlug, 10) : 1
    const postId = validateSlug(postSlug) ? postSlug : null
-
-   // 게시물 목록 가져오기 ssr 처리
-   const lastpostId = await fetchLatestPostId()
-   const posts = await fetchPosts(page, lastpostId, 20)
+   // 게시물 목록 가져오기
+   const lastPostId = await fetchLatestPostId()
+   const posts = await fetchPosts(page, lastPostId, 20)
 
    return (
       <>
          <BoardHeader title="왁자지껄" />
          {postId && <BoardRead postId={postId} page={page} />}
          <BoardContent postData={posts} page={page} />
-         <Pagination page={page} lastpostId={lastpostId} />
+         <Pagination page={page} lastPostId={lastPostId} />
       </>
    )
 }
