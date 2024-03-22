@@ -9,11 +9,12 @@ import {
    orderBy,
    query,
    limit,
+   increment,
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import { CreatePostData } from '@/types/boardTypes'
 
-// 포스트 넘버링 내부 함수
+// 포스트 마지막 순번 가져오기
 const fetchLastPostIndex = async (): Promise<number> => {
    try {
       const postsQuery = query(
@@ -65,7 +66,7 @@ export const updatePost = async (postData: CreatePostData): Promise<string> => {
    return postId
 }
 
-// 게시물 수정 함수
+// 포스트 기존 글 수정 함수
 export const updateEditPost = async (
    postId: string,
    updatedData: Partial<CreatePostData>,
@@ -74,8 +75,16 @@ export const updateEditPost = async (
    await updateDoc(postRef, updatedData)
 }
 
-// 게시물 삭제 함수
+// 포스트 삭제 함수
 export const updateDeletePost = async (postId: string): Promise<void> => {
    const postRef = doc(db, 'posts', postId)
    await deleteDoc(postRef)
+}
+
+// 조회수 증가 함수
+export const updateIncreaseViews = async (postId: string): Promise<void> => {
+   const postRef = doc(db, 'posts', postId)
+   await updateDoc(postRef, {
+      views: increment(1), // Increase views by 1
+   })
 }
