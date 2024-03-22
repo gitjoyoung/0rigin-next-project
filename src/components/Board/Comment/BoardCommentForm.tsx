@@ -57,6 +57,7 @@ export default function BoardCommentForm({ postId, onCommentSubmit }: Props) {
                <input
                   name="password"
                   type="password"
+                  autoComplete="off"
                   placeholder="비밀번호"
                   className="border p-1 w-full max-w-40"
                />
