@@ -12,6 +12,7 @@ import {
 import { db } from '@/lib/firebase'
 import { Post } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
+import { getCommentCount } from './commentApi'
 
 export const fetchLatestPostId = async (): Promise<number> => {
    const lastQuery = query(
@@ -34,8 +35,7 @@ export const fetchPosts = async (
    limitCount: number = 1,
 ): Promise<Post[] | null> => {
    // 게시글 가져올 수 있는 최대 개수
-   console.log(page, last, limitCount)
-   console.log(last - (page - 1) * limitCount)
+
    // 'posts' 컬렉션에 대한 쿼리를 생성 startAt을 사용하여 페이징 처리
    // 삭제된 게시물이 있으면 페이징에 문제가 생기는 에러가 있음
    const postsQuery = query(
@@ -49,15 +49,24 @@ export const fetchPosts = async (
       // 쿼리를 실행하여 문서 스냅샷을 가져옵니다.
       const querySnapshot = await getDocs(postsQuery)
       // 각 문서의 데이터를 배열에 저장합니다.
-      const posts: Post[] = querySnapshot.docs.map((snapshot) => ({
-         id: snapshot.id,
-         nickname: snapshot.data().nickname,
-         content: snapshot.data().content,
-         createdAt: snapshot.data().createdAt.toDate(),
-         number: snapshot.data().number,
-         title: snapshot.data().title,
-         category: snapshot.data().category, // Include the missing category property
-      }))
+      const posts: Post[] = await Promise.all(
+         querySnapshot.docs.map(async (snapshot) => {
+            // 댓글 수 가져오기
+            const comment = await getCommentCount(snapshot.id)
+            return {
+               id: snapshot.id,
+               nickname: snapshot.data().nickname,
+               content: snapshot.data().content,
+               createdAt: snapshot.data().createdAt.toDate(),
+               number: snapshot.data().number,
+               title: snapshot.data().title,
+               category: snapshot.data().category,
+               views: snapshot.data().views,
+               like: snapshot.data().like,
+               ...(comment !== null && { comment }),
+            }
+         }),
+      )
 
       // 가져온 데이터를 반환하거나 상태에 저장합니다.
       return posts
