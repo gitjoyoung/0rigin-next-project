@@ -23,6 +23,7 @@
       "@types/three": "^0.162.0",
       "@uiw/react-markdown-preview": "^5.0.7",
       "@uiw/react-md-editor": "4.0.3",
+      "@vercel/speed-insights": "^1.0.10",
       "add": "^2.0.6",
       "browser-image-compression": "^2.0.2",
       "dayjs": "^1.11.10",

@@ -7,6 +7,7 @@ import Footer from '@/components/Footer/Footer'
 import Ticker from '@/components/Ticker/Ticker'
 import { Suspense } from 'react'
 import { NavigationEvents } from '@/components/Router/navigation-events'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import AuthSession from './api/providers/AuthSession'
 
 config.autoAddCss = false
@@ -39,6 +40,7 @@ export default function RootLayout({
                </main>
                <Footer />
             </AuthSession>
+            <SpeedInsights />
          </body>
       </html>
    )
