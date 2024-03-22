@@ -4,7 +4,7 @@ interface Post {
    content: string
    createdAt: string
    title: string
-   comments?: number
+   comment?: number
    category?: string
    like?: number
    dislike?: number
