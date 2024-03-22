@@ -17,8 +17,8 @@ export default function BoardComment({ postId }: Props) {
       null,
    )
 
-   const fetchCommentData = async (Id) => {
-      const commentData = await fetchComments(Id)
+   const fetchCommentData = async (id) => {
+      const commentData = await fetchComments(id)
       if (commentData) {
          setCommentListData(commentData)
       }
@@ -48,24 +48,12 @@ export default function BoardComment({ postId }: Props) {
          </div>
          {/* 댓글 리스트 */}
          {commentListData &&
-            commentListData.map(
-               ({
-                  comment,
-                  nickname,
-                  createdAt,
-                  id,
-                  postId: board,
-               }: CommentData) => (
-                  <BoardCommentItem
-                     key={id}
-                     comment={comment}
-                     nickname={nickname}
-                     createdAt={createdAt}
-                     id={id}
-                     postId={board}
-                  />
-               ),
-            )}
+            commentListData.map((commentData: CommentData) => (
+               <BoardCommentItem
+                  key={commentData.id + commentData.createdAt}
+                  commentData={commentData}
+               />
+            ))}
 
          {/* 댓글 작성 폼 */}
          <BoardCommentForm postId={postId} onCommentSubmit={fetchCommentData} />

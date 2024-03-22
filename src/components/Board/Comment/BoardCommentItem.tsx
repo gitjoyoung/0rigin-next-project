@@ -2,42 +2,37 @@ import { DeleteComment } from '@/app/api/board/commentApi'
 import { CommentData } from '@/types/commentTypes'
 import React from 'react'
 
-export default function BoardCommentItem({
-   comment,
-   nickname,
-   createdAt,
-   id,
-   postId,
-}: CommentData) {
+interface Props {
+   commentData: CommentData
+}
+
+export default function BoardCommentItem({ commentData }: Props) {
+   const { id, postId, nickname, comment, createdAt } = commentData
    return (
-      <div
-         key={`comment-${createdAt}`}
-         className="flex  flex-wrap  border-b last:border-b-0 text-sm min-h-9 hover:bg-gray-100"
-      >
-         <div className="p-1 border-r w-16">
-            <p className=" whitespace-nowrap text-left truncate mr-2">
+      <div className="flex flex-col px-2 border last:border-b-0 text-sm min-h-9 hover:bg-gray-100">
+         <div className="flex justify-between items-center   ">
+            <p className=" whitespace-nowrap text-left truncate mr-2 font-semibold">
                {nickname}
             </p>
+            <div className="flex gap-2 items-center">
+               <button
+                  type="button"
+                  className="p-1"
+                  onClick={() => DeleteComment(postId, id)}
+               >
+                  삭제
+               </button>
+            </div>
          </div>
-         <div className="flex-1 p-1 sm:flex justify-between">
-            <p
-               className="break-words break-all min-w-60"
-               style={{ whiteSpace: 'pre-wrap' }}
-            >
+         <div className=" py-1">
+            <p className="break-words break-all min-w-60 whitespace-pre-wrap">
                {comment}
             </p>
-            <p className="w-15 text-xs text-gray-400 break-words">
-               {createdAt}
-            </p>
-         </div>
-         <div className="text-xs items-center flex px-1">
-            <button
-               type="button"
-               className="p-1"
-               onClick={() => DeleteComment(postId, id)}
-            >
-               삭제
-            </button>
+            <div className="flex justify-end">
+               <p className="w-15 text-xs text-gray-400  break-words">
+                  {createdAt}
+               </p>
+            </div>
          </div>
       </div>
    )
