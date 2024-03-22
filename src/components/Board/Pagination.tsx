@@ -7,8 +7,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/route'
 
-export default function Pagination({ page, lastpostId }) {
-   const totalPages = Math.ceil(lastpostId / 20)
+interface Props {
+   page: number
+   lastPostId: number
+}
+
+export default function Pagination({ page, lastPostId }: Props) {
+   const totalPages = Math.ceil(lastPostId / 20)
    // 페이지 구룹 몇개씩 보여줄 것인지
    const MAX_PAGE = 5
    // 현재 페이지 그룹 계산 ceil : 올림 현재 페이지 / 전체 페이지

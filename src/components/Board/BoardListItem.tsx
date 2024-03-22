@@ -11,16 +11,7 @@ interface Props {
 }
 
 export default function BoardListItem({ item, page }: Props) {
-   const {
-      id,
-      title,
-      nickname,
-      createdAt,
-      like = 0,
-      views = 0,
-      comments = 0,
-   } = item
-
+   const { id, title, nickname, createdAt, like = 0, views = 0, comment } = item
    return (
       <section className="flex items-center  flex-wrap p-2  ">
          <div className="flex-auto gap-2 justify-start flex  w-72">
@@ -31,7 +22,7 @@ export default function BoardListItem({ item, page }: Props) {
             >
                <h1 className="line-clamp-1 ">{title}</h1>
                <p className="text-gray-400 text-sm mx-1">
-                  {comments > 0 ? `[${comments}]` : ''}
+                  {comment && `[${comment}]`}
                </p>
             </Link>
             {/* 조회수 , 추천수가 많은 경우  아이콘 보이기  */}
