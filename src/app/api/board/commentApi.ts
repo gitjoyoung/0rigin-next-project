@@ -63,3 +63,13 @@ export const fetchComments = async (postId): Promise<CommentData[]> => {
 
    return comments
 }
+
+// 댓글 수 가져오기
+export const getCommentCount = async (
+   postId: string,
+): Promise<number | null> => {
+   const commentsCollectionRef = collection(db, 'comments', postId, 'comments')
+   const querySnapshot = await getDocs(commentsCollectionRef)
+   console.log('querySnapshot.size', querySnapshot.size)
+   return querySnapshot.size || null
+}
