@@ -18,13 +18,12 @@ interface ReactionCounts {
 
 export default function BoardLikeButton({ like, dislike, postId }: Props) {
    const [reactionCounts, setReactionCounts] = useState<ReactionCounts>({
-      like,
-      dislike,
+      like: like || 0,
+      dislike: dislike || 0,
    })
 
    const fetchUpdateReaction = async (reactionType: 'like' | 'dislike') => {
       const updatedCount = await updateReactionCount(postId, reactionType)
-      console.log('updatedCount', updatedCount)
       setReactionCounts((prevCounts) => ({
          ...prevCounts,
          ...updatedCount,

@@ -1,6 +1,20 @@
 import React from 'react'
 
-export default function BoardReadTitle({ title, nickname, like, date }) {
+interface Props {
+   title: string
+   nickname: string
+   like: number
+   date: string
+   views: number
+}
+
+export default function BoardReadTitle({
+   title,
+   nickname,
+   like = 0,
+   date,
+   views,
+}: Props) {
    return (
       <div className="border-b border-gray grid gap-2 py-3 px-1">
          <div className="flex justify-between items-center">
@@ -14,13 +28,19 @@ export default function BoardReadTitle({ title, nickname, like, date }) {
                <span>|</span>
             </li>
             <li className="">
-               추천 : <span className="">{like || 0}</span>
+               추천 : <span className="">{like}</span>
             </li>
             <li>
                <span>|</span>
             </li>
             <li className="">
                작성시간 : <span className="">{date}</span>
+            </li>
+            <li>
+               <span>|</span>
+            </li>
+            <li className="">
+               조회 : <span className="">{views}</span>
             </li>
          </ul>
       </div>
