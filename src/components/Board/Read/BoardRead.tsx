@@ -20,8 +20,11 @@ export default function BoardRead({ postId, page }: Props) {
    const [readData, setReadData] = useState<Post | null>(null)
 
    useEffect(() => {
-      updateIncreaseViews(postId)
-      fetchPostById(postId).then((data) => {
+      fetchPostById(postId).then(async (data) => {
+         if (data === null) {
+            return
+         }
+         await updateIncreaseViews(postId)
          setReadData(data)
       })
    }, [postId])
