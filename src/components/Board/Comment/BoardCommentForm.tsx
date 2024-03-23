@@ -52,6 +52,7 @@ export default function BoardCommentForm({ postId, onCommentSubmit }: Props) {
                   name="nickname"
                   type="text"
                   placeholder="닉네임"
+                  autoComplete="off"
                   className="border p-1  max-w-40"
                />
                <input
