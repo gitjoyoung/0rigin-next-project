@@ -22,4 +22,6 @@ export const ROUTES = {
    CONTACT: '/contact',
    // 기타 에러페이지
    NOT_FOUND: '/404',
+
+   // 퀴즈 페이지
 }
