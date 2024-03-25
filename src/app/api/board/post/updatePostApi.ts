@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import { CreatePostData } from '@/types/boardTypes'
+import { updateIncrementCount } from '../tickerApi'
 
 // 포스트 마지막 순번 가져오기
 const fetchLastPostIndex = async (): Promise<number> => {
@@ -59,10 +60,12 @@ const updateAddPost = async (
    }
 }
 // 글 생성 핸들링 함수
-export const updatePost = async (postData: CreatePostData): Promise<string> => {
+export const createPost = async (postData: CreatePostData): Promise<string> => {
    const postNumber = await fetchLastPostIndex()
    // 게시물 업로드 Firestore에 저장
    const postId = await updateAddPost(postData, postNumber)
+   await updateIncrementCount('post')
+
    return postId
 }
 

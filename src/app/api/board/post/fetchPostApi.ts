@@ -12,7 +12,7 @@ import {
 import { db } from '@/lib/firebase'
 import { Post } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
-import { getCommentCount } from './commentApi'
+import { getCommentCount } from '../commentApi'
 
 export const fetchLatestPostId = async (): Promise<number | null> => {
    const lastQuery = query(
