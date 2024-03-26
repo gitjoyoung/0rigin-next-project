@@ -1,4 +1,3 @@
-import BoardHeader from '@/components/Board/BoardHeader'
 import BoardRead from '@/components/Board/Read/BoardRead'
 import { validateSlug } from '@/utils/slugValidators/slug'
 import { Metadata } from 'next'
