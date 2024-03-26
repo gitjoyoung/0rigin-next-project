@@ -11,7 +11,7 @@ export default function MarkDownViewer({ content }) {
    return (
       <div
          data-color-mode="light"
-         className="markdown-list whitespace-pre-line p-1 my-3 min-h-56"
+         className="markdown-list whitespace-pre-wrap p-1 my-3 min-h-56"
       >
          <MarkdownPreview
             source={content}

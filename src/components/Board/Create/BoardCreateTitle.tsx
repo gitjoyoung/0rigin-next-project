@@ -1,9 +1,13 @@
 import React from 'react'
 
-export default function BoardCreateTitle() {
+interface Props {
+   title: string
+}
+
+export default function BoardCreateTitle({ title }: Props) {
    return (
       <div className="px-1  w-full  ">
-         <h1 className="font-semibolde text-4xl">글쓰기</h1>
+         <h1 className="font-semibolde text-4xl">{title}</h1>
       </div>
    )
 }

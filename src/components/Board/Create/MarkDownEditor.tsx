@@ -28,7 +28,7 @@ interface Props {
    setContent: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function App({ content, setContent }: Props) {
+export default function MarkDownEditor({ content, setContent }: Props) {
    const onChange = useCallback<OnChange>(
       (val) => {
          setContent(val || '')

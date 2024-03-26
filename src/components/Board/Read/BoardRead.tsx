@@ -2,9 +2,9 @@
 
 import BoardComment from '@/components/Board/Comment/BoardCommentsList'
 import { useEffect, useState } from 'react'
-import { fetchPostById } from '@/app/api/board/fetchPostApi'
+import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
 import { Post } from '@/types/boardTypes'
-import { updateIncreaseViews } from '@/app/api/board/updatePostApi'
+import { updateIncreaseViews } from '@/app/api/board/post/updatePostApi'
 import BoardReadTitle from './BoardReadTitle'
 import BoardUpdateButton from './BoardUpdateButton'
 import BoardLikeButton from './BoardLikeButton'
@@ -13,10 +13,9 @@ import MarkDownViewer from './MarkDownViewer'
 
 interface Props {
    postId: string
-   page: number
 }
 
-export default function BoardRead({ postId, page }: Props) {
+export default function BoardRead({ postId }: Props) {
    const [readData, setReadData] = useState<Post | null>(null)
 
    useEffect(() => {
@@ -58,7 +57,7 @@ export default function BoardRead({ postId, page }: Props) {
          {/* 댓글 컴포넌트  */}
          <BoardComment postId={postId} />
          {/* 이전 목록 다음 글 이동 */}
-         <BoardNavButton page={page} postID={postId} />
+         <BoardNavButton postID={postId} />
       </section>
    )
 }

@@ -1,27 +1,31 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { updateEditPost } from '@/app/api/board/post/updatePostApi'
+import InputNickName from '@/components/common/InputIdBox'
+import InputPasswordBox from '@/components/common/InputPasswordBox'
 import { ROUTES } from '@/constants/route'
 import { CreatePostData } from '@/types/boardTypes'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import { createPost } from '@/app/api/board/post/updatePostApi'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
-import InputPasswordBox from '@/components/common/InputPasswordBox'
-import InputNickName from '@/components/common/InputIdBox'
-import MarkDownEditor from './MarkDownEditor'
-import FormSubmitButton from './FormSubmitButton'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import { unified } from 'unified'
 import BoardEditorHelpBox from './BoardEditorHelpBox'
+import FormSubmitButton from './FormSubmitButton'
+import MarkDownEditor from './MarkDownEditor'
 
-export default function BoardCreateForm() {
-   // 라우터 이동
+interface Props {
+   postId: string
+   editData: CreatePostData
+}
+
+export default function BoardEditForm({ postId, editData }: Props) {
    const router = useRouter()
    // 패스 워드 버튼 감추기
    // 글쓰기 내용을 저장하는 state
-   const [content, setContent] = useState(null) // 글쓰기 폼의 내용을 저장하는 state
+   const [content, setContent] = useState(editData.markdown || '') // 글쓰기 폼의 내용을 저장하는 state
 
    // 글쓰기 폼 제출
    const handleFormSubmit = async (e) => {
@@ -42,12 +46,10 @@ export default function BoardCreateForm() {
          content: resultHtml,
          markdown: content,
       }
-      console.log(dataObject)
-      await createPost(dataObject).then((postNumber) => {
+      await updateEditPost(postId, dataObject).then((postNumber) => {
          router.push(`${ROUTES.BOARD}/1/${postNumber}`)
       })
    }
-
    return (
       <section className=" w-full  px-1 py-2  ">
          <form
@@ -57,12 +59,17 @@ export default function BoardCreateForm() {
             {/* 닉네임 비밀번호 */}
             <div className="flex flex-wrap items-center gap-2 mt-2 mb-2 text-sm ">
                {/* 게시글 작성 닉네임 */}
-               <InputNickName name="nickname" placeholder="닉네임" />
+               <InputNickName
+                  defaultValue={editData?.nickname}
+                  name="nickname"
+                  placeholder="닉네임"
+               />
                {/* 비밀번호 */}
                <InputPasswordBox name="password" placeholder="패스워드" />
             </div>
             {/* 제목 */}
             <input
+               defaultValue={editData?.title}
                className="border p-2  text-sm "
                type="text"
                name="title"

@@ -1,4 +1,4 @@
-import { updateDeletePost } from '@/app/api/board/updatePostApi'
+import { updateDeletePost } from '@/app/api/board/post/updatePostApi'
 import { ROUTES } from '@/constants/route'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useEffect } from 'react'
