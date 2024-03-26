@@ -6,6 +6,7 @@ export const metadata: Metadata = {
    title: '0rigin 글쓰기',
 }
 function Create() {
+  
    return (
       <>
          <BoardCreateTitle title="글쓰기" />

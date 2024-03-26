@@ -15,6 +15,7 @@ interface Params {
 export default async function Page({ params }: Params) {
    // 슬러그 처리
    const postSlug = params.slug?.[1]
+   // 게시물 아이디
    const postId = validateSlug(postSlug) ? postSlug : null
    // 게시물 목록 가져오기
    if (postId) {

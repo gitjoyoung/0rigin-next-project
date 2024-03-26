@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-   const lastpostId = await fetchLatestPostId()
-   const postData: Post[] = await fetchPosts(1, lastpostId, 20)
+   const lastPostId = await fetchLatestPostId()
+   const postData: Post[] = await fetchPosts(1, lastPostId, 20)
    const topData = await fetchTopPosts()
    await updateIncrementCount('visit')
 
