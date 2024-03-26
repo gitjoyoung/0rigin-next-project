@@ -2,12 +2,13 @@ import { Post } from '@/types/boardTypes'
 import Banner from '@/components/Banner/Banner'
 import BoardContent from '@/components/Board/BoardContent'
 import { Metadata } from 'next'
+
+import { updateIncrementCount } from './api/board/tickerApi'
 import {
    fetchLatestPostId,
    fetchPosts,
    fetchTopPosts,
-} from './api/board/fetchPostApi'
-import { updateIncrementCount } from './api/board/tickerApi'
+} from './api/board/post/fetchPostApi'
 
 export const metadata: Metadata = {
    title: '0rigin 홈',
