@@ -1,6 +1,7 @@
-import { fetchPostById } from '@/app/api/board/fetchPostApi'
-import BoardCreateForm from '@/components/Board/Create/BoardCreateForm'
-import { CreatePostData, Post } from '@/types/boardTypes'
+import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
+import BoardCreateTitle from '@/components/Board/Create/BoardCreateTitle'
+import BoardEditForm from '@/components/Board/Create/BoardEditForm'
+import { CreatePostData } from '@/types/boardTypes'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -8,11 +9,13 @@ export const metadata: Metadata = {
 }
 
 export default async function Update({ params }: { params: { id: string } }) {
-   const postid: string = params.id
-   console.log('postid:', postid)
-   const { nickname, title, content }: Post = await fetchPostById(postid)
-   const editData: CreatePostData = { nickname, title, content }
-   // 임시
+   const postId: string = params.id
+   const editData: CreatePostData = await fetchPostById(postId)
 
-   return <BoardCreateForm editData={editData} />
+   return (
+      <>
+         <BoardCreateTitle title="수정하기" />
+         <BoardEditForm editData={editData} postId={postId} />
+      </>
+   )
 }

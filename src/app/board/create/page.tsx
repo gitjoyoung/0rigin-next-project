@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 function Create() {
    return (
       <>
-         <BoardCreateTitle />
+         <BoardCreateTitle title="글쓰기" />
          <BoardCreateForm />
       </>
    )
