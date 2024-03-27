@@ -13,13 +13,14 @@ import {
 export const metadata: Metadata = {
    title: '0rigin 홈',
 }
+export const revalidate = 10
 
 export default async function Home() {
    const lastPostId = await fetchLatestPostId()
    const postData: Post[] = await fetchPosts(1, lastPostId, 20)
    const topData = await fetchTopPosts()
    await updateIncrementCount('visit')
-
+   console.log('통신')
    return (
       <section>
          <div className="flex flex-wrap justify-between border border-black p-1 ">
