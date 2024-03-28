@@ -20,7 +20,7 @@ export default async function Home() {
    const postData: Post[] = await fetchPosts(1, lastPostId, 20)
    const topData = await fetchTopPosts()
    await updateIncrementCount('visit')
-   console.log('통신')
+
    return (
       <section>
          <div className="flex flex-wrap justify-between border border-black p-1 ">
