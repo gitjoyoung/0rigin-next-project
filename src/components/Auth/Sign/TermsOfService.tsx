@@ -11,17 +11,6 @@ export default function TermsOfService({ onTermsAgreed }: Props) {
    // 이용약관 동의 체크박스
    const [checkTerm, setCheckTerm] = useState<boolean>(false)
 
-   /**
-    * 체크박스 변경 이벤트
-    * @returns {void}
-    */
-   const handleCheckboxChange = (): void => {
-      setCheckTerm((current) => !current)
-   }
-   /**
-    * 회원가입 페이지로 이동
-    * @returns {void}
-    */
    const moveSignUpPage = (): void => {
       if (checkTerm) {
          onTermsAgreed()
@@ -33,9 +22,9 @@ export default function TermsOfService({ onTermsAgreed }: Props) {
    return (
       <section className=" flex flex-col items-center m-3">
          <div className=" ">
-            <h2 className="font-bold text-lg">이용 약관</h2>
+            <h2 className="font-bold text-lg">{TERMS_CONTENT.title}</h2>
             <div className=" border border-gray-300 rounded-lg h-48  p-2 overflow-y-auto">
-               <p>{TERMS_CONTENT}</p>
+               <p>{TERMS_CONTENT.content}</p>
             </div>
          </div>
          <div className="m-2 ">
@@ -43,11 +32,11 @@ export default function TermsOfService({ onTermsAgreed }: Props) {
                <input
                   type="checkbox"
                   checked={checkTerm}
-                  onChange={handleCheckboxChange}
+                  onChange={(e) => setCheckTerm(e.target.checked)}
                   className="scale-150 mx-2"
                   id="agree"
                />
-               0rigin 이용약관에 동의하기
+               {TERMS_CONTENT.agree}
             </label>
          </div>
          <div className="flex  items-center justify-center gap-4">
@@ -55,6 +44,7 @@ export default function TermsOfService({ onTermsAgreed }: Props) {
                className="p-2 w-[200px] "
                type="button"
                onClick={moveSignUpPage}
+               disabled={!checkTerm}
             >
                확인
             </button>
