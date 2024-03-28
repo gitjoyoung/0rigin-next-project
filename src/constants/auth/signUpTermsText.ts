@@ -16,7 +16,10 @@ export const SIGN_UP_TERMS = {
    },
 }
 
-export const TERMS_CONTENT = `
+export const TERMS_CONTENT = {
+   title: '이용 약관',
+   agree: '0rigin 이용약관에 동의하기',
+   content: `
 제1조 (서비스의 목적)
 본 서비스는 회원에게 제로리진(0rigin)이 제공하는 다양한 콘텐츠 및 기능을 통한 창의적인 활동과 소통의 기회를 제공하기 위해 제공됩니다.
 
@@ -38,4 +41,5 @@ export const TERMS_CONTENT = `
 제4조 (제로리진(0rigin)의 권리 및 의무)
 제로리진(0rigin)은 회원에게 안정적이고 원활한 서비스를 제공하기 위해 최선을 다하며, 서비스 개선을 위해 지속적으로 노력합니다.
 
-제로리진(0rigin)은 회원의 개인정보 보호를 위해 관련 법령 및 정책에 따라 노력합니다.`
+제로리진(0rigin)은 회원의 개인정보 보호를 위해 관련 법령 및 정책에 따라 노력합니다.`,
+}
