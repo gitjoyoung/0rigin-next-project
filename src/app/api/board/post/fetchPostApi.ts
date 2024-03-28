@@ -10,7 +10,7 @@ import {
    startAt,
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import { Post } from '@/types/boardTypes'
+import { Post, TopPost } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { getCommentCount } from '../commentApi'
 
@@ -118,7 +118,7 @@ export const fetchPostById = async (postID: string): Promise<Post | null> => {
  * @param {string} condition 특정 조건
  * @returns {Promise<Post[]>} 조건에 맞는 게시물 배열을 반환합니다.
  */
-export const fetchTopPosts = async (limited = 5): Promise<Post[] | null> => {
+export const fetchTopPosts = async (limited = 5): Promise<TopPost[] | null> => {
    // 'posts' 컬렉션에 대한 쿼리를 생성합니다.
    // 특정 조건을 추가하고, 5개 문서로 제한합니다.
    // desc 내림차순은 큰 숫자부터 작은 숫자로 정렬
@@ -127,28 +127,23 @@ export const fetchTopPosts = async (limited = 5): Promise<Post[] | null> => {
       orderBy('like', 'desc'),
       limit(limited),
    )
+   // 쿼리를 실행하여 문서 스냅샷을 가져옵니다.
+   const querySnapshot = await getDocs(postsQuery)
 
-   try {
-      // 쿼리를 실행하여 문서 스냅샷을 가져옵니다.
-      const querySnapshot = await getDocs(postsQuery)
-      if (querySnapshot.empty) {
-         return null
-      }
-      // 각 문서의 데이터를 배열에 저장합니다.
-      const posts: Post[] = querySnapshot.docs.map((snapshot) => ({
-         id: snapshot.id,
-         nickname: snapshot.data().nickname,
-         content: snapshot.data().content,
-         createdAt: formatCustomDate(snapshot.data().createdAt.toDate()),
-         number: snapshot.data().number,
-         title: snapshot.data().title,
-         category: snapshot.data().category,
-      }))
-      // 가져온 데이터를 반환하거나 상태에 저장합니다.
-      return posts
-   } catch (error) {
-      console.error('Error fetching posts:', error)
-      // 오류 처리를 여기서 수행합니다.
+   if (querySnapshot.empty) {
       return null
    }
+   // 각 문서의 데이터를 배열에 저장합니다.
+   const posts: TopPost[] = querySnapshot.docs.map((snapshot) => ({
+      id: snapshot.id,
+      nickname: snapshot.data().nickname,
+      createdAt: formatCustomDate(snapshot.data().createdAt.toDate()),
+      like: snapshot.data().like,
+      views: snapshot.data().views,
+      title: snapshot.data().title,
+      thumbnail: snapshot.data().thumbnail,
+      summary: snapshot.data().summary,
+   }))
+   // 가져온 데이터를 반환하거나 상태에 저장합니다.
+   return posts
 }
