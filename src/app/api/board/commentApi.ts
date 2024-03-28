@@ -70,6 +70,5 @@ export const getCommentCount = async (
 ): Promise<number | null> => {
    const commentsCollectionRef = collection(db, 'comments', postId, 'comments')
    const querySnapshot = await getDocs(commentsCollectionRef)
-   console.log('querySnapshot.size', querySnapshot.size)
    return querySnapshot.size || null
 }
