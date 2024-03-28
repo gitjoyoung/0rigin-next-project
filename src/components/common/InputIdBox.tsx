@@ -2,12 +2,14 @@ interface Props {
    defaultValue?: string
    name: string
    placeholder: string
+   disabled?: boolean
 }
 
 export default function InputNickName({
    defaultValue = '',
    name,
    placeholder,
+   disabled = false,
 }: Props) {
    return (
       <div className=" border max-w-[160px]">
@@ -21,6 +23,7 @@ export default function InputNickName({
             minLength={2}
             maxLength={12}
             required
+            disabled={disabled}
          />
       </div>
    )
