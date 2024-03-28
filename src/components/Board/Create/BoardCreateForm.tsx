@@ -12,16 +12,18 @@ import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 import InputPasswordBox from '@/components/common/InputPasswordBox'
 import InputNickName from '@/components/common/InputIdBox'
+import { useSession } from 'next-auth/react'
 import MarkDownEditor from './MarkDownEditor'
 import FormSubmitButton from './FormSubmitButton'
 import BoardEditorHelpBox from './BoardEditorHelpBox'
 
 export default function BoardCreateForm() {
+   const { data: session } = useSession()
    // 라우터 이동
    const router = useRouter()
    // 패스 워드 버튼 감추기
    // 글쓰기 내용을 저장하는 state
-   const [content, setContent] = useState(null) // 글쓰기 폼의 내용을 저장하는 state
+   const [content, setContent] = useState('') // 글쓰기 폼의 내용을 저장하는 state
 
    // 글쓰기 폼 제출
    const handleFormSubmit = async (e) => {
@@ -35,32 +37,63 @@ export default function BoardCreateForm() {
 
       const resultHtml = String(sanitizedContent.value)
 
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(resultHtml, 'text/html')
+      const pTags = doc.querySelectorAll('p')
+      const thumbnail =
+         doc.querySelectorAll('img').length > 0
+            ? doc.querySelectorAll('img')[0].src
+            : ''
+
+      const summary = Array.from(pTags)
+         .map((p) => p.textContent.trim())
+         .filter((text) => text.length > 0)
+         .join(' ')
+
       const dataObject: CreatePostData = {
          nickname: e.target.nickname.value,
-         password: e.target.password.value,
          title: e.target.title.value,
          content: resultHtml,
          markdown: content,
+         summary,
+         thumbnail,
       }
-      console.log(dataObject)
+
+      if (!session) {
+         dataObject.password = e.target.password.value
+      }
       await createPost(dataObject).then((postNumber) => {
          router.push(`${ROUTES.BOARD}/1/${postNumber}`)
       })
    }
 
    return (
-      <section className=" w-full  px-1 py-2  ">
+      <section className=" w-full  px-3 py-2">
          <form
             className="w-full flex flex-col gap-2"
             onSubmit={(e) => handleFormSubmit(e)}
          >
             {/* 닉네임 비밀번호 */}
             <div className="flex flex-wrap items-center gap-2 mt-2 mb-2 text-sm ">
-               {/* 게시글 작성 닉네임 */}
-               <InputNickName name="nickname" placeholder="닉네임" />
-               {/* 비밀번호 */}
-               <InputPasswordBox name="password" placeholder="패스워드" />
+               {session ? (
+                  <>
+                     <InputNickName
+                        name="nickname"
+                        placeholder={session.user.email}
+                        disabled
+                     />
+                     <p className="text-blue-600">로그인 상태</p>
+                  </>
+               ) : (
+                  <>
+                     {/* 게시글 작성 닉네임 */}
+                     <InputNickName name="nickname" placeholder="닉네임" />
+                     {/* 비밀번호 */}
+                     <InputPasswordBox name="password" placeholder="패스워드" />
+                  </>
+               )}
             </div>
+
             {/* 제목 */}
             <input
                className="border p-2  text-sm "
@@ -76,7 +109,7 @@ export default function BoardCreateForm() {
             <MarkDownEditor content={content} setContent={setContent} />
 
             {/* 제출 버튼 */}
-            <div className="flex gap-6 justify-end p-1 m-3">
+            <div className="flex gap-6 justify-end my-2">
                <FormSubmitButton
                   label="취소 하기"
                   onClick={() => router.back()}
