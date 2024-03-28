@@ -1,31 +1,14 @@
-import { SIGN_UP_TERMS } from '@/constants/auth/signUpTermsText'
-import Link from 'next/link'
 import { Metadata } from 'next'
+import SignUpWelcome from '@/components/Auth/Sign/SignUpWelcome'
 
 export const metadata: Metadata = {
-   title: '0rigin 회원가입 약관',
+   title: '0rigin 회원가입을 하셨나요?',
+   description: '0rigin 회원이시라면 로그인으로, 회원가입 페이지로 이동합니다.',
 }
 
-function SignPage() {
+export default function SignPage() {
    return (
-      //  회원가입 이동 페이지
-      <div className="mt-20 mb-20 h-full w-full pr-10 pl-10 flex flex-col items-center gap-5 justify-center">
-         <h1 className="font-bold text-3xl">{SIGN_UP_TERMS.welcomeMessage}</h1>
-         <h3>{SIGN_UP_TERMS.registration.question}</h3>
-         <div className="flex gap-8 items-center">
-            <Link href={SIGN_UP_TERMS.login.href}>
-               <button type="button" className="p-2">
-                  {SIGN_UP_TERMS.login.buttonText}
-               </button>
-            </Link>
-            <Link href={SIGN_UP_TERMS.signup.href}>
-               <button type="button" className="p-2 font-semibold">
-                  {SIGN_UP_TERMS.signup.buttonText}
-               </button>
-            </Link>
-         </div>
-      </div>
+      //  회원가입 로그인 페이지로 이동
+      <SignUpWelcome />
    )
 }
-
-export default SignPage
