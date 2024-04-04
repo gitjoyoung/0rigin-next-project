@@ -33,9 +33,25 @@ export default function BoardRead({ postId }: Props) {
    if (readData === null) {
       return null
    }
-   const { title, nickname, like, createdAt, views, content, dislike } =
-      readData
+   const {
+      title,
+      nickname,
+      like,
+      createdAt,
+      views,
+      content,
+      dislike,
+      deleted,
+   } = readData
    // 데이타가 있을때
+
+   if (deleted) {
+      return (
+         <div className="p-3">
+            <h1>삭제된 게시글 입니다.</h1>
+         </div>
+      )
+   }
    return (
       <section className="mt-1 ">
          {/* 글제목 */}
