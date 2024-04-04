@@ -1,6 +1,6 @@
 import React from 'react'
 import { ROUTES } from '@/constants/route'
-import BoardMainButton from './BoardMainButton'
+import BoardMainButton from './Content/BoardMainButton'
 
 export default function BoardFooter() {
    return (

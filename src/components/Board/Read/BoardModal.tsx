@@ -22,17 +22,13 @@ export default function BoardModal({ onClose, postId, flag }: Props) {
    }
 
    const handleUpdate = async () => {
-      try {
-         if (flag === 'delete') {
-            updateDeletePost(postId)
-            onClose()
-            router.push(ROUTES.BOARD)
-         } else if (flag === 'edit') {
-            router.push(`${ROUTES.BOARD_UPDATE}/${postId}`)
-            onClose()
-         }
-      } catch (error) {
-         console.error('Failed to update board:', error)
+      if (flag === 'delete') {
+         updateDeletePost(postId)
+         router.push(ROUTES.BOARD)
+         onClose()
+      } else if (flag === 'edit') {
+         router.push(`${ROUTES.BOARD_UPDATE}/${postId}`)
+         onClose()
       }
    }
 

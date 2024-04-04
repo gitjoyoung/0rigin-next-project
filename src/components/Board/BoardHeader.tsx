@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ROUTES } from '@/constants/route'
-import BoardMainButton from './BoardMainButton'
+import BoardMainButton from './Content/BoardMainButton'
 
 export default function BoardHeader({ title }) {
    return (

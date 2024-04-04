@@ -41,11 +41,11 @@ export default function BoardListItem({ item, page }: Props) {
                </Link>
             )}
          </div>
-         <ul className=" flex gap-2 text-xs text-gray-400  ">
+         <ul className=" flex gap-2 text-xs text-gray-400 text-center ">
             <li className="font-bold">{nickname || '닉네임'}</li>
-            <li className="w-18"> {formatCustomDate(createdAt)} </li>
-            <li className="w-18">추천 {formatNumberWithUnit(like)}</li>
-            <li className="w-18">조회 {formatNumberWithUnit(views)}</li>
+            <li className="w-[50px]"> {formatCustomDate(createdAt)} </li>
+            <li className="w-[50px]">추천 {formatNumberWithUnit(like)}</li>
+            <li className="w-[50px]">조회 {formatNumberWithUnit(views)}</li>
          </ul>
       </section>
    )

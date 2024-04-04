@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react'
 import { Post } from '@/types/boardTypes'
-import BoardList from './BoardList'
-import { BoardTapButton } from './BoardTapButton'
+import { BoardTapButton } from './Content/BoardTapButton'
+import BoardList from './Content/BoardList'
 
 interface Props {
    postData: Post[]

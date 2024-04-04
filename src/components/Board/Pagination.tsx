@@ -47,7 +47,7 @@ export default function Pagination({ page, lastPostId }: Props) {
             </button>
          )}
 
-         {/* 페이지 번호 */}
+         {/* 현재 페이지 번호 */}
          {pageNumbers.map((index: number) => (
             <div key={`${index}PAGE`} className="mx-1">
                {page === index ? (
