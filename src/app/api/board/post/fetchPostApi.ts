@@ -66,6 +66,7 @@ export const fetchPosts = async (
                category: snapshot.data().category,
                views: snapshot.data().views,
                like: snapshot.data().like,
+               deleted: snapshot.data().deleted,
                ...(comment !== null && { comment }),
             }
          }),
