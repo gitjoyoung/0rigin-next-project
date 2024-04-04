@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { ROUTES } from '@/constants/route'
+import BoardMainButton from './BoardMainButton'
 
 export default function BoardHeader({ title }) {
    return (
@@ -12,11 +14,7 @@ export default function BoardHeader({ title }) {
             </Link>
             <p className="text-sm">재미있는 게시글을 작성해 보세요</p>
          </div>
-         <div className=" right-0 border border-black  shadow-md  flex items-center">
-            <Link href="/board/create" className="px-4 py-2 font-bold">
-               글쓰기
-            </Link>
-         </div>
+         <BoardMainButton route={ROUTES.BOARD_WRITE} title="글쓰기" />
       </div>
    )
 }
