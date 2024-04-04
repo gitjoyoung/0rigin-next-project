@@ -21,9 +21,7 @@ export default function BoardReadTitle({
             <h1 className="text-2xl">{title}</h1>
          </div>
          <ul className="list-none flex gap-2  text-xs">
-            <li className="font-bold">
-               닉네임 : <span>{nickname}</span>
-            </li>
+            <li className="font-bold w-[90px] line-clamp-1">{nickname}</li>
             <li>
                <span>|</span>
             </li>
