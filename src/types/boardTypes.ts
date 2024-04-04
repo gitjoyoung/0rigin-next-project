@@ -10,6 +10,7 @@ interface Post {
    dislike?: number
    views?: number
    thumbnail?: string
+   deleted?: boolean
 }
 
 interface CreatePostData {
