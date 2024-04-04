@@ -4,7 +4,6 @@ import {
    serverTimestamp,
    setDoc,
    updateDoc,
-   deleteDoc,
    getDocs,
    orderBy,
    query,
@@ -81,7 +80,10 @@ export const updateEditPost = async (
 // 포스트 삭제 함수
 export const updateDeletePost = async (postId: string): Promise<void> => {
    const postRef = doc(db, 'posts', postId)
-   await deleteDoc(postRef)
+   await updateDoc(postRef, {
+      deleted: true,
+      deletedAt: new Date(), // 삭제 시간을 기록하고 싶다면 이 줄을 추가합니다.
+   })
 }
 
 // 조회수 증가 함수
