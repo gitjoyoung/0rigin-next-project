@@ -1,9 +1,13 @@
 import React from 'react'
+import { ROUTES } from '@/constants/route'
+import CustomTilte from '../common/customTilte'
 
 export default function QuizTitle() {
    return (
-      <div>
-         <h1 className="font-bold text-xl">QuizTitle</h1>
-      </div>
+      <CustomTilte
+         title="QuizTitle"
+         subTitle="재밌있는 퀴즈를 풀어풀세요"
+         link={ROUTES.QUIZ}
+      />
    )
 }
