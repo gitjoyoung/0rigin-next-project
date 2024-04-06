@@ -1,8 +1,8 @@
 import React from 'react'
 import { ROUTES } from '@/constants/route'
-import CustomTilte from '../common/customTilte'
+import CustomTilte from '../common/CustomTitle'
 
-export default function QuizTitle() {
+export default function QuizHeader() {
    return (
       <CustomTilte
          title="QuizTitle"
