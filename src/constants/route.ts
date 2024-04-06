@@ -24,4 +24,6 @@ export const ROUTES = {
    NOT_FOUND: '/404',
 
    // 퀴즈 페이지
+   QUIZ: '/quiz',
+   QUIZ_DETAIL: '/quiz/:id',
 }
