@@ -42,7 +42,9 @@ export default function BoardListItem({ item, page }: Props) {
             )}
          </div>
          <ul className=" flex gap-2 text-xs text-gray-400 text-center ">
-            <li className="font-bold">{nickname || '닉네임'}</li>
+            <li className="font-bold w-[100px] text-start line-clamp-1">
+               {nickname || '닉네임'}
+            </li>
             <li className="w-[50px]"> {formatCustomDate(createdAt)} </li>
             <li className="w-[50px]">추천 {formatNumberWithUnit(like)}</li>
             <li className="w-[50px]">조회 {formatNumberWithUnit(views)}</li>
