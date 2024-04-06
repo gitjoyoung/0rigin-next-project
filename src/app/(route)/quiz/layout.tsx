@@ -1,10 +1,10 @@
-import QuizTitle from '@/components/Quiz/QuizTitle'
+import QuizHeader from '@/components/Quiz/QuizHeader'
 import React from 'react'
 
 export default function layout({ children }) {
    return (
       <div>
-         <QuizTitle />
+         <QuizHeader />
          <div>{children} </div>
       </div>
    )
