@@ -4,10 +4,15 @@ import { useSession } from 'next-auth/react'
 import React from 'react'
 // import BoardList from '../Board/BoardList'
 
+interface SessionData {
+   email?: string
+   name?: string
+   user?: any
+}
+
 export default function MyPage() {
    const { data, status } = useSession()
-   const user = data?.user
-   const { email = '', name = '' } = user || {}
+   const { email = '', name = '', user } = data as SessionData
    console.log('user', user, status)
 
    return (
