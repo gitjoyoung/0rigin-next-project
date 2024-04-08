@@ -18,9 +18,8 @@ export default function SignForm() {
          password: e.currentTarget.password.value,
          confirmPassword: e.currentTarget.confirmPassword.value,
       }
-      console.log(formData)
       const result = signUpSchema.safeParse(formData)
-      if (!result.success) {
+      if (result.success === false) {
          const errorMessage = result.error.errors
             .map((error) => `${error.path.join('.')}: ${error.message}`)
             .join(', ')
