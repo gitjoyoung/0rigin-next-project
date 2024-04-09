@@ -3,6 +3,7 @@
 import { AddComment } from '@/app/api/board/commentApi'
 import { CreateCommentData } from '@/types/commentTypes'
 import React, { useRef } from 'react'
+import { commentSchema } from './schma/commentSchema'
 
 interface Props {
    postId: string
@@ -22,21 +23,22 @@ export default function BoardCommentForm({ postId, onCommentSubmit }: Props) {
       const password = commentFormRef.current.password.value
       const comment = commentFormRef.current.comment.value
 
-      const formData: CreateCommentData = {
+      const commentObject: CreateCommentData = {
          postId,
          nickname,
          password,
          comment,
       }
-      try {
-         const reponse = await AddComment(postId, formData)
-         if (reponse) {
-            console.log('댓글이 등록되었습니다')
-            clearFormFields()
-            onCommentSubmit(postId)
-         }
-      } catch (error) {
-         console.log(error)
+      const result = commentSchema.safeParse(commentObject)
+      if (result.success === false) {
+         alert(result.error)
+         return
+      }
+      const response = await AddComment(postId, commentObject)
+      if (response) {
+         console.log('댓글이 등록되었습니다')
+         clearFormFields()
+         onCommentSubmit(postId)
       }
    }
 
