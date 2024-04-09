@@ -45,7 +45,6 @@ export const generateErrorMessage = () => {
  * 파일 사이즈 및 타입 검사 함수
  * @param file
  * @returns
- * boolean : 에러 메세지 와 함께 boolean 값 반환
  */
 export const validateFile = (file: File): boolean => {
    const isValidSize = checkFileSize(file)
