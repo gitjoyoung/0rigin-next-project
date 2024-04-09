@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { openai } from '@/lib/openAI'
-import fetchSearch from '@/app/api/serach/search'
 import { ROUTES } from '@/constants/route'
 import { SearchResult } from '@/types/searchTypes'
+import fetchSearch from '@/app/api/search/search'
 import SearchBox from '../Header/SearchBox'
 
 interface Props {
