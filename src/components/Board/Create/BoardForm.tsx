@@ -98,7 +98,11 @@ export default function BoardForm({
             />
 
             {/* 내용 contentEditTable 로 태그를 추가함 */}
-            <CustomDisclosure title="TIP : 마크다운 사용법" tip={TIP_CONTENT} />
+            <CustomDisclosure
+               title="TIP : 마크다운 사용법"
+               tip={TIP_CONTENT}
+               color="purple"
+            />
             {/* 글쓰기 마크다운 */}
             <MarkDownEditor content={content} setContent={setContent} />
 
