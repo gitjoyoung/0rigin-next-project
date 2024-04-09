@@ -16,18 +16,17 @@ import { useSession } from 'next-auth/react'
 import MarkDownEditor from './MarkDownEditor'
 import FormSubmitButton from './FormSubmitButton'
 import BoardEditorHelpBox from './BoardEditorHelpBox'
+import { boardSchema } from './shema/boradFormSchema'
 
 export default function BoardCreateForm() {
-   const { data: session } = useSession()
-   // 라우터 이동
-   const router = useRouter()
-   // 패스 워드 버튼 감추기
-   // 글쓰기 내용을 저장하는 state
+   const { data: session } = useSession() // 세션 정보
+   const router = useRouter() // 라우터
    const [content, setContent] = useState('') // 글쓰기 폼의 내용을 저장하는 state
 
    // 글쓰기 폼 제출
    const handleFormSubmit = async (e) => {
       e.preventDefault()
+
       const sanitizedContent = await unified()
          .use(remarkParse) // Markdown 문서를 파싱
          .use(remarkRehype) // 파싱된 Markdown을 HTML로 변환
@@ -58,9 +57,13 @@ export default function BoardCreateForm() {
          summary,
          thumbnail,
       }
-
       if (!session) {
          dataObject.password = e.target.password.value
+      }
+      const result = boardSchema.safeParse(dataObject)
+      if (result.success === false) {
+         alert(result.error)
+         return
       }
       await createPost(dataObject).then((postNumber) => {
          router.push(`${ROUTES.BOARD}/1/${postNumber}`)
