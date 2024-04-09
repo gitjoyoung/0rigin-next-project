@@ -4,7 +4,7 @@ import React from 'react'
 interface Props {
    children?: React.ReactNode
    title: string
-   subTitle: string
+   subTitle?: string
    link: string
 }
 
