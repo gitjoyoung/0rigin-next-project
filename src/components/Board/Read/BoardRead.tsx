@@ -5,11 +5,11 @@ import { useEffect, useState } from 'react'
 import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
 import { Post } from '@/types/boardTypes'
 import { updateIncreaseViews } from '@/app/api/board/post/updatePostApi'
-import BoardReadTitle from './BoardReadTitle'
 import BoardUpdateButton from './BoardUpdateButton'
 import BoardLikeButton from './BoardLikeButton'
 import BoardNavButton from './BoardNavButton'
 import MarkDownViewer from './MarkDownViewer'
+import BoardReadHeader from './BoardReadHeader'
 
 interface Props {
    postId: string
@@ -55,7 +55,7 @@ export default function BoardRead({ postId }: Props) {
    return (
       <section className="mt-1 ">
          {/* 글제목 */}
-         <BoardReadTitle
+         <BoardReadHeader
             title={title}
             nickname={nickname}
             like={like}
