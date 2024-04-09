@@ -12,7 +12,7 @@ export const ROUTES = {
    MYPAGE: '/mypage',
    //    게시판
    BOARD: '/board',
-   BOARD_WRITE: '/board/write',
+   BOARD_CREATE: '/board/create',
    BOARD_UPDATE: '/board/update',
    // 검색
    SEARCH: '/search',

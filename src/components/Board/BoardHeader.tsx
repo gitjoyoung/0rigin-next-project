@@ -5,11 +5,11 @@ import CustomTitle from '../common/CustomTitle'
 export default function BoardHeader({ title }) {
    return (
       <CustomTitle
-         title="게시글"
+         title={title}
          subTitle="재미있는 게시글을 작성해 보세요"
-         link={ROUTES.BOARD_WRITE}
+         link={ROUTES.BOARD}
       >
-         <BoardMainButton route={ROUTES.BOARD_WRITE} title={title} />
+         <BoardMainButton route={ROUTES.BOARD_CREATE} title="글쓰기" />
       </CustomTitle>
    )
 }

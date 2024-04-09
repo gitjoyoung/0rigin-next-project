@@ -12,7 +12,6 @@ import { validateSlug } from '@/utils/slugValidators/slug'
 import React from 'react'
 
 export default async function layout({ children, params }) {
-   console.log(params)
    const { slug } = params
    const pageSlug = slug?.[0]
    const page: number = validateSlug(pageSlug) ? parseInt(pageSlug, 10) : 1
@@ -22,7 +21,7 @@ export default async function layout({ children, params }) {
 
    return (
       <>
-         <BoardHeader title="왁자지껄" />
+         <BoardHeader title="왁자지껄 게시판" />
          {children}
          <BoardContent postData={posts} page={page} />
          <Pagination page={page} lastPostId={lastPostId} />
