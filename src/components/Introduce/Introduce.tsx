@@ -4,7 +4,7 @@ import React, { useRef } from 'react'
 import { TickerCounts } from '@/types/tickerTypes'
 import Image from 'next/image'
 import INTRODUCE_TEXT from '@/constants/introduce/introduceText'
-import CommunityStats from './CommunityStats'
+import CommunityStats from './StatList'
 
 interface Props {
    counts: TickerCounts
@@ -75,6 +75,7 @@ export default function Introduce({ counts }: Props) {
                <CommunityStats counts={counts} />
             </div>
          </div>
+         {/* 하단 네비게이션 */}
          <nav className="bottom-2 self-end mr-3 block sticky">
             <div className="flex flex-col gap-1 text-xs sm:text-sm">
                {Object.entries(sectionsRef).map(([key, ref]) => (
