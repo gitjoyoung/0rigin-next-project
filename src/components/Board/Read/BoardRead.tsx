@@ -1,10 +1,9 @@
 'use client'
 
 import BoardComment from '@/components/Board/Comment/BoardCommentsList'
-import { useEffect, useState } from 'react'
-import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
 import { Post } from '@/types/boardTypes'
 import { updateIncreaseViews } from '@/app/api/board/post/updatePostApi'
+import { useEffect } from 'react'
 import BoardUpdateButton from './BoardUpdateButton'
 import BoardLikeButton from './BoardLikeButton'
 import BoardNavButton from './BoardNavButton'
@@ -13,39 +12,27 @@ import BoardReadHeader from './BoardReadHeader'
 
 interface Props {
    postId: string
+   readData: Post | null
 }
 
-export default function BoardRead({ postId }: Props) {
-   const [readData, setReadData] = useState<Post | null>(null)
-
+export default function BoardRead({ postId, readData }: Props) {
    useEffect(() => {
-      fetchPostById(postId).then(async (data) => {
-         if (data === null) {
-            return
-         }
+      const updateViews = async () => {
          await updateIncreaseViews(postId)
-         setReadData(data)
-      })
-   }, [postId])
-
-   /** 모달 관련 */
+      }
+      updateViews() // 조회수 증가
+   }, [])
 
    if (readData === null) {
-      return null
+      return (
+         <div className="p-3">
+            <h1>데이타가 없습니다.</h1>
+         </div>
+      )
    }
-   const {
-      title,
-      nickname,
-      like,
-      createdAt,
-      views,
-      content,
-      dislike,
-      deleted,
-   } = readData
-   // 데이타가 있을때
 
-   if (deleted) {
+   // 데이타가 있지만 삭제된 글일 경우
+   if (readData.deleted) {
       return (
          <div className="p-3">
             <h1>삭제된 게시글 입니다.</h1>
@@ -53,22 +40,26 @@ export default function BoardRead({ postId }: Props) {
       )
    }
    return (
-      <section className="mt-1 ">
+      <section>
          {/* 글제목 */}
          <BoardReadHeader
-            title={title}
-            nickname={nickname}
-            like={like}
-            date={createdAt}
-            views={views}
+            title={readData.title}
+            nickname={readData.nickname}
+            like={readData.like}
+            date={readData.createdAt}
+            views={readData.views}
          />
          {/* 글 수정  , 삭제 버튼 */}
          <BoardUpdateButton postId={postId} />
          {/* 글내용 마크다운 뷰어 */}
-         <MarkDownViewer content={content} />
+         <MarkDownViewer content={readData.content} />
 
          {/* 싫어요,좋아요  버튼 */}
-         <BoardLikeButton postId={postId} like={like} dislike={dislike} />
+         <BoardLikeButton
+            postId={postId}
+            like={readData.like}
+            dislike={readData.dislike}
+         />
 
          {/* 댓글 컴포넌트  */}
          <BoardComment postId={postId} />
