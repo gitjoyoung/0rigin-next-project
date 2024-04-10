@@ -1,15 +1,18 @@
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface Props {
    route: string
    title: string
 }
 export default function BoardMainButton({ route, title }: Props) {
+   const router = useRouter()
    return (
-      <div className=" right-0 border border-black  shadow-md  flex items-center">
-         <Link href={route} className="px-4 py-2 font-bold">
-            {title}
-         </Link>
-      </div>
+      <button
+         onClick={() => router.push(route)}
+         type="button"
+         className=" right-0 border border-black px-4 py-2 font-bold shadow-md  flex items-center"
+      >
+         {title}
+      </button>
    )
 }
