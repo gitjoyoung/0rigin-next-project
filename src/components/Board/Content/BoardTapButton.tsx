@@ -1,36 +1,38 @@
 import React from 'react'
 
-interface Props {
-   text: string
-   tapName: 'normal' | 'best'
-   setSelectedTap: (value: 'normal' | 'best') => void
-   selectedTap: 'normal' | 'best'
+enum TapName {
+   RealTime = '실시간',
+   Recommended = '추천글',
 }
 
-export function BoardTapButton({
-   text,
-   tapName,
-   setSelectedTap,
-   selectedTap,
-}: Props) {
+interface Props {
+   setSelectedTap: (value: TapName) => void
+   selectedTap: TapName
+}
+function TapButton({ tapName, isActive, onClick } ) {
    return (
       <button
+         aria-pressed={isActive}
          type="button"
-         className={`p-2 
-    hover:bg-black
-    hover:text-white
-    font-semibold
-    ${
-       selectedTap === tapName
-          ? 'border border-black border-b-0'
-          : 'border border-white border-b-0'
-    }`}
-         onClick={() => {
-            setSelectedTap(tapName)
-            // router.refresh();
-         }}
+         className={`p-2 hover:bg-black hover:text-white font-semibold ${isActive ? 'border border-black border-b-0' : 'border border-white border-b-0'}`}
+         onClick={onClick}
       >
-         {text}
+         {tapName}
       </button>
+   )
+}
+export function BoardTapButton({ setSelectedTap, selectedTap }: Props) {
+   const tabs = [{ name: TapName.RealTime }, { name: TapName.Recommended }]
+   return (
+      <div className="flex gap-1 ">
+         {tabs.map((tab) => (
+            <TapButton
+               key={tab.name}
+               tapName={tab.name}
+               isActive={selectedTap === tab.name}
+               onClick={() => setSelectedTap(tab.name)}
+            />
+         ))}
+      </div>
    )
 }
