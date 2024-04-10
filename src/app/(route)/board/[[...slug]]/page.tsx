@@ -1,3 +1,4 @@
+import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
 import BoardRead from '@/components/Board/Read/BoardRead'
 import { validateSlug } from '@/utils/slugValidators/slug'
 import { Metadata } from 'next'
@@ -9,17 +10,16 @@ export const metadata: Metadata = {
 interface Params {
    params: {
       slug: string[]
-   } // Assuming PostType is your post object type
+   }
 }
 
 export default async function Page({ params }: Params) {
    // 슬러그 처리
    const postSlug = params.slug?.[1]
-   // 게시물 아이디
    const postId = validateSlug(postSlug) ? postSlug : null
    // 게시물 목록 가져오기
-   if (postId) {
-      return <BoardRead postId={postId} />
-   }
-   return null
+   if (!postId) return null
+
+   const readData = await fetchPostById(postId)
+   return <BoardRead postId={postId} readData={readData} />
 }
