@@ -1,3 +1,5 @@
+import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
+import { formatNumberWithUnit } from '@/utils/boardValidators/formatNumberWithUnit'
 import React from 'react'
 
 interface Props {
@@ -13,7 +15,7 @@ export default function BoardReadHeader({
    nickname,
    like = 0,
    date,
-   views,
+   views = 0,
 }: Props) {
    return (
       <div className="border-b  grid gap-2 pt-2 pb-2 px-1">
@@ -26,19 +28,19 @@ export default function BoardReadHeader({
                <span>|</span>
             </li>
             <li>
-               추천 : <span>{like}</span>
+               추천 : <span>{formatNumberWithUnit(like)}</span>
             </li>
             <li>
                <span>|</span>
             </li>
             <li>
-               작성시간 : <span>{date}</span>
+               작성시간 : <span>{formatCustomDate(date)}</span>
             </li>
             <li>
                <span>|</span>
             </li>
             <li>
-               조회 : <span>{views}</span>
+               조회 : <span>{formatNumberWithUnit(views)}</span>
             </li>
          </ul>
       </div>
