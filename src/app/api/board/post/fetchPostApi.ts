@@ -97,14 +97,13 @@ export const fetchPostById = async (postID: string): Promise<Post | null> => {
       if (docSnap.exists()) {
          const postData = docSnap.data()
          console.log('postData', postData)
-         const createdAt = formatCustomDate(postData.createdAt.toDate())
          return {
             ...postData,
             nickname: postData.nickname,
             content: postData.content,
             title: postData.title,
             id: docSnap.id,
-            createdAt,
+            createdAt: postData.createdAt.toDate(),
          }
       }
       return null
