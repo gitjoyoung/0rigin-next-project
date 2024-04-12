@@ -8,7 +8,7 @@ import { sanitized } from '@/utils/boardValidators/formatSanized'
 import { CreatePostData } from '@/types/boardTypes'
 import MarkDownEditor from './MarkDownEditor'
 import FormSubmitButton from './FormSubmitButton'
-import { boardSchema } from './shema/boradFormSchema'
+import { authSchema, boardSchema } from './shema/boradFormSchema'
 
 interface Props {
    content: string
@@ -24,18 +24,16 @@ export default function BoardForm({
    session = null,
 }: Props) {
    const { back } = useRouter()
+
    const handleFormSubmit = async (e) => {
       e.preventDefault()
-
       const resultHtml = await sanitized(content)
 
       const parser = new DOMParser()
       const doc = parser.parseFromString(resultHtml, 'text/html')
+      const images = doc.querySelectorAll('img')
       const pTags = doc.querySelectorAll('p')
-      const thumbnail =
-         doc.querySelectorAll('img').length > 0
-            ? doc.querySelectorAll('img')[0].src
-            : ''
+      const thumbnail = images.length > 0 ? images[0].src : ''
 
       const summary = Array.from(pTags)
          .map((p) => p.textContent.trim())
@@ -43,21 +41,30 @@ export default function BoardForm({
          .join(' ')
 
       const dataObject: CreatePostData = {
-         nickname: e.target.nickname.value.replace(/\s+/g, ''),
+         nickname:
+            session?.user?.email.split('@')[0] ||
+            e.target.nickname.value.replace(/\s+/g, ''),
          title: e.target.title.value,
          content: resultHtml,
          markdown: content,
          summary,
          thumbnail,
       }
+
       if (!session) {
          dataObject.password = e.target.password.value
+         const authResult = authSchema.safeParse(dataObject)
+         if (authResult.success === false) {
+            alert(authResult.error)
+            return
+         }
       }
-      const result = boardSchema.safeParse(dataObject)
-      if (result.success === false) {
-         alert(result.error)
+      const boardResult = boardSchema.safeParse(dataObject)
+      if (boardResult.success === false) {
+         alert(boardResult.error)
          return
       }
+
       await submitPost(dataObject)
    }
 
