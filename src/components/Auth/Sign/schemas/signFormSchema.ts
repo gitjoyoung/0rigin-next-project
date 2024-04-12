@@ -16,9 +16,7 @@ export const signUpSchema = z
             '비밀번호는 영어 대소문자, 숫자, 특수문자를 포함해야 합니다.',
          ),
       confirmPassword: z.string(),
-      gender: z.enum(['man', 'girl', 'other'], {
-         errorMap: (issue, ctx) => ({ message: '성별을 선택 해주세요' }),
-      }),
+      gender: z.string().regex(/^(man|girl|other)$/, '성별을 선택 해주세요'),
    })
    .refine((data) => data.password === data.confirmPassword, {
       message: '비밀번호와 확인 비밀번호가 일치하지 않습니다.',
