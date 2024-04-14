@@ -1,8 +1,7 @@
 'use client'
 
 import { QuizData } from '@/types/quizTypes'
-import { Disclosure } from '@headlessui/react'
-import { CheckBadgeIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
+import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 import { useEffect, useState } from 'react'
 import CustomDisclosure from '../common/CustomDisclosure'
 
@@ -12,6 +11,7 @@ interface Props {
 }
 export default function QuizContent({ quizData, curIndex }: Props) {
    const [isCorrect, setIsCorrect] = useState(false)
+
    useEffect(() => {
       setIsCorrect(false)
       const selectedInput = document.querySelector(
@@ -35,7 +35,7 @@ export default function QuizContent({ quizData, curIndex }: Props) {
 
    return (
       <article className="border max-w-xl px-4  sm:mx-auto mx-2 my-3 py-4 gap-3 flex flex-col">
-         <h1 className="font-bold text-3xl">{curIndex}.</h1>
+         <h1 className="font-bold text-3xl">{curIndex + 1}.</h1>
          <h1 className="font-bold text-xl break-words">{quizData.question}</h1>
 
          <CustomDisclosure title="힌트" tip={quizData.hint} color="yellow" />
@@ -65,7 +65,7 @@ export default function QuizContent({ quizData, curIndex }: Props) {
                ))}
             </div>
             <div className="flex justify-center my-4">
-               <button type="submit" className="p-2 px-5">
+               <button type="submit" className="p-2 px-5 " disabled={isCorrect}>
                   제출하기
                </button>
             </div>
