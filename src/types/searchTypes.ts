@@ -4,9 +4,8 @@ interface SearchResult {
    content: string
    createdAt: string
    nickname?: string
-   number?: number
-   password?: string
-   thumbnailUrl?: string
+   thumbnail?: string
+   summary?: string
 }
 
 export type { SearchResult }

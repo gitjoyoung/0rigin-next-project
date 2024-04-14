@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { openai } from '@/lib/openAI'
 import { ROUTES } from '@/constants/route'
 import { SearchResult } from '@/types/searchTypes'
 import fetchSearch from '@/app/api/search/search'
+import { chatGpt } from '@/app/api/gpt/chatGpt'
 import SearchBox from '../Header/SearchBox'
 
 interface Props {
@@ -15,31 +15,12 @@ interface Props {
 
 export default function Search({ decodeSlug }: Props) {
    const [Result, setResult] = useState<SearchResult[]>([])
-   const [GptResult, setGptResult] = useState([])
+   const [GptResult, setGptResult] = useState('')
 
    useEffect(() => {
-      const chatGpt = async () => {
-         const stream = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
-            messages: [
-               {
-                  role: 'user',
-                  content: '한글로만 답변해라',
-               },
-               {
-                  role: 'user',
-                  content: decodeSlug,
-               },
-            ],
-            stream: true,
-         })
-         // eslint-disable-next-line no-restricted-syntax
-         for await (const chunk of stream) {
-            const newData = chunk.choices[0]?.delta?.content || ''
-            setGptResult((prev) => [...prev, newData])
-         }
-      }
-      chatGpt()
+      chatGpt(decodeSlug).then((data) => {
+         setGptResult(data)
+      })
       fetchSearch(decodeSlug).then((data) => {
          setResult(data)
       })
@@ -54,7 +35,7 @@ export default function Search({ decodeSlug }: Props) {
                </h1>
             </div>
             <div className=" flex-col gap-2 py-2">
-               <h2 className="p-1 font-bold text-xl ">GPT-4 검색결과</h2>
+               <h2 className="p-1 font-bold text-xl ">GPT-3.5 검색결과</h2>
                <div className=" p-2 whitespace-pre-line border-dotted rounded-lg border-black border">
                   <p>{GptResult}</p>
                </div>
@@ -72,7 +53,7 @@ export default function Search({ decodeSlug }: Props) {
                  items-center flex relative"
                   >
                      <Image
-                        src={result?.thumbnailUrl || '/sadpepe.jpg'}
+                        src={result?.thumbnail || '/mascot/winksaurus3.png'}
                         fill
                         alt={result.title}
                         className="object-cover"
@@ -83,7 +64,9 @@ export default function Search({ decodeSlug }: Props) {
                         <h1 className="line-clamp-1  text-base font-semibold whitespace-pre overflow-hidden ">
                            {result.title}
                         </h1>
-                        <p className="line-clamp-3 text-sm">{result.content}</p>
+                        <p className="line-clamp-3 text-sm">
+                           {result.summary || ''}
+                        </p>
                      </Link>
                   </div>
                </li>
