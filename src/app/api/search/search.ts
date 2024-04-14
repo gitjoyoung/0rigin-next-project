@@ -1,6 +1,13 @@
 import { db } from '@/lib/firebase'
 import { SearchResult } from '@/types/searchTypes'
-import { collection, query, where, getDocs } from 'firebase/firestore'
+import {
+   collection,
+   query,
+   getDocs,
+   startAt,
+   orderBy,
+   endAt,
+} from 'firebase/firestore'
 
 export default async function fetchSearch(
    search: string,
@@ -8,7 +15,12 @@ export default async function fetchSearch(
    try {
       const postsRef = collection(db, 'posts') // 'posts' 컬렉션을 참조
       // 검색어를 사용하여 쿼리를 생성
-      const q = query(postsRef, where('title', '==', search)) // 'title' 필드가 검색어와 일치하는 문서를 쿼리
+      const q = query(
+         postsRef,
+         orderBy('title'), // 제목 정렬
+         startAt(search),
+         endAt(`${search}\uf8ff`), // Use template literals for string concatenation
+      )
       // 쿼리 실행
       const querySnapshot = await getDocs(q)
 
