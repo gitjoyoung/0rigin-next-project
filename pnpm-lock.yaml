@@ -38,6 +38,9 @@ dependencies:
   '@types/three':
     specifier: ^0.162.0
     version: 0.162.0
+  '@types/uuid':
+    specifier: ^9.0.8
+    version: 9.0.8
   '@uiw/react-markdown-preview':
     specifier: ^5.0.7
     version: 5.0.10(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
@@ -116,6 +119,9 @@ dependencies:
   use-debounce:
     specifier: ^10.0.0
     version: 10.0.0(react@18.2.0)
+  uuid:
+    specifier: ^9.0.1
+    version: 9.0.1
   yarn:
     specifier: ^1.22.21
     version: 1.22.22
@@ -1891,6 +1897,10 @@ packages:
 
   /@types/unist@3.0.2:
     resolution: {integrity: sha512-dqId9J8K/vGi5Zr7oo212BGii5m3q5Hxlkwy3WpYuKPklmBEvsbMYYyLxAQpSffdLl/gdW0XUpKWFvYmyoWCoQ==}
+    dev: false
+
+  /@types/uuid@9.0.8:
+    resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
     dev: false
 
   /@types/webxr@0.5.14:
