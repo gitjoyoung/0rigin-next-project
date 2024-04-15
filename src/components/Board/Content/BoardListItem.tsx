@@ -32,7 +32,7 @@ export default function BoardListItem({ item, page }: Props) {
             ) : (
                <Link
                   className="flex gap-2 "
-                  href={`${ROUTES.BOARD}/${page}/${id}`}
+                  href={`${ROUTES.BOARD}/${id}?page=${page}`}
                >
                   <h1 className="line-clamp-1 ">{title}</h1>
                   <p className="text-gray-400 text-sm mx-1">

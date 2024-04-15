@@ -1,15 +1,9 @@
-import React from 'react'
-
-enum TapName {
-   RealTime = '실시간',
-   Recommended = '추천글',
-}
-
 interface Props {
-   setSelectedTap: (value: TapName) => void
-   selectedTap: TapName
+   tapName: string
+   isActive: boolean
+   onClick: () => void
 }
-function TapButton({ tapName, isActive, onClick } ) {
+export function BoardTapButton({ tapName, isActive, onClick }: Props) {
    return (
       <button
          aria-pressed={isActive}
@@ -19,20 +13,5 @@ function TapButton({ tapName, isActive, onClick } ) {
       >
          {tapName}
       </button>
-   )
-}
-export function BoardTapButton({ setSelectedTap, selectedTap }: Props) {
-   const tabs = [{ name: TapName.RealTime }, { name: TapName.Recommended }]
-   return (
-      <div className="flex gap-1 ">
-         {tabs.map((tab) => (
-            <TapButton
-               key={tab.name}
-               tapName={tab.name}
-               isActive={selectedTap === tab.name}
-               onClick={() => setSelectedTap(tab.name)}
-            />
-         ))}
-      </div>
    )
 }
