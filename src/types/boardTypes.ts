@@ -9,6 +9,7 @@ interface Post {
    like?: number
    dislike?: number
    views?: number
+   markdown?: string
    thumbnail?: string
    deleted?: boolean
 }
@@ -24,11 +25,10 @@ interface CreatePostData {
 }
 
 interface EditPostData {
-   postId: string
-   title: string
-   content: string
-   password: string
    id: string
+   title: string
+   nickname?: string
+   markdown?: string
 }
 interface TopPost {
    id: string
