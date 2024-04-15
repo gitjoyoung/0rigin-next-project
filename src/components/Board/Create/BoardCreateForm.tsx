@@ -1,16 +1,13 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React from 'react'
 import { ROUTES } from '@/constants/route'
 import { createPost } from '@/app/api/board/post/updatePostApi'
-import { useSession } from 'next-auth/react'
 import BoardForm from './BoardForm'
 
 export default function BoardCreateForm() {
-   const { data: session } = useSession() // 세션 정보
    const router = useRouter() // 라우터
-   const [content, setContent] = useState('') // 글쓰기 폼의 내용을 저장하는 state
 
    // 글쓰기 폼 제출
    const handleFormSubmit = async (dataObject) => {
@@ -19,12 +16,5 @@ export default function BoardCreateForm() {
       })
    }
 
-   return (
-      <BoardForm
-         content={content}
-         setContent={setContent}
-         submitPost={handleFormSubmit}
-         session={session}
-      />
-   )
+   return <BoardForm submitPost={handleFormSubmit} />
 }

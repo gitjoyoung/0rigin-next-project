@@ -2,32 +2,32 @@
 
 import { updateEditPost } from '@/app/api/board/post/updatePostApi'
 import { ROUTES } from '@/constants/route'
-import { CreatePostData } from '@/types/boardTypes'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
+import { EditPostData } from '@/types/boardTypes'
 import BoardForm from './BoardForm'
 
 interface Props {
    postId: string
-   editData: CreatePostData
 }
 
-export default function BoardEditForm({ postId, editData }: Props) {
+export default function BoardEditForm({ postId }: Props) {
    const { push } = useRouter()
    // 글쓰기 내용을 저장하는 state
-   const [content, setContent] = useState(editData.markdown || '') // 글쓰기 폼의 내용을 저장하는 state
-
+   const [data, setData] = useState<EditPostData>() // 글쓰기 폼의 내용을 저장하는 state
+   useEffect(() => {
+      const postData = async () => {
+         const res: EditPostData = await fetchPostById(postId)
+         setData(res)
+      }
+      postData()
+   }, [postId])
    // 글쓰기 폼 제출
    const handleFormSubmit = async (dataObject) => {
       await updateEditPost(postId, dataObject).then((postNumber) => {
          push(`${ROUTES.BOARD}/1/${postNumber}`)
       })
    }
-   return (
-      <BoardForm
-         content={content}
-         setContent={setContent}
-         submitPost={handleFormSubmit}
-      />
-   )
+   return <BoardForm editData={data} submitPost={handleFormSubmit} />
 }

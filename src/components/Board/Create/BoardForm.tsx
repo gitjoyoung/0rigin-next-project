@@ -1,30 +1,25 @@
 import CustomDisclosure from '@/components/common/CustomDisclosure'
 import InputNickName from '@/components/common/InputIdBox'
 import InputPasswordBox from '@/components/common/InputPasswordBox'
-import React from 'react'
+import React, { useState } from 'react'
 import { TIP_CONTENT } from '@/constants/board/markDownTip'
 import { useRouter } from 'next/navigation'
 import { sanitized } from '@/utils/boardValidators/formatSanized'
-import { CreatePostData } from '@/types/boardTypes'
+import { CreatePostData, EditPostData } from '@/types/boardTypes'
+import { useSession } from 'next-auth/react'
 import MarkDownEditor from './MarkDownEditor'
 import FormSubmitButton from './FormSubmitButton'
 import { authSchema, boardSchema } from './shema/boradFormSchema'
 
 interface Props {
-   content: string
-   setContent: (content: string) => void
-   submitPost: (arg) => void
-   session?: any
+   editData?: EditPostData | null
+   submitPost?: (arg: any) => void
 }
 
-export default function BoardForm({
-   content,
-   setContent,
-   submitPost,
-   session = null,
-}: Props) {
+export default function BoardForm({ submitPost, editData = null }: Props) {
    const { back } = useRouter()
-
+   const { data: session } = useSession() // 세션 정보
+   const [content, setContent] = useState(editData?.markdown) // 글쓰기 폼의 내용을 저장하는 state
    const handleFormSubmit = async (e) => {
       e.preventDefault()
       const resultHtml = await sanitized(content)
@@ -88,7 +83,11 @@ export default function BoardForm({
                ) : (
                   <>
                      {/* 게시글 작성 닉네임 */}
-                     <InputNickName name="nickname" placeholder="닉네임" />
+                     <InputNickName
+                        name="nickname"
+                        placeholder="닉네임"
+                        defaultValue={editData?.nickname || ''}
+                     />
                      {/* 비밀번호 */}
                      <InputPasswordBox name="password" placeholder="패스워드" />
                   </>
@@ -101,6 +100,7 @@ export default function BoardForm({
                type="text"
                name="title"
                placeholder="제목"
+               value={editData?.title || ''}
                required
             />
 
