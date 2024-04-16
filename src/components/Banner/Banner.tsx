@@ -27,7 +27,7 @@ export default function Banner({ topData }: Props) {
          {/*  게시물 프리뷰 */}
          <div className=" w-full  md:w-7/12 md:border-r border-black ">
             <div className="relative w-full  h-56 z-0  ">
-               <Link href={`/board/read/${topData[selectedPost].id}`}>
+               <Link href={`/board/${topData[selectedPost].id}`}>
                   <Image
                      alt="윙크 사우로스"
                      src={
@@ -63,7 +63,7 @@ export default function Banner({ topData }: Props) {
                            ? 'bg-gray-200 font-bold'
                            : 'text-sm'
                      }`}
-                     href={`/board/read/${id}`}
+                     href={`/board/${id}`}
                   >
                      <h2 className="line-clamp-1 flex-1 max-w-prose ">
                         {title}
