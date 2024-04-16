@@ -5,14 +5,14 @@ import React, { useState } from 'react'
 import { TIP_CONTENT } from '@/constants/board/markDownTip'
 import { useRouter } from 'next/navigation'
 import { sanitized } from '@/utils/boardValidators/formatSanized'
-import { CreatePostData, EditPostData } from '@/types/boardTypes'
+import { CreatePostData, Post } from '@/types/boardTypes'
 import { useSession } from 'next-auth/react'
 import MarkDownEditor from './MarkDownEditor'
 import FormSubmitButton from './FormSubmitButton'
 import { authSchema, boardSchema } from './shema/boradFormSchema'
 
 interface Props {
-   editData?: EditPostData | null
+   editData?: Post | null
    submitPost?: (arg: any) => void
 }
 
@@ -36,6 +36,9 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
          .join(' ')
 
       const dataObject: CreatePostData = {
+         id:
+            session?.user?.email.split('@')[0] ||
+            e.target.nickname.value.replace(/\s+/g, ''),
          nickname:
             session?.user?.email.split('@')[0] ||
             e.target.nickname.value.replace(/\s+/g, ''),

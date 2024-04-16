@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import {
    collection,
    doc,
@@ -10,7 +9,7 @@ import {
    startAt,
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import { EditPostData, Post, TopPost } from '@/types/boardTypes'
+import { Post, TopPost } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { getCommentCount } from '../commentApi'
 
@@ -86,9 +85,7 @@ export const fetchPosts = async (
  * @param {string} postID 조회할 게시물의 ID입니다.
  * @returns {Promise<Object>} 조회된 게시물의 데이터를 반환합니다.
  */
-export const fetchPostById = async (
-   postID: string,
-): Promise<Post | null | EditPostData> => {
+export const fetchPostById = async (postID: string): Promise<Post> => {
    // 'posts' 컬렉션에서 주어진 postID를 가진 문서에 대한 참조를 생성합니다.
    const postRef = doc(db, 'posts', postID)
    try {

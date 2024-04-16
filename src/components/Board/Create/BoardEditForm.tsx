@@ -5,7 +5,7 @@ import { ROUTES } from '@/constants/route'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
-import { EditPostData } from '@/types/boardTypes'
+import { Post } from '@/types/boardTypes'
 import BoardForm from './BoardForm'
 
 interface Props {
@@ -15,10 +15,10 @@ interface Props {
 export default function BoardEditForm({ postId }: Props) {
    const { push } = useRouter()
    // 글쓰기 내용을 저장하는 state
-   const [data, setData] = useState<EditPostData>() // 글쓰기 폼의 내용을 저장하는 state
+   const [data, setData] = useState<Post>() // 글쓰기 폼의 내용을 저장하는 state
    useEffect(() => {
       const postData = async () => {
-         const res: EditPostData = await fetchPostById(postId)
+         const res: Post = await fetchPostById(postId)
          setData(res)
       }
       postData()
