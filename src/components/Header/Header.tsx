@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import headerNav from '@/constants/home/headerNav'
 import AuthButton from './AuthButton'
-import SearchBox from './SearchBox'
+import SearchBox from '../Search/SearchBox'
 import MobileAlramButton from './Mobile/MobileAlramButton'
 import MobileMenuButton from './Mobile/MobileMenuButton'
 
