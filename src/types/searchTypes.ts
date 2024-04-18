@@ -1,4 +1,4 @@
-interface SearchResult {
+interface SearchResultType {
    id: string
    title: string
    content: string
@@ -8,4 +8,4 @@ interface SearchResult {
    summary?: string
 }
 
-export type { SearchResult }
+export type { SearchResultType }
