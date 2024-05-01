@@ -103,13 +103,13 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
                type="text"
                name="title"
                placeholder="제목"
-               value={editData?.title || ''}
+               defaultValue={editData?.title || ''}
                required
             />
 
             {/* 내용 contentEditTable 로 태그를 추가함 */}
             <CustomDisclosure
-               title="TIP : 마크다운 사용법"
+               title="Mark Down 문법"
                tip={TIP_CONTENT}
                color="purple"
             />
