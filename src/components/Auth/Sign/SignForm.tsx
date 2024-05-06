@@ -1,14 +1,27 @@
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { fetchSignUp } from '@/app/api/auth/signUp'
-import { ROUTES } from '@/constants/route'
 import { updateIncrementCount } from '@/app/api/board/tickerApi'
 import { useModalStore } from '@/store/modal'
-import Modal from '@/components/Modal/Modal'
+import { useRouter } from 'next/navigation'
 import { signUpSchema } from './schemas/signFormSchema'
+import InputAndCheck from './InputAndCheck'
 
 export default function SignForm() {
+   const router = useRouter()
    const open = useModalStore((state) => state.open)
    const [isPending, startTransition] = useTransition()
+   const [inputState, setInputState] = useState({
+      gender: { hasError: false, message: '* 성별을 선택해 주세요' },
+      userId: { hasError: false, message: '* 영어 4~12자 소문자+숫자 가능' },
+      password: {
+         hasError: false,
+         message: '* 8~12자 대 소문자+숫자+특수문자 포함',
+      },
+      confirmPassword: {
+         hasError: false,
+         message: '* 비밀번호를 재입력해 주세요',
+      },
+   })
 
    const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -20,11 +33,17 @@ export default function SignForm() {
       }
       const result = signUpSchema.safeParse(formData)
       if (result.success === false) {
-         const errorMessage = result.error.errors
-            .map((error) => `${error.path.join('.')}: ${error.message}`)
-            .join(', ')
-
-         alert(errorMessage)
+         const newState = { ...inputState }
+         Object.keys(newState).forEach((key) => {
+            newState[key].hasError = false
+         })
+         result.error.issues.forEach((issue) => {
+            const fieldName = issue.path[0]
+            if (fieldName in newState) {
+               newState[fieldName].hasError = true
+            }
+         })
+         setInputState(newState)
          return
       }
 
@@ -40,20 +59,16 @@ export default function SignForm() {
             alert(`회원가입 성공! UID: ${credential}`)
             updateIncrementCount('user')
             open()
+            router.push('/login') // 로그인 페이지로 이동
          }
       })
    }
 
    return (
       <section className="w-full flex justify-center">
-         <Modal
-            title="회원가입 완료"
-            content="회원 가입을 완료 하였습니다! 로그인 페이지로 이동합니다."
-            path={ROUTES.LOGIN}
-         />
          <div className="border p-10 flex items-center flex-col gap-6 m-3 w-full max-w-[500px]">
             <h1 className="font-bold text-2xl">회원가입</h1>
-            <h3 className="text-xl">
+            <h3 className="text-lg">
                회원가입시 다양한 혜택을 받을 수 있습니다.
             </h3>
 
@@ -99,44 +114,36 @@ export default function SignForm() {
                      </label>
                   </li>
                </ul>
-               <p className="text-xs ">* 성별을 선택해 주세요</p>
-
-               <input
-                  disabled={isPending}
-                  name="userId"
-                  key="userId"
-                  type="text"
-                  placeholder="아이디"
-                  className="border border-gray-300 p-2"
-               />
-               <p className="text-xs mb-2">* 영어 4~12자 소문자+숫자 가능</p>
-
-               <input
-                  disabled={isPending}
-                  name="password"
-                  key="password"
-                  type="password"
-                  placeholder="비밀번호"
-                  className="border border-gray-300 p-2"
-               />
-               <p className="text-xs mb-2">
-                  * 8~12자 대 소문자+숫자+특수문자 포함
-               </p>
-               <input
-                  disabled={isPending}
-                  name="confirmPassword"
-                  key="confirmPassword"
-                  type="password"
-                  placeholder="비밀번호 재확인"
-                  className="border border-gray-300 p-2"
-               />
-               <p className="text-xs">* 비밀번호를 재입력해 주세요</p>
-
-               <button
-                  className=" my-4 p-2 "
-                  type="submit"
-                  disabled={isPending}
+               <p
+                  className={`${inputState.gender.hasError ? 'text-xs text-red-500' : 'text-xs '}`}
                >
+                  {inputState.gender.message}
+               </p>
+               <InputAndCheck
+                  placeholder="아이디"
+                  name="userId"
+                  errorMsg={inputState.userId.message}
+                  pending={isPending}
+                  hasError={inputState.userId.hasError}
+                  type="text"
+               />
+               <InputAndCheck
+                  placeholder="비밀번호"
+                  name="password"
+                  errorMsg={inputState.password.message}
+                  pending={isPending}
+                  hasError={inputState.password.hasError}
+                  type="password"
+               />
+               <InputAndCheck
+                  placeholder="비밀번호 재확인"
+                  name="confirmPassword"
+                  errorMsg={inputState.confirmPassword.message}
+                  pending={isPending}
+                  hasError={inputState.confirmPassword.hasError}
+                  type="password"
+               />
+               <button className="my-4 p-2" type="submit" disabled={isPending}>
                   회원가입
                </button>
             </form>
