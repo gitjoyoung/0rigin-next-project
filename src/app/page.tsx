@@ -3,6 +3,7 @@ import BoardContent from '@/components/Board/BoardContent'
 import { Metadata } from 'next'
 import { updateIncrementCount } from './api/board/tickerApi'
 import { fetchTopPosts } from './api/board/post/fetchPostApi'
+import BoardSuspense from '@/components/Board/BoardSuspense'
 
 export const metadata: Metadata = {
    title: '0rigin 홈',
@@ -13,11 +14,11 @@ async function Home() {
    const topData = await fetchTopPosts()
    await updateIncrementCount('visit')
    return (
-      <section>
-         <div className="flex flex-wrap justify-between border border-black p-1 ">
-            <Banner topData={topData} />
+      <section className="flex flex-wrap justify-between border border-black p-1 ">
+         <Banner topData={topData} />
+         <BoardSuspense>
             <BoardContent />
-         </div>
+         </BoardSuspense>
       </section>
    )
 }

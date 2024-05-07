@@ -21,24 +21,8 @@ export default function BoardRead({ postId, readData }: Props) {
          await updateIncreaseViews(postId)
       }
       updateViews() // 조회수 증가
-   }, [])
+   }, [postId])
 
-   if (readData === null) {
-      return (
-         <div className="p-3">
-            <h1>데이타가 없습니다.</h1>
-         </div>
-      )
-   }
-
-   // 데이타가 있지만 삭제된 글일 경우
-   if (readData.deleted) {
-      return (
-         <div className="p-3">
-            <h1>삭제된 게시글 입니다.</h1>
-         </div>
-      )
-   }
    return (
       <section>
          {/* 글제목 */}
