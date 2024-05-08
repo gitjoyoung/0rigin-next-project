@@ -1,7 +1,7 @@
 import CustomDisclosure from '@/components/common/CustomDisclosure'
 import InputNickName from '@/components/common/InputIdBox'
 import InputPasswordBox from '@/components/common/InputPasswordBox'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TIP_CONTENT } from '@/constants/board/markDownTip'
 import { useRouter } from 'next/navigation'
 import { sanitized } from '@/utils/boardValidators/formatSanized'
@@ -13,54 +13,85 @@ import { authSchema, boardSchema } from './shema/boradFormSchema'
 
 interface Props {
    editData?: Post | null
-   submitPost?: (arg: any) => void
+   submitPost?: (arg) => void
 }
 
 export default function BoardForm({ submitPost, editData = null }: Props) {
    const { back } = useRouter()
    const { data: session } = useSession() // 세션 정보
-   const [content, setContent] = useState(editData?.markdown) // 글쓰기 폼의 내용을 저장하는 state
-   const handleFormSubmit = async (e) => {
+   const [markdownContent, setMarkdownContent] = useState('')
+
+   useEffect(() => {
+      setMarkdownContent(editData?.markdown || '')
+   }, [editData])
+
+   const getFirstImageSrc = (html): string => {
+      const imgTag = html.querySelectorAll('img')
+      let thumbnail = ''
+      if (imgTag.length > 0) {
+         thumbnail = imgTag[0].src
+      }
+      return thumbnail
+   }
+   const getPtg = (html): string => {
+      const pTag = html.querySelectorAll('p')
+      let summary = ''
+      if (pTag.length > 0) {
+         summary = Array.from(pTag)
+            .map((p) => (p as HTMLElement).textContent.trim())
+            .filter((text) => text.length > 0)
+            .join(' ')
+      }
+      return summary
+   }
+
+   const parseHtmlToDocument = (markdown) => {
+      const htmlParser = new DOMParser()
+      const htmlDocument = htmlParser.parseFromString(markdown, 'text/html')
+      return htmlDocument
+   }
+
+   const handleFormSubmit = async (e): Promise<void> => {
       e.preventDefault()
-      const resultHtml = await sanitized(content)
 
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(resultHtml, 'text/html')
-      const images = doc.querySelectorAll('img')
-      const pTags = doc.querySelectorAll('p')
-      const thumbnail = images.length > 0 ? images[0].src : ''
+      const loginId = session?.user?.email.split('@')[0]
+      const loginPassword = session?.user?.email.split('@')[0]
 
-      const summary = Array.from(pTags)
-         .map((p) => p.textContent.trim())
-         .filter((text) => text.length > 0)
-         .join(' ')
-
-      const dataObject: CreatePostData = {
-         id:
-            session?.user?.email.split('@')[0] ||
-            e.target.nickname.value.replace(/\s+/g, ''),
-         nickname:
-            session?.user?.email.split('@')[0] ||
-            e.target.nickname.value.replace(/\s+/g, ''),
-         title: e.target.title.value,
-         content: resultHtml,
-         markdown: content,
-         summary,
-         thumbnail,
+      const nickname = loginId || e.target.nickname.value.replace(/\s+/g, '')
+      const password =
+         loginPassword || e.target.password.value.replace(/\s+/g, '')
+      // 닉네임과 비밀번호가 유효한지 확인 후 에러 메시지 출력
+      const authValidation = authSchema.safeParse({ nickname, password })
+      if (authValidation.success === false) {
+         alert(authValidation.error)
+         return
       }
 
-      if (!session) {
-         dataObject.password = e.target.password.value
-         const authResult = authSchema.safeParse(dataObject)
-         if (authResult.success === false) {
-            alert(authResult.error)
-            return
-         }
-      }
-      const boardResult = boardSchema.safeParse(dataObject)
+      const title = e.target.title.value
+      const sanitizedHTML = await sanitized(markdownContent)
+      // 제목과 내용이 유효한지 확인 후 에러 메시지 출력
+      const boardResult = boardSchema.safeParse({
+         title,
+         content: sanitizedHTML,
+      })
       if (boardResult.success === false) {
          alert(boardResult.error)
          return
+      }
+
+      // 썸네일과 요약 정보 추출
+      const doc = parseHtmlToDocument(sanitizedHTML)
+      const thumbnail = getFirstImageSrc(doc)
+      const summary = getPtg(doc)
+
+      const dataObject: CreatePostData = {
+         password,
+         nickname,
+         title: e.target.title.value,
+         content: sanitizedHTML,
+         markdown: markdownContent,
+         summary,
+         thumbnail,
       }
 
       await submitPost(dataObject)
@@ -114,7 +145,10 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
                color="purple"
             />
             {/* 글쓰기 마크다운 */}
-            <MarkDownEditor content={content} setContent={setContent} />
+            <MarkDownEditor
+               markDownContent={markdownContent}
+               setMarkDownContent={setMarkdownContent}
+            />
 
             {/* 제출 버튼 */}
             <div className="flex gap-6 justify-end my-2">
