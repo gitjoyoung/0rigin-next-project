@@ -1,7 +1,7 @@
 import CustomDisclosure from '@/components/common/CustomDisclosure'
 import InputNickName from '@/components/common/InputIdBox'
 import InputPasswordBox from '@/components/common/InputPasswordBox'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TIP_CONTENT } from '@/constants/board/markDownTip'
 import { useRouter } from 'next/navigation'
 import { sanitized } from '@/utils/boardValidators/formatSanized'
@@ -19,22 +19,23 @@ interface Props {
 export default function BoardForm({ submitPost, editData = null }: Props) {
    const { back } = useRouter()
    const { data: session } = useSession() // 세션 정보
-   const [markdownContent, setMarkdownContent] = useState('')
-
-   useEffect(() => {
-      setMarkdownContent(editData?.markdown || '')
-   }, [editData])
-
+   const [markdownContent, setMarkdownContent] = useState(
+      editData?.markdown || '',
+   )
    const getFirstImageSrc = (html): string => {
-      const imgTag = html.querySelectorAll('img')
+      const htmlParser = new DOMParser()
+      const htmlDocument = htmlParser.parseFromString(html, 'text/html')
+      const imgTag = htmlDocument.querySelectorAll('img')
       let thumbnail = ''
       if (imgTag.length > 0) {
          thumbnail = imgTag[0].src
       }
       return thumbnail
    }
-   const getPtg = (html): string => {
-      const pTag = html.querySelectorAll('p')
+   const getParagraphText = (html): string => {
+      const htmlParser = new DOMParser()
+      const htmlDocument = htmlParser.parseFromString(html, 'text/html')
+      const pTag = htmlDocument.querySelectorAll('p')
       let summary = ''
       if (pTag.length > 0) {
          summary = Array.from(pTag)
@@ -44,56 +45,35 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
       }
       return summary
    }
-
-   const parseHtmlToDocument = (markdown) => {
-      const htmlParser = new DOMParser()
-      const htmlDocument = htmlParser.parseFromString(markdown, 'text/html')
-      return htmlDocument
-   }
-
    const handleFormSubmit = async (e): Promise<void> => {
       e.preventDefault()
 
-      const loginId = session?.user?.email.split('@')[0]
-      const loginPassword = session?.user?.email.split('@')[0]
-
-      const nickname = loginId || e.target.nickname.value.replace(/\s+/g, '')
-      const password =
-         loginPassword || e.target.password.value.replace(/\s+/g, '')
-      // 닉네임과 비밀번호가 유효한지 확인 후 에러 메시지 출력
-      const authValidation = authSchema.safeParse({ nickname, password })
-      if (authValidation.success === false) {
-         alert(authValidation.error)
-         return
-      }
-
+      const nickname = session
+         ? session.user.email.split('@')[0]
+         : e.target.nickname.value.replace(/\s+/g, '')
+      const password = session
+         ? session.user.email.split('@')[0]
+         : e.target.password.value.replace(/\s+/g, '')
       const title = e.target.title.value
-      const sanitizedHTML = await sanitized(markdownContent)
-      // 제목과 내용이 유효한지 확인 후 에러 메시지 출력
-      const boardResult = boardSchema.safeParse({
-         title,
-         content: sanitizedHTML,
-      })
-      if (boardResult.success === false) {
-         alert(boardResult.error)
-         return
-      }
-
-      // 썸네일과 요약 정보 추출
-      const doc = parseHtmlToDocument(sanitizedHTML)
-      const thumbnail = getFirstImageSrc(doc)
-      const summary = getPtg(doc)
-
+      const safeHTML = await sanitized(markdownContent)
+      const thumbnail = getFirstImageSrc(safeHTML)
+      const summary = getParagraphText(safeHTML)
       const dataObject: CreatePostData = {
-         password,
          nickname,
-         title: e.target.title.value,
-         content: sanitizedHTML,
+         password,
+         title,
+         content: safeHTML,
          markdown: markdownContent,
          summary,
          thumbnail,
       }
-
+      const validateSchema = await boardSchema.safeParse({
+         dataObject,
+      })
+      if (validateSchema.success === false) {
+         alert(validateSchema.error)
+         return
+      }
       await submitPost(dataObject)
    }
 
