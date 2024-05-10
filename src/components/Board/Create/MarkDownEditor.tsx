@@ -24,16 +24,19 @@ type OnChange = (
 ) => void
 
 interface Props {
-   content: string
-   setContent: React.Dispatch<React.SetStateAction<string>>
+   markDownContent: string
+   setMarkDownContent: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function MarkDownEditor({ content, setContent }: Props) {
+export default function MarkDownEditor({
+   markDownContent,
+   setMarkDownContent,
+}: Props) {
    const onChange = useCallback<OnChange>(
       (val) => {
-         setContent(val || '')
+         setMarkDownContent(val || '')
       },
-      [setContent],
+      [setMarkDownContent],
    )
 
    const uploadImageCommand = {
@@ -69,7 +72,7 @@ export default function MarkDownEditor({ content, setContent }: Props) {
             try {
                const compressedFile = await imageCompression(file, options)
                const realUrl = await await uploadImageToFirebase(compressedFile)
-               setContent(
+               setMarkDownContent(
                   (prevMarkdown) => `${prevMarkdown}![image](${realUrl})`,
                )
             } catch (error) {
@@ -83,7 +86,7 @@ export default function MarkDownEditor({ content, setContent }: Props) {
       <div data-color-mode="light" className="markdown-list ">
          <MDEditor
             height={500}
-            value={content}
+            value={markDownContent}
             onChange={onChange}
             commands={[
                commands.title,

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const authSchema = z.object({
+export const boardSchema = z.object({
    nickname: z
       .string()
       .min(2, '아이디 2자 이상이어야 합니다.')
@@ -14,9 +14,9 @@ export const authSchema = z.object({
          /^[A-Za-z\d가-힣ㄱ-ㅎㅏ-ㅣ]+$/,
          '비밀번호는 문자, 숫자만 가능합니다',
       ),
-})
-
-export const boardSchema = z.object({
    title: z.string().min(2, '제목을 입력해주세요.'),
    content: z.string().min(2, '내용을 입력해주세요.'),
+   summary: z.string(),
+   thumbnail: z.string(),
+   markdown: z.string().min(2, '마크다운을 입력해주세요.'),
 })
