@@ -26,24 +26,27 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
       const htmlParser = new DOMParser()
       const htmlDocument = htmlParser.parseFromString(htmlString, 'text/html')
       const imgTag = htmlDocument.querySelectorAll('img')
-      let thumbnail = ''
+      let firstImageSrc = ''
       if (imgTag.length > 0) {
-         thumbnail = imgTag[0].src
+         firstImageSrc = imgTag[0].src
       }
-      return thumbnail
+      return firstImageSrc
    }
    const getParagraphText = (htmlString: string): string => {
       const htmlParser = new DOMParser()
       const htmlDocument = htmlParser.parseFromString(htmlString, 'text/html')
       const pTag = htmlDocument.querySelectorAll('p')
-      let summary = ''
+      let PText = ''
       if (pTag.length > 0) {
-         summary = Array.from(pTag)
-            .map((p) => (p as HTMLElement).textContent.trim())
-            .filter((text) => text.length > 0)
+         PText = Array.from(pTag)
+            .map((p) =>
+               (p as HTMLElement).textContent?.trim().replace(/\s+/g, ' '),
+            ) // 중복 공백을 한 개의 공백으로 치환
+            .filter((text) => text && text.length > 0)
             .join(' ')
+            .substring(0, 100)
       }
-      return summary.substring(0, 100)
+      return PText
    }
    const handleFormSubmit = async (
       e: React.FormEvent<HTMLFormElement>,
