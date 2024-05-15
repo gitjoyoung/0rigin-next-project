@@ -1,13 +1,15 @@
 'use client'
-import React, { Suspense, useEffect, useState } from 'react'
-import { validateSlug } from '@/utils/slugValidators/slug'
+
+import React, { useEffect, useState } from 'react'
+
 import {
    fetchLatestPostId,
    fetchPosts,
 } from '@/app/api/board/post/fetchPostApi'
+import { useSearchParams } from 'next/navigation'
+import { validatePostQuery } from '@/utils/slugValidators/validatePostQuery'
 import BoardList from './Content/BoardList'
 import BoardTap from './Content/BoardTap'
-import { useSearchParams } from 'next/navigation'
 
 enum TapName {
    RealTime = '실시간',
@@ -17,7 +19,7 @@ enum TapName {
 export default function BoardContent() {
    const searchParams = useSearchParams()
    const search = searchParams.get('page')
-   const pageNum = search && validateSlug(search) ? Number(search) : 1
+   const pageNum = validatePostQuery.safeParse(search) ? Number(search) : 1
 
    const [selectedTap, setSelectedTap] = useState<TapName>(TapName.RealTime)
    const [postData, setPostData] = useState([])
@@ -25,7 +27,6 @@ export default function BoardContent() {
    useEffect(() => {
       async function fetchData() {
          const fetchedLastPostId = await fetchLatestPostId()
-
          const fetchedPosts = await fetchPosts(pageNum, fetchedLastPostId, 20)
          setPostData(fetchedPosts)
       }

@@ -4,7 +4,7 @@ import BoardFooter from '@/components/Board/BoardFooter'
 import BoardHeader from '@/components/Board/BoardHeader'
 import Pagination from '@/components/Board/Pagination'
 import BoardRead from '@/components/Board/Read/BoardRead'
-import { validateSlug } from '@/utils/slugValidators/slug'
+import { validatePostQuery } from '@/utils/slugValidators/validatePostQuery'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -20,16 +20,13 @@ interface Params {
 
 export default async function Page({ params }: Params) {
    const { id } = params
-   const postId = validateSlug(id) ? id : null
-   if (!postId) return null
-
+   const postId = validatePostQuery.safeParse(id) ? id : '1'
    const readData = await fetchPostById(postId)
    // return <div> 게시글을 불러오는 중입니다... </div>
    return (
       <>
          <BoardHeader title="왁자지껄 게시판" />
          <BoardRead postId={postId} readData={readData} />
-
          <BoardContent />
          <Pagination />
          <BoardFooter />

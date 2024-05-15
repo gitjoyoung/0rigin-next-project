@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ROUTES } from '@/constants/route'
-import { validateSlug } from '@/utils/slugValidators/slug'
 import { fetchLatestPostId } from '@/app/api/board/post/fetchPostApi'
 import { v4 as uuid } from 'uuid'
+import { validatePostQuery } from '@/utils/slugValidators/validatePostQuery'
 
 export default function Pagination() {
    // 마지막 게시글 id 가져오기 id 가 index 이므로 1부터 시작
@@ -23,16 +23,15 @@ export default function Pagination() {
 
    // 페이지 정보
    const searchParams = useSearchParams()
-   const page = validateSlug(searchParams.get('page'))
-      ? Number(searchParams.get('page'))
-      : 1
+   const search = searchParams.get('page')
+   const pageNum = validatePostQuery.safeParse(search) ? Number(search) : 1
 
    // 페이지 그룹
    const POSTS_PER_PAGE = 20 // 한 페이지에 보여줄 게시글 수
    const PAGES_PER_GROUP = 5 // 한 페이지 그룹에 보여줄 페이지 수
 
    const totalPages = Math.ceil(lastPostId / POSTS_PER_PAGE) // 전체 페이지 계산
-   const currentPageGroup = Math.ceil(page / PAGES_PER_GROUP) // 현재 페이지 그룹
+   const currentPageGroup = Math.ceil(pageNum / PAGES_PER_GROUP) // 현재 페이지 그룹
    const startPage = (currentPageGroup - 1) * PAGES_PER_GROUP + 1 // 시작 페이지
    const endPage = Math.min(startPage + PAGES_PER_GROUP - 1, totalPages) // 끝 페이지
    const pageNumbers = Array.from(
@@ -47,7 +46,7 @@ export default function Pagination() {
    }
 
    return (
-      <div className="flex justify-center items-center gap-2 m-2 overflow-x-auto">
+      <article className="flex justify-center items-center gap-2 m-2 overflow-x-auto">
          {/* 이전 페이지 그룹 버튼 */}
          {startPage > 1 && (
             <button
@@ -63,7 +62,7 @@ export default function Pagination() {
          {/* 현재 페이지 번호 */}
          {pageNumbers.map((index: number) => (
             <div key={uuid()} className="mx-1">
-               {page === index ? (
+               {pageNum === index ? (
                   <p className="underline p-1 text-blue-600">{index}</p>
                ) : (
                   <Link
@@ -88,6 +87,6 @@ export default function Pagination() {
                <FontAwesomeIcon icon={faCaretRight} />
             </button>
          )}
-      </div>
+      </article>
    )
 }
