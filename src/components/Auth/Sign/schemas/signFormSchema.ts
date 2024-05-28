@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const userIdSchema = z
+const userEmailSchema = z
    .string()
    .min(4, '아이디 4자 이상이어야 합니다.')
    .max(11, '아이디는 12자 미만이어야 합니다.')
@@ -18,7 +18,7 @@ const passwordSchema = z
 const signUpSchema = z
    .object({
       gender: z.string().regex(/^(man|girl|other)$/, '성별을 선택 해주세요'),
-      userId: userIdSchema,
+      email: userEmailSchema,
       password: passwordSchema,
       confirmPassword: passwordSchema,
    })
@@ -27,6 +27,4 @@ const signUpSchema = z
       path: ['confirmPassword'],
    })
 
-const combinedSchema = z.union([userIdSchema, passwordSchema, signUpSchema])
-
-export { userIdSchema, passwordSchema, signUpSchema, combinedSchema }
+export { userEmailSchema, passwordSchema, signUpSchema }

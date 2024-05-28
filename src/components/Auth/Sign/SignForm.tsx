@@ -5,6 +5,7 @@ import { useModalStore } from '@/store/modal'
 import { useRouter } from 'next/navigation'
 import { signUpSchema } from './schemas/signFormSchema'
 import InputAndCheck from './InputAndCheck'
+import GenderRadioGroup from './GenderRadioGroup'
 
 export default function SignForm() {
    const router = useRouter()
@@ -12,7 +13,7 @@ export default function SignForm() {
    const [isPending, startTransition] = useTransition()
    const [inputState, setInputState] = useState({
       gender: { hasError: false, message: '* 성별을 선택해 주세요' },
-      userId: { hasError: false, message: '* 영어 4~12자 소문자+숫자 가능' },
+      email: { hasError: false, message: '* 영어 4~12자 소문자+숫자 가능' },
       password: {
          hasError: false,
          message: '* 8~12자 대 소문자+숫자+특수문자 포함',
@@ -27,16 +28,18 @@ export default function SignForm() {
       e.preventDefault()
       const formData = {
          gender: e.currentTarget.gender.value,
-         userId: e.currentTarget.userId.value,
+         email: e.currentTarget.email.value,
          password: e.currentTarget.password.value,
          confirmPassword: e.currentTarget.confirmPassword.value,
       }
       const result = signUpSchema.safeParse(formData)
       if (result.success === false) {
+         // 상태 초기화
          const newState = { ...inputState }
          Object.keys(newState).forEach((key) => {
             newState[key].hasError = false
          })
+         // 에러가 있는 필드에만 hasError를 true로 변경
          result.error.issues.forEach((issue) => {
             const fieldName = issue.path[0]
             if (fieldName in newState) {
@@ -47,11 +50,12 @@ export default function SignForm() {
          return
       }
 
+      // 로딩 시작 로직
       startTransition(() => {})
 
       await fetchSignUp({
          ...formData,
-         userId: `${formData.userId}@0rigin.com`,
+         email: `${formData.email}@0rigin.com`,
       }).then((credential) => {
          if (credential instanceof Error) {
             alert(credential.message) // 오류 메시지를 alert로 보여줌
@@ -76,55 +80,14 @@ export default function SignForm() {
                className="flex flex-col gap-2 text-sm w-full max-w-[300px]"
                onSubmit={handleSignUpSubmit}
             >
-               <ul className="flex gap-3 my-1 ">
-                  <li>
-                     <label htmlFor="gender-man">
-                        <input
-                           type="radio"
-                           className="m-1"
-                           name="gender"
-                           value="man"
-                           id="gender-man"
-                        />
-                        남성
-                     </label>
-                  </li>
-                  <li>
-                     <label htmlFor="gender-girl">
-                        <input
-                           id="gender-girl"
-                           type="radio"
-                           className="m-1"
-                           name="gender"
-                           value="girl"
-                        />
-                        여성
-                     </label>
-                  </li>
-                  <li>
-                     <label htmlFor="gender-other">
-                        <input
-                           type="radio"
-                           className="m-1"
-                           name="gender"
-                           value="other"
-                           id="gender-other"
-                        />
-                        기타
-                     </label>
-                  </li>
-               </ul>
-               <p
-                  className={`${inputState.gender.hasError ? 'text-xs text-red-500' : 'text-xs '}`}
-               >
-                  {inputState.gender.message}
-               </p>
+               <GenderRadioGroup inputState={inputState} />
+
                <InputAndCheck
                   placeholder="아이디"
-                  name="userId"
-                  errorMsg={inputState.userId.message}
+                  name="email"
+                  errorMsg={inputState.email.message}
                   pending={isPending}
-                  hasError={inputState.userId.hasError}
+                  hasError={inputState.email.hasError}
                   type="text"
                />
                <InputAndCheck

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import React, { useState, FormEvent, ChangeEvent } from 'react'
 
 export default function Login() {
-   const router = useRouter()
+   const { push } = useRouter()
 
    // 로그인 form 정보
    const [id, setId] = useState<string>('')
@@ -32,7 +32,7 @@ export default function Login() {
          ...credentials,
       })
       if (response && response.status === 200) {
-         router.push(ROUTES.HOME)
+         push(ROUTES.HOME)
       } else {
          setError('아이디 또는 비밀번호가 일치하지 않습니다.')
       }
