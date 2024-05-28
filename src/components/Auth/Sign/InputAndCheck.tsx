@@ -1,12 +1,12 @@
 import React from 'react'
 
 interface Props {
-   errorMsg: string
    name: string
-   pending: boolean
+   pending?: boolean
    placeholder: string
-   hasError: boolean
+   hasError?: boolean
    type: string
+   errorMsg?: string
 }
 
 export default function InputAndCheck({

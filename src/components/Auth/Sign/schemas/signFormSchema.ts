@@ -1,5 +1,9 @@
 import { z } from 'zod'
 
+const genderSchema = z
+   .string()
+   .regex(/^(man|girl|other)$/, '성별을 선택 해주세요')
+
 const userEmailSchema = z
    .string()
    .min(4, '아이디 4자 이상이어야 합니다.')
@@ -17,7 +21,7 @@ const passwordSchema = z
 
 const signUpSchema = z
    .object({
-      gender: z.string().regex(/^(man|girl|other)$/, '성별을 선택 해주세요'),
+      gender: genderSchema,
       email: userEmailSchema,
       password: passwordSchema,
       confirmPassword: passwordSchema,
