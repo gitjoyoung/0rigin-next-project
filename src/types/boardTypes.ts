@@ -1,6 +1,6 @@
 // 공통 인터페이스 정의
 interface BasePost {
-   id: string
+   id?: string
    title: string
    nickname?: string
    markdown?: string
