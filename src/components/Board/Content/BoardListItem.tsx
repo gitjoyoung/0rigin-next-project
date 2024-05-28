@@ -24,7 +24,7 @@ export default function BoardListItem({ item, page }: Props) {
    return (
       <section className="flex items-center  flex-wrap p-2  ">
          <div className="flex-auto text-sm gap-2 justify-start flex  items-center w-72">
-            <p className="border   px-0.5  ">{id}</p>
+            <p className="border px-0.5  ">{id}</p>
             {deleted ? (
                <h1 className="line-clamp-1 text-gray-400 ">
                   삭제된 게시물 입니다.

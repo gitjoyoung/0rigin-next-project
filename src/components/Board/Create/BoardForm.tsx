@@ -36,9 +36,9 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
       const htmlParser = new DOMParser()
       const htmlDocument = htmlParser.parseFromString(htmlString, 'text/html')
       const pTag = htmlDocument.querySelectorAll('p')
-      let PText = ''
+      let pText = ''
       if (pTag.length > 0) {
-         PText = Array.from(pTag)
+         pText = Array.from(pTag)
             .map((p) =>
                (p as HTMLElement).textContent?.trim().replace(/\s+/g, ' '),
             ) // 중복 공백을 한 개의 공백으로 치환
@@ -46,7 +46,7 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
             .join(' ')
             .substring(0, 100)
       }
-      return PText
+      return pText
    }
    const handleFormSubmit = async (
       e: React.FormEvent<HTMLFormElement>,

@@ -4,28 +4,16 @@ import React, { useEffect, useState } from 'react'
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/route'
-import { fetchLatestPostId } from '@/app/api/board/post/fetchPostApi'
 import { v4 as uuid } from 'uuid'
-import { validatePostQuery } from '@/utils/slugValidators/validatePostQuery'
 
-export default function Pagination() {
-   // 마지막 게시글 id 가져오기 id 가 index 이므로 1부터 시작
-   const [lastPostId, setLastPostId] = useState(0)
-   useEffect(() => {
-      async function fetchData() {
-         const fetchedLastPostId = await fetchLatestPostId()
-         setLastPostId(fetchedLastPostId)
-      }
-      fetchData()
-   }, [])
+interface Props {
+   pageNum: number
+   lastPostId: number
+}
 
-   // 페이지 정보
-   const searchParams = useSearchParams()
-   const search = searchParams.get('page')
-   const pageNum = validatePostQuery.safeParse(search) ? Number(search) : 1
-
+export default function Pagination({ pageNum, lastPostId }) {
    // 페이지 그룹
    const POSTS_PER_PAGE = 20 // 한 페이지에 보여줄 게시글 수
    const PAGES_PER_GROUP = 5 // 한 페이지 그룹에 보여줄 페이지 수
@@ -40,9 +28,9 @@ export default function Pagination() {
    ) // 페이지 번호 배열
 
    // 페이지 이동
-   const router = useRouter()
-   const handlePageChange = (selectPage) => {
-      router.push(`${ROUTES.BOARD}?page=${selectPage}`)
+   const { push } = useRouter()
+   const handlePageChange = (selectPage: number) => {
+      push(`${ROUTES.BOARD}?page=${selectPage}`)
    }
 
    return (
@@ -67,7 +55,6 @@ export default function Pagination() {
                ) : (
                   <Link
                      href={`${ROUTES.BOARD}?page=${index}`}
-                     type="button"
                      className="border-none"
                   >
                      {index}

@@ -1,4 +1,4 @@
-import { DeleteComment } from '@/app/api/board/commentApi'
+import { deleteComment } from '@/app/api/board/commentApi'
 import { CommentData } from '@/types/commentTypes'
 import React from 'react'
 
@@ -18,7 +18,7 @@ export default function BoardCommentItem({ commentData }: Props) {
                <button
                   type="button"
                   className="p-1"
-                  onClick={() => DeleteComment(postId, id)}
+                  onClick={() => deleteComment(postId, id)}
                >
                   삭제
                </button>

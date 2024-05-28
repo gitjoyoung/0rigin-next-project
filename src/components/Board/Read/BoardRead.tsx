@@ -1,6 +1,5 @@
 'use client'
 
-import BoardComment from '@/components/Board/Comment/BoardCommentsList'
 import { Post } from '@/types/boardTypes'
 import { updateIncreaseViews } from '@/app/api/board/post/updatePostApi'
 import { useEffect } from 'react'
@@ -16,6 +15,8 @@ interface Props {
 }
 
 export default function BoardRead({ postId, readData }: Props) {
+   const { title, nickname, like, createdAt, views, content, dislike } =
+      readData
    useEffect(() => {
       const updateViews = async () => {
          await updateIncreaseViews(postId)
@@ -27,26 +28,18 @@ export default function BoardRead({ postId, readData }: Props) {
       <section>
          {/* 글제목 */}
          <BoardReadHeader
-            title={readData.title}
-            nickname={readData.nickname}
-            like={readData.like}
-            date={readData.createdAt}
-            views={readData.views}
+            title={title}
+            nickname={nickname}
+            like={like}
+            date={createdAt}
+            views={views}
          />
          {/* 글 수정  , 삭제 버튼 */}
          <BoardUpdateButton postId={postId} />
          {/* 글내용 마크다운 뷰어 */}
-         <MarkDownViewer content={readData.content} />
-
+         <MarkDownViewer content={content} />
          {/* 싫어요,좋아요  버튼 */}
-         <BoardLikeButton
-            postId={postId}
-            like={readData.like}
-            dislike={readData.dislike}
-         />
-
-         {/* 댓글 컴포넌트  */}
-         <BoardComment postId={postId} />
+         <BoardLikeButton postId={postId} like={like} dislike={dislike} />
          {/* 이전 목록 다음 글 이동 */}
          <BoardNavButton postID={postId} />
       </section>
