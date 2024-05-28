@@ -1,7 +1,13 @@
-import { fetchPostById } from '@/app/api/board/post/fetchPostApi'
+import { fetchComments } from '@/app/api/board/commentApi'
+import {
+   fetchLatestPostId,
+   fetchPostById,
+   fetchPosts,
+} from '@/app/api/board/post/fetchPostApi'
 import BoardContent from '@/components/Board/BoardContent'
 import BoardFooter from '@/components/Board/BoardFooter'
 import BoardHeader from '@/components/Board/BoardHeader'
+import BoardComment from '@/components/Board/Comment/BoardCommentsList'
 import Pagination from '@/components/Board/Pagination'
 import BoardRead from '@/components/Board/Read/BoardRead'
 import { validatePostQuery } from '@/utils/slugValidators/validatePostQuery'
@@ -16,19 +22,34 @@ interface Params {
    params: {
       id: string
    }
+   searchParams: {
+      page: string
+   }
 }
 
-export default async function Page({ params }: Params) {
+export default async function Page({ params, searchParams }: Params) {
    const { id } = params
-   const postId = validatePostQuery.safeParse(id) ? id : '1'
+   const { page } = searchParams
+
+   const validPage = await validatePostQuery.safeParse(page)
+   const pageNum = validPage.success ? Number(page) : 1
+
+   const validPost = await validatePostQuery.safeParse(id)
+   const postId = validPost.success ? id : '1'
+
    const readData = await fetchPostById(postId)
-   // return <div> 게시글을 불러오는 중입니다... </div>
+   const commentData = await fetchComments(postId)
+
+   const lastPostId = await fetchLatestPostId()
+   const fetchedPosts = await fetchPosts(pageNum, lastPostId, 20)
+
    return (
       <>
          <BoardHeader title="왁자지껄 게시판" />
          <BoardRead postId={postId} readData={readData} />
-         <BoardContent />
-         <Pagination />
+         <BoardComment postId={postId} commentData={commentData} />
+         <BoardContent postData={fetchedPosts} />
+         <Pagination lastPostId={lastPostId} pageNum={postId} />
          <BoardFooter />
       </>
    )

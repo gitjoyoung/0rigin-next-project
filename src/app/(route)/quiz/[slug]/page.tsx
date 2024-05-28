@@ -4,7 +4,6 @@ import React from 'react'
 
 export default function page({ params }) {
    const { slug } = params
-   console.log(slug)
    const quiz = QUIZ_DATA.find((q) => q.path === slug)
    return (
       <div>

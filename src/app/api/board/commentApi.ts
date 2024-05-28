@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore'
 
 // 댓글 추가
-export const AddComment = async (
+export const addComment = async (
    postId: string,
    commentData: CreateCommentData,
 ): Promise<string> => {
@@ -29,7 +29,7 @@ export const AddComment = async (
 }
 
 // 댓글 삭제
-export const DeleteComment = async (
+export const deleteComment = async (
    postId: string,
    commentId: string,
 ): Promise<void> => {

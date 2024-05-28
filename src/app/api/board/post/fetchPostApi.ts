@@ -95,7 +95,6 @@ export const fetchPostById = async (postID: string): Promise<Post> => {
       // 문서가 존재하는 경우, 문서 데이터와 함께 문서 ID를 반환합니다.
       if (docSnap.exists()) {
          const postData = docSnap.data()
-         console.log('postData', postData)
          return {
             ...postData,
             nickname: postData.nickname,

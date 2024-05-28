@@ -1,9 +1,5 @@
-import QuizBorad from '@/components/Quiz/QuizBorad'
+import QuizBoard from '@/components/Quiz/QuizBoard'
 
 export default function page() {
-   return (
-      <div>
-         <QuizBorad />
-      </div>
-   )
+   return <QuizBoard />
 }

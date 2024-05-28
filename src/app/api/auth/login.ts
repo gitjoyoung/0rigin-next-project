@@ -18,6 +18,8 @@ export const fetchLogin = (userId, password): Promise<Login | null> => {
             email: userCredential.user.email,
             id: userCredential.user.uid,
             name: userCredential.user.displayName,
+            nickname: userCredential.user.displayName || '',
+            token: userCredential.user.refreshToken || '',
          }
          return loginResult // 로그인 성공 시 Login 객체 반환
       })
