@@ -26,6 +26,7 @@ export default function SignForm() {
 
    const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
+
       const formData = {
          gender: e.currentTarget.gender.value,
          email: e.currentTarget.email.value,
@@ -70,40 +71,36 @@ export default function SignForm() {
 
    return (
       <section className="w-full flex justify-center">
-         <div className="border p-10 flex items-center flex-col gap-6 m-3 w-full max-w-[500px]">
+         <div className="border p-10 flex items-center flex-col gap-6 m-3 w-full max-w-[350px]">
             <h1 className="font-bold text-2xl">회원가입</h1>
             <h3 className="text-lg">
                회원가입시 다양한 혜택을 받을 수 있습니다.
             </h3>
 
             <form
-               className="flex flex-col gap-2 text-sm w-full max-w-[300px]"
+               className="flex flex-col gap-2  w-full max-w-[300px]"
                onSubmit={handleSignUpSubmit}
             >
-               <GenderRadioGroup inputState={inputState} />
-
+               <GenderRadioGroup />
                <InputAndCheck
                   placeholder="아이디"
                   name="email"
-                  errorMsg={inputState.email.message}
                   pending={isPending}
-                  hasError={inputState.email.hasError}
+                  errorMsg={'영어 4~12자 소문자+숫자 가능'}
                   type="text"
                />
                <InputAndCheck
                   placeholder="비밀번호"
                   name="password"
-                  errorMsg={inputState.password.message}
                   pending={isPending}
-                  hasError={inputState.password.hasError}
+                  errorMsg={'8~12자 대 소문자+숫자+특수문자 포함'}
                   type="password"
                />
                <InputAndCheck
                   placeholder="비밀번호 재확인"
                   name="confirmPassword"
-                  errorMsg={inputState.confirmPassword.message}
                   pending={isPending}
-                  hasError={inputState.confirmPassword.hasError}
+                  errorMsg={'비밀번호를 재입력해 주세요'}
                   type="password"
                />
                <button className="my-4 p-2" type="submit" disabled={isPending}>

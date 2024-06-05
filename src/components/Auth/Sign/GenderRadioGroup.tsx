@@ -1,56 +1,29 @@
+import Radio from '@/components/common/Input/Radio'
 import React from 'react'
 
-interface Props {
-   inputState: any
-}
+export default function GenderRadioGroup() {
+   const GENDER_ARRAY = [
+      {
+         id: 'gender-man',
+         name: 'gender',
+         value: '남자',
+      },
+      {
+         id: 'gender-girl',
+         name: 'gender',
+         value: '여자',
+      },
+      {
+         id: 'gender-other',
+         name: 'gender',
+         value: '기타',
+      },
+   ]
 
-export default function GenderRadioGroup({ inputState }: Props) {
    return (
-      <div>
-         {' '}
-         <ul className="flex gap-3 my-1 ">
-            <li>
-               <label htmlFor="gender-man">
-                  <input
-                     type="radio"
-                     className="m-1"
-                     name="gender"
-                     value="man"
-                     id="gender-man"
-                  />
-                  남성
-               </label>
-            </li>
-            <li>
-               <label htmlFor="gender-girl">
-                  <input
-                     id="gender-girl"
-                     type="radio"
-                     className="m-1"
-                     name="gender"
-                     value="girl"
-                  />
-                  여성
-               </label>
-            </li>
-            <li>
-               <label htmlFor="gender-other">
-                  <input
-                     type="radio"
-                     className="m-1"
-                     name="gender"
-                     value="other"
-                     id="gender-other"
-                  />
-                  기타
-               </label>
-            </li>
-         </ul>
-         <p
-            className={`${inputState.gender.hasError ? 'text-xs text-red-500' : 'text-xs '}`}
-         >
-            {inputState.gender.message}
-         </p>
+      <div className="border p-1 py-2 flex flex-col gap-2">
+         <Radio arr={GENDER_ARRAY} />
+         <p className="text-xs ">* 성별을 선택해 주세요</p>
       </div>
    )
 }
