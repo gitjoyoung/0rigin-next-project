@@ -1,14 +1,14 @@
 interface Props {
    defaultValue?: string
    name: string
-   placeholder: string
+   placeholder?: string
    disabled?: boolean
 }
 
 export default function InputNickName({
    defaultValue = '',
    name,
-   placeholder,
+   placeholder = '닉네임',
    disabled = false,
 }: Props) {
    return (
