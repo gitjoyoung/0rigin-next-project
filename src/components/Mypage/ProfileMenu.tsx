@@ -8,19 +8,17 @@ export default function ProfileMenu() {
    }
 
    return (
-      <article>
-         <ul className="flex flex-col my-2 gap-1">
-            {menu.map((item) => (
-               <button
-                  className=""
-                  type="button"
-                  key={uuid4()}
-                  onClick={handleProfileMenu}
-               >
-                  {item}
-               </button>
-            ))}
-         </ul>
+      <article className="flex flex-col my-2 gap-1">
+         {menu.map((item) => (
+            <button
+               className=""
+               type="button"
+               key={uuid4()}
+               onClick={handleProfileMenu}
+            >
+               {item}
+            </button>
+         ))}
       </article>
    )
 }
