@@ -1,6 +1,5 @@
 import { SIGN_UP_TERMS } from '@/constants/auth/signUpTermsText'
 import Link from 'next/link'
-import React from 'react'
 
 export default function SignUpWelcome() {
    return (
