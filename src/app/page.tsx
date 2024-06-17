@@ -1,32 +1,25 @@
 import Banner from '@/components/Banner/Banner'
-import BoardContent from '@/components/Board/BoardContent'
-import { Metadata } from 'next'
-import BoardSuspense from '@/components/Board/BoardSuspense'
-import { updateIncrementCount } from './api/board/tickerApi'
-import {
-   fetchLatestPostId,
-   fetchPosts,
-   fetchTopPosts,
-} from './api/board/post/fetchPostApi'
-
-export const metadata: Metadata = {
-   title: '0rigin 홈',
+import BoardList from '@/components/Board/Content/BoardList'
+import { Post, TopPost } from '@/types/boardTypes'
+interface Response {
+   topData: TopPost[]
+   fetchedPosts: Post[]
 }
-export const revalidate = 10
 
-async function Home() {
-   const topData = await fetchTopPosts()
-   await updateIncrementCount('visit')
-
-   const lastPostId = await fetchLatestPostId()
-   const fetchedPosts = await fetchPosts(1, lastPostId, 20)
+export default async function Home() {
+   const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home`, {
+      method: 'GET',
+      headers: {
+         'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+   })
+   const { topData, fetchedPosts }: Response = await data.json()
 
    return (
-      <section className="flex flex-wrap justify-between border border-black p-1 ">
+      <section className="flex flex-wrap border border-black p-1 ">
          <Banner topData={topData} />
-         <BoardContent postData={fetchedPosts} />
+         <BoardList postData={fetchedPosts} />
       </section>
    )
 }
-
-export default Home

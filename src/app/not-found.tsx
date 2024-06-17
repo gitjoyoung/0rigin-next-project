@@ -19,7 +19,7 @@ export default function NotFound() {
          </p>
          <Link
             href={ROUTES.HOME}
-            className="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-cyan-600 focus:outline-none focus:ring focus:border-blue-300"
+            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-cyan-600 focus:outline-none focus:ring focus:border-blue-300"
          >
             홈으로 돌아가기
          </Link>
