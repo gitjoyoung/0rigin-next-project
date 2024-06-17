@@ -8,13 +8,12 @@ import {
 } from '@/utils/boardValidators/imageValidators'
 import imageCompression from 'browser-image-compression'
 import rehypeSanitize from 'rehype-sanitize'
-import dynamic from 'next/dynamic'
 import { ContextStore, commands } from '@uiw/react-md-editor'
-import uploadImageToFirebase from '@/app/api/board/imageApi'
 import { PhotoIcon } from '@heroicons/react/20/solid'
 import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
-
+import uploadImageToFirebase from '@/service/board/imageApi'
+import dynamic from 'next/dynamic'
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 type OnChange = (

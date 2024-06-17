@@ -6,7 +6,7 @@ import { CreatePostData, Post } from '@/types/boardTypes'
 import MarkDownEditor from './MarkDownEditor'
 import BoardSubmitGroups from './BoardSubmitGroups'
 import BoardFormHeader from './BoardFormHeader'
-import { useBoardForm } from '@/hook/useBoardForm'
+import { useBoardForm } from '@/hooks/useBoardForm'
 
 interface Props {
    editData?: Post | null
@@ -18,7 +18,7 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
       useBoardForm(editData, submitPost)
 
 
-      
+
    return (
       <section className=" w-full  px-3 py-2">
          <form

@@ -1,10 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React from 'react'
 import { ROUTES } from '@/constants/route'
-import { createPost } from '@/app/api/board/post/updatePostApi'
 import BoardForm from './BoardForm'
+import { createPost } from '@/service/board/post/updatePostApi'
 
 export default function BoardCreateForm() {
    const { push } = useRouter() // 라우터
@@ -16,5 +15,9 @@ export default function BoardCreateForm() {
       })
    }
 
-   return <BoardForm submitPost={handleFormSubmit} />
+   return (
+      <>
+         <BoardForm submitPost={handleFormSubmit} />
+      </>
+   )
 }
