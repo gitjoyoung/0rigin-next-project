@@ -1,4 +1,4 @@
-const HEADER_NAV = Object.freeze([
+export const HEADER_NAV_LIST = Object.freeze([
    {
       id: 'introduce',
       title: '소개',
@@ -15,5 +15,3 @@ const HEADER_NAV = Object.freeze([
       url: '/quiz',
    },
 ])
-
-export default HEADER_NAV

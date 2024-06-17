@@ -28,19 +28,4 @@ export const QUIZ_DATA = [
       description: '다양한 프로그래밍 언어와 기법을 평가합니다.',
       data: programmingQuestions,
    },
-   //    {
-   //       name: '역사 퀴즈',
-   //       slug: 'history',
-   //       description: '세계 역사와 중요 사건에 대해 퀴즈를 제공합니다.',
-   //    },
-   //    {
-   //       name: '영어 퀴즈',
-   //       slug: 'english',
-   //       description: '영어 능력을 평가하는 다양한 문제를 제공합니다.',
-   //    },
-   //    {
-   //       name: '수학 퀴즈',
-   //       slug: 'math',
-   //       description: '기본적인 수학 능력을 테스트합니다.',
-   //    },
 ]
