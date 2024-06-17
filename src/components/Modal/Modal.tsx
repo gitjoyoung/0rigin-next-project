@@ -1,84 +1,35 @@
-import React, { Fragment } from 'react'
-import { createPortal } from 'react-dom'
-import { useRouter } from 'next/navigation'
-import { Dialog, Transition } from '@headlessui/react'
+import React from 'react'
 import { useModalStore } from '@/store/modal'
+import ModalUi from './ModalUi'
+import ModalWrap from './ModalWrap'
 
-interface ModalProps {
-   readonly title: string
-   readonly content: string
-   readonly path: string
-}
-function ModalUi({ title, content, path }: ModalProps) {
-   const router = useRouter()
-   const close = useModalStore((state) => state.close)
+export default function Modal() {
+   const { open, isOpen, close } = useModalStore((state) => ({
+      isOpen: state.isOpen,
+      close: state.close,
+      open: state.open,
+   }))
 
+   const handleConfirm = () => {
+      close()
+   }
    return (
-      <Transition appear show as={Fragment}>
-         <Dialog as="div" className="relative z-10" onClose={close}>
-            <Transition.Child
-               as={Fragment}
-               enter="ease-out duration-300"
-               enterFrom="opacity-0"
-               enterTo="opacity-100"
-               leave="ease-in duration-200"
-               leaveFrom="opacity-100"
-               leaveTo="opacity-0"
-            >
-               <div className="fixed inset-0 bg-black bg-opacity-25" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 overflow-y-auto">
-               <div className="flex min-h-full items-center justify-center p-4 text-center">
-                  <Transition.Child
-                     as={Fragment}
-                     enter="ease-out duration-300"
-                     enterFrom="opacity-0 scale-95"
-                     enterTo="opacity-100 scale-100"
-                     leave="ease-in duration-200"
-                     leaveFrom="opacity-100 scale-100"
-                     leaveTo="opacity-0 scale-95"
-                  >
-                     <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-sm bg-white p-6 text-left align-middle shadow-xl transition-all">
-                        <Dialog.Title
-                           as="h3"
-                           className="text-lg font-medium  leading-6 text-gray-900"
-                        >
-                           {title}
-                        </Dialog.Title>
-                        <div className="mt-2">
-                           <p className="text-sm text-gray-500">{content}</p>
-                        </div>
-
-                        <div className="mt-4 flex justify-end">
-                           <button
-                              type="button"
-                              className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                              onClick={() => {
-                                 router.push(path)
-                                 close()
-                              }}
-                           >
-                              확인
-                           </button>
-                        </div>
-                     </Dialog.Panel>
-                  </Transition.Child>
-               </div>
-            </div>
-         </Dialog>
-      </Transition>
+      <>
+         <button type="button" onClick={open}>
+            모달열기
+         </button>
+         <button type="button" onClick={close}>
+            모달닫기
+         </button>
+         {isOpen && (
+            <ModalWrap>
+               <ModalUi
+                  title="모달입니다"
+                  content="모달내용"
+                  onConfirm={handleConfirm}
+               />
+            </ModalWrap>
+         )}
+      </>
    )
 }
-
-function Modal({ title, content, path }: ModalProps) {
-   const isOpen = useModalStore((state) => state.isOpen)
-   return isOpen
-      ? createPortal(
-           <ModalUi title={title} content={content} path={path} />,
-           document.getElementById('modal-root') as HTMLDivElement,
-        )
-      : null
-}
-
-export default Modal
