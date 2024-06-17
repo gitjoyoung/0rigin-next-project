@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
-import { updateReactionCount } from '@/app/api/board/likeApi'
+import { updateReactionCount } from '@/service/board/likeApi'
 
 interface Props {
    like: number

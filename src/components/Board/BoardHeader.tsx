@@ -1,6 +1,6 @@
 import { ROUTES } from '@/constants/route'
 import BoardMainButton from './Content/BoardMainButton'
-import CustomTitle from '../common/CustomTitle'
+import CustomTitle from '../common/links/CustomTitleLink'
 
 export default function BoardHeader({ title }) {
    return (

@@ -1,16 +1,17 @@
+'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { use } from 'react'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { formatNumberWithUnit } from '@/utils/boardValidators/formatNumberWithUnit'
 import { Post } from '@/types/boardTypes'
 import { ROUTES } from '@/constants/route'
+import { useSearchParams } from 'next/navigation'
 
 interface Props {
    item: Post
-   page: number
 }
 
-export default function BoardListItem({ item, page }: Props) {
+export default function BoardListItem({ item }: Props) {
    const {
       id,
       title,
@@ -21,6 +22,9 @@ export default function BoardListItem({ item, page }: Props) {
       comment,
       deleted = false,
    } = item
+   const params = useSearchParams()
+   const page = params.get('page') || 1
+
    return (
       <section className="flex items-center  flex-wrap p-2  ">
          <div className="flex-auto text-sm gap-2 justify-start flex  items-center w-72">

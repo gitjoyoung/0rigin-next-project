@@ -1,29 +1,39 @@
 'use client'
-
-import React, { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { validatePostQuery } from '@/utils/slugValidators/validatePostQuery'
+import { useState } from 'react'
 import BoardList from './Content/BoardList'
-import BoardTap from './Content/BoardTap'
+import { BoardTapButton } from './Content/BoardTapButton'
+import { Post, TopPost } from '@/types/boardTypes'
 
-enum TapName {
-   RealTime = '실시간',
-   Recommended = '추천글',
+interface Props {
+   postData: Post[]
+   topData?: TopPost[]
 }
 
-export default function BoardContent({ postData }) {
-   const searchParams = useSearchParams()
-   const search = searchParams.get('page')
-   const pageNum = validatePostQuery.safeParse(search) ? Number(search) : 1
+export default function BoardContent({ postData, topData }: Props) {
+   const [selectedTab, setSelectedTab] = useState('realtime')
 
-   const [selectedTap, setSelectedTap] = useState<TapName>(TapName.RealTime)
-
+   const handleTabClick = (tabName: string) => {
+      setSelectedTab(tabName)
+   }
    return (
-      <section className="px-0.5 w-full">
+      <div className="px-0.5 w-full">
          {/* 게시판 태그 일반글 추천글 */}
-         <BoardTap setSelectedTap={setSelectedTap} selectedTap={selectedTap} />
+         <BoardTapButton
+            tapName="실시간"
+            isActive={selectedTab === 'realtime'}
+            onClick={() => handleTabClick('realtime')}
+         />
+         <BoardTapButton
+            tapName="인기글"
+            isActive={selectedTab === 'popular'}
+            onClick={() => handleTabClick('popular')}
+         />
          {/* 게시글 리스트 */}
-         <BoardList postData={postData} page={pageNum} />
-      </section>
+         {selectedTab === 'realtime' ? (
+            <BoardList postData={postData} />
+         ) : (
+            <BoardList postData={topData} />
+         )}
+      </div>
    )
 }

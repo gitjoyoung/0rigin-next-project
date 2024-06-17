@@ -1,4 +1,4 @@
-import CustomLink from '@/components/common/CustomLink'
+import CustomLink from '@/components/common/links/CustomLink'
 import { ROUTES } from '@/constants/route'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'

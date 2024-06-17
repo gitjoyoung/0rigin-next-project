@@ -1,13 +1,13 @@
 'use client'
 
 import { Post } from '@/types/boardTypes'
-import { updateIncreaseViews } from '@/app/api/board/post/updatePostApi'
 import { useEffect } from 'react'
 import BoardUpdateButton from './BoardUpdateButton'
 import BoardLikeButton from './BoardLikeButton'
 import BoardNavButton from './BoardNavButton'
 import MarkDownViewer from './MarkDownViewer'
 import BoardReadHeader from './BoardReadHeader'
+import { updateIncreaseViews } from '@/service/board/post/updatePostApi'
 
 interface Props {
    postId: string
