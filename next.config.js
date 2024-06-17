@@ -5,19 +5,24 @@ const nextConfig = {
    i18n: {
       locales: ['ko'],
       defaultLocale: 'ko',
-   },
+   }, // 다국어 설정
    images: {
       domains: ['firebasestorage.googleapis.com'],
-   },
+   }, // 이미지 도메인 추가
    typescript: {
       ignoreBuildErrors: true,
-   },
+   }, // 빌드 시 타입스크립트 오류를 무시
    eslint: {
       ignoreDuringBuilds: true,
-   },
+   }, // 빌드 시 eslint 무시
    webpack(config, options) {
       return config
-   },
+   },// 웹팩 설정을 추가합니다. 
+   logging: {
+      fetches: {
+         fullUrl: true,
+      },
+   }, // fetches 로그에 전체 URL을 출력합니다.
 }
 
 // 프로덕션 환경에서 콘솔 로그 제거 설정을 조건부로 추가합니다.
@@ -30,4 +35,4 @@ if (process.env.NEXT_PUBLIC_NODE_ENV === 'prod') {
    }
 }
 
-module.exports = removeImports(nextConfig)
+module.exports = removeImports(nextConfig) // next-remove-imports 적용
