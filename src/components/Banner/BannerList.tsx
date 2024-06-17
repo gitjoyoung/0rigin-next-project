@@ -5,14 +5,14 @@ export default function BannerList({ topData, selectedPost }) {
    return (
       <div className="  w-full p-2">
          <h1 className="font-bold ">베스트 게시글 TOP 5</h1>
-         <div className=" text-sm ">
+         <div>
             {topData.map(({ title, id, like }, index) => (
                <Link
-                  key={`post-${id}`} // Use a unique identifier from the data instead of the index
-                  className={`border flex justify-between mt-1 p-1 ${
+                  key={`post-${id}`} 
+                  className={`border flex justify-between mt-1 p-1 text-sm ${
                      selectedPost === index
                         ? 'bg-gray-200 font-bold'
-                        : 'text-sm'
+                        : ''
                   }`}
                   href={`/board/${id}`}
                >

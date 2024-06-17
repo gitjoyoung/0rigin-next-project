@@ -11,7 +11,7 @@ export default function BannerThumbnail({ data }: Props) {
    const { id, title, summary, thumbnail, nickname } = data
 
    return (
-      <div className=" w-full  md:w-7/12 md:border-r border-black ">
+      <div className=" w-full md:w-7/12 md:border-r border-black ">
          <div className="relative w-full  h-56 z-0  ">
             <Link href={`/board/${id}`}>
                <Image
