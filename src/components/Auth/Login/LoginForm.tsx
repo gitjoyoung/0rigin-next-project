@@ -5,8 +5,8 @@ import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState, FormEvent } from 'react'
-import InputAndCheck from '../Sign/InputAndCheck'
-import { loginFormSchema } from './schemas/loginFormSchema'
+import InputAndCheck from '../Sign/InputValidator'
+import { loginFormSchema } from '../../../schma/loginFormSchema'
 
 export default function Login() {
    const { push } = useRouter()
