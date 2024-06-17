@@ -1,22 +1,23 @@
+'use client'
 import React from 'react'
-import { useRouter } from 'next/navigation' // 'next/navigation'은 잘못된 모듈명입니다. 'next/router'가 올바른 모듈명입니다.
-import { signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/route'
 import AuthSignUp from './AuthSignUp'
+import { auth } from '@/auth'
+import { signOut, useSession } from 'next-auth/react'
 
-function AuthButton() {
+export default function AuthButton() {
    const { push } = useRouter()
-   const { data: session, status } = useSession()
 
-   if (status === 'loading' || !session) {
-      return <AuthSignUp /> // 일관성 있는 언어 사용 (예: 영어)
+   const user = {
+      email: '',
    }
 
-   if (session) {
-      return (
-         <div className="flex-col gap-1 text-xs ">
-            <p className="m-1">{session.user.email}</p>
-            <div className="flex gap-2 justify-end">
+   return (
+      <div className="flex-col gap-1 text-xs ">
+         <p className="m-1">{user.email}</p>
+         <div className="flex gap-2 justify-end">
+            {true ? (
                <button
                   type="button"
                   onClick={() => signOut({ callbackUrl: '/' })}
@@ -24,6 +25,7 @@ function AuthButton() {
                >
                   로그아웃
                </button>
+            ) : (
                <button
                   type="button"
                   onClick={() => push(ROUTES.MYPAGE)}
@@ -31,10 +33,8 @@ function AuthButton() {
                >
                   마이페이지
                </button>
-            </div>
+            )}
          </div>
-      )
-   }
+      </div>
+   )
 }
-
-export default AuthButton
