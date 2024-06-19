@@ -17,7 +17,7 @@ export default function StockMain() {
             </div>
             <StockChart />
          </div>
-         <div className='flex'>
+         <div className="flex">
             <StockReport />
             <StockChart />
          </div>
