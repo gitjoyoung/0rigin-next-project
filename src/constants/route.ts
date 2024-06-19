@@ -26,4 +26,7 @@ export const ROUTES = {
    // 퀴즈 페이지
    QUIZ: '/quiz',
    QUIZ_DETAIL: '/quiz/:id',
+   // 주식 페이지
+   STOCK: '/stock',
+   STOCK_DETAIL: '/stock/:id',
 }

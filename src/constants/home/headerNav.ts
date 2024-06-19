@@ -14,4 +14,9 @@ export const HEADER_NAV_LIST = Object.freeze([
       title: '퀴즈',
       url: '/quiz',
    },
+   {
+      id: 'stock',
+      title: '주식',
+      url: '/stock',
+   },
 ])
