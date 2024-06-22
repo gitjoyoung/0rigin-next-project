@@ -1,3 +1,5 @@
+import BoardFooter from '@/components/Board/BoardFooter'
+import BoardHeader from '@/components/Board/BoardHeader'
 import { Metadata } from 'next'
 import React from 'react'
 
@@ -10,5 +12,11 @@ export default async function layout({
 }: {
    children: React.ReactNode
 }) {
-   return <>{children}</>
+   return (
+      <>
+         <BoardHeader title="왁자지껄 게시판" />
+         {children}
+         <BoardFooter />
+      </>
+   )
 }
