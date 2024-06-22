@@ -1,9 +1,8 @@
 import BoardContent from '@/components/Board/BoardContent'
-import BoardFooter from '@/components/Board/BoardFooter'
-import BoardHeader from '@/components/Board/BoardHeader'
 import CommentList from '@/components/Board/Comment/CommentList'
-import Pagination from '@/components/Board/Pagination'
+import Pagination from '@/components/Board/Pagination/Pagination'
 import BoardRead from '@/components/Board/Read/BoardRead'
+import { ROUTES } from '@/constants/route'
 import { Post } from '@/types/boardTypes'
 import { CommentData } from '@/types/commentTypes'
 import { IParams } from '@/types/common/IParams'
@@ -31,25 +30,27 @@ interface Response {
 }
 export default async function Page({ params, searchParams }: IParams) {
    const { id } = params
-   if (id === undefined) redirect('/board')
-
+   if (id === undefined) redirect(ROUTES.BOARD)
    const page = searchParams.page || '1'
-   console.log(id, page)
 
    const data = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${page}`,
+      {
+         method: 'GET',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         cache: 'no-store',
+      },
    )
-   const { fetchedPosts, readData, commentsData, lastPostId }: Response =
-      await data.json()
+   const { fetchedPosts, readData, lastPostId }: Response = await data.json()
 
    return (
       <>
-         <BoardHeader title="왁자지껄 게시판" />
          <BoardRead postId={id} readData={readData} />
-         <CommentList postId={id} commentsData={commentsData} />
+         <CommentList postId={id} />
          <BoardContent postData={fetchedPosts} />
          <Pagination lastPostId={lastPostId} pageNum={id} />
-         <BoardFooter />
       </>
    )
 }

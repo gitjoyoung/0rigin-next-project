@@ -1,7 +1,5 @@
 import BoardContent from '@/components/Board/BoardContent'
-import BoardFooter from '@/components/Board/BoardFooter'
-import BoardHeader from '@/components/Board/BoardHeader'
-import Pagination from '@/components/Board/Pagination'
+import Pagination from '@/components/Board/Pagination/Pagination'
 import { IParams } from '@/types/common/IParams'
 import { Metadata } from 'next'
 
@@ -32,13 +30,10 @@ export default async function Page({ searchParams }: IParams) {
       },
    )
    const { lastPostId, postData, topData } = await data.json()
-   console.log(topData)
    return (
       <>
-         <BoardHeader title="왁자지껄 게시판" />
-         <BoardContent postData={postData} />
+         <BoardContent postData={postData} topData={topData} />
          <Pagination lastPostId={lastPostId} pageNum={page} />
-         <BoardFooter />
       </>
    )
 }
