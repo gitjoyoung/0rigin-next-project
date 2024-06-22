@@ -4,13 +4,16 @@ import { CreateCommentData } from '@/types/commentTypes'
 import React, { useRef } from 'react'
 import { addComment } from '@/service/board/commentApi'
 import { commentSchema } from '@/schma/commentSchema'
+import { useRouter } from 'next/navigation'
 
 interface Props {
    postId: string
+   fetchData: (postId: string) => void
 }
-export default function BoardCommentForm({ postId }: Props) {
+export default function CommentForm({ postId, fetchData }: Props) {
    // 댓글 폼 참조
    const commentFormRef = useRef(null)
+   const { refresh } = useRouter()
 
    // 필드 초기화
    const clearFormFields = () => {
@@ -34,6 +37,7 @@ export default function BoardCommentForm({ postId }: Props) {
          return
       }
       const response = await addComment(postId, commentObject)
+      await fetchData(postId)
       if (response) {
          clearFormFields()
       }
