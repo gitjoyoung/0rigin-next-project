@@ -27,10 +27,7 @@ interface Props {
    setMarkDownContent: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function MarkDownEditor({
-   markDownContent,
-   setMarkDownContent,
-}: Props) {
+const MarkDownEditor = ({ markDownContent, setMarkDownContent }: Props) => {
    const onChange = useCallback<OnChange>(
       (val) => {
          setMarkDownContent(val || '')
@@ -106,3 +103,5 @@ export default function MarkDownEditor({
       </div>
    )
 }
+
+export default React.memo(MarkDownEditor)
