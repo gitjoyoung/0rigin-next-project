@@ -1,8 +1,13 @@
-import BoardEditForm from '@/components/Board/Create/BoardEditForm'
 import CustomTitle from '@/components/common/links/CustomTitleLink'
 import { ROUTES } from '@/constants/route'
-import { IParams } from '@/types/common/IParams'
 import { Metadata } from 'next'
+import BoardEditForm from '../../_components/Create/BoardEditForm'
+
+interface IParams {
+   params: {
+      id: string
+   }
+}
 
 export const metadata: Metadata = {
    title: '0rigin 게시물 수정',
