@@ -1,6 +1,6 @@
 import Banner from '@/components/Banner/Banner'
-import BoardList from '@/components/Board/Content/BoardList'
 import { Post, TopPost } from '@/types/boardTypes'
+import BoardList from './board/_components/Content/BoardList'
 interface Response {
    topData: TopPost[]
    fetchedPosts: Post[]

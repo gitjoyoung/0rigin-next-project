@@ -1,9 +1,9 @@
 import RadioList from '@/components/common/inputs/RadioList'
-import { signUpSchema } from '../../../schma/signFormSchema'
 import InputValidator from './InputValidator'
 import { GENDER_LIST, INPUT_LIST } from '@/constants/auth/sign/signUp'
 import { v4 } from 'uuid'
 import BasicButton from '@/components/common/buttons/BasicButton'
+import { signUpSchema } from '@/schma/signFormSchema'
 
 export default function SignForm() {
    const handleSignUpSubmit = async (formData: FormData) => {

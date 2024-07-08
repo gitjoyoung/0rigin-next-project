@@ -2,9 +2,9 @@
 
 import React, { useRef } from 'react'
 import Image from 'next/image'
-import INTRODUCE_TEXT from '@/constants/introduce/introduceText'
 import CommunityStats from './StatList'
 import { TickerCounts } from '@/types/common/tickerTypes'
+import INTRODUCE_TEXT from '@/constants/Introduce/introduceText'
 
 interface Props {
    counts: TickerCounts

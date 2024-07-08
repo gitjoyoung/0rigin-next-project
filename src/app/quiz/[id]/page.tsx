@@ -1,6 +1,7 @@
 import React from 'react'
 import { Metadata } from 'next'
 import { QUIZ_DATA } from '@/constants/quiz/quizData'
+import Quiz from '../_conponents/QuizForm/Quiz'
 interface Params {
    params: {
       id: string

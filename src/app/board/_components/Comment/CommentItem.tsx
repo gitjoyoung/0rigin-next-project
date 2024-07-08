@@ -1,7 +1,7 @@
 'use client'
 
 import BasicButton from '@/components/common/buttons/BasicButton'
-import { deleteComment, updateComment } from '@/service/board/commentApi'
+import { deleteComment } from '@/service/board/commentApi'
 import { useState } from 'react'
 import { CommentData } from '../../_types/commentTypes'
 

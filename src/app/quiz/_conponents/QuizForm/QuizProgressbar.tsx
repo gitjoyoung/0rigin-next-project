@@ -1,5 +1,6 @@
+import ProgressBar from '@/components/common/progress/ProgressBar'
 import React from 'react'
-import ProgressBar from '../../common/progress/ProgressBar'
+
 
 function QuizProgressbar({ value = 0, max = 100 }) {
    const progress = (value / max) * 100

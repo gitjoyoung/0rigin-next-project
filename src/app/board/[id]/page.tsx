@@ -1,14 +1,14 @@
-import BoardContent from '@/components/Board/BoardContent'
-import BoardFooter from '@/components/Board/BoardFooter'
-import BoardHeader from '@/components/Board/BoardHeader'
-import CommentList from '@/components/Board/Comment/CommentList'
-import Pagination from '@/components/Board/Pagination'
-import BoardRead from '@/components/Board/Read/BoardRead'
 import { Post } from '@/types/boardTypes'
 import { CommentData } from '@/types/commentTypes'
 import { IParams } from '@/types/common/IParams'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import BoardHeader from '../_components/BoardHeader'
+import BoardRead from '../_components/Read/BoardRead'
+import CommentList from '../_components/Comment/CommentList'
+import BoardContent from '../_components/Content/BoardContent'
+import Pagination from '../_components/Pagination/Pagination'
+import BoardFooter from '../_components/BoardFooter'
 
 export async function generateMetadata({
    params,
@@ -26,7 +26,6 @@ export async function generateMetadata({
 interface Response {
    fetchedPosts: Post[]
    readData: Post
-   commentsData: CommentData[]
    lastPostId: number
 }
 export default async function Page({ params, searchParams }: IParams) {
@@ -39,14 +38,13 @@ export default async function Page({ params, searchParams }: IParams) {
    const data = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${page}`,
    )
-   const { fetchedPosts, readData, commentsData, lastPostId }: Response =
-      await data.json()
+   const { fetchedPosts, readData, lastPostId }: Response = await data.json()
 
    return (
       <>
          <BoardHeader title="왁자지껄 게시판" />
          <BoardRead postId={id} readData={readData} />
-         <CommentList postId={id} commentsData={commentsData} />
+         <CommentList postId={id} />
          <BoardContent postData={fetchedPosts} />
          <Pagination lastPostId={lastPostId} pageNum={id} />
          <BoardFooter />

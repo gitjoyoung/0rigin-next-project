@@ -1,9 +1,9 @@
-import BoardContent from '@/components/Board/BoardContent'
-import BoardFooter from '@/components/Board/BoardFooter'
-import BoardHeader from '@/components/Board/BoardHeader'
-import Pagination from '@/components/Board/Pagination'
 import { IParams } from '@/types/common/IParams'
 import { Metadata } from 'next'
+import BoardHeader from './_components/BoardHeader'
+import BoardContent from './_components/Content/BoardContent'
+import Pagination from './_components/Pagination/Pagination'
+import BoardFooter from './_components/BoardFooter'
 
 interface Params {
    params: {

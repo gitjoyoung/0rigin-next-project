@@ -1,7 +1,9 @@
-import StockMain from '@/components/Stock/StockMain'
+import StockMain from './_components/StockMain'
 
 export default function page() {
-  return (
-    <><StockMain /></>
-  )
+   return (
+      <>
+         <StockMain />
+      </>
+   )
 }

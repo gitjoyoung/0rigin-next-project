@@ -2,9 +2,10 @@
 
 import { QuizData } from '@/types/quizTypes'
 import { useEffect, useState } from 'react'
-import CustomDisclosure from '../../common/toggle/CustomDisclosure'
+
 import QuizSubject from './QuizSubject'
 import QuizRadioButtonGroup from './QuizRadioButtonGroup'
+import CustomDisclosure from '@/components/common/toggle/CustomDisclosure'
 
 interface Props {
    quizData?: QuizData

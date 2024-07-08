@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React from 'react'
 import AuthButton from './AuthButton'
-import SearchBox from '../Search/SearchBox'
 import NavigationList from './NavigationList'
+import SearchBox from '@/app/search/_components/SearchBox'
 
 export default function Header() {
    return (

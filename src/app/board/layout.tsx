@@ -1,7 +1,7 @@
-import BoardFooter from '@/components/Board/BoardFooter'
-import BoardHeader from '@/components/Board/BoardHeader'
 import { Metadata } from 'next'
 import React from 'react'
+import BoardHeader from './_components/BoardHeader'
+import BoardFooter from './_components/BoardFooter'
 
 export const metadata: Metadata = {
    title: '게시판 홈',
@@ -14,9 +14,7 @@ export default async function layout({
 }) {
    return (
       <>
-         <BoardHeader title="왁자지껄 게시판" />
          {children}
-         <BoardFooter />
       </>
    )
 }

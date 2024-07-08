@@ -1,5 +1,4 @@
 import { ROUTES } from '@/constants/route'
-import BoardMainButton from './Content/BoardMainButton'
 import CustomLink from '@/components/common/links/CustomLink'
 
 export default function BoardFooter() {

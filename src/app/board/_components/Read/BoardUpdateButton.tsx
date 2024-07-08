@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import BoardModal from './BoardModal'
 import BasicButton from '@/components/common/buttons/BasicButton'

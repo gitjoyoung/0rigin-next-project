@@ -1,6 +1,6 @@
-import BoardCreateForm from '@/components/Board/Create/BoardCreateForm'
 import CustomTitle from '@/components/common/links/CustomTitleLink'
 import { ROUTES } from '@/constants/route'
+import BoardCreateForm from '../_components/Create/BoardCreateForm'
 
 export default async function Create() {
    return (
