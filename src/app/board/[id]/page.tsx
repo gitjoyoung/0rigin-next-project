@@ -54,7 +54,7 @@ export default async function Page({ params, searchParams }: IParams) {
          <BoardRead postId={id} readData={readData} />
          <CommentList postId={id} />
          <BoardContent postData={fetchedPosts} />
-         <Pagination lastPostId={lastPostId} pageNum={id} />
+         <Pagination lastPostId={lastPostId} pageNum={page} />
       </>
    )
 }
