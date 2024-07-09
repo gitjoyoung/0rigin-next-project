@@ -14,6 +14,7 @@ interface Props {
 }
 
 export default function Pagination({ pageNum, lastPostId }) {
+   const currentPage = Number(pageNum) || 1
    // 페이지 그룹
    const POSTS_PER_PAGE = 20 // 한 페이지에 보여줄 게시글 수
    const PAGES_PER_GROUP = 5 // 한 페이지 그룹에 보여줄 페이지 수
@@ -21,9 +22,9 @@ export default function Pagination({ pageNum, lastPostId }) {
    const totalPages = Math.ceil(lastPostId / POSTS_PER_PAGE) // 전체 페이지 계산
    const currentPageGroup = Math.ceil(pageNum / PAGES_PER_GROUP) // 현재 페이지 그룹
 
-   
    const startPage = (currentPageGroup - 1) * PAGES_PER_GROUP + 1 // 시작 페이지
    const endPage = Math.min(startPage + PAGES_PER_GROUP - 1, totalPages) // 끝 페이지
+
    const pageNumbers = Array.from(
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i,
@@ -48,16 +49,15 @@ export default function Pagination({ pageNum, lastPostId }) {
                <FontAwesomeIcon icon={faCaretLeft} />
             </button>
          )}
-
          {/* 현재 페이지 번호 */}
          {pageNumbers.map((index: number) => (
             <div key={uuid()} className="mx-1">
-               {pageNum === index ? (
-                  <p className="underline p-1 text-blue-600">{index}</p>
+               {currentPage === index ? (
+                  <p className="  text-blue-600 font-bold">{index}</p>
                ) : (
                   <Link
                      href={`${ROUTES.BOARD}?page=${index}`}
-                     className="border-none"
+                     className="border-none "
                   >
                      {index}
                   </Link>
