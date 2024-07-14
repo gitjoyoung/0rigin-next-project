@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TopPost } from '@/types/boardTypes'
 import BannerThumbnail from './BannerThumbnail'
 import BannerList from './BannerList'
-import ProgressBar from '../common/progress/ProgressBar'
+import ProgressBar from '../common/Progress/ProgressBar'
 
 interface Props {
    topData: TopPost[]
@@ -34,7 +34,7 @@ export default function Banner({ topData }: Props) {
 
       updateTimer()
       return () => clearInterval(interval)
-   }, [DURATION, topData.length]) // Include missing dependencies here
+   }, [DURATION, topData.length]) // 캐러셀 타이머
 
    return (
       <div className="w-full">

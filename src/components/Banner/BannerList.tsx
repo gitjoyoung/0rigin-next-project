@@ -1,18 +1,22 @@
+import { TopPost } from '@/types/boardTypes'
 import Link from 'next/link'
 import React from 'react'
 
-export default function BannerList({ topData, selectedPost }) {
+interface Props {
+   topData: TopPost[]
+   selectedPost: number
+}
+
+export default function BannerList({ topData, selectedPost }: Props) {
    return (
       <div className="  w-full p-2">
          <h1 className="font-bold ">베스트 게시글 TOP 5</h1>
          <div>
             {topData.map(({ title, id, like }, index) => (
                <Link
-                  key={`post-${id}`} 
+                  key={`post-${id}`}
                   className={`border flex justify-between mt-1 p-1 text-sm ${
-                     selectedPost === index
-                        ? 'bg-gray-200 font-bold'
-                        : ''
+                     selectedPost === index ? 'bg-gray-200 font-bold' : ''
                   }`}
                   href={`/board/${id}`}
                >
