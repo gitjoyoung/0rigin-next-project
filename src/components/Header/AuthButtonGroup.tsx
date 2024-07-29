@@ -1,23 +1,23 @@
-'use client'
-
 import AuthSignUp from './AuthSignUp'
 import AuthButton from './AuthButton'
 import MobileAlramButton from './Mobile/MobileAlramButton'
 import MobileMenuButton from './Mobile/MobileMenuButton'
-import { useState } from 'react'
+import { auth } from '@/auth'
 
-export default function AuthButtonGroup() {
-   const [isLogin, setIsLogin] = useState(true)
+export default async function AuthButtonGroup() {
+   const session = await auth()
+   const { email } = session
+   console.log(session)
    return (
       <div>
          <div className="hidden md:flex ">
-            {isLogin ? (
+            {!session.uid ? (
                <>
                   <AuthSignUp />
                </>
             ) : (
                <>
-                  <AuthButton />
+                  <AuthButton email={email} />
                </>
             )}
          </div>

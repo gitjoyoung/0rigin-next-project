@@ -1,30 +1,28 @@
 'use client'
-import React from 'react'
 import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/route'
-import { signOut } from 'next-auth/react'
-
-export default function AuthButton() {
+import { signOut, useSession } from 'next-auth/react'
+interface Props {
+   email?: string
+}
+export default function AuthButton({ email }: Props) {
    const { push } = useRouter()
-   const user = {
-      email: '이메일',
-   }
 
    return (
       <div className="flex-col gap-1 ">
-         <p className="m-1">{user.email}</p>
-         <div className="flex gap-2 justify-end">
+         <p className="m-1 text-xs">{email}</p>
+         <div className="flex gap-2 text-xs">
             <button
                type="button"
                onClick={() => signOut({ callbackUrl: '/' })}
-               className="btn-logout"
+               className="btn-login"
             >
                로그아웃
             </button>
             <button
                type="button"
                onClick={() => push(ROUTES.MYPAGE)}
-               className="btn-mypage"
+               className="btn-sighup"
             >
                마이페이지
             </button>
