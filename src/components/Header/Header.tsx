@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React from 'react'
-import AuthButton from './AuthButton'
 import NavigationList from './NavigationList'
 import SearchBox from '@/app/search/_components/SearchBox'
+import AuthButtonGroup from './AuthButtonGroup'
 
 export default function Header() {
    return (
@@ -19,7 +19,7 @@ export default function Header() {
          </div>
          {/* 반응형 네비게이션 */}
          <div className="flex items-end gap-5">
-            <AuthButton />
+            <AuthButtonGroup />
          </div>
       </header>
    )

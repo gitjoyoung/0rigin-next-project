@@ -9,10 +9,8 @@ export default function SignForm() {
    const handleSignUpSubmit = async (formData: FormData) => {
       'use server'
       const formObject = Object.fromEntries(formData)
-
       const result = signUpSchema.safeParse(formObject)
       console.log('result :', result, result.error)
-
       if (result.success === false) {
          return
       }

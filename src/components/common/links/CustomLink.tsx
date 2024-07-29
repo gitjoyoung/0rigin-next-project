@@ -7,7 +7,7 @@ interface Props {
 
 export default function CustomLink({ href, children }: Props) {
    return (
-      <Link className="px-2 py-2 " href={href}>
+      <Link className="px-2 py-1 border border-black" href={href}>
          {children}
       </Link>
    )

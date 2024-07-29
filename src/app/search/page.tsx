@@ -1,7 +1,5 @@
-import Search from '@/components/Search/Search'
-import React from 'react'
 import { Metadata } from 'next'
-import { IParams } from '@/types/common/IParams'
+import Search from './_components/Search'
 
 interface SearchParams {
    searchParams: {

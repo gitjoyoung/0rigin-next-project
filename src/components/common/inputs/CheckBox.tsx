@@ -18,7 +18,6 @@ export default function Checkbox({
       if (!isControlled) {
          setChecked(checked)
       }
-
       onChange?.(checked)
    }
    return (

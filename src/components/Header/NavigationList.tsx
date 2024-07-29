@@ -1,8 +1,6 @@
 import { HEADER_NAV_LIST } from '@/constants/home/headerNav'
 import Link from 'next/link'
-import React from 'react'
 import { v4 } from 'uuid'
-
 
 export default function NavigationList() {
    return (

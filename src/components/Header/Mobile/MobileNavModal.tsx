@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { Transition } from '@headlessui/react'
-import HEADER_NAV from '@/constants/home/headerNav'
 import AuthButton from '../AuthButton'
+import { HEADER_NAV_LIST } from '@/constants/home/headerNav'
 
 interface Props {
    isModalOpen: boolean
@@ -45,7 +45,7 @@ export default function MobileNavModal({ isModalOpen, toggleModal }: Props) {
                      <AuthButton />
                   </div>
                   {/* 모바일 화면 네비게이터 */}
-                  {HEADER_NAV.map(({ id, url, title }) => (
+                  {HEADER_NAV_LIST.map(({ id, url, title }) => (
                      <Link key={id} href={url}>
                         <p className="hover:text-gray-900 hover:font-semibold textid,-md font-normal id2">
                            {title}

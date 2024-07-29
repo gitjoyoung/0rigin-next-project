@@ -1,3 +1,4 @@
+'use client'
 import { ROUTES } from '@/constants/route'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -5,7 +6,7 @@ import React from 'react'
 export default function AuthSignUp() {
    const { push } = useRouter()
    return (
-      <div className="flex gap-2">
+      <div className="flex gap-2 text-xs">
          <button
             type="button"
             onClick={() => push(ROUTES.LOGIN)}

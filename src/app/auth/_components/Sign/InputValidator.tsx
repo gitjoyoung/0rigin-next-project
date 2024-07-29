@@ -8,7 +8,7 @@ interface Props {
    type: string
    errorMsg?: string
    maxLength?: number
-   validate?: (value: string) => string | null
+   validate?: any
 }
 
 export default function InputValidator({
@@ -36,12 +36,15 @@ export default function InputValidator({
          }
       }
       setError(value.length > 3 ? null : errorMsg)
+      if (value.length < 1) {
+         setError('')
+      }
    }
 
    const inputClassName = () => {
       if (!touched) return 'border-gray-300'
       if (error) return 'border-red-500'
-      if (!error && inputValue.length > 3) return 'border-green-500'
+      if (!error) return 'border-green-500'
       return 'border-gray-300'
    }
 

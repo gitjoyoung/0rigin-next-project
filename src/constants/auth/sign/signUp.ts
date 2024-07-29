@@ -35,4 +35,3 @@ export const INPUT_LIST = [
       type: 'password',
    },
 ]
-

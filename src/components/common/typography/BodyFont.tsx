@@ -1,7 +1,6 @@
-import React from 'react'
-
-export default function bodyFont() {
-  return (
-    <div>bodyFont</div>
-  )
+interface Props {
+   className?: string
+}
+export default function bodyFont({ className }: Props) {
+   return <p className="">bodyFont</p>
 }

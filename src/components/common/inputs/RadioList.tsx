@@ -8,16 +8,17 @@ interface IGenderList {
 }
 interface Props {
    arr: IGenderList[]
+   className?: string
 }
 /**
  * RadioList
  * @param arr - radio list
  * @returns RadioList
  **/
-export default function RadioList({ arr }: Props) {
+export default function RadioList({ arr, className }: Props) {
    if (!arr) return null
    return (
-      <div className="flex gap-2 justify-between  ">
+      <div className={`flex gap-2 justify-between ${className}`}>
          {arr.map(({ id, name, value }) => (
             <label
                key={v4()}
