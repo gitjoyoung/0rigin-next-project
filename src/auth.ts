@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { fetchLogin } from './service/auth/login'
+import { Login } from './types/authTypes'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
    trustHost: true,
@@ -10,19 +11,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: {},
             password: {},
          },
-         authorize: async (credentials) => {
-            let user = null
-            user = await fetchLogin(credentials.email, credentials.password)
-
+         authorize: async (credentials): Promise<Login | null> => {
+            const user = await fetchLogin(
+               credentials.email,
+               credentials.password,
+            )
             if (!user) {
                throw new Error('User not found.')
             }
-            const session = {
+            const session: Login = {
+               displayName: user.displayName,
                email: user.email,
-               id: user.id,
-               name: user.name,
-               nickname: user.nickname,
-               token: user.token,
+               emailVerified: user.emailVerified,
+               phoneNumber: user.phoneNumber,
+               photoURL: user.photoURL,
+               uid: user.uid,
+               accessToken: user.accessToken,
             }
             console.log('session', session)
             return session

@@ -12,14 +12,18 @@ export const fetchLogin = (userId, password): Promise<Login | null> => {
    const email = userId.includes('@') ? userId : `${userId}@0rigin.com`
 
    return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
+         const user = userCredential.user
          // 필요한 경우 userCredential.user에서 Login 타입 객체로 변환
+         const accessToken = await user.getIdToken()
          const loginResult: Login = {
-            email: userCredential.user.email,
-            id: userCredential.user.uid,
-            name: userCredential.user.displayName,
-            nickname: userCredential.user.displayName || '',
-            token: userCredential.user.refreshToken || '',
+            displayName: user.displayName,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            phoneNumber: user.phoneNumber,
+            photoURL: user.photoURL,
+            uid: user.uid,
+            accessToken,
          }
          return loginResult // 로그인 성공 시 Login 객체 반환
       })

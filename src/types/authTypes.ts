@@ -1,9 +1,11 @@
 export interface Login {
-   id: string | null
-   name?: string | null
+   displayName: string | null
    email: string | null
-   nickname?: string | null
-   token?: string | null
+   emailVerified: boolean
+   phoneNumber: string | null
+   photoURL: string | null
+   uid: string
+   accessToken?: string
 }
 
 export interface UserData {

@@ -13,12 +13,7 @@ export default function Login() {
    const { push } = useRouter()
    // 로그인 form 정보
    const [error, setError] = useState<string>('')
- console.log("auth" , auth.config )
-   /**
-    * 폼 제출 함수
-    * @param e
-    * @returns
-    */
+   
    const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 

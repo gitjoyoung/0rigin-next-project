@@ -6,18 +6,17 @@ import { auth } from '@/auth'
 
 export default async function AuthButtonGroup() {
    const session = await auth()
-   const { email } = session
-   console.log(session)
+   console.log('session', session)
    return (
       <div>
          <div className="hidden md:flex ">
-            {!session.uid ? (
+            {!session ? (
                <>
                   <AuthSignUp />
                </>
             ) : (
                <>
-                  <AuthButton email={email} />
+                  <AuthButton />
                </>
             )}
          </div>
