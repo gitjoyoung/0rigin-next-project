@@ -1,11 +1,11 @@
 export const ROUTES = {
    HOME: '/',
    //    로그인
-   LOGIN: '/login',
+   LOGIN: '/auth/login',
    // 비밀번호 찾기
-   FORGET: '/login/forget',
+   FORGET: '/auth/login/forget',
    // 회원가입 약관
-   SIGN: '/sign',
+   SIGN: '/auth/sign',
    // 회원가입
    SIGN_UP: '/sign/join',
    //   마이페이지

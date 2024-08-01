@@ -1,60 +1,55 @@
 'use client'
-
 import { ROUTES } from '@/constants/route'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import React, { useState, FormEvent } from 'react'
-import InputAndCheck from '../Sign/InputValidator'
-import { loginFormSchema } from '@/schma/loginFormSchema'
-import { auth } from '@/lib/firebase'
+import { useState } from 'react'
 
-export default function Login() {
-   const { push } = useRouter()
-   // 로그인 form 정보
-   const [error, setError] = useState<string>('')
-   
-   const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+export default function Login({ handleLoginSubmit }) {
+   const [email, setEmail] = useState('')
+   const [password, setPassword] = useState('')
 
-      const formData = {
-         email: e.currentTarget.email.value,
-         password: e.currentTarget.password.value,
-      }
-      const result = loginFormSchema.safeParse(formData)
-      if (result.success === false) {
-         setError('아이디 또는 비밀번호 양식에 맞지 않습니다.')
-         return
-      }
-
-      const response = await signIn('credentials', {
-         redirect: false,
-         ...formData,
+   const handleSubmit = async () => {
+      await handleLoginSubmit({
+         email,
+         password,
       })
-      if (response && response.status === 200) {
-         push(ROUTES.HOME)
-      } else {
-         setError('아이디 또는 비밀번호가 일치하지 않습니다.')
-      }
    }
-
+   const onChangeEmail = (e: any) => {
+      setEmail(e.target.value)
+   }
+   const onChangePassword = (e: any) => {
+      setPassword(e.target.value)
+   }
    return (
-      <section className=" w-full  flex justify-center ">
-         <div className="border p-10 flex justify-center items-center flex-col gap-6 m-3  w-full max-w-[500px] min-h-[500px]">
+      <section className=" w-full h-full my-auto flex justify-center items-center">
+         <div className="flex flex-col h-full border p-10  justify-center items-center gap-6 m-3 rounded-xl">
+            {/* 타이틀 */}
             <div>
                <h1 className="font-bold  text-2xl ">로그인</h1>
             </div>
-            <form className="flex flex-col gap-3" onSubmit={handleLoginSubmit}>
-               <InputAndCheck placeholder="아이디" name="email" type="text" />
-               <InputAndCheck
-                  placeholder="비밀번호"
-                  name="password"
-                  type="password"
+            {/* 입력폼 */}
+            <form className="flex flex-col gap-3">
+               <input
+                  className="border p-2"
+                  type="email"
+                  name="email"
+                  onChange={onChangeEmail}
+                  placeholder="이메일"
                />
-               <p className="text-xs text-red-500 overflow-auto">
-                  {error || ' '}
-               </p>
-               <button type="submit" className="mt-3 p-2">
+               <input
+                  className="border p-2"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={onChangePassword}
+                  placeholder="비밀번호"
+               />
+               <p className="text-xs text-red-500 overflow-auto">{}</p>
+               <button
+                  type="button"
+                  className="mt-3 p-2"
+                  onClick={handleSubmit}
+               >
                   로그인
                </button>
             </form>

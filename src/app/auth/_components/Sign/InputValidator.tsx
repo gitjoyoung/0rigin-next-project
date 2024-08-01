@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { use, useId, useState } from 'react'
 
 interface Props {
    name: string
@@ -23,6 +23,7 @@ export default function InputValidator({
    const [inputValue, setInputValue] = useState<string>('')
    const [error, setError] = useState<string | null>(null)
    const [touched, setTouched] = useState<boolean>(false)
+   const fieldId = useId()
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
@@ -55,7 +56,7 @@ export default function InputValidator({
    }
 
    return (
-      <div className={`w-full border p-2 ${inputClassName()}`}>
+      <div id={fieldId} className={`w-full border p-2 ${inputClassName()}`}>
          <input
             disabled={pending}
             name={name}

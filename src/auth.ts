@@ -1,7 +1,9 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import { fetchLogin } from './service/auth/login'
-import { Login } from './types/authTypes'
+import { signInSchema } from './schma/auth'
+import saltAndHashPassword from './utils/authValidators/password'
+import { ZodError } from 'zod'
+import { fetchSignIn } from './service/auth/signIn'
 
 interface Credentials {
    email: string
@@ -18,27 +20,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
             password: { label: 'Password', type: 'password' },
          },
-         authorize: async (credentials: Credentials): Promise<Login | null> => {
-            const email = credentials.email
-            const password = credentials.password
+         authorize: async (credentials) => {
+            try {
+               let user = null
 
-            // fetchLogin 함수로 사용자 인증 수행
-            const user = await fetchLogin(email, password)
+               const { email, password } =
+                  await signInSchema.parseAsync(credentials)
+               // console.log('credentials', email, password)
+               // const pwHash = saltAndHashPassword(password)
 
-            if (!user) {
-               throw new Error('User not found.')
+               // logic to verify if the user exists
+               user = await fetchSignIn(email, password)
+
+               if (!user) {
+                  throw new Error('User not found.')
+               }
+
+               return user
+            } catch (error) {
+               if (error instanceof ZodError) {
+                  console.log('ZodError:', error.errors)
+               }
+               console.error('Authorization error:', error)
             }
-            const session: Login = {
-               displayName: user.displayName,
-               email: user.email,
-               emailVerified: user.emailVerified,
-               phoneNumber: user.phoneNumber,
-               photoURL: user.photoURL,
-               uid: user.uid,
-               accessToken: user.accessToken,
-            }
-            console.log('session', session)
-            return session
          },
       }),
    ],

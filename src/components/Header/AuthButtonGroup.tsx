@@ -1,29 +1,13 @@
-import AuthSignUp from './AuthSignUp'
-import AuthButton from './AuthButton'
-import MobileAlramButton from './Mobile/MobileAlramButton'
-import MobileMenuButton from './Mobile/MobileMenuButton'
+import AuthAfterButtonGroup from './AuthAfterButtonGroup'
 import { auth } from '@/auth'
+import AuthBeforeButtonGroup from './AuthBeforeButtonGroup'
 
 export default async function AuthButtonGroup() {
    const session = await auth()
-   console.log('session', session)
+   console.log('auth button group', session)
    return (
-      <div>
-         <div className="hidden md:flex ">
-            {!session ? (
-               <>
-                  <AuthSignUp />
-               </>
-            ) : (
-               <>
-                  <AuthButton />
-               </>
-            )}
-         </div>
-         <div className="md:hidden flex gap-3 items-center mx-1">
-            <MobileAlramButton />
-            <MobileMenuButton />
-         </div>
-      </div>
+      <section className="flex items-end gap-5">
+         {!session?.user ? <AuthBeforeButtonGroup /> : <AuthAfterButtonGroup />}
+      </section>
    )
 }
