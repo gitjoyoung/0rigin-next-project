@@ -1,7 +1,7 @@
 import OpenAI from 'openai'
 
-export const openai = new OpenAI({
-   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-   organization: process.env.NEXT_PUBLIC_OPENAI_ORGANIZATION_ID,
+export const openAi = new OpenAI({
+   apiKey: process.env.OPENAI_API_KEY,
+   organization: process.env.OPENAI_API_PROJECT_ID,
    dangerouslyAllowBrowser: true,
 })

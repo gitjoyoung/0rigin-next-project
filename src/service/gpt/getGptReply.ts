@@ -1,3 +1,4 @@
+import { openAi } from '@/lib/openAI'
 import OpenAI from 'openai'
 
 export const getGptReply = async (
@@ -5,13 +6,8 @@ export const getGptReply = async (
    message: string,
    stream: boolean,
 ): Promise<any> => {
-   const apiKey = process.env.OPENAI_API_KEY
-   const project = process.env.OPENAI_API_PROJECT_ID
-   const openai = new OpenAI({
-      apiKey,
-      project,
-   })
-   const response = await openai.chat.completions.create({
+ 
+   const response = await openAi.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
          { role: 'system', content: system },
