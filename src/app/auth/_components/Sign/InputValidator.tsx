@@ -1,18 +1,17 @@
 'use client'
 import React, { use, useId, useState } from 'react'
+import { z } from 'zod'
 
 interface Props {
    name: string
    pending?: boolean
    placeholder: string
    type: string
-   errorMsg?: string
    maxLength?: number
    validate?: any
 }
 
 export default function InputValidator({
-   errorMsg,
    name,
    pending,
    placeholder,
@@ -23,22 +22,21 @@ export default function InputValidator({
    const [inputValue, setInputValue] = useState<string>('')
    const [error, setError] = useState<string | null>(null)
    const [touched, setTouched] = useState<boolean>(false)
+
    const fieldId = useId()
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target
       setInputValue(value)
       setTouched(true)
-      if (validate) {
-         const validationError = validate(value)
-         if (validationError) {
-            setError(validationError)
+      try {
+         validate.parse(value) // 입력 값을 검증
+         setError('') // 오류가 없을 경우 오류 메시지를 지웁니다
+      } catch (err) {
+         if (err instanceof z.ZodError) {
+            setError(err.errors[0].message) // 첫 번째 오류 메시지를 설정합니다
             return
          }
-      }
-      setError(value.length > 3 ? null : errorMsg)
-      if (value.length < 1) {
-         setError('')
       }
    }
 
@@ -56,7 +54,10 @@ export default function InputValidator({
    }
 
    return (
-      <div id={fieldId} className={`w-full border p-2 ${inputClassName()}`}>
+      <div
+         id={fieldId}
+         className={`w-full border space-y-1 p-2 ${inputClassName()}`}
+      >
          <input
             disabled={pending}
             name={name}
@@ -68,9 +69,7 @@ export default function InputValidator({
             value={inputValue}
             onChange={handleChange}
          />
-         <p className={`text-xs ${textClassName()}`}>
-            {error || (touched && errorMsg)}
-         </p>
+         <p className={`text-xs ${textClassName()}`}>{error}</p>
       </div>
    )
 }
