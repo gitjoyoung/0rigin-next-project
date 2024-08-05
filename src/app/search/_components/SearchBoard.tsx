@@ -1,33 +1,25 @@
+import { fetchSearchStorage } from '@/app/api/search/route'
 import { ROUTES } from '@/constants/route'
-import fetchSearch from '@/service/search/search'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { use, useEffect, useState } from 'react'
 
 type Props = {
    keyword: string
 }
 
-export default function SearchBoard({ keyword }: Props) {
-   const [result, setResult] = useState([])
-   useEffect(() => {
-      const fetchData = async () => {
-         const res = await fetchSearch(keyword)
-         setResult(res)
-      }
-      fetchData()
-   }, [keyword])
-
+export default async function SearchBoard({ keyword }: Props) {
+   const result = await fetchSearchStorage(keyword)
+   const resultJson = await result.json()
    return (
       <article>
          {' '}
          <div className="flex flex-col py-2  overflow-hidden whitespace-nowrap  ">
             <h2 className="p-1 font-bold text-xl ">
-               게시판 검색결과 {result.length} 건
+               게시판 검색결과 {resultJson.length} 건
             </h2>
          </div>
-         {result.length > 0 ? (
-            result.map((data) => (
+         {resultJson.length > 0 ? (
+            resultJson.map((data) => (
                <li className=" border p-2 flex gap-3" key={data.id}>
                   <div
                      className="border border-black min-w-[100px] min-h-[100px]
@@ -53,7 +45,7 @@ export default function SearchBoard({ keyword }: Props) {
                </li>
             ))
          ) : (
-            <h1 className="p-1">게시글이 없네요...</h1>
+            <h1 className="p-1">{resultJson}</h1>
          )}
       </article>
    )

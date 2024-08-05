@@ -23,11 +23,11 @@ export default function SearchBox() {
       }
    }
    return (
-      <article className="flex items-center justify-center text-sm   ">
+      <article className="flex items-center justify-center text-sm    ">
          <input
             ref={searchInputRef}
             spellCheck={false}
-            className="border p-0.5 w-full"
+            className="border p-0.5 w-full "
             type="text"
             onKeyDown={handleKeyDown}
             placeholder="검색"
