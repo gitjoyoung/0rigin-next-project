@@ -1,5 +1,4 @@
 import { db } from '@/lib/firebase'
-import { SearchResult } from '@/types/searchTypes'
 import {
    collection,
    query,
@@ -9,9 +8,7 @@ import {
    endAt,
 } from 'firebase/firestore'
 
-export default async function fetchSearch(
-   search: string,
-): Promise<SearchResult[]> {
+export default async function fetchSearch(search: string): Promise<any> {
    try {
       const postsRef = collection(db, 'posts') // 'posts' 컬렉션을 참조
       // 검색어를 사용하여 쿼리를 생성
@@ -30,9 +27,8 @@ export default async function fetchSearch(
          title: doc.data().title, // 문서의 title 속성
          content: doc.data().content, // 문서의 content 속성
          createdAt: doc.data().createdAt, // 문서의 createdAt 속성
-      })) as SearchResult[] // Explicitly define the type of the returned array as SearchResult[]
+      }))
    } catch (error) {
-      console.log('error :', error)
       return []
    }
 }
