@@ -19,7 +19,7 @@ export default function RadioList({ arr, className }: Props) {
    if (!arr) return null
    return (
       <div className={`flex gap-2 justify-between ${className}`}>
-         {arr.map(({ id, name, value }) => (
+         {arr.map(({ id, name, value }, index) => (
             <label
                key={v4()}
                className="text-sm font-bold flex items-center border py-2 px-3 rounded-md cursor-pointer hover:bg-gray-100"
@@ -31,6 +31,7 @@ export default function RadioList({ arr, className }: Props) {
                   name={name}
                   value={value}
                   id={id}
+                  defaultChecked={index === 2}
                />
                {value}
             </label>
