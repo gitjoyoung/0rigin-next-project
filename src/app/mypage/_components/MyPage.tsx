@@ -1,18 +1,14 @@
 'use client'
-
-import { useSession } from 'next-auth/react'
-import React from 'react'
 import Profile from './Profile'
 import ProfileMenu from './ProfileMenu'
 
-export default function MyPage() {
-   const user = {
-      name: '임시 이름',
-      email: '임시 이메일 데이터'
-   }
+export default async function MyPage({ session }) {
+   const { user } = session
+
    return (
       <section className="flex flex-wrap border border-black rounded-lg overflow-hidden h-[100vh]">
-         <div className="p-2 flex flex-col items-center sm:min:w-full min-w-[350px] ">
+         <div className="p-2 flex flex-col items-start sm:min:w-full min-w-[350px] px-4">
+            <div className="h-8 text-left">메뉴</div>
             <Profile name={user.name} email={user.email} />
             <ProfileMenu />
          </div>

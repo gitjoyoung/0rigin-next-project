@@ -8,10 +8,10 @@ export default function ProfileMenu() {
    }
 
    return (
-      <article className="flex flex-col my-2 gap-1">
+      <article className="flex flex-col my-2 gap-1 w-full">
          {menu.map((item) => (
             <button
-               className=""
+               className="py-2 px-3 w-full shadow-sm"
                type="button"
                key={uuid4()}
                onClick={handleProfileMenu}

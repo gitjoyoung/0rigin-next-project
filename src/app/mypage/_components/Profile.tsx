@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import React from 'react'
 
@@ -8,8 +9,8 @@ interface Props {
 
 export default function Profile({ name, email }: Props) {
    return (
-      <article className="flex justify-center items-center ">
-         <div className=" flex border rounded-md w-full">
+      <article className="flex justify-center items-center w-full border rounded-md ">
+         <div className=" flex w-full">
             <Image
                className="rounded-lg"
                src="/mascot/winksaurus.png"
@@ -26,7 +27,7 @@ export default function Profile({ name, email }: Props) {
                </li>
 
                <li>
-                  <button type="button" onClick={() => console.log('asd')}>
+                  <button type="button" onClick={() => signOut()}>
                      로그아웃
                   </button>
                </li>
