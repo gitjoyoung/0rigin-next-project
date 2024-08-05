@@ -7,7 +7,7 @@ export const ROUTES = {
    // 회원가입 약관
    SIGN: '/auth/sign',
    // 회원가입
-   SIGN_UP: '/sign/join',
+   SIGN_UP: '/auth/sign/join',
    //   마이페이지
    MYPAGE: '/mypage',
    //    게시판
