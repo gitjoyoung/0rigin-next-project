@@ -19,7 +19,6 @@ export const fetchSignIn = async (
             phoneNumber: user.phoneNumber,
             photoURL: user.photoURL,
             uid: user.uid,
-            // accessToken,
          }
          return loginResult
       })
