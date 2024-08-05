@@ -6,7 +6,7 @@ import AuthButtonGroup from './AuthButtonGroup'
 
 export default function Header() {
    return (
-      <header className="flex justify-between p-1 sm:p-3 items-end  w-full border-b mt-1 mb-2 border-black  shadow-md">
+      <header className="flex justify-between p-1 sm:p-2 items-end  w-full border-b my-1 border-black  shadow-md">
          {/* 로고 */}
          <Link href="/">
             <h1 className="md:text-4xl text-xl font-bold">0rigin</h1>
@@ -15,7 +15,7 @@ export default function Header() {
          <NavigationList />
 
          {/* 서치바 */}
-         <div className="flex-1 flex justify-start px-2">
+         <div className="flex-1 flex justify-start px-2 ">
             <SearchBox />
          </div>
 
