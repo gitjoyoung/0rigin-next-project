@@ -1,16 +1,16 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2024-12-30T17:18:22.414Z
+// 생성 시간: 2024-12-30T18:22:26.994Z
 // 동적 라우트([param])는 제외됨
 
-export const AUTH_FORGET_PATHNAME = '/(auth)/forget'
-export const AUTH_LOGIN_PATHNAME = '/(auth)/login'
-export const AUTH_SIGN_FORM_PATHNAME = '/(auth)/sign/form'
-export const AUTH_SIGN_PATHNAME = '/(auth)/sign'
-export const CONTENT_BOARD_CREATE_PATHNAME = '/(content)/board/create'
-export const CONTENT_BOARD_PATHNAME = '/(content)/board'
-export const CONTENT_DASHBORAD_PATHNAME = '/(content)/dashborad'
-export const CONTENT_QUIZ_PATHNAME = '/(content)/quiz'
-export const CONTENT_SEARCH_PATHNAME = '/(content)/search'
-export const INFO_CONTACT_PATHNAME = '/(info)/contact'
-export const INFO_INTRODUCE_PATHNAME = '/(info)/introduce'
-export const USER_MYPAGE_PATHNAME = '/(user)/mypage'
+export const ROUTE_FORGET = '/forget'
+export const ROUTE_LOGIN = '/login'
+export const ROUTE_SIGN_FORM = '/sign/form'
+export const ROUTE_SIGN = '/sign'
+export const ROUTE_BOARD_CREATE = '/board/create'
+export const ROUTE_BOARD = '/board'
+export const ROUTE_DASHBOARD = '/dashboard'
+export const ROUTE_QUIZ = '/quiz'
+export const ROUTE_SEARCH = '/search'
+export const ROUTE_CONTACT = '/contact'
+export const ROUTE_INTRODUCE = '/introduce'
+export const ROUTE_MYPAGE = '/mypage'

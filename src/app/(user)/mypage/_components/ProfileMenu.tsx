@@ -1,4 +1,4 @@
-import React from 'react'
+import { nanoid } from 'nanoid'
 
 export default function ProfileMenu() {
    const menu = ['내가 작성한 글', '회원정보 수정', '비밀번호 변경', '회원탈퇴']

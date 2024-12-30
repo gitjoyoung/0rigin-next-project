@@ -90,25 +90,32 @@ const PathProcessor = {
    },
 
    toConstantName(filePath) {
-      return (
-         path
-            .relative(PATHS.app, filePath)
-            .replace(/[\\/]page\.tsx$/, '')
-            .replace(/[\\/]/g, '_')
-            .replace(/[()]/g, '') // 괄호 제거
-            .toUpperCase()
-            .replace(/-/g, '_') + '_PATHNAME'
-      )
-   },
+      // 1) app 폴더 기준 상대 경로로 만든 뒤
+      // 2) page.tsx 부분 제거
+      // 3) path.sep(운영체제별 \ 또는 /)로 split
+      // 4) 괄호가 들어 있는 세그먼트 제거
+      const baseName = path
+         .relative(PATHS.app, filePath)
+         .replace(/[\\/]page\.tsx$/, '')
+         .split(path.sep)
+         .filter((segment) => !segment.includes('(') && !segment.includes(')'))
+         .join('_')
+         .toUpperCase()
+         .replace(/-/g, '_')
 
+      // 예) ROUTE_ 로 시작하고 싶다면
+      return `ROUTE_${baseName}` // 필요에 따라 '-'도 언더스코어로 바꿀 수 있습니다.
+   },
    toConstantValue(filePath) {
-      return (
-         '/' +
-         path
-            .relative(PATHS.app, filePath)
-            .replace(/[\\/]page\.tsx$/, '')
-            .replace(/\\/g, '/')
-      )
+      const segments = path
+         .relative(PATHS.app, filePath)
+         .replace(/[\\/]page\.tsx$/, '')
+         .split(path.sep)
+         .filter((segment) => !segment.includes('(') && !segment.includes(')'))
+
+      // 세그먼트들을 합쳐서 실제 URL 경로로 만듦
+      // segment가 없으면 루트('/')로 나오니, 필요시 예외 처리할 수도 있습니다.
+      return '/' + segments.join('/')
    },
 
    traverseDirectory(dir, fileList = []) {
