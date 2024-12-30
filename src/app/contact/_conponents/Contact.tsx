@@ -1,10 +1,9 @@
 'use client'
 
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 import Image from 'next/image'
 import { CONTACT_INFO } from '@/constants/contact/contactNav'
+import { Icons } from '@/shared/ui/icons'
 
 export default function Contact() {
    return (
@@ -27,11 +26,7 @@ export default function Contact() {
                      }}
                   >
                      <div className="flex items-center mb-4 w-full">
-                        <FontAwesomeIcon
-                           icon={faEnvelope}
-                           className="text-blue-500 mr-4"
-                           size="2x"
-                        />
+                        <Icons.email className="text-blue-500 mr-4" size="2x" />
                         <h2 className="text-xl font-semibold">이메일</h2>
                      </div>
                      <p className="text-gray-700 text-left">
@@ -48,8 +43,7 @@ export default function Contact() {
                      }}
                   >
                      <div className="flex items-center mb-4">
-                        <FontAwesomeIcon
-                           icon={faMapMarkerAlt}
+                        <Icons.mapMarkerAlt
                            className="text-blue-500 mr-4"
                            size="2x"
                         />

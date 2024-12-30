@@ -1,11 +1,12 @@
 'use client'
 import Link from 'next/link'
-import React, { use } from 'react'
+import React from 'react'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { formatNumberWithUnit } from '@/utils/boardValidators/formatNumberWithUnit'
 import { ROUTES } from '@/constants/route'
 import { useSearchParams } from 'next/navigation'
 import { Post } from '../../_types/boardTypes'
+import currency from 'currency.js'
 
 interface Props {
    item: Post
@@ -24,6 +25,10 @@ export default function BoardListItem({ item }: Props) {
    } = item
    const params = useSearchParams()
    const page = params.get('page') || 1
+
+   const formatCount = (count: number) => {
+      return currency(count, { precision: 0 }).format()
+   }
 
    return (
       <section className="flex items-center  flex-wrap p-2  ">
@@ -51,7 +56,7 @@ export default function BoardListItem({ item }: Props) {
             </li>
             <li className="w-[50px]"> {formatCustomDate(createdAt)} </li>
             <li className="w-[50px]">추천 {formatNumberWithUnit(like)}</li>
-            <li className="w-[50px]">조회 {formatNumberWithUnit(views)}</li>
+            <li className="w-[50px]">조회 {formatCount(views)}</li>
          </ul>
       </section>
    )

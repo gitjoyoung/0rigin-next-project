@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import { ROUTES } from '@/constants/route'
 import { updateDeletePost } from '@/service/board/post/updatePostApi'
 import { useRouter } from 'next/navigation'

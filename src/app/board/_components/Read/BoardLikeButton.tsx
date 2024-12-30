@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { updateReactionCount } from '@/service/board/likeApi'
 import BasicButton from '@/components/common/buttons/BasicButton'
+import { Icons } from '@/shared/ui/icons'
 
 interface Props {
    like: number
@@ -34,7 +33,7 @@ export default function BoardLikeButton({ like, dislike, postId }: Props) {
       <div className="flex justify-center gap-6 mt-5 mb-5">
          <div className="flex flex-col justify-center items-center">
             <div className="flex gap-2 items-center">
-               <FontAwesomeIcon icon={faThumbsUp} rotation={180} />
+               <Icons.heart />
                <p> {reactionCounts.dislike}</p>
             </div>
             <BasicButton
@@ -45,7 +44,7 @@ export default function BoardLikeButton({ like, dislike, postId }: Props) {
          </div>
          <div className="flex flex-col justify-center items-center">
             <div className="flex gap-2 items-center">
-               <FontAwesomeIcon icon={faThumbsUp} />
+               <Icons.heart />
                <p>{reactionCounts.like}</p>
             </div>
 

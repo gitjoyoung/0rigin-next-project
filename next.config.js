@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const removeImports = require('next-remove-imports')()
 
 const nextConfig = {
    i18n: {
@@ -17,7 +16,7 @@ const nextConfig = {
    }, // 빌드 시 eslint 무시
    webpack(config, options) {
       return config
-   },// 웹팩 설정을 추가합니다. 
+   }, // 웹팩 설정을 추가합니다.
    logging: {
       fetches: {
          fullUrl: true,
@@ -34,5 +33,3 @@ if (process.env.NEXT_PUBLIC_NODE_ENV === 'prod') {
       },
    }
 }
-
-module.exports = removeImports(nextConfig) // next-remove-imports 적용

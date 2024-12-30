@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# lint-staged 실행 (코드 스타일 체크 및 포맷팅)
+npm run lint-staged

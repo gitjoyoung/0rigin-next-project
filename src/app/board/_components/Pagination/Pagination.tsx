@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/route'
-import { v4 as uuid } from 'uuid'
+import { Icons } from '@/shared/ui/icons'
+import { nanoid } from 'nanoid'
 
 interface Props {
    pageNum: number
@@ -46,12 +45,12 @@ export default function Pagination({ pageNum, lastPostId }) {
                onClick={() => handlePageChange(startPage - PAGES_PER_GROUP)}
                aria-label="Previous Page Group"
             >
-               <FontAwesomeIcon icon={faCaretLeft} />
+               <Icons.prevPage className="w-4 h-4" />
             </button>
          )}
          {/* 현재 페이지 번호 */}
          {pageNumbers.map((index: number) => (
-            <div key={uuid()} className="mx-1">
+            <div key={nanoid()} className="mx-1">
                {currentPage === index ? (
                   <p className="  text-blue-600 font-bold">{index}</p>
                ) : (
@@ -73,7 +72,7 @@ export default function Pagination({ pageNum, lastPostId }) {
                onClick={() => handlePageChange(endPage + 1)}
                aria-label="Next Page Group"
             >
-               <FontAwesomeIcon icon={faCaretRight} />
+               <Icons.nextPage className="w-4 h-4" />
             </button>
          )}
       </article>

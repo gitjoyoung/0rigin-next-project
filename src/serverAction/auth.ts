@@ -5,9 +5,12 @@ import { signIn } from '@/auth'
 export const signInWithCredentials = async (
    formData: FormData,
 ): Promise<any> => {
+   const email = formData.get('email')
+   const password = formData.get('password')
+
    await signIn('credentials', {
-      email: formData.get('email') || '',
-      password: formData.get('password') || '',
+      email,
+      password,
       redirectTo: '/',
    })
 }

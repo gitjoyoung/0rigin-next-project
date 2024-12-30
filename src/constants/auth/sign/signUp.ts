@@ -1,4 +1,4 @@
-import { passwordSchema, userEmailSchema } from '@/schma/signFormSchema'
+import { passwordSchema, userEmailSchema } from '@/schema/signFormSchema'
 import { validate } from 'uuid'
 
 export const GENDER_LIST = [

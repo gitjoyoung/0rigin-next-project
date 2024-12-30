@@ -15,7 +15,6 @@ export default async function layout({
          <BoardHeader title={'게시판'} />
          {children}
          <BoardFooter />
-
       </>
    )
 }

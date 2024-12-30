@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import { signInSchema } from './schma/auth'
+import { signInSchema } from './schema/auth'
 import saltAndHashPassword from './utils/authValidators/password'
 import { ZodError } from 'zod'
 import { fetchSignIn } from './service/auth/fetchSignIn'
@@ -27,7 +27,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                   await signInSchema.parseAsync(credentials)
                // console.log('credentials', email, password)
                const pwHash = saltAndHashPassword(password)
-
                // logic to verify if the user exists
                const user = await fetchSignIn(email, pwHash)
 

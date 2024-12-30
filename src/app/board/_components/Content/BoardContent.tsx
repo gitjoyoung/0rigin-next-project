@@ -3,6 +3,7 @@ import { useState } from 'react'
 import BoardList from './BoardList'
 import { BoardTapButton } from './BoardTapButton'
 import { Post, TopPost } from '../../_types/boardTypes'
+import currency from 'currency.js'
 
 interface Props {
    postData: Post[]
@@ -15,6 +16,14 @@ export default function BoardContent({ postData, topData }: Props) {
    const handleTabClick = (tabName: string) => {
       setSelectedTab(tabName)
    }
+
+   const formatNumber = (num: number) => {
+      return currency(num, {
+         symbol: '',
+         precision: 0,
+      }).format()
+   }
+
    return (
       <div className="px-0.5 w-full">
          {/* 게시판 태그 일반글 추천글 */}

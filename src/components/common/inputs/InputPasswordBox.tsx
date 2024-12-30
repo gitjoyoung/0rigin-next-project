@@ -1,5 +1,4 @@
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Icons } from '@/shared/ui/icons'
 import React, { useState } from 'react'
 
 interface Props {
@@ -27,11 +26,7 @@ export default function InputPasswordBox({ name, placeholder }: Props) {
             onClick={() => setShowPassword(!showPassword)}
             className=" border-transparent inset-y-0 right-0 p-2 flex items-center"
          >
-            {showPassword ? (
-               <FontAwesomeIcon icon={faEye} />
-            ) : (
-               <FontAwesomeIcon icon={faEyeSlash} />
-            )}
+            {showPassword ? <Icons.eyeOpen /> : <Icons.eyeClosed />}
          </button>
       </div>
    )

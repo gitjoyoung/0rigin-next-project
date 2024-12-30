@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faX } from '@fortawesome/free-solid-svg-icons'
-import Link from 'next/link'
 import { Transition } from '@headlessui/react'
-import AuthButton from '../AuthButton'
 import { HEADER_NAV_LIST } from '@/constants/home/headerNav'
+import { Icons } from '@/shared/ui/icons'
+import Link from 'next/link'
+import AuthButtonGroup from '../AuthButtonGroup'
 
 interface Props {
    isModalOpen: boolean
@@ -35,14 +34,14 @@ export default function MobileNavModal({ isModalOpen, toggleModal }: Props) {
                      onClick={toggleModal}
                      aria-label="Toggle Menu"
                   >
-                     <FontAwesomeIcon icon={faX} size="lg" />
+                     <Icons.x size="lg" />
                   </button>
                </div>
 
                {/* 모바일 화면 로그인,  회원가입 */}
                <div className="flex flex-col gap-3">
                   <div className="flex justify-center border gap-2 py-2">
-                     <AuthButton />
+                     <AuthButtonGroup />
                   </div>
                   {/* 모바일 화면 네비게이터 */}
                   {HEADER_NAV_LIST.map(({ id, url, title }) => (

@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react'
 import { addComment } from '@/service/board/commentApi'
-import { commentSchema } from '@/schma/commentSchema'
+import { commentSchema } from '@/schema/commentSchema'
 import { useRouter } from 'next/navigation'
 import { CreateCommentData } from '../../_types/commentTypes'
 

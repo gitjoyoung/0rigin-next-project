@@ -1,6 +1,6 @@
 import React from 'react'
-import { v4 as uuid } from 'uuid'
 import QuizOptionList from './QuizOptionList'
+import { nanoid } from 'nanoid'
 
 export default function QuizRadioButtonGroup({
    questions,
@@ -12,7 +12,7 @@ export default function QuizRadioButtonGroup({
       <div className="flex-col flex gap-1 my-2 justify-center ">
          {questions.map(({ id, value }, index) => (
             <QuizOptionList
-               key={uuid()}
+               key={nanoid()}
                id={id}
                value={value}
                index={index}

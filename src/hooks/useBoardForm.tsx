@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { sanitized } from '@/utils/boardValidators/formatSanized'
 import { CreatePostData, Post } from '@/types/boardTypes'
-import { boardSchema } from '@/schma/boradFormSchema'
+import { boardSchema } from '@/schema/boradFormSchema'
 
 export function useBoardForm(
    editData: Post | null,

@@ -6,7 +6,6 @@ export const getGptReply = async (
    message: string,
    stream: boolean,
 ): Promise<any> => {
- 
    const response = await openAi.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [

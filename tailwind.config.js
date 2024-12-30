@@ -10,14 +10,14 @@ module.exports = {
 
    theme: {
       extend: {
-         typography: {
-            DEFAULT: {
-               css: {
-                  color: '#000', // 검정색으로 변경
-                  backgorundColor: 'black', // 흰색으로 변경
-               },
+         colors: {
+            gray: {
+               primary: '#333333',
+               secondary: '#4F4F4F',
+               tertiary: '#828282',
             },
          },
+
          keyframes: {
             from: { transform: 'rotateY(0deg) scale(2.0)' },
             to: { transform: 'rotateY(360deg) scale(1.0)' },

@@ -1,8 +1,8 @@
 export const HEADER_NAV_LIST = Object.freeze([
    {
-      id: 'introduce',
+      id: 'about',
       title: '소개',
-      url: '/introduce',
+      url: '/about',
    },
    {
       id: 'board',

@@ -1,8 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBurger } from '@fortawesome/free-solid-svg-icons'
 import MobileNavModal from './MobileNavModal'
+import { Icons } from '@/shared/ui/icons'
 
 export default function MobileMenuButton() {
    const [isModalOpen, setIsModalOpen] = useState(false)
@@ -17,7 +16,7 @@ export default function MobileMenuButton() {
             onClick={toggleModal}
             aria-label="메뉴 버튼"
          >
-            <FontAwesomeIcon icon={faBurger} size="lg" />
+            <Icons.burger size="lg" />
          </button>
          <div
             className={`fixed  inset-0 z-40 ${isModalOpen ? 'block' : 'hidden'}`}

@@ -1,7 +1,6 @@
 'use client'
 
-import { faBell } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Icons } from '@/shared/ui/icons'
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function MobileAlramButton() {
@@ -31,7 +30,7 @@ export default function MobileAlramButton() {
             </span>
          )}
 
-         <FontAwesomeIcon icon={faBell} size="lg" />
+         <Icons.bell size="lg" />
       </button>
    )
 }

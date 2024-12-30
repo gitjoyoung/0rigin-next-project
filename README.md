@@ -1,26 +1,26 @@
 # 0rigin Community Web Page v1.0
-철학 기반 커뮤니티 게시판 
-
+철학 기반 커뮤니티 게시판
 # 개발 인원
 1인 개발
-
-## 개발 기간
-2022.01 ~ ing
-기능 추가 및 리팩토링 진행중
-
 ## 배포 주소
 [https://0rigin.vercel.app/](https://0rigin.vercel.app/)
-
 ## 프로젝트 소개
 ![프리뷰 이미지](public/preview/board.png)
 0rigin project는 AI가 대체할 수 없는 인간의 고유한 가치를 토론하는 커뮤니티 입니다.
 
+## 프로젝트 구성
+환경 : next.js
+디자인 패턴 : FSD( Feature Sliced Design )
+핵심 라이브러리 : react-markdown 
+css : tailwindcv
 ## 기능별 페이지
 
 ### 홈 페이지
+
 ![메인 이미지](public/preview/main.png)
 
 ### 게시판
+
 페이지 네이션 처리
 마크다운 에디터를 사용한 글쓰기 에디터
 
@@ -28,19 +28,21 @@
 ![게시판 이미지](public/preview/read.png)
 ![글쓰기 이미지](public/preview/write.png)
 
-
 ### 로그인
+
 firebase auth
 
 ![프리뷰 이미지](public/preview/login.png)
 
 ### 회원 가입
+
 firebase auth
 
 ![프리뷰 이미지](public/preview/sign.png)
 ![프리뷰 이미지](public/preview/signform.png)
 
 ### 퀴즈
+
 퀴즈 풀이
 퀴즈 프로그레스 바
 정답 확인
@@ -71,23 +73,23 @@ firebase auth
 ### Next.js 환경 변수
 
 ```env
-NEXT_PUBLIC_API_URL=
+API_URL=
 NEXTAUTH_URL_INTERNAL=
 NEXTAUTH_SECRET=
 ```
 
 ### firebase 환경변수
 
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-NEXT_PUBLIC_FIREBASE_APP_ID=
+FIREBASE_API_KEY=
+FIREBASE_AUTH_DOMAIN=
+FIREBASE_PROJECT_ID=
+FIREBASE_STORAGE_BUCKET=
+FIREBASE_MESSAGING_SENDER_ID=
+FIREBASE_APP_ID=
 
 ### openai 설정
 
-NEXT_PUBLIC_OPENAI_API_KEY=
+OPENAI_API_KEY=
 
 ### Installation
 

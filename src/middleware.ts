@@ -3,7 +3,6 @@ import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { auth } from '@/auth'
 
 const matchersForAuth = ['/mypage']
-const matchersForSignIn = ['/auth/*']
 export async function middleware(request: NextRequest) {
    // auth 미들 웨어
    const session = await auth() // 세션 정보 확인
@@ -14,11 +13,7 @@ export async function middleware(request: NextRequest) {
          : NextResponse.redirect(new URL('/auth/login', request.url))
       // : NextResponse.redirect(new URL(`/signin?callbackUrl=${request.url}`, request.url))
    }
-   if (isMatch(request.nextUrl.pathname, matchersForSignIn)) {
-      return session
-         ? NextResponse.redirect(new URL('/', request.url))
-         : NextResponse.next()
-   }
+
    // 현재 페이지 URL에 따라 viewport 설정
    const url = request.nextUrl
    const { device } = userAgent(request) // userAgent를 사용하여 디바이스 정보 추출
