@@ -4,6 +4,7 @@ import RootLayoutClient from '@/widgets/layouts/RootLayout/ui/RootLayoutClient'
 import { ThemeProvider } from 'next-themes'
 import { Roboto } from 'next/font/google'
 import { cn } from '@/shared/utils/cn'
+import { SessionProvider } from 'next-auth/react'
 
 const roboto = Roboto({
    weight: '400',
@@ -20,7 +21,9 @@ export default function RootLayout({
          <body>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                <div id="modal-root" />
-               <RootLayoutClient>{children}</RootLayoutClient>
+               <SessionProvider>
+                  <RootLayoutClient>{children}</RootLayoutClient>
+               </SessionProvider>
                <SpeedInsights />
             </ThemeProvider>
          </body>
