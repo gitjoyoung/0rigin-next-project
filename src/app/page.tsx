@@ -1,6 +1,16 @@
 import Banner from '@/components/Banner/Banner'
 import { Post, TopPost } from '@/types/boardTypes'
-import BoardList from './board/_components/Content/BoardList'
+import BoardList from './(content)/board/_components/Content/BoardList'
+
+export const metadata = {
+   title: {
+      default: 'HOME | 0rigin project',
+      template: '%s | 0rigin project',
+   },
+   description: '제로리진 프로젝트',
+   keywords: ['origin', '0rigin'],
+   icon: '/favicon.ico',
+}
 interface Response {
    topData: TopPost[]
    fetchedPosts: Post[]

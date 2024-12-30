@@ -1,6 +1,6 @@
-import { v4 as uuid4 } from 'uuid'
 import BoardListItem from './BoardListItem'
 import { Post, TopPost } from '../../_types/boardTypes'
+import { nanoid } from 'nanoid'
 
 interface Props {
    postData: Post[] | TopPost[]
@@ -19,7 +19,7 @@ export default function BoardList({ postData }: Props) {
          {Array.isArray(postData) &&
             postData.map((item: Post) => (
                <div
-                  key={uuid4()}
+                  key={nanoid()}
                   className={`border-b last:border-b-0  hover:bg-gray-100 `}
                >
                   <BoardListItem item={item} />

@@ -1,5 +1,4 @@
 import { openAi } from '@/lib/openAI'
-import OpenAI from 'openai'
 
 export const getGptReply = async (
    system: string,

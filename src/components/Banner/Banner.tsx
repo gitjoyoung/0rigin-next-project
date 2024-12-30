@@ -18,7 +18,6 @@ export default function Banner({ topData }: Props) {
 
    useEffect(() => {
       let interval
-
       const updateTimer = () => {
          let percent = 0
          interval = setInterval(() => {

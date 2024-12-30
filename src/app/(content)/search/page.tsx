@@ -1,5 +1,4 @@
-import { Metadata } from 'next'
-import Search from './_components/Search'
+import Search from './ui/Search'
 
 interface SearchParams {
    searchParams: {

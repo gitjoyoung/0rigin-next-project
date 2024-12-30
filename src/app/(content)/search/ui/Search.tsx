@@ -1,6 +1,6 @@
-import SearchBox from './SearchBox'
 import SearchResult from './SearchResult'
 import SearchBoard from './SearchBoard'
+import SearchBox from '@/shared/ui/search/SearchBox'
 
 interface Props {
    keyword: string
@@ -13,7 +13,9 @@ export default function Search({ keyword }: Props) {
             <SearchResult keyword={keyword} />
             <SearchBoard keyword={keyword} />
          </div>
-         <div className="m-3 justify-end flex">{/* <SearchBox /> */}</div>
+         <div className="m-3 justify-end flex">
+            <SearchBox />
+         </div>
       </section>
    )
 }

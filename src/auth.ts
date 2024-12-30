@@ -14,20 +14,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
    trustHost: true,
    providers: [
       Credentials({
+         // 인증에 필요한 필드 정의
          credentials: {
-            email: {
-               label: 'Email',
-            },
+            email: { label: 'Email' },
             password: { label: 'Password', type: 'password' },
          },
+         // 사용자 인증 로직
          authorize: async (credentials) => {
             try {
-               console.log('credentials', credentials)
+               // 입력값 검증
                const { email, password } =
                   await signInSchema.parseAsync(credentials)
-               // console.log('credentials', email, password)
+
+               // 비밀번호 해시화
                const pwHash = saltAndHashPassword(password)
-               // logic to verify if the user exists
+
+               // DB에서 사용자 조회
                const user = await fetchSignIn(email, pwHash)
 
                if (!user) {
@@ -36,27 +38,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                return user
             } catch (error) {
+               // Zod 검증 에러 처리
                if (error instanceof ZodError) {
-                  throw new Error('검증 오류' + error.errors[0].message)
+                  throw new Error('검증 오류: ' + error.errors[0].message)
                }
-               throw new Error('통신 실패' + error.message)
+               throw new Error('통신 실패: ' + error.message)
             }
          },
       }),
    ],
    callbacks: {
-      async signIn({ user, account, profile }) {
-         if (!user.email) {
-            return false
-         }
-         return true
+      // 로그인 성공 여부 확인
+      async signIn({ user }) {
+         return !!user.email
       },
+      // JWT 토큰에 사용자 정보 추가
       async jwt({ token, user }) {
          if (user) {
             token.email = user.email
          }
          return token
       },
+      // 세션에 사용자 정보 추가
       async session({ session, token }) {
          session.user.email = token.email
          return session

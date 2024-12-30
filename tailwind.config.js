@@ -16,6 +16,18 @@ module.exports = {
                secondary: '#4F4F4F',
                tertiary: '#828282',
             },
+            dark: {
+               primary: '#1a1a1a',
+               secondary: '#2d2d2d',
+               text: '#ffffff',
+               accent: '#4a9eff',
+            },
+            light: {
+               primary: '#ffffff',
+               secondary: '#f5f5f5',
+               text: '#000000',
+               accent: '#0066cc',
+            },
          },
 
          keyframes: {

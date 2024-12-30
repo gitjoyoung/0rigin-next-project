@@ -1,8 +1,8 @@
+'use client'
 import Link from 'next/link'
-import React from 'react'
 import NavigationList from './NavigationList'
-import SearchBox from '@/app/search/_components/SearchBox'
 import AuthButtonGroup from './AuthButtonGroup'
+import SearchBox from '@/shared/ui/search/SearchBox'
 
 export default function Header() {
    return (

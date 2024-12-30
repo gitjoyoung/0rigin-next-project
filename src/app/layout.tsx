@@ -1,17 +1,14 @@
-import { inter } from '@/app/ui/fonts'
 import './ui/globals.css'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import RootLayoutClient from '@/widgets/layouts/RootLayout/ui/RootLayoutClient'
+import { ThemeProvider } from 'next-themes'
+import { Roboto } from 'next/font/google'
+import { cn } from '@/shared/utils/cn'
 
-export const metadata = {
-   title: {
-      default: 'HOME | 0rigin project',
-      template: '%s | 0rigin project',
-   },
-   description: '제로리진 프로젝트',
-   keywords: ['origin', '0rigin'],
-   icon: '/favicon.ico',
-}
+const roboto = Roboto({
+   weight: '400',
+   subsets: ['latin'],
+})
 
 export default function RootLayout({
    children,
@@ -19,11 +16,13 @@ export default function RootLayout({
    children: React.ReactNode
 }) {
    return (
-      <html lang="en" className="dark">
+      <html lang="en" className={cn('dark', roboto.className)}>
          <body>
-            <div id="modal-root" />
-            <RootLayoutClient>{children}</RootLayoutClient>
-            <SpeedInsights />
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+               <div id="modal-root" />
+               <RootLayoutClient>{children}</RootLayoutClient>
+               <SpeedInsights />
+            </ThemeProvider>
          </body>
       </html>
    )
