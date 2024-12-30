@@ -1,5 +1,5 @@
+import { nanoid } from 'nanoid'
 import React from 'react'
-import { v4 } from 'uuid'
 
 interface IGenderList {
    id: string
@@ -21,7 +21,7 @@ export default function RadioList({ arr, className }: Props) {
       <div className={`flex gap-2 justify-between ${className}`}>
          {arr.map(({ id, name, value }, index) => (
             <label
-               key={v4()}
+               key={nanoid()}
                className="text-sm font-bold flex items-center border py-2 px-3 rounded-md cursor-pointer hover:bg-gray-100"
                htmlFor={id}
             >

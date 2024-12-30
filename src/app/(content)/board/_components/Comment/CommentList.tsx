@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import BoardCommentForm from './CommentForm'
 import BoardCommentHeader from './CommentHeader'
 import BoardCommentItem from './CommentItem'
-import { v4 } from 'uuid'
 import { fetchComments } from '@/service/board/commentApi'
 import { CommentData } from '../../_types/commentTypes'
+import { nanoid } from 'nanoid'
 
 interface Props {
    postId: string
@@ -31,7 +31,7 @@ export default function CommentList({ postId }: Props) {
          {/* 댓글 리스트 */}
          {!loading &&
             comments.map((data: CommentData) => (
-               <BoardCommentItem key={v4()} commentData={data} />
+               <BoardCommentItem key={nanoid()} commentData={data} />
             ))}
 
          {/* 댓글 작성 폼 */}

@@ -1,6 +1,6 @@
 import React from 'react'
 import ColorCard from './ColorCard'
-import { v4 } from 'uuid'
+import { nanoid } from 'nanoid'
 
 export default function ColorCardList() {
    const colorList = [
@@ -15,7 +15,7 @@ export default function ColorCardList() {
          <div className="flex flex-wrap gap-2 px-auto">
             {colorList.map((color) => (
                <ColorCard
-                  key={v4()}
+                  key={nanoid()}
                   tag={color.tag}
                   bgColor={color.bgColor}
                   color={color.color}

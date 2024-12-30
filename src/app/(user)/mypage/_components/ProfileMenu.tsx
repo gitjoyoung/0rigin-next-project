@@ -1,5 +1,4 @@
 import React from 'react'
-import { v4 as uuid4 } from 'uuid'
 
 export default function ProfileMenu() {
    const menu = ['내가 작성한 글', '회원정보 수정', '비밀번호 변경', '회원탈퇴']
@@ -13,7 +12,7 @@ export default function ProfileMenu() {
             <button
                className="py-2 px-3 w-full shadow-sm"
                type="button"
-               key={uuid4()}
+               key={nanoid()}
                onClick={handleProfileMenu}
             >
                {item}
