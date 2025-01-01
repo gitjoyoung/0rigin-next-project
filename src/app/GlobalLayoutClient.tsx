@@ -8,7 +8,9 @@ interface RootLayoutClientProps {
    children: React.ReactNode
 }
 
-export default function RootLayoutClient({ children }: RootLayoutClientProps) {
+export default function GlobalLayoutClient({
+   children,
+}: RootLayoutClientProps) {
    return (
       <>
          <Ticker />
