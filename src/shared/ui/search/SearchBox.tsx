@@ -23,18 +23,18 @@ export default function SearchBox() {
       }
    }
    return (
-      <article className="flex items-center justify-center text-sm    ">
+      <article className="flex items-center justify-center text-sm">
          <input
             ref={searchInputRef}
             spellCheck={false}
-            className="border p-0.5 w-full "
+            className="border p-0.5  "
             type="text"
             onKeyDown={handleKeyDown}
             placeholder="검색"
             maxLength={50}
          />
          <button
-            className="p-0.5 flex-none border border-black"
+            className="px-0.5 flex-none border border-black"
             onClick={handleSearch}
             type="button"
          >
