@@ -62,7 +62,7 @@
       "init": "^0.1.2",
       "lint-staged": "^15.2.10",
       "npx": "^10.2.2",
-      "postcss": "^8.4.47",
+      "postcss": "^8.4.49",
       "prettier": "^3.3.3",
       "tailwindcss": "^3.4.17",
       "tailwindcss-animate": "^1.0.7",
