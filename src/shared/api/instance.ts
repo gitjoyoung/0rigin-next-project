@@ -1,15 +1,13 @@
-import { db } from '../config/firebase'
 import {
    collection,
    getDocs,
-   query,
-   where,
    addDoc,
    updateDoc,
    deleteDoc,
    doc,
 } from 'firebase/firestore'
 import { ApiConfig, ApiResponse } from './types'
+import { db } from '@/lib/firebase'
 
 export class ApiInstance {
    private static instance: ApiInstance

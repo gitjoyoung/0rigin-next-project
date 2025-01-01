@@ -1,6 +1,6 @@
 import SearchResult from './SearchResult'
 import SearchBoard from './SearchBoard'
-import SearchBox from '@/shared/ui/search/SearchBox'
+import SearchBox from '@/widgets/SearchBox'
 
 interface Props {
    keyword: string

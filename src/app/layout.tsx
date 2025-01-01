@@ -1,10 +1,10 @@
-import './ui/globals.css'
+import './globals.css'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import RootLayoutClient from '@/widgets/layouts/RootLayout/ui/RootLayoutClient'
 import { ThemeProvider } from 'next-themes'
 import { Roboto } from 'next/font/google'
 import { cn } from '@/shared/utils/cn'
 import { SessionProvider } from 'next-auth/react'
+import GlobalLayoutClient from './GlobalLayoutClient'
 
 const roboto = Roboto({
    weight: '400',
@@ -22,7 +22,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                <div id="modal-root" />
                <SessionProvider>
-                  <RootLayoutClient>{children}</RootLayoutClient>
+                  <GlobalLayoutClient>{children}</GlobalLayoutClient>
                </SessionProvider>
                <SpeedInsights />
             </ThemeProvider>

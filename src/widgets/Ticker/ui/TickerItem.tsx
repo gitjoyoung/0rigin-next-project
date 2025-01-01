@@ -7,7 +7,7 @@ interface TickerItemProps {
    value: number
 }
 
-export default function TickerItem({ label, value = 0 }: TickerItemProps) {
+export default function TickerItem({ label, value }: TickerItemProps) {
    return (
       <li className="flex items-center text-[11px]">
          <span className="px-1">{label}</span>
@@ -17,7 +17,7 @@ export default function TickerItem({ label, value = 0 }: TickerItemProps) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
          >
-            {formatNumberToString(value)}
+            {formatNumberToString(value || 0)}
          </motion.span>
       </li>
    )

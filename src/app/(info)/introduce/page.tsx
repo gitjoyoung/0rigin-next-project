@@ -1,5 +1,4 @@
 import React from 'react'
-import { TickerCounts } from '@/types/tickerTypes'
 import Introduce from './ui/Introduce'
 import { getStats } from './api/getStats'
 

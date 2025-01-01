@@ -27,7 +27,7 @@ export default async function Home() {
    const { topData, fetchedPosts }: Response = await data.json()
 
    return (
-      <section className="flex flex-wrap border border-black p-1 ">
+      <section className="flex flex-wrap border border-black p-1">
          <Banner topData={topData} />
          <BoardList postData={fetchedPosts} />
       </section>

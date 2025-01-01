@@ -11,7 +11,6 @@ interface Credentials {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-   trustHost: true,
    providers: [
       Credentials({
          // 인증에 필요한 필드 정의
