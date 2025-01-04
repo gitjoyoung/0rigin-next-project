@@ -18,6 +18,8 @@ import {
    Menu,
    Bell,
    X,
+   Twitter,
+   Instagram,
 } from 'lucide-react'
 
 export const Icons = {
@@ -45,6 +47,8 @@ export const Icons = {
    comment: MessageCircle,
    share: Share,
    more: MoreHorizontal,
+   twitter: Twitter,
+   instagram: Instagram,
 
    // 페이지네이션
    prevPage: ChevronLeft,
