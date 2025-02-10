@@ -1,6 +1,6 @@
-import Banner from '@/components/Banner/Banner'
 import { Post, TopPost } from '@/types/boardTypes'
 import BoardList from './(content)/board/_components/Content/BoardList'
+import Banner from '@/widgets/Banner/Banner'
 
 export const metadata = {
    title: {
@@ -27,9 +27,9 @@ export default async function Home() {
    const { topData, fetchedPosts }: Response = await data.json()
 
    return (
-      <section className="flex flex-wrap border border-black p-1">
+      <>
          <Banner topData={topData} />
          <BoardList postData={fetchedPosts} />
-      </section>
+      </>
    )
 }

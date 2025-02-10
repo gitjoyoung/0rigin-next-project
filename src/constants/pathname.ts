@@ -1,5 +1,5 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-01-04T17:15:44.493Z
+// 생성 시간: 2025-02-10T12:25:55.952Z
 // 동적 라우트([param])는 제외됨
 
 export const ROUTE_FORGET = '/forget'
@@ -13,5 +13,6 @@ export const ROUTE_QUIZ = '/quiz'
 export const ROUTE_SEARCH = '/search'
 export const ROUTE_CONTACT = '/contact'
 export const ROUTE_HELP = '/help'
+export const ROUTE_INQUIRY = '/inquiry'
 export const ROUTE_INTRODUCE = '/introduce'
 export const ROUTE_MYPAGE = '/mypage'
