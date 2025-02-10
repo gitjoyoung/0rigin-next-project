@@ -1,5 +1,5 @@
-import { fetchSearchStorage } from '@/app/api/search/route'
 import { ROUTES } from '@/constants/route'
+import { fetchSearchStorage } from '@/service/search/fetchSearchStorage'
 import Image from 'next/image'
 import Link from 'next/link'
 

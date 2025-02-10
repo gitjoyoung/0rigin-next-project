@@ -1,5 +1,4 @@
 import { auth } from '@/lib/firebase'
-import { Login } from '@/types/authTypes'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
 export const fetchSignIn = async (
@@ -12,7 +11,7 @@ export const fetchSignIn = async (
          if (!user) {
             throw new Error('User not found.')
          }
-         const loginResult: Login = {
+         const loginResult = {
             displayName: user.displayName,
             email: user.email,
             emailVerified: user.emailVerified,

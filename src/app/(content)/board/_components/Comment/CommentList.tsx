@@ -21,7 +21,7 @@ export default function CommentList({ postId }: Props) {
    }
    useEffect(() => {
       fetchData(postId).then(() => setLoading(false))
-   }, [])
+   }, [postId])
 
    return (
       <div className=" my-2">

@@ -26,7 +26,7 @@ export default function QuizForm({ quizData, curIndex, handleAnswer }: Props) {
    useEffect(() => {
       setSelectedOption(initialOptions)
       setIsCorrect(false)
-   }, [curIndex])
+   }, [initialOptions, curIndex])
 
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()

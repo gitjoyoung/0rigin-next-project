@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
 import { Transition } from '@headlessui/react'
-import { HEADER_NAV_LIST } from '@/constants/home/headerNav'
 import { Icons } from '@/shared/ui/icons'
 import Link from 'next/link'
 import AuthButtonGroup from '../AuthButtonGroup'
+import { HEADER_NAV_LIST } from '../contants/header-list'
 
 interface Props {
    isModalOpen: boolean

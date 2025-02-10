@@ -1,10 +1,10 @@
 'use client'
 
 import RadioList from '@/components/common/inputs/RadioList'
-import InputValidator from './InputValidator'
 import { GENDER_LIST } from '@/constants/auth/sign/signUp'
 import BasicButton from '@/components/common/buttons/BasicButton'
 import { passwordSchema, userEmailSchema } from '@/schema/signFormSchema'
+import InputValidator from './InputValidator'
 import { useUserSignUp } from '../hook/useUserSignUp'
 
 export default function SignForm() {

@@ -1,5 +1,4 @@
 import { auth, db } from '@/lib/firebase'
-import { UserData } from '@/types/authTypes'
 import saltAndHashPassword from '@/utils/authValidators/password'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { DocumentReference, addDoc, collection } from 'firebase/firestore'
@@ -7,7 +6,7 @@ import { DocumentReference, addDoc, collection } from 'firebase/firestore'
 // 회원가입 시 추가 정보 저장
 const addUserDatabase = (
    userId: string,
-   additionalUserData: UserData,
+   additionalUserData: any,
 ): Promise<DocumentReference> => {
    return addDoc(collection(db, 'users'), {
       uid: userId,

@@ -1,5 +1,7 @@
+'use client'
+
 import { signUpSchema } from '@/schema/signFormSchema'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export const useUserSignUp = () => {
