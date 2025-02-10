@@ -1,4 +1,5 @@
 import { ROUTES } from '@/constants/route'
+import { Button } from '@/shared/shadcn/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -17,11 +18,9 @@ export default function NotFound() {
          <p className="text-gray-600 mb-8 text-sm">
             죄송합니다. 찾고 계신 페이지가 존재하지 않습니다.
          </p>
-         <Link
-            href={ROUTES.HOME}
-            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-cyan-600 focus:outline-none focus:ring focus:border-blue-300"
-         >
-            홈으로 돌아가기
+
+         <Link href={ROUTES.HOME}>
+            <Button>홈으로 돌아가기 </Button>
          </Link>
       </div>
    )

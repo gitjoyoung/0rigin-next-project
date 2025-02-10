@@ -1,7 +1,7 @@
 'use client'
 
-import Header from '@/components/Header/Header'
-import Footer from '@/components/Footer/Footer'
+import Footer from '@/shared/ui/Footer/Footer'
+import Header from '@/shared/ui/Header/Header'
 import Ticker from '@/widgets/Ticker'
 
 interface RootLayoutClientProps {
