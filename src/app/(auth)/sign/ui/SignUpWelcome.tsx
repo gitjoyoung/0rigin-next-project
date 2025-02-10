@@ -1,5 +1,6 @@
-import { SIGN_UP_TERMS } from '@/constants/auth/signUpTermsText'
+import { ROUTE_LOGIN, ROUTE_SIGN } from '@/constants/pathname'
 import Link from 'next/link'
+import { SIGN_UP_TERMS } from '../model/constants/terms'
 
 export default function SignUpWelcome() {
    return (

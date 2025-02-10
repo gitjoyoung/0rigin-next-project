@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ROUTE_FORGET, ROUTE_SIGN } from '@/constants/pathname'
 
 const loginSchema = z.object({
    email: z.string().email('올바른 이메일을 입력해주세요'),
@@ -90,13 +91,13 @@ export default function Login() {
             <div className="text-sm flex gap-5">
                <Link
                   className="border p-2 rounded hover:bg-gray-50"
-                  href={ROUTES.SIGN}
+                  href={ROUTE_SIGN}
                >
                   회원가입
                </Link>
                <Link
                   className="border p-2 rounded hover:bg-gray-50"
-                  href={ROUTES.FORGET}
+                  href={ROUTE_FORGET}
                >
                   비밀번호 분실
                </Link>
