@@ -1,5 +1,13 @@
 import { ROUTES } from '@/constants/route'
 import { fetchSearchStorage } from '@/service/search/fetchSearchStorage'
+import { Badge } from '@/shared/shadcn/ui/badge'
+import {
+   Card,
+   CardContent,
+   CardHeader,
+   CardTitle,
+} from '@/shared/shadcn/ui/card'
+import { ScrollArea } from '@/shared/shadcn/ui/scroll-area'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -10,43 +18,53 @@ type Props = {
 export default async function SearchBoard({ keyword }: Props) {
    const result = await fetchSearchStorage(keyword)
    const resultJson = await result.json()
+
    return (
-      <article>
-         {' '}
-         <div className="flex flex-col py-2  overflow-hidden whitespace-nowrap  ">
-            <h2 className="p-1 font-bold text-xl ">
-               게시판 검색결과 {resultJson.length} 건
-            </h2>
-         </div>
-         {resultJson.length > 0 ? (
-            resultJson.map((data) => (
-               <li className=" border p-2 flex gap-3" key={data.id}>
-                  <div
-                     className="border border-black min-w-[100px] min-h-[100px]
-      items-center flex relative"
-                  >
-                     <Image
-                        src={data?.thumbnail || '/mascot/winksaurus3.png'}
-                        fill
-                        alt={data.title}
-                        className="object-cover"
-                     />
+      <Card className="w-full">
+         <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+               검색결과 <Badge variant="secondary">{resultJson.length}건</Badge>
+            </CardTitle>
+         </CardHeader>
+         <CardContent>
+            <ScrollArea className="h-[600px] w-full pr-4">
+               {resultJson.length > 0 ? (
+                  <div className="space-y-4">
+                     {resultJson.map((data) => (
+                        <Card key={data.id} className="overflow-hidden">
+                           <Link href={`${ROUTES.BOARD}/${data.id}`}>
+                              <div className="flex gap-4 p-4 group hover:bg-slate-50 transition-colors">
+                                 <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border">
+                                    <Image
+                                       src={
+                                          data?.thumbnail ||
+                                          '/mascot/winksaurus3.png'
+                                       }
+                                       fill
+                                       alt={data.title}
+                                       className="object-cover"
+                                    />
+                                 </div>
+                                 <div className="flex flex-col gap-2">
+                                    <h3 className="font-semibold group-hover:text-blue-600 transition-colors">
+                                       {data.title}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground line-clamp-2">
+                                       {data.summary || ''}
+                                    </p>
+                                 </div>
+                              </div>
+                           </Link>
+                        </Card>
+                     ))}
                   </div>
-                  <div className=" p-1 flex flex-col gap-2">
-                     <Link href={`${ROUTES.BOARD}/1/${data.id}`}>
-                        <h1 className="line-clamp-1  text-base font-semibold whitespace-pre overflow-hidden ">
-                           {data.title}
-                        </h1>
-                        <p className="line-clamp-3 text-sm">
-                           {data.summary || ''}
-                        </p>
-                     </Link>
+               ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                     검색 결과가 없습니다
                   </div>
-               </li>
-            ))
-         ) : (
-            <h1 className="p-1">{resultJson}</h1>
-         )}
-      </article>
+               )}
+            </ScrollArea>
+         </CardContent>
+      </Card>
    )
 }

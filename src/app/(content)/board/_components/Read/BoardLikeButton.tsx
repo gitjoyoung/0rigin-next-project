@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react'
 import { updateReactionCount } from '@/service/board/likeApi'
-import BasicButton from '@/components/common/buttons/BasicButton'
-import { Icons } from '@/shared/ui/icons'
+import { ThumbsUp, ThumbsDown } from 'lucide-react'
+import { Button } from '@/shared/shadcn/ui/button'
 
 interface Props {
    like: number
@@ -29,31 +29,28 @@ export default function BoardLikeButton({ like, dislike, postId }: Props) {
          ...updatedCount,
       }))
    }
-   return (
-      <div className="flex justify-center gap-6 mt-5 mb-5">
-         <div className="flex flex-col justify-center items-center">
-            <div className="flex gap-2 items-center">
-               <Icons.heart />
-               <p> {reactionCounts.dislike}</p>
-            </div>
-            <BasicButton
-               text="싫어요"
-               type="button"
-               onClick={() => fetchUpdateReaction('dislike')}
-            />
-         </div>
-         <div className="flex flex-col justify-center items-center">
-            <div className="flex gap-2 items-center">
-               <Icons.heart />
-               <p>{reactionCounts.like}</p>
-            </div>
 
-            <BasicButton
-               text="좋아요"
-               type="button"
-               onClick={() => fetchUpdateReaction('like')}
-            />
-         </div>
+   return (
+      <div className="flex justify-center gap-6 my-5">
+         <Button
+            variant="outline"
+            size="lg"
+            onClick={() => fetchUpdateReaction('dislike')}
+            className="flex flex-col gap-2 h-auto py-2"
+         >
+            <span>{reactionCounts.dislike}</span>
+            <ThumbsDown className="h-5 w-5" />
+         </Button>
+
+         <Button
+            variant="outline"
+            size="lg"
+            onClick={() => fetchUpdateReaction('like')}
+            className="flex flex-col gap-2 h-auto py-2 "
+         >
+            <span>{reactionCounts.like}</span>
+            <ThumbsUp className="h-5 w-5" />
+         </Button>
       </div>
    )
 }

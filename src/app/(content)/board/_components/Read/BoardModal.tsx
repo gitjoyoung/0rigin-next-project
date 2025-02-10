@@ -1,6 +1,9 @@
 'use client'
 import { ROUTES } from '@/constants/route'
 import { updateDeletePost } from '@/service/board/post/updatePostApi'
+import { Button } from '@/shared/shadcn/ui/button'
+import { Input } from '@/shared/shadcn/ui/input'
+import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useEffect } from 'react'
 
@@ -43,46 +46,47 @@ export default function BoardModal({ onClose, postId, flag }: Props) {
       <div
          className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50 z-50  h-full w-full"
          onClick={onClose}
-         onKeyDown={handleKeyPress}
          role="button"
          tabIndex={0}
       >
          <div
-            className="mx-4 p-5 border w-[50] shadow-lg rounded-md relative bg-white"
+            className="mx-4 p-5 border  shadow-lg rounded-md relative bg-white"
             onClick={handleModalClick}
-            onKeyDown={handleKeyPress}
             role="button"
             tabIndex={0}
          >
-            <div
+            {/* <div
                className="absolute top-2 right-3 text-2xl cursor-pointer"
                onClick={onClose}
-               onKeyDown={handleKeyPress}
                role="button"
                tabIndex={-1}
             >
                X
-            </div>
+            </div> */}
+            <Button
+               variant="ghost"
+               size="icon"
+               onClick={onClose}
+               className=" rounded-sm bg-transparent border-none absolute top-0 right-0  cursor-pointer"
+            >
+               <X className="h-4 w-4" />
+            </Button>
             <div className="mt-3 text-center flex flex-col items-center gap-2">
                <h1 className="text-lg leading-6 font-medium text-gray-900">
                   {`${postId}번 글 ${flag === 'delete' ? '삭제하기' : '수정하기'}`}
                </h1>
                <p className="text-sm text-gray-500">비밀번호를 입력해주세요.</p>
 
-               <input
+               <Input
                   ref={inputRef}
-                  className="border-black border  w-[50%] my-2 p-1"
+                  className="border-black border  w-[80%] my-2 "
                   type="password"
                   name="password"
+                  onKeyDown={handleKeyPress}
                />
-               <button
-                  type="button"
-                  onClick={handleUpdate}
-                  id="delete-btn"
-                  className="px-6 py-2 hover:bg-white focus:outline-none focus:ring-2 focus:ring-red-300"
-               >
+               <Button onClick={handleUpdate} size="default">
                   확인
-               </button>
+               </Button>
             </div>
          </div>
       </div>

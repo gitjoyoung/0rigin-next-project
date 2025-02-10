@@ -17,13 +17,6 @@ export default function BoardContent({ postData, topData }: Props) {
       setSelectedTab(tabName)
    }
 
-   const formatNumber = (num: number) => {
-      return currency(num, {
-         symbol: '',
-         precision: 0,
-      }).format()
-   }
-
    return (
       <div className="px-0.5 w-full">
          {/* 게시판 태그 일반글 추천글 */}
