@@ -1,4 +1,4 @@
-import SignForm from '../../_components/Sign/SignForm'
+import SignForm from '../ui/SignForm'
 
 export default function Page() {
    return <SignForm />
