@@ -2,49 +2,43 @@
 
 import { useRouter } from 'next/navigation'
 import { signOut, useSession } from 'next-auth/react'
-import { ROUTES } from '@/constants/route'
+import { Button } from '@/shared/shadcn/ui/button'
+import { ROUTE_LOGIN, ROUTE_MYPAGE, ROUTE_SIGN } from '@/constants/pathname'
+import Link from 'next/link'
 
 export default function AuthButtonGroup() {
    const { data: session } = useSession() // 클라이언트 훅
-   const { push } = useRouter()
 
    return (
       <section className="flex items-end gap-5">
-         {!session?.user.email ? (
+         {!session?.user?.email ? (
             <div className="flex gap-2 text-xs">
-               <button
-                  type="button"
-                  onClick={() => push(ROUTES.LOGIN)}
-                  className="btn-login"
-               >
-                  로그인
-               </button>
-               <button
-                  type="button"
-                  onClick={() => push(ROUTES.SIGN)}
-                  className="btn-sighup"
-               >
-                  회원가입
-               </button>
+               <Link href={ROUTE_LOGIN}>
+                  <Button asChild size="sm">
+                     <span>로그인</span>
+                  </Button>
+               </Link>
+               <Link href={ROUTE_SIGN}>
+                  <Button asChild size="sm">
+                     <span>회원가입</span>
+                  </Button>
+               </Link>
             </div>
          ) : (
-            <div className="flex-col gap-1 ">
-               <p className="m-1 text-xs">{session?.user.email}</p>
+            <div className="flex flex-col gap-1">
+               <p className="m-1 text-xs">{session.user.email}</p>
                <div className="flex gap-2 text-xs">
-                  <button
-                     type="button"
+                  <Button
                      onClick={() => signOut({ callbackUrl: '/' })}
-                     className="btn-login"
+                     size="sm"
                   >
                      로그아웃
-                  </button>
-                  <button
-                     type="button"
-                     onClick={() => push(ROUTES.MYPAGE)}
-                     className="btn-sighup"
-                  >
-                     마이페이지
-                  </button>
+                  </Button>
+                  <Link href={ROUTE_MYPAGE}>
+                     <Button asChild size="sm">
+                        <span>마이페이지</span>
+                     </Button>
+                  </Link>
                </div>
             </div>
          )}

@@ -30,15 +30,16 @@ export default function Header() {
          <div className="flex items-center gap-4">
             {/* 로고 */}
             <Link href="/">
-               {/* 로고의 크기를 변경하고 싶다면 md:text-4xl, sm:text-2xl 등 조정 */}
-               <h1 className="text-2xl font-bold">0rigin</h1>
+               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                  0rigin
+               </h3>
             </Link>
 
             {/* 네비게이션 (큰 화면에서만 보이게 할 수도 있음) */}
             <nav className="hidden md:flex gap-4">
                {HEADER_NAV_LIST.map(({ title, url }) => (
                   <Link key={nanoid()} href={url}>
-                     <span className="hover:text-gray-900 hover:font-semibold text-md font-normal">
+                     <span className="hover:text-gray-900 hover:font-semibold text-md ">
                         {title}
                      </span>
                   </Link>

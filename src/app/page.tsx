@@ -1,6 +1,7 @@
 import { Post, TopPost } from '@/types/boardTypes'
 import BoardList from './(content)/board/_components/Content/BoardList'
 import Banner from '@/widgets/Banner/Banner'
+import AdBanner from '@/widgets/AdBanner/AdBanner'
 
 export const metadata = {
    title: {
@@ -28,6 +29,7 @@ export default async function Home() {
 
    return (
       <>
+         <AdBanner />
          <Banner topData={topData} />
          <BoardList postData={fetchedPosts} />
       </>
