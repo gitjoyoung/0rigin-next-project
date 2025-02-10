@@ -1,3 +1,6 @@
+'use client'
+
+import { Button } from '@/shared/shadcn/ui/button'
 import React from 'react'
 
 interface Props {
@@ -7,29 +10,38 @@ interface Props {
 }
 
 export default function QuizNavButton({
+   quizDataLength,
    curIndex,
    setCurIndex,
-   quizDataLength,
 }: Props) {
-   const handleNext = () => {
-      if (curIndex < quizDataLength - 1) {
-         setCurIndex(curIndex + 1)
-      }
+   const isFirstDisabled = curIndex === 0
+   const isLastDisabled = curIndex === quizDataLength - 1
+
+   const handleNavigate = (step: 1 | -1) => {
+      setCurIndex((prevIndex) => {
+         const nextIndex = prevIndex + step
+         return Math.max(0, Math.min(nextIndex, quizDataLength - 1))
+      })
    }
 
-   const handlePrev = () => {
-      if (curIndex > 0) {
-         setCurIndex(curIndex - 1)
-      }
-   }
    return (
-      <div className="flex justify-between mx-2 max-w-xl sm:mx-auto">
-         <button type="button" className="py-2 px-6" onClick={handlePrev}>
+      <div className="mx-2 flex max-w-xl justify-between sm:mx-auto">
+         <Button
+            type="button"
+            className="px-6 py-4"
+            onClick={() => handleNavigate(-1)}
+            disabled={isFirstDisabled}
+         >
             이전
-         </button>
-         <button type="button" className="py-2 px-6" onClick={handleNext}>
+         </Button>
+         <Button
+            type="button"
+            className="px-6 py-4"
+            onClick={() => handleNavigate(1)}
+            disabled={isLastDisabled}
+         >
             다음
-         </button>
+         </Button>
       </div>
    )
 }

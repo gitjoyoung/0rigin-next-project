@@ -5,26 +5,29 @@ import { QuizData } from '@/types/quizTypes'
 import QuizContent from './QuizForm'
 import QuizNavButton from './QuizNavButton'
 import QuizAnswerTable from './QuizAnswerTable'
-import QuizProgressbar from './QuizProgressbar'
+import { Progress } from '@/shared/shadcn/ui/progress'
 
 interface QuizDataList {
    quizData: QuizData[]
 }
 
 export default function Quiz({ quizData }: QuizDataList) {
+   const quizDataLength = quizData.length
    const [curIndex, setCurIndex] = useState(0)
    const [answerTable, setAnswerTable] = useState({})
-   const quizDataLength = quizData.length
+
    const handleAnswer = (selected: string) => {
       setAnswerTable((prev) => ({ ...prev, [curIndex]: selected }))
    }
+   const progress =
+      quizDataLength > 1 ? (curIndex / (quizDataLength - 1)) * 100 : 100
 
    return (
       <section>
-         <QuizProgressbar value={curIndex + 1} max={quizDataLength} />
+         <Progress value={progress} className="rounded-none" />
          <div className="flex justify-center items-center gap-3 flex-wrap">
             {/* <QuizAnswerTable answerTable={answerTable} /> */}
-            <div className="w-[600px]">
+            <div className="w-[800px]">
                <QuizContent
                   handleAnswer={handleAnswer}
                   quizData={quizData[curIndex]}
