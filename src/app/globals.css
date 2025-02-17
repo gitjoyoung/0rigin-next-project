@@ -60,7 +60,26 @@
 }
 
 @layer base {
+   /* 스크롤바 스타일링 */
+   ::-webkit-scrollbar {
+      @apply w-2 h-2;
+      display: block;
+   }
+
+   ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+   }
+
+   ::-webkit-scrollbar-thumb {
+      @apply rounded-full bg-muted-foreground/30 hover:bg-muted-foreground/50 transition-colors;
+   }
+
    * {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-gutter: stable;
+      scrollbar-width: thin;
+      scrollbar-color: hsl(var(--muted-foreground) / 0.3)
+         hsl(var(--muted) / 0.5);
       @apply border-border;
    }
    body {

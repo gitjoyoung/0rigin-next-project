@@ -1,11 +1,26 @@
 'use client'
-import { ROUTES } from '@/constants/route'
 import { signInWithCredentials } from '@/serverAction/auth'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ROUTE_FORGET, ROUTE_SIGN } from '@/constants/pathname'
+import {
+   Card,
+   CardContent,
+   CardHeader,
+   CardTitle,
+} from '@/shared/shadcn/ui/card'
+import {
+   Form,
+   FormControl,
+   FormField,
+   FormItem,
+   FormMessage,
+} from '@/shared/shadcn/ui/form'
+import { Input } from '@/shared/shadcn/ui/input'
+import { Button } from '@/shared/shadcn/ui/button'
+import { Loader2 } from 'lucide-react'
 
 const loginSchema = z.object({
    email: z.string().email('올바른 이메일을 입력해주세요'),
@@ -15,11 +30,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 export default function Login() {
-   const {
-      register,
-      handleSubmit,
-      formState: { errors, isSubmitting },
-   } = useForm<LoginFormData>({
+   const form = useForm<LoginFormData>({
       resolver: zodResolver(loginSchema),
       defaultValues: {
          email: '',
@@ -39,70 +50,85 @@ export default function Login() {
    }
 
    return (
-      <section className="w-full h-full my-auto flex justify-center items-center">
-         <div className="flex flex-col h-full border p-10 justify-center items-center gap-6 m-3 rounded-xl">
-            {/* 타이틀 */}
-            <div>
-               <h1 className="font-bold text-2xl">로그인</h1>
-            </div>
-
-            {/* 입력폼 */}
-            <form
-               className="flex flex-col gap-3"
-               onSubmit={handleSubmit(onSubmit)}
-            >
-               <div className="flex flex-col gap-1">
-                  <input
-                     className="border p-2 rounded"
-                     type="email"
-                     placeholder="이메일"
-                     {...register('email')}
-                  />
-                  {errors.email && (
-                     <span className="text-xs text-red-500">
-                        {errors.email.message}
-                     </span>
-                  )}
-               </div>
-
-               <div className="flex flex-col gap-1">
-                  <input
-                     className="border p-2 rounded"
-                     type="password"
-                     placeholder="비밀번호"
-                     {...register('password')}
-                  />
-                  {errors.password && (
-                     <span className="text-xs text-red-500">
-                        {errors.password.message}
-                     </span>
-                  )}
-               </div>
-
-               <button
-                  type="submit"
-                  className="mt-3 p-2 rounded bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-300"
-                  disabled={isSubmitting}
-               >
-                  {isSubmitting ? '로그인 중...' : '로그인'}
-               </button>
-            </form>
-
-            <div className="text-sm flex gap-5">
-               <Link
-                  className="border p-2 rounded hover:bg-gray-50"
-                  href={ROUTE_SIGN}
-               >
-                  회원가입
-               </Link>
-               <Link
-                  className="border p-2 rounded hover:bg-gray-50"
-                  href={ROUTE_FORGET}
-               >
-                  비밀번호 분실
-               </Link>
-            </div>
+      <div className="flex flex-col mt-12 items-center justify-center">
+         <div className="text-center space-y-2 mb-8">
+            <h2 className="text-3xl font-bold tracking-tight">환영합니다</h2>
+            <p className="text-muted-foreground text-sm">
+               {'"모든 위대한 여정은 작은 한 걸음에서 시작됩니다"'}
+            </p>
          </div>
-      </section>
+         <Card className="w-[400px]">
+            <CardHeader>
+               <CardTitle>로그인</CardTitle>
+            </CardHeader>
+            <CardContent>
+               <Form {...form}>
+                  <form
+                     onSubmit={form.handleSubmit(onSubmit)}
+                     className="space-y-4"
+                  >
+                     <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormControl>
+                                 <Input
+                                    type="email"
+                                    placeholder="이메일"
+                                    {...field}
+                                 />
+                              </FormControl>
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                     />
+
+                     <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormControl>
+                                 <Input
+                                    type="password"
+                                    placeholder="비밀번호"
+                                    {...field}
+                                 />
+                              </FormControl>
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                     />
+                     <div className="flex justify-center">
+                        <Button
+                           className="w-full"
+                           type="submit"
+                           disabled={form.formState.isSubmitting}
+                        >
+                           {form.formState.isSubmitting ? (
+                              <>
+                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                 로그인 중...
+                              </>
+                           ) : (
+                              '로그인'
+                           )}
+                        </Button>
+                     </div>
+                  </form>
+               </Form>
+
+               <div className="mt-6 flex gap-4 justify-between">
+                  <Button variant="outline" asChild>
+                     <Link href={ROUTE_SIGN}>회원가입</Link>
+                  </Button>
+                  <Button variant="outline" asChild>
+                     <Link href={ROUTE_FORGET}>비밀번호 분실</Link>
+                  </Button>
+               </div>
+            </CardContent>
+         </Card>{' '}
+      </div>
    )
 }
