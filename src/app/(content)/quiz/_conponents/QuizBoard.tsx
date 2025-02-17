@@ -17,7 +17,7 @@ export default function QuizBoard({ quizData }: Props) {
    })
    return (
       <div className="border p-3">
-         <ul className="grid sm:grid-cols-5 gap-3 ">
+         {/* <ul className="grid sm:grid-cols-5 gap-3 ">
             {quizData.map((item) => (
                <li
                   key={nanoid()}
@@ -41,7 +41,7 @@ export default function QuizBoard({ quizData }: Props) {
                   </div>
                </li>
             ))}
-         </ul>
+         </ul> */}
       </div>
    )
 }

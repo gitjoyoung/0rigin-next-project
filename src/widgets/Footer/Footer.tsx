@@ -1,9 +1,9 @@
-import { ROUTE_CONTACT, ROUTE_HELP } from '@/constants/pathname'
+import { ROUTE_CONTACT, ROUTE_HELP, ROUTE_INQUIRY } from '@/constants/pathname'
 import Link from 'next/link'
 
 const FOOTER_NAV = Object.freeze([
-   { id: 'inquiry', name: '1:1문의', link: ROUTE_CONTACT },
-   { id: 'customerService', name: '고객센터', link: ROUTE_HELP },
+   { id: 'inquiry', name: '1:1문의', link: ROUTE_INQUIRY },
+   { id: 'help', name: '고객센터', link: ROUTE_HELP },
    { id: 'contact', name: 'contact', link: ROUTE_CONTACT },
 ])
 export default function Footer() {

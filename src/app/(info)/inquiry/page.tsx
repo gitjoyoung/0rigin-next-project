@@ -1,3 +1,9 @@
+import InquiryForm from './ui/InquiryForm'
+
 export default function page() {
-   return <div>inquiry page</div>
+   return (
+      <div className="w-full">
+         <InquiryForm />
+      </div>
+   )
 }

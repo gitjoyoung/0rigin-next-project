@@ -1,12 +1,6 @@
 import { db } from '@/lib/firebase'
 import { TickerCounts } from '@/types/tickerTypes'
-import {
-   collection,
-   doc,
-   getDocs,
-   increment,
-   updateDoc,
-} from 'firebase/firestore'
+import { collection, getDocs } from 'firebase/firestore'
 
 // 카운트 정보 가져오기
 export const getStats = async (): Promise<TickerCounts> => {

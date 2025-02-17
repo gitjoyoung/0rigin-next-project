@@ -33,17 +33,12 @@ export default function Introduce({ counts }: Props) {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0 },
    }
-
-   // ─────────────────────────────────────────────────────────
-   // 1. Intersection Observer로 스크롤 위치 감지
-   // ─────────────────────────────────────────────────────────
    useEffect(() => {
       const observerOptions = {
          root: null,
          rootMargin: '0px',
-         threshold: 0.5, // 50% 이상 보여야 "보인다"고 판단
+         threshold: 0.5,
       }
-
       const observer = new IntersectionObserver((entries) => {
          entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -55,7 +50,6 @@ export default function Introduce({ counts }: Props) {
          })
       }, observerOptions)
 
-      // 실제 DOM에 ref가 연결된 후, Observer로 관찰 시작
       Object.entries(sectionsRef.current).forEach(([key, element]) => {
          if (element) {
             // 각 섹션 DOM에 id 부여 (ex: 'story', 'welcome', 'numbers')
@@ -72,9 +66,6 @@ export default function Introduce({ counts }: Props) {
       }
    }, [])
 
-   // ─────────────────────────────────────────────────────────
-   // 2. 클릭 시 해당 섹션으로 스크롤 이동
-   // ─────────────────────────────────────────────────────────
    const scrollToSection = (sectionKey: 'story' | 'welcome' | 'numbers') => {
       const element = sectionsRef.current[sectionKey]
       if (element) {
@@ -85,9 +76,6 @@ export default function Introduce({ counts }: Props) {
    return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-400 to-sky-400 text-white overflow-hidden">
          <div className="max-w-6xl mx-auto px-4">
-            {/* ─────────────────────────────────────────────────────
-             Story Section
-        ───────────────────────────────────────────────────── */}
             <motion.section
                ref={(el) => {
                   sectionsRef.current.story = el
