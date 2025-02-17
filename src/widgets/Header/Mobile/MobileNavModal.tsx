@@ -6,6 +6,7 @@ import {
    SheetHeader,
    SheetTitle,
    SheetTrigger,
+   SheetClose,
 } from '@/shared/shadcn/ui/sheet'
 import { Menu } from 'lucide-react'
 import AuthButtonGroup from '../AuthButtonGroup'
@@ -33,13 +34,14 @@ export default function MobileNavModal() {
                {/* 모바일 화면 네비게이터 */}
                <nav className="flex flex-col">
                   {HEADER_NAV_LIST.map(({ id, url, title }) => (
-                     <Link
-                        key={id}
-                        href={url}
-                        className="px-4 py-3 border-b hover:bg-accent hover:text-accent-foreground"
-                     >
-                        {title}
-                     </Link>
+                     <SheetClose asChild key={id}>
+                        <Link
+                           href={url}
+                           className="px-4 py-3 border-b hover:bg-accent hover:text-accent-foreground"
+                        >
+                           {title}
+                        </Link>
+                     </SheetClose>
                   ))}
                </nav>
             </div>
