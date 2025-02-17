@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import AuthButtonGroup from './AuthButtonGroup'
-import { nanoid } from 'nanoid'
 import SearchBox from '@/widgets/SearchBox'
 import { HEADER_NAV_LIST } from './contants/header-list'
+import MobileNavModal from './Mobile/MobileNavModal'
 
 export default function Header() {
    return (
@@ -18,21 +18,28 @@ export default function Header() {
                </h3>
             </Link>
 
-            {/* 네비게이션 (큰 화면에서만 보이게 할 수도 있음) */}
+            {/* 데스크톱 네비게이션 */}
             <nav className="hidden md:flex gap-4">
-               {HEADER_NAV_LIST.map(({ title, url }) => (
-                  <Link key={nanoid()} href={url}>
-                     <span className="hover:text-gray-900 hover:font-semibold text-md ">
+               {HEADER_NAV_LIST.map(({ id, url, title }) => (
+                  <Link key={id} href={url}>
+                     <span className="hover:text-gray-900 hover:font-semibold text-md">
                         {title}
                      </span>
                   </Link>
                ))}
             </nav>
          </div>
+
          {/* 검색창 + 인증 버튼 */}
          <div className="flex items-center gap-4">
-            <SearchBox />
-            <AuthButtonGroup />
+            {/* 데스크톱 뷰 */}
+            <div className="hidden sm:flex items-center gap-4">
+               <SearchBox />
+               <AuthButtonGroup />
+            </div>
+
+            {/* 모바일 메뉴 토글 */}
+            <MobileNavModal />
          </div>
       </header>
    )
