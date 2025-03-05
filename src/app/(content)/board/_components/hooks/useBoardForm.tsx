@@ -1,8 +1,7 @@
-// hooks/useBoardForm.ts
 import { useState } from 'react'
 import { sanitized } from '@/utils/boardValidators/formatSanized'
-import { boardSchema } from '@/schema/boradFormSchema'
 import { CreatePostData, Post } from '../../_types/boardTypes'
+import { boardSchema } from '@/schema/boardSchema'
 
 export function useBoardForm(
    editData: Post | null,
