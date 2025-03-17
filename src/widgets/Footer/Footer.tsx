@@ -8,7 +8,7 @@ const FOOTER_NAV = Object.freeze([
 ])
 export default function Footer() {
    return (
-      <div className="text-xs flex flex-col items-center justify-center gap-2  bottom-0  bg-gray-100 p-4 w-full border-t-2 border-black">
+      <div className="text-xs flex flex-col items-center justify-center gap-2  bottom-0  p-4 w-full border-t-2 border-black">
          <p className="">Origin project</p>
          <ul className="  flex gap-4 flex-wrap font-semibold">
             {FOOTER_NAV.map(({ name, link, id }) => (

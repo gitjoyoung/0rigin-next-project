@@ -1,9 +1,6 @@
 import { Metadata } from 'next'
-import BoardContent from './_components/Content/BoardContent'
-import Pagination from './_components/Pagination/Pagination'
-import BoardReadHeader from './_components/Read/BoardReadHeader'
-import BoardHeader from './_components/BoardHeader'
-import BoardFooter from './_components/BoardFooter'
+import BoardContent from './ui/Content/BoardContent'
+import Pagination from './ui/Pagination/Pagination'
 
 interface Params {
    params: {

@@ -1,11 +1,11 @@
+import { ROUTES } from '@/constants/route'
 import { Post } from '@/types/boardTypes'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import BoardRead from '../_components/Read/BoardRead'
-import CommentList from '../_components/Comment/CommentList'
-import BoardContent from '../_components/Content/BoardContent'
-import Pagination from '../_components/Pagination/Pagination'
-import { ROUTES } from '@/constants/route'
+import CommentList from '../ui/Comment/CommentList'
+import BoardContent from '../ui/Content/BoardContent'
+import Pagination from '../ui/Pagination/Pagination'
+import Read from '../ui/Read'
 
 interface IParams {
    params: {
@@ -51,7 +51,7 @@ export default async function Page({ params, searchParams }: IParams) {
 
    return (
       <>
-         <BoardRead postId={id} readData={readData} />
+         <Read postId={id} readData={readData} />
          <CommentList postId={id} />
          <BoardContent postData={fetchedPosts} />
          <Pagination lastPostId={lastPostId} pageNum={page} />

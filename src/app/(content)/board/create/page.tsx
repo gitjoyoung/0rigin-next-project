@@ -1,5 +1,5 @@
-import BoardCreateForm from '../_components/Create/BoardCreateForm'
 import { Metadata } from 'next'
+import BoardCreateForm from '../ui/Create/BoardCreateForm'
 
 export const metadata: Metadata = {
    title: '0rigin 글쓰기',

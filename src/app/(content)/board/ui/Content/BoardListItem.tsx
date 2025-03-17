@@ -1,12 +1,11 @@
 'use client'
-import Link from 'next/link'
-import React from 'react'
-import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { ROUTES } from '@/constants/route'
-import { useSearchParams } from 'next/navigation'
-import { Post } from '../../_types/boardTypes'
+import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { formatValue } from '@/utils/statsValidators/formatNumber'
 import { MessageSquare } from 'lucide-react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { Post } from '../../_types/boardTypes'
 
 interface Props {
    item: Post
@@ -23,8 +22,7 @@ export default function BoardListItem({ item }: Props) {
       comment,
       deleted = false,
    } = item
-   const params = useSearchParams()
-   const page = params.get('page') || 1
+   const page = useSearchParams().get('page') || 1
 
    return (
       <section className="flex items-center  flex-wrap p-2">

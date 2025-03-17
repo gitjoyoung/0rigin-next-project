@@ -1,19 +1,12 @@
-import BoardListItem from './BoardListItem'
-import { Post, TopPost } from '../../_types/boardTypes'
 import { nanoid } from 'nanoid'
+import { Post } from '../../_types/boardTypes'
+import BoardListItem from './BoardListItem'
 
 interface Props {
-   postData: Post[] | TopPost[]
+   postData: Post[]
 }
 export default function BoardList({ postData }: Props) {
-   if (!postData)
-      return (
-         <>
-            <div className="border border-black  px-3  w-full h-44 flex items-center ">
-               <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
-            </div>
-         </>
-      )
+   if (!postData) return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
    return (
       <div className="border border-black w-full ">
          {Array.isArray(postData) &&

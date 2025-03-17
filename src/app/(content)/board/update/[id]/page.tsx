@@ -1,7 +1,7 @@
 import CustomTitle from '@/components/common/links/CustomTitleLink'
 import { ROUTES } from '@/constants/route'
 import { Metadata } from 'next'
-import BoardEditForm from '../../_components/Create/BoardEditForm'
+import BoardEditForm from '../../ui/Create/BoardEditForm'
 
 interface IParams {
    params: {

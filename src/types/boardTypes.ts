@@ -17,6 +17,8 @@ interface Post extends BasePost {
    dislike?: number
    views?: number
    deleted?: boolean
+   date?: string
+   postId?: string
 }
 
 interface CreatePostData extends BasePost {
@@ -32,4 +34,4 @@ interface TopPost extends BasePost {
 }
 
 // 타입 내보내기
-export type { Post, CreatePostData, TopPost }
+export type { CreatePostData, Post, TopPost }

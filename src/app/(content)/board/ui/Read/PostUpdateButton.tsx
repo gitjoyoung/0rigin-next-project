@@ -1,15 +1,14 @@
 'use client'
 
-import React, { useState } from 'react'
-import BoardModal from './BoardModal'
-import BasicButton from '@/components/common/buttons/BasicButton'
 import { Button } from '@/shared/shadcn/ui/button'
+import { useState } from 'react'
+import BoardModal from './BoardModal'
 
 interface Props {
    postId: string
 }
 
-export default function BoardUpdateButton({ postId }: Props) {
+export default function PostUpdateButton({ postId }: Props) {
    const [isModalOpen, setIsModalOpen] = useState(false)
    const [modalMode, setModalMode] = useState<'edit' | 'delete'>('edit')
    const handleEdit = () => {

@@ -1,7 +1,7 @@
 import { Post, TopPost } from '@/types/boardTypes'
-import BoardList from './(content)/board/_components/Content/BoardList'
-import Banner from '@/widgets/Banner/Banner'
 import AdBanner from '@/widgets/AdBanner/AdBanner'
+import Banner from '@/widgets/Banner/Banner'
+import BoardList from './(content)/board/ui/Content/BoardList'
 
 export const metadata = {
    title: {

@@ -1,31 +1,30 @@
 import { Post } from '@/types/boardTypes'
-import BoardUpdateButton from './BoardUpdateButton'
 import BoardLikeButton from './BoardLikeButton'
 import BoardNavButton from './BoardNavButton'
 import MarkDownViewer from './MarkDownViewer'
-import BoardReadHeader from './BoardReadHeader'
+import PostHeader from './PostHeader'
 
 interface Props {
    postId: string
-   readData: Post | null
+   readData: Post
 }
 
-export default function BoardRead({ postId, readData }: Props) {
+export default function Read({ postId, readData }: Props) {
    const { title, nickname, like, createdAt, views, content, dislike } =
       readData
 
    return (
       <section>
          {/* 글제목 */}
-         <BoardReadHeader
+         <PostHeader
             title={title}
             nickname={nickname}
             like={like}
             date={createdAt}
             views={views}
+            postId={postId}
          />
-         {/* 글 수정  , 삭제 버튼 */}
-         <BoardUpdateButton postId={postId} />
+
          {/* 글내용 마크다운 뷰어 */}
          <MarkDownViewer content={content} />
          {/* 싫어요,좋아요  버튼 */}
