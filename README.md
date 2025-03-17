@@ -1,5 +1,6 @@
 # 0rigin Community Web Page v1.0
 철학 기반 커뮤니티 게시판
+
 # 개발 인원
 1인 개발
 ## 배포 주소
