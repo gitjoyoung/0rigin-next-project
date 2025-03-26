@@ -1,10 +1,7 @@
 'use client'
-import { signInWithCredentials } from '@/serverAction/auth'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { ROUTE_FORGET, ROUTE_SIGN } from '@/constants/pathname'
+import { signInWithCredentials } from '@/serverAction/auth'
+import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
    CardContent,
@@ -19,26 +16,22 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
-import { Button } from '@/shared/shadcn/ui/button'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
-
-const loginSchema = z.object({
-   email: z.string().email('올바른 이메일을 입력해주세요'),
-   password: z.string().min(1, '비밀번호를 입력해주세요'),
-})
-
-type LoginFormData = z.infer<typeof loginSchema>
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { LoginSchema, type LoginForm } from '../types/schema'
 
 export default function Login() {
-   const form = useForm<LoginFormData>({
-      resolver: zodResolver(loginSchema),
+   const form = useForm<LoginForm>({
+      resolver: zodResolver(LoginSchema),
       defaultValues: {
          email: '',
          password: '',
       },
    })
 
-   const onSubmit = async (data: LoginFormData) => {
+   const onSubmit = async (data: LoginForm) => {
       try {
          const formData = new FormData()
          formData.append('email', data.email)
@@ -50,14 +43,14 @@ export default function Login() {
    }
 
    return (
-      <div className="flex flex-col mt-12 w-full items-center justify-center">
+      <div className="flex flex-col mt-12 w-full h-full items-center justify-center">
          <div className="text-center space-y-2 mb-8">
             <h2 className="text-3xl font-bold tracking-tight">환영합니다</h2>
             <p className="text-muted-foreground text-sm">
                {'"모든 위대한 여정은 작은 한 걸음에서 시작됩니다"'}
             </p>
          </div>
-         <Card>
+         <Card className="w-full max-w-md">
             <CardHeader>
                <CardTitle>로그인</CardTitle>
             </CardHeader>
