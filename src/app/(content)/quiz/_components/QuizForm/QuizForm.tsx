@@ -3,9 +3,9 @@
 import { QuizData } from '@/types/quizTypes'
 import { useEffect, useState } from 'react'
 
-import QuizSubject from './QuizSubject'
+import BoardAccordion from '@/app/(content)/board/ui/Create/BoardAccordion'
 import QuizRadioButtonGroup from './QuizRadioButtonGroup'
-import CustomDisclosure from '@/components/common/toggle/CustomDisclosure'
+import QuizSubject from './QuizSubject'
 
 interface Props {
    quizData?: QuizData
@@ -47,7 +47,7 @@ export default function QuizForm({ quizData, curIndex, handleAnswer }: Props) {
    return (
       <article className="border max-w-xl px-4  sm:mx-auto mx-2 my-3 py-4 gap-3 flex flex-col">
          <QuizSubject index={curIndex + 1} question={quizData.question} />
-         <CustomDisclosure title="힌트" text={quizData.hint} />
+         <BoardAccordion title="힌트" text={quizData.hint} />
          <form onSubmit={handleSubmit} className="flex flex-col ">
             {/* 문제 */}
             <QuizRadioButtonGroup

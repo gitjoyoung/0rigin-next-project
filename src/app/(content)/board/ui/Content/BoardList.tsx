@@ -1,10 +1,11 @@
+import type { Post } from '@/types/boardTypes'
 import { nanoid } from 'nanoid'
-import { Post } from '../../_types/boardTypes'
 import BoardListItem from './BoardListItem'
 
 interface Props {
    postData: Post[]
 }
+
 export default function BoardList({ postData }: Props) {
    if (!postData) return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
    return (

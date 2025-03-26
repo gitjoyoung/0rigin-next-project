@@ -2,10 +2,11 @@ import { ROUTES } from '@/constants/route'
 import { Post } from '@/types/boardTypes'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import CommentList from '../ui/Comment/CommentList'
-import BoardContent from '../ui/Content/BoardContent'
+import BoardFooter from '../ui/BoardFooter'
+import CommentList from '../ui/Comment'
+import BoardContent from '../ui/Content'
 import Pagination from '../ui/Pagination/Pagination'
-import Read from '../ui/Read'
+import PostRead from '../ui/Read'
 
 interface IParams {
    params: {
@@ -35,9 +36,10 @@ interface Response {
 export default async function Page({ params, searchParams }: IParams) {
    const { id } = params
    if (id === undefined) redirect(ROUTES.BOARD)
+
    const page = searchParams.page || '1'
 
-   const data = await fetch(
+   const postData = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${page}`,
       {
          method: 'GET',
@@ -47,14 +49,16 @@ export default async function Page({ params, searchParams }: IParams) {
          cache: 'no-store',
       },
    )
-   const { fetchedPosts, readData, lastPostId }: Response = await data.json()
+   const { fetchedPosts, readData, lastPostId }: Response =
+      await postData.json()
 
    return (
       <>
-         <Read postId={id} readData={readData} />
+         <PostRead readData={readData} />
          <CommentList postId={id} />
          <BoardContent postData={fetchedPosts} />
          <Pagination lastPostId={lastPostId} pageNum={page} />
+         <BoardFooter />
       </>
    )
 }

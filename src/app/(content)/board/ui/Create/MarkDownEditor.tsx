@@ -1,19 +1,19 @@
 'use client'
 
-import React, { useCallback } from 'react'
-import remarkBreaks from 'remark-breaks'
+import uploadImageToFirebase from '@/service/board/imageApi'
 import {
    generateErrorMessage,
    validateFile,
 } from '@/utils/boardValidators/imageValidators'
-import imageCompression from 'browser-image-compression'
-import rehypeSanitize from 'rehype-sanitize'
-import { ContextStore, commands } from '@uiw/react-md-editor'
 import { PhotoIcon } from '@heroicons/react/20/solid'
-import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
-import uploadImageToFirebase from '@/service/board/imageApi'
+import { ContextStore, commands } from '@uiw/react-md-editor'
+import '@uiw/react-md-editor/markdown-editor.css'
+import imageCompression from 'browser-image-compression'
 import dynamic from 'next/dynamic'
+import React, { useCallback } from 'react'
+import rehypeSanitize from 'rehype-sanitize'
+import remarkBreaks from 'remark-breaks'
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 type OnChange = (
@@ -79,7 +79,7 @@ const MarkDownEditor = ({ markDownContent, setMarkDownContent }: Props) => {
       },
    }
    return (
-      <div data-color-mode="light" className="markdown-list ">
+      <div className="markdown-list ">
          <MDEditor
             height={500}
             value={markDownContent}

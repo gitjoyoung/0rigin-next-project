@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 
-const formatCustomDate = (createdAt): string => {
-   if (!createdAt) return '시간 없음'
+const formatCustomDate = (createdAt: string): string => {
+   if (!createdAt) return '데이터 오류'
 
    const today = dayjs().startOf('day')
    const postDate = dayjs(createdAt)

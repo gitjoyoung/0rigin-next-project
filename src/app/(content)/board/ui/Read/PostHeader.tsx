@@ -1,40 +1,43 @@
+import { Separator } from '@/shared/shadcn/ui/separator'
 import type { Post } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { formatNumberWithUnit } from '@/utils/boardValidators/formatNumberWithUnit'
-import PostUpdateButton from './PostUpdateButton'
+import PostUpdateButtons from './PostUpdateButtons'
 
-export default function PostHeader(item: Partial<Post>) {
-   const { title, nickname, like = 0, date, views = 0, postId } = item
+const POST_HEADER_DATA = {
+   like: '추천',
+   date: '작성시간',
+   views: '조회',
+}
+export default function PostHeader(post: Partial<Post>) {
+   const { title, nickname, like = 0, date, views = 0, postId } = post
    return (
-      <div className="border-b  grid gap-2 pt-2 pb-2 px-1">
+      <div className="border-b  grid gap-2 pt-2 pb-2 ">
          <div className="flex justify-between items-center">
             <h1 className="text-2xl">{title}</h1>
          </div>
-         <div className="flex justify-between">
-            <ul className=" flex gap-2  text-xs">
-               <li className="font-bold max:w-[90px] line-clamp-1">
-                  {nickname}
+         <div className="flex justify-between items-center flex-wrap">
+            <ul className="flex gap-2 text-xs h-5 items-center">
+               <li className="font-bold max-w-[90px] flex items-center ">
+                  <h3>{nickname}</h3>
                </li>
-               <li>
-                  <span>|</span>
+               <Separator orientation="vertical" />
+               <li className="flex gap-1">
+                  <p>{POST_HEADER_DATA.like}</p>
+                  <p>{formatNumberWithUnit(like)}</p>
                </li>
-               <li>
-                  추천 : <span>{formatNumberWithUnit(like)}</span>
+               <Separator orientation="vertical" />
+               <li className="flex gap-1">
+                  <p>{POST_HEADER_DATA.views}</p>
+                  <p>{formatNumberWithUnit(views)}</p>
                </li>
-               <li>
-                  <span>|</span>
-               </li>
-               <li>
-                  작성시간 : <span>{formatCustomDate(date)}</span>
-               </li>
-               <li>
-                  <span>|</span>
-               </li>
-               <li>
-                  조회 : <span>{formatNumberWithUnit(views)}</span>
+               <Separator orientation="vertical" />
+               <li className="flex gap-1">
+                  <p>{POST_HEADER_DATA.date}</p>
+                  <p>{formatCustomDate(date)}</p>
                </li>
             </ul>
-            <PostUpdateButton postId={postId} />
+            <PostUpdateButtons postId={postId} />
          </div>
       </div>
    )

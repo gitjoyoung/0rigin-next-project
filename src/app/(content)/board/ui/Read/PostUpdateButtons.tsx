@@ -8,7 +8,7 @@ interface Props {
    postId: string
 }
 
-export default function PostUpdateButton({ postId }: Props) {
+export default function PostUpdateButtons({ postId }: Props) {
    const [isModalOpen, setIsModalOpen] = useState(false)
    const [modalMode, setModalMode] = useState<'edit' | 'delete'>('edit')
    const handleEdit = () => {

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
-import BoardContent from './ui/Content/BoardContent'
+import BoardFooter from './ui/BoardFooter'
+import BoardContent from './ui/Content'
 import Pagination from './ui/Pagination/Pagination'
-
 interface Params {
    params: {
       id: string
@@ -28,11 +28,12 @@ export default async function Page({ searchParams }: Params) {
          cache: 'no-store',
       },
    )
-   const { lastPostId, postData, topData } = await data.json()
+   const { lastPostId, postData } = await data.json()
    return (
       <>
-         <BoardContent postData={postData} topData={topData} />
+         <BoardContent postData={postData} />
          <Pagination lastPostId={lastPostId} pageNum={page} />
+         <BoardFooter />
       </>
    )
 }

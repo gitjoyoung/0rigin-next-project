@@ -1,12 +1,12 @@
 'use client'
 
-import CustomDisclosure from '@/components/common/toggle/CustomDisclosure'
-import { TIP_CONTENT } from '@/constants/board/markDownTip'
-import MarkDownEditor from './MarkDownEditor'
-import BoardSubmitGroups from './BoardSubmitGroups'
+import { Button } from '@/shared/shadcn/ui/button'
+import type { CreatePostData, Post } from '@/types/boardTypes'
+import { useRouter } from 'next/navigation'
+import { useBoardForm } from '../../hooks/useBoardForm'
+import BoardAccordion from './BoardAccordion'
 import BoardFormHeader from './BoardFormHeader'
-import { useBoardForm } from '../hooks/useBoardForm'
-import { CreatePostData, Post } from '../../_types/boardTypes'
+import MarkDownEditor from './MarkDownEditor'
 
 interface Props {
    editData?: Post | null
@@ -14,6 +14,7 @@ interface Props {
 }
 
 export default function BoardForm({ submitPost, editData = null }: Props) {
+   const router = useRouter()
    const { markdownContent, setMarkdownContent, handleFormSubmit } =
       useBoardForm(editData, submitPost)
 
@@ -23,21 +24,22 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
             className="w-full flex flex-col gap-2"
             onSubmit={(e) => handleFormSubmit(e)}
          >
-            {/* 닉네임 비밀번호 */}
+            {/* 글쓰기 헤더 닉네임 비밀번호 제목 */}
             <BoardFormHeader editData={editData} />
             {/* 내용 contentEditTable 로 태그를 추가함 */}
-            <CustomDisclosure
-               title="Mark Down 문법"
-               text={TIP_CONTENT}
-               color="purple"
-            />
+            <BoardAccordion />
             {/* 글쓰기 마크다운 */}
             <MarkDownEditor
                markDownContent={markdownContent}
                setMarkDownContent={setMarkdownContent}
             />
             {/* 제출 버튼 */}
-            <BoardSubmitGroups />
+            <div className="flex gap-6 justify-end my-2">
+               <Button type="button" onClick={() => router.back()}>
+                  취소 하기
+               </Button>
+               <Button type="submit">제출 하기</Button>
+            </div>
          </form>
       </section>
    )

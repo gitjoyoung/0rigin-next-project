@@ -1,16 +1,18 @@
 'use client'
 
-import React, { useRef } from 'react'
-import { addComment } from '@/service/board/commentApi'
 import { commentSchema } from '@/schema/commentSchema'
+import { addComment } from '@/service/board/commentApi'
+import { Button } from '@/shared/shadcn/ui/button'
+import { Input } from '@/shared/shadcn/ui/input'
+import { Textarea } from '@/shared/shadcn/ui/textarea'
+import type { CreateCommentData } from '@/types/commentTypes'
 import { useRouter } from 'next/navigation'
-import { CreateCommentData } from '../../_types/commentTypes'
+import React, { useRef } from 'react'
 
 interface Props {
    postId: string
-   fetchData: (postId: string) => void
 }
-export default function CommentForm({ postId, fetchData }: Props) {
+export default function CommentForm({ postId }: Props) {
    // 댓글 폼 참조
    const commentFormRef = useRef(null)
    const { refresh } = useRouter()
@@ -37,44 +39,42 @@ export default function CommentForm({ postId, fetchData }: Props) {
          return
       }
       const response = await addComment(postId, commentObject)
-      await fetchData(postId)
       if (response) {
          clearFormFields()
       }
    }
 
    return (
-      <div className="p-2 border border-black">
+      <div className="py-2 ">
          <form
             ref={commentFormRef}
             onSubmit={handleComment}
             className="flex flex-col gap-2"
          >
             <div className="flex  gap-2 text-sm ">
-               <input
+               <Input
                   name="nickname"
                   type="text"
-                  placeholder="닉네임"
                   autoComplete="off"
-                  className="border p-1  max-w-40"
+                  placeholder="닉네임"
+                  className="max-w-40 rounded-none"
                />
-               <input
+               <Input
                   name="password"
                   type="password"
+                  maxLength={10}
                   autoComplete="off"
                   placeholder="비밀번호"
-                  className="border p-1 w-full max-w-40"
+                  className="max-w-40 rounded-none"
                />
             </div>
 
-            <textarea
+            <Textarea
                name="comment"
-               className="w-full border p-2"
+               className=" border rounded-none"
                placeholder="댓글 입력"
             />
-            <button className="p-1" type="submit">
-               댓글달기
-            </button>
+            <Button type="submit">댓글달기</Button>
          </form>
       </div>
    )

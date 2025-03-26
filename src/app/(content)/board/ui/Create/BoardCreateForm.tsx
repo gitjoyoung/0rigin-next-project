@@ -1,9 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { ROUTES } from '@/constants/route'
-import BoardForm from './BoardForm'
 import { createPost } from '@/service/board/post/updatePostApi'
+import { useRouter } from 'next/navigation'
+import BoardForm from '.'
 
 export default function BoardCreateForm() {
    const { push } = useRouter() // 라우터

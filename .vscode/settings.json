@@ -6,5 +6,9 @@
    "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit"
    },
-   "cSpell.words": ["TSLA"]
+   "cSpell.words": ["TSLA"],
+   "editor.formatOnSave": true,
+   "editor.defaultFormatter": "esbenp.prettier-vscode",
+   "editor.formatOnPaste": true,
+   "editor.formatOnType": true
 }

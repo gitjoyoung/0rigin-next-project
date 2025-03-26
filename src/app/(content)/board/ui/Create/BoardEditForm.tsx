@@ -1,12 +1,12 @@
 'use client'
 
 import { ROUTES } from '@/constants/route'
-import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import BoardForm from './BoardForm'
 import { fetchPostById } from '@/service/board/post/fetchPostApi'
 import { updateEditPost } from '@/service/board/post/updatePostApi'
-import { Post } from '../../_types/boardTypes'
+import type { Post } from '@/types/boardTypes'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import BoardForm from '.'
 
 interface Props {
    postId: string

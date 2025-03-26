@@ -1,9 +1,12 @@
 'use client'
 
-import BasicButton from '@/components/common/buttons/BasicButton'
 import { deleteComment } from '@/service/board/commentApi'
+import { Button } from '@/shared/shadcn/ui/button'
+import { Textarea } from '@/shared/shadcn/ui/textarea'
+import { Icons } from '@/shared/ui/icons'
+import type { CommentData } from '@/types/commentTypes'
 import { useState } from 'react'
-import { CommentData } from '../../_types/commentTypes'
+import CommentDialog from './\bCommentDialog'
 
 interface Props {
    commentData: CommentData
@@ -14,75 +17,153 @@ export default function CommentItem({ commentData }: Props) {
 
    const [isEdit, setIsEdit] = useState(false)
    const [buttonDisabled, setButtonDisabled] = useState(false)
+   const [editContent, setEditContent] = useState(comment)
+   const [isSelected, setIsSelected] = useState(false)
+   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-   const handleEdit = () => {
-      console.log('edit')
-      setIsEdit((prev) => !prev)
+   const handleCommentClick = () => {
+      setIsSelected(!isSelected)
    }
+
+   const handleEdit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      console.log('e', e)
+      const formData = new FormData(e.target as HTMLFormElement)
+      const password = formData.get('password')
+      console.log('password', password)
+      if (password === '1234') {
+         setIsEdit(true)
+      } else {
+         alert('비밀번호가 틀렸습니다.')
+      }
+   }
+
+   const handleCancel = () => {
+      setIsEdit(false)
+      setEditContent(comment)
+   }
+
    const handleSubmit = async () => {
-      console.log('submit')
+      if (editContent.trim() === '') return
+
       setButtonDisabled(true)
-      await setTimeout(() => {
+      try {
+         // await updateComment(postId, id, editContent)
+         setIsEdit(false)
+      } catch (error) {
+         console.error('댓글 수정 실패:', error)
+      } finally {
          setButtonDisabled(false)
-         console.log('submit')
-      }, 1000)
-      // await updateComment(postId, id, comment)
-      setIsEdit((prev) => !prev)
+      }
+   }
+
+   const handleDelete = async () => {
+      if (!confirm('댓글을 삭제하시겠습니까?')) return
+
+      setButtonDisabled(true)
+      try {
+         await deleteComment(postId, id)
+      } catch (error) {
+         console.error('댓글 삭제 실패:', error)
+      } finally {
+         setButtonDisabled(false)
+      }
    }
 
    return (
-      <div className="flex flex-col px-2 border last:border-b-0 text-sm min-h-9 hover:bg-gray-100">
-         {/* 닉네임 , 수정 삭제 버튼 */}
-         <div className="flex justify-between items-center ">
-            <p className=" whitespace-nowrap text-left truncate font-semibold">
-               {nickname}
-            </p>
-            <div className="flex gap-1 items-center">
+      <>
+         <CommentDialog
+            title="댓글 수정"
+            description="게시물을 작성한 사람만 삭제할 수 있습니다. 비밀번호를 입력해주세요."
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+            handleSubmit={handleEdit}
+         />
+         <div
+            className="flex flex-col min-h-9 hover:bg-gray-600 cursor-pointer"
+            onClick={handleCommentClick}
+         >
+            <div className="flex justify-between items-center py-1">
+               <div className="flex gap-1 items-center px-1">
+                  <p className="whitespace-nowrap text-left truncate font-semibold text-sm ">
+                     {nickname}
+                  </p>
+                  <p className="text-xs text-gray-600">{`${createdAt}`}</p>
+               </div>
+
+               <div className="flex items-center h-5">
+                  {isSelected && !isEdit && (
+                     <>
+                        <Button
+                           type="button"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              setIsDialogOpen(true)
+                           }}
+                           disabled={buttonDisabled}
+                           variant="link"
+                           size="icon"
+                        >
+                           <Icons.edit size={16} />
+                        </Button>
+                        <Button
+                           type="button"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              handleDelete()
+                           }}
+                           disabled={buttonDisabled}
+                           variant="link"
+                           size="icon"
+                        >
+                           <Icons.delete size={16} />
+                        </Button>
+                     </>
+                  )}
+                  {isEdit && (
+                     <>
+                        <Button
+                           type="button"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              handleSubmit()
+                           }}
+                           disabled={buttonDisabled}
+                           variant="link"
+                           size="icon"
+                        >
+                           <Icons.check size={16} />
+                        </Button>
+                        <Button
+                           type="button"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              handleCancel()
+                           }}
+                           disabled={buttonDisabled}
+                           variant="link"
+                           size="icon"
+                        >
+                           <Icons.x size={16} />
+                        </Button>
+                     </>
+                  )}
+               </div>
+            </div>
+            <div className="pt-1">
                {!isEdit ? (
-                  <BasicButton
-                     type="button"
-                     onClick={handleEdit}
-                     text="수정"
-                     disabled={buttonDisabled}
-                  />
+                  <p className="break-words break-all min-w-60 whitespace-pre-wrap px-1 ">
+                     <span className="text-sm">{comment}</span>
+                  </p>
                ) : (
-                  <BasicButton
-                     type="button"
-                     onClick={() => handleSubmit}
-                     text="확인"
-                     disabled={buttonDisabled}
+                  <Textarea
+                     value={editContent}
+                     onChange={(e) => setEditContent(e.target.value)}
+                     className="w-full border border-black dark:border-white rounded-none p-1 "
                   />
                )}
-
-               <BasicButton
-                  type="button"
-                  onClick={() => deleteComment(postId, id)}
-                  text="삭제"
-                  disabled={buttonDisabled}
-               />
             </div>
          </div>
-         {/* 내용 작성시간 */}
-         <div className="py-1">
-            {!isEdit ? (
-               <p className="break-words break-all min-w-60 whitespace-pre-wrap">
-                  {comment}
-               </p>
-            ) : (
-               <textarea
-                  name=""
-                  id=""
-                  defaultValue={comment}
-                  className="w-full"
-               />
-            )}
-
-            <div className="flex justify-end">
-               <p className="w-15 text-xs text-gray-400  break-words">
-                  {createdAt}
-               </p>
-            </div>
-         </div>
-      </div>
+      </>
    )
 }

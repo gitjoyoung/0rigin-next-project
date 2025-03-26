@@ -1,11 +1,11 @@
 'use client'
 import { ROUTES } from '@/constants/route'
+import type { Post } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { formatValue } from '@/utils/statsValidators/formatNumber'
 import { MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { Post } from '../../_types/boardTypes'
 
 interface Props {
    item: Post

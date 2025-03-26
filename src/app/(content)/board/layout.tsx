@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import BoardFooter from './ui/BoardFooter'
 import BoardHeader from './ui/BoardHeader'
 export const metadata: Metadata = {
    title: '게시판 홈',
@@ -14,7 +13,6 @@ export default async function layout({
       <>
          <BoardHeader />
          {children}
-         <BoardFooter />
       </>
    )
 }

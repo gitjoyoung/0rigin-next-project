@@ -1,27 +1,36 @@
 'use client'
+import { Button } from '@/shared/shadcn/ui/button'
+import { Icons } from '@/shared/ui/icons'
 import { useRouter } from 'next/navigation'
-import React from 'react'
 
 interface Props {
    length: number
 }
 
+const COMMENT_HEADER_DATA = {
+   title: '전체 코멘트',
+   count: '개',
+   refresh: '새로고침',
+}
+
 export default function CommentHeader({ length }: Props) {
    const router = useRouter()
    return (
-      <div className="border-b border-t border-black flex justify-between text-xs  p-1">
-         <div className="flex text-gray-700 items-center ">
-            <h1>전체 코멘트</h1>
-            <span className="text-red-500">{length && length}</span>
-            <span>개</span>
+      <div className="border-b border-t border-gray-200 dark:border-gray-700 flex justify-between text-xs  p-1">
+         <div className="flex text-gray-700 dark:text-gray-300 items-center gap-2">
+            <h1 className="font-bold">{COMMENT_HEADER_DATA.title}</h1>
+            <p className="text-red-500">{length && length}</p>
+            <p>{COMMENT_HEADER_DATA.count}</p>
          </div>
-         <button
-            type="button"
+         <Button
+            className="p-1 py-0 text-xs flex gap-1 bg-transparent text-black dark:text-white 
+            hover:bg-gray-100 dark:hover:bg-gray-800
+            items-center h-5"
             onClick={() => router.refresh()}
-            className="text-blue-500"
          >
-            새로고침
-         </button>
+            <Icons.refreshCcw className="h-4 w-4" />
+            <p>{COMMENT_HEADER_DATA.refresh}</p>
+         </Button>
       </div>
    )
 }
