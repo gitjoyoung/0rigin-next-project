@@ -1,6 +1,6 @@
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
-import { SIGN_UP_TERMS } from '../model/constants/terms'
+import { SIGN_UP_TERMS } from '../term/model/terms'
 
 export default function SignUpWelcome() {
    return (

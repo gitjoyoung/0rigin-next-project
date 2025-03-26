@@ -1,11 +1,10 @@
 'use client'
-import React, { useState } from 'react'
-import { TERMS_CONTENT } from '../../model/constants/terms'
-import { useRouter } from 'next/navigation'
-import { ScrollArea } from '@/shared/shadcn/ui/scroll-area'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Checkbox } from '@/shared/shadcn/ui/checkbox'
-
+import { ScrollArea } from '@/shared/shadcn/ui/scroll-area'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { TERMS_CONTENT } from '../model/terms'
 export default function TermsOfService() {
    // 이용약관 동의 체크박스
    const [checkTerm, setCheckTerm] = useState<any>()
