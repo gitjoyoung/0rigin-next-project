@@ -1,11 +1,10 @@
 'use client'
 
-import RadioList from '@/components/common/inputs/RadioList'
-import { GENDER_LIST } from '@/constants/auth/sign/signUp'
 import BasicButton from '@/components/common/buttons/BasicButton'
 import { passwordSchema, userEmailSchema } from '@/schema/signFormSchema'
-import InputValidator from './InputValidator'
 import { useUserSignUp } from '../hook/useUserSignUp'
+import GenderRadioButton from './GenderRadioButton'
+import InputValidator from './InputValidator'
 
 export default function SignForm() {
    const { error, handleSignUpSubmit } = useUserSignUp()
@@ -20,7 +19,7 @@ export default function SignForm() {
                onSubmit={handleSignUpSubmit}
                className="flex flex-col gap-3 w-full max-w-[300px]"
             >
-               <RadioList arr={GENDER_LIST} />
+               <GenderRadioButton />
                <InputValidator
                   placeholder={'이메일을 입력하세요'}
                   name="email"

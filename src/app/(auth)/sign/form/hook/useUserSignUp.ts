@@ -8,9 +8,9 @@ export const useUserSignUp = () => {
    const [error, setError] = useState('')
    const { push } = useRouter()
 
-   const handleSignUpSubmit = async (e) => {
+   const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      const formData = new FormData(e.target)
+      const formData = new FormData(e.target as HTMLFormElement)
       const formObject = Object.fromEntries(formData)
       const result = signUpSchema.safeParse(formObject)
       const newErrors = []

@@ -1,4 +1,5 @@
 'use client'
+import { Input } from '@/shared/shadcn/ui/input'
 import React, { useId, useState } from 'react'
 import { z } from 'zod'
 
@@ -54,11 +55,8 @@ export default function InputValidator({
    }
 
    return (
-      <div
-         id={fieldId}
-         className={`w-full border space-y-1 p-2 ${inputClassName()}`}
-      >
-         <input
+      <div id={fieldId} className={`w-full  space-y-1  ${inputClassName()}`}>
+         <Input
             disabled={pending}
             name={name}
             type={type}
@@ -66,7 +64,6 @@ export default function InputValidator({
             className="w-full bg-transparent outline-none"
             maxLength={maxLength}
             autoCapitalize="off"
-            value={inputValue}
             onChange={handleChange}
          />
          <p className={`text-xs ${textClassName()}`}>{error}</p>

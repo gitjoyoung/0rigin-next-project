@@ -15,17 +15,19 @@ const passwordSchema = z
       '비밀번호는 영어 대소문자, 숫자, 특수문자를 포함해야 합니다.',
    )
 
+const confirmPasswordSchema = passwordSchema
+
 const signUpSchema = z
    .object({
       gender: genderSchema,
       email: userEmailSchema,
       password: passwordSchema,
-      confirmPassword: passwordSchema,
+      confirmPassword: confirmPasswordSchema,
    })
    .passthrough()
    .refine((data) => data.password === data.confirmPassword, {
-      message: '비밀번호 재확인이 일치하지 않습니다.',
+      message: '입력하신 비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.',
       path: ['confirmPassword'],
    })
 
-export { userEmailSchema, passwordSchema, signUpSchema }
+export { confirmPasswordSchema, passwordSchema, signUpSchema, userEmailSchema }
