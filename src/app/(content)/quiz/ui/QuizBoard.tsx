@@ -1,7 +1,5 @@
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { nanoid } from 'nanoid'
+import CustomTitle from '@/components/common/links/CustomTitleLink'
+import { ROUTE_QUIZ } from '@/constants/pathname'
 
 interface Props {
    quizData: any
@@ -17,6 +15,11 @@ export default function QuizBoard({ quizData }: Props) {
    })
    return (
       <div className="border p-3">
+         <CustomTitle
+            title="퀴즈"
+            subTitle="매일매일 더 똑똑해지는 0rigin 퀴즈!"
+            link={ROUTE_QUIZ}
+         />
          {/* <ul className="grid sm:grid-cols-5 gap-3 ">
             {quizData.map((item) => (
                <li
