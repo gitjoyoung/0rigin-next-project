@@ -1,6 +1,6 @@
 import { QUIZ_DATA } from '@/constants/quiz/quizData'
 import { Metadata } from 'next'
-import Quiz from './ui/Quiz'
+import Quiz from './ui'
 interface Params {
    params: {
       id: string

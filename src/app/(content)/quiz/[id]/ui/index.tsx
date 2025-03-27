@@ -1,11 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { Progress } from '@/shared/shadcn/ui/progress'
 import { QuizData } from '@/types/quizTypes'
+import { useState } from 'react'
 import QuizContent from './QuizForm'
 import QuizNavButton from './QuizNavButton'
-import QuizAnswerTable from './QuizAnswerTable'
-import { Progress } from '@/shared/shadcn/ui/progress'
 
 interface QuizDataList {
    quizData: QuizData[]
