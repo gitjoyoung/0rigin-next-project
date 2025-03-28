@@ -1,4 +1,5 @@
 'use client'
+
 import { ROUTES } from '@/constants/route'
 import type { Post } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'

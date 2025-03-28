@@ -10,6 +10,7 @@ import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import AuthButtonGroup from '../AuthButtonGroup'
 import { HEADER_NAV_LIST } from '../contants/header-list'
+import ThemeToggle from '../ThemeToggle'
 
 export default function MobileNavModal() {
    return (
@@ -43,6 +44,9 @@ export default function MobileNavModal() {
                      </SheetClose>
                   ))}
                </nav>
+               <div className="flex justify-center border-b gap-2 py-4">
+                  <ThemeToggle />
+               </div>
             </div>
          </SheetContent>
       </Sheet>
