@@ -28,7 +28,7 @@ export default async function Home() {
    const { topData, fetchedPosts }: Response = await data.json()
 
    return (
-      <div className="flex flex-col flex-1 h-full">
+      <div className="flex flex-col gap-2">
          <AdBanner />
          <Banner topData={topData} />
          <BoardList postData={fetchedPosts} />
