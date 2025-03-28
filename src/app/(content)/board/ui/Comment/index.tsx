@@ -1,7 +1,7 @@
 'use client'
 
 import { fetchComments } from '@/service/board/commentApi'
-import { nanoid } from 'nanoid'
+import type { CommentData } from '@/types/commentTypes'
 import { useEffect, useState } from 'react'
 import BoardCommentForm from './CommentForm'
 import BoardCommentHeader from './CommentHeader'
@@ -12,11 +12,14 @@ interface Props {
 }
 
 export default function CommentList({ postId }: Props) {
-   const [comments, setComments] = useState([])
+   const [comments, setComments] = useState<CommentData[]>([])
+   const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
+
    const fetchData = async (postId: string) => {
       const commentsData = await fetchComments(postId)
       setComments(commentsData)
    }
+
    useEffect(() => {
       fetchData(postId)
    }, [postId])
@@ -28,7 +31,12 @@ export default function CommentList({ postId }: Props) {
 
          {/* 댓글 리스트 */}
          {comments.map((data) => (
-            <BoardCommentItem key={nanoid()} commentData={data} />
+            <BoardCommentItem
+               key={data.id}
+               commentData={data}
+               isEditing={editingCommentId === data.id}
+               setIsEditing={setEditingCommentId}
+            />
          ))}
 
          {/* 댓글 작성 폼 */}

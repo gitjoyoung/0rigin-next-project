@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import BoardFooter from '../ui/BoardFooter'
 import CommentList from '../ui/Comment'
 import BoardContent from '../ui/Content'
-import Pagination from '../ui/Pagination/Pagination'
+import CustomPagination from '../ui/Pagination/CustomPagination'
 import PostRead from '../ui/Read'
 
 interface IParams {
@@ -34,10 +34,9 @@ interface Response {
    lastPostId: number
 }
 export default async function Page({ params, searchParams }: IParams) {
-   const { id } = params
+   const { id } = await params
    if (id === undefined) redirect(ROUTES.BOARD)
-
-   const page = searchParams.page || '1'
+   const page = Number(searchParams.page) || 1
 
    const postData = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${page}`,
@@ -57,7 +56,7 @@ export default async function Page({ params, searchParams }: IParams) {
          <PostRead readData={readData} />
          <CommentList postId={id} />
          <BoardContent postData={fetchedPosts} />
-         <Pagination lastPostId={lastPostId} pageNum={page} />
+         <CustomPagination totalPages={lastPostId} currentPage={page} />
          <BoardFooter />
       </>
    )

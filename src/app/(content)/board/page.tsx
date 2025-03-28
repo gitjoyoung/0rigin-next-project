@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import BoardFooter from './ui/BoardFooter'
 import BoardContent from './ui/Content'
-import Pagination from './ui/Pagination/Pagination'
+import Pagination from './ui/Pagination/CustomPagination'
 interface Params {
    params: {
       id: string
@@ -17,9 +17,10 @@ export async function generateMetadata({
 }
 
 export default async function Page({ searchParams }: Params) {
-   const page = searchParams.page || '1'
+   const currentPage: number = Number(searchParams.page) || 1
+
    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/board?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/board?page=${currentPage}`,
       {
          method: 'GET',
          headers: {
@@ -28,11 +29,14 @@ export default async function Page({ searchParams }: Params) {
          cache: 'no-store',
       },
    )
+
+   // @TODO totalPages 만들어야 함
    const { lastPostId, postData } = await data.json()
+
    return (
       <>
          <BoardContent postData={postData} />
-         <Pagination lastPostId={lastPostId} pageNum={page} />
+         <Pagination totalPages={lastPostId} currentPage={currentPage} />
          <BoardFooter />
       </>
    )
