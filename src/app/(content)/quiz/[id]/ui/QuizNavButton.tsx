@@ -25,7 +25,7 @@ export default function QuizNavButton({
    }
 
    return (
-      <div className="mx-2 flex max-w-xl justify-between sm:mx-auto">
+      <div className=" flex gap-2 w-full justify-between sm:mx-auto">
          <Button
             type="button"
             className="px-6 py-4"

@@ -8,11 +8,11 @@ interface Params {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-   const { id } = params
+   const { id } = await params
    if (page === undefined) return { title: '퀴즈 페이지 입니다.' }
    return {
-      title: `${id} 퀴즈 `,
-      description: `{id} 퀴즈 입니다.`,
+      title: `${id} 퀴즈 페이지`,
+      description: `{id} 퀴즈 를 풀어 더 똑똑해지세요.`,
    }
 }
 export default async function page({ params }: Params) {
