@@ -1,20 +1,30 @@
+'use client'
 import { Label } from '@/shared/shadcn/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/shadcn/ui/radio-group'
 import { cn } from '@/shared/utils'
-import { nanoid } from 'nanoid'
-import { useState } from 'react'
 
-interface Props {}
+interface Props {
+   questions: Array<{ id: string; value: string }>
+   answer: string
+   selectedOption: string | null
+   onSelect: (value: string) => void
+}
 
-export default function QuizRadioButtonGroup({ questions, answer, disabled }) {
-   const [selectedOption, setSelectedOption] = useState(null)
+export default function QuizRadioButtonGroup({
+   questions,
+   answer,
+   selectedOption,
+   onSelect,
+}: Props) {
    return (
       <RadioGroup
          className="flex-col flex gap-2 my-2 justify-center"
-         onValueChange={(value) => setSelectedOption(value)}
+         onValueChange={onSelect}
+         value={selectedOption || ''}
+         defaultValue=""
       >
-         {questions.map(({ id, value }, index) => (
-            <div key={nanoid()} className="flex items-center space-x-2">
+         {questions.map(({ id, value }) => (
+            <div key={id} className="flex items-center space-x-2">
                <RadioGroupItem value={id} id={id} />
                <Label
                   htmlFor={id}

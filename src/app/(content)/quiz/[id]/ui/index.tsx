@@ -26,8 +26,14 @@ interface QuizDataList {
 export default function Quiz({ quizData }: QuizDataList) {
    const quizDataLength = quizData.length
    const [curIndex, setCurIndex] = useState(0)
+   const [selectedOption, setSelectedOption] = useState<string | null>(null)
    const progress =
       quizDataLength > 1 ? (curIndex / (quizDataLength - 1)) * 100 : 100
+
+   const handleIndexChange = (newIndex: number) => {
+      setSelectedOption(null)
+      setCurIndex(newIndex)
+   }
 
    return (
       <section>
@@ -62,13 +68,14 @@ export default function Quiz({ quizData }: QuizDataList) {
                      <QuizRadioButtonGroup
                         questions={quizData[curIndex].options}
                         answer={quizData[curIndex].answer}
-                        disabled={curIndex === quizDataLength - 1}
+                        selectedOption={selectedOption}
+                        onSelect={setSelectedOption}
                      />
                   </CardContent>
                </Card>
                <QuizNavButton
                   curIndex={curIndex}
-                  setCurIndex={setCurIndex}
+                  setCurIndex={handleIndexChange}
                   quizDataLength={quizDataLength}
                />
             </div>
