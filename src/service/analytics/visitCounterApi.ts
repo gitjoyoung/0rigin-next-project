@@ -1,14 +1,5 @@
-import {
-   doc,
-   getFirestore,
-   updateDoc,
-   setDoc,
-   getDoc,
-   increment,
-} from 'firebase/firestore'
-
-// Firebase 초기화 코드는 여기에 위치해야 합니다.
-const db = getFirestore()
+import { db } from '@/lib/firebase'
+import { doc, getDoc, increment, setDoc, updateDoc } from 'firebase/firestore'
 
 // 날짜 기반 카운터 업데이트 함수
 export const updateDailyVisitCount = async (date: string): Promise<void> => {

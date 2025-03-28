@@ -80,7 +80,7 @@ export default function CommentItem({ commentData }: Props) {
             handleSubmit={handleEdit}
          />
          <div
-            className="flex flex-col min-h-9 hover:bg-gray-600 cursor-pointer"
+            className="flex flex-col min-h-9 hover:bg-gray-200 cursor-pointer dark:hover:bg-gray-800"
             onClick={handleCommentClick}
          >
             <div className="flex justify-between items-center py-1">

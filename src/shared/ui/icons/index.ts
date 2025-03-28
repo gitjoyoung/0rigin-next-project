@@ -15,12 +15,14 @@ import {
    MapPin,
    Menu,
    MessageCircle,
+   Moon,
    MoreHorizontal,
    Pencil,
    RefreshCcw,
    Search,
    Settings,
    Share,
+   Sun,
    Trash,
    Twitter,
    User,
@@ -36,6 +38,8 @@ export const Icons = {
    logout: LogOut,
    mapMarkerAlt: MapPin,
    x: X,
+   sun: Sun,
+   moon: Moon,
 
    // 메뉴
    burger: Menu,

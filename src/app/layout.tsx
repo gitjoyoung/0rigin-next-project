@@ -1,10 +1,9 @@
-import './globals.css'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import { Roboto } from 'next/font/google'
-import { cn } from '@/shared/utils/cn'
-import { SessionProvider } from 'next-auth/react'
 import GlobalLayoutClient from './GlobalLayoutClient'
+import './globals.css'
 
 const roboto = Roboto({
    weight: '400',
@@ -17,9 +16,14 @@ export default function RootLayout({
    children: React.ReactNode
 }) {
    return (
-      <html lang="en" className={cn('dark', roboto.className)}>
+      <html lang="ko" suppressHydrationWarning>
          <body>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider
+               attribute="class"
+               defaultTheme="system"
+               enableSystem
+               disableTransitionOnChange
+            >
                <div id="modal-root" />
                <SessionProvider>
                   <GlobalLayoutClient>{children}</GlobalLayoutClient>

@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-   i18n: {
-      locales: ['ko'],
-      defaultLocale: 'ko',
-   }, // 다국어 설정
    images: {
       domains: ['firebasestorage.googleapis.com'],
    }, // 이미지 도메인 추가
@@ -33,3 +29,5 @@ if (process.env.NEXT_PUBLIC_NODE_ENV === 'prod') {
       },
    }
 }
+
+module.exports = nextConfig

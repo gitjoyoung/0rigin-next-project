@@ -1,14 +1,13 @@
-import React from 'react'
-import Link from 'next/link'
 import {
    Sheet,
+   SheetClose,
    SheetContent,
    SheetHeader,
    SheetTitle,
    SheetTrigger,
-   SheetClose,
 } from '@/shared/shadcn/ui/sheet'
 import { Menu } from 'lucide-react'
+import Link from 'next/link'
 import AuthButtonGroup from '../AuthButtonGroup'
 import { HEADER_NAV_LIST } from '../contants/header-list'
 

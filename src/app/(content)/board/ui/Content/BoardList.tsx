@@ -14,7 +14,7 @@ export default function BoardList({ postData }: Props) {
             postData.map((item: Post) => (
                <div
                   key={nanoid()}
-                  className={`border-b last:border-b-0  hover:bg-gray-100 `}
+                  className={`border-b last:border-b-0  hover:bg-gray-200 dark:hover:bg-gray-800 `}
                >
                   <BoardListItem item={item} />
                </div>
