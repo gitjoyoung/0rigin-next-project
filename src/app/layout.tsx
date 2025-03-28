@@ -4,6 +4,7 @@ import { ThemeProvider } from 'next-themes'
 import { Roboto } from 'next/font/google'
 import GlobalLayoutClient from './GlobalLayoutClient'
 import './globals.css'
+import ReactQueryProviders from './ReactQueryProvider'
 
 const roboto = Roboto({
    weight: '400',
@@ -26,7 +27,9 @@ export default function RootLayout({
             >
                <div id="modal-root" />
                <SessionProvider>
-                  <GlobalLayoutClient>{children}</GlobalLayoutClient>
+                  <ReactQueryProviders>
+                     <GlobalLayoutClient>{children}</GlobalLayoutClient>
+                  </ReactQueryProviders>
                </SessionProvider>
                <SpeedInsights />
             </ThemeProvider>
