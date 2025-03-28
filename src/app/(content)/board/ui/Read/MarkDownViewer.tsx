@@ -11,9 +11,8 @@ export default function MarkDownViewer({ content }) {
    return (
       <MarkdownPreview
          style={{
-            margin: '10px 0px',
-            minHeight: '56px',
             backgroundColor: 'transparent',
+            color: 'inherit',
          }}
          source={content}
          remarkPlugins={[remarkBreaks]}

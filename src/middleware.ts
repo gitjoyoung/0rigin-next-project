@@ -1,22 +1,9 @@
 import { auth } from '@/auth'
-import { match as matchLocale } from '@formatjs/intl-localematcher'
-import Negotiator from 'negotiator'
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { match } from 'path-to-regexp'
 
 // 인증이 필요한 경로 정의
 const PROTECTED_ROUTES = ['/mypage']
-
-const locales = ['ko']
-const defaultLocale = 'ko'
-
-function getLocale(request: NextRequest): string {
-   const negotiatorHeaders: Record<string, string> = {}
-   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
-
-   const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
-   return matchLocale(languages, locales, defaultLocale)
-}
 
 export async function middleware(request: NextRequest) {
    // 보호된 경로 체크
@@ -31,20 +18,6 @@ export async function middleware(request: NextRequest) {
    const response = NextResponse.next()
    const viewport = getViewportType(request)
    request.nextUrl.searchParams.set('viewport', viewport)
-
-   const pathname = request.nextUrl.pathname
-   const pathnameIsMissingLocale = locales.every(
-      (locale) =>
-         !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
-   )
-
-   // 리다이렉트가 필요한 경우
-   if (pathnameIsMissingLocale) {
-      const locale = getLocale(request)
-      return NextResponse.redirect(
-         new URL(`/${locale}${pathname}`, request.url),
-      )
-   }
 
    return response
 }

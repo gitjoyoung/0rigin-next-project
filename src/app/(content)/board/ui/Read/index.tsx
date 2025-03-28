@@ -24,7 +24,9 @@ export default function PostRead({ readData }: Props) {
          />
 
          {/* 글내용 마크다운 뷰어 */}
-         <MarkDownViewer content={content} />
+         <div className="my-10 min-h-[200px]">
+            <MarkDownViewer content={content} />
+         </div>
          {/* 싫어요,좋아요  버튼 */}
          <BoardLikeButton postId={postId} like={like} dislike={dislike} />
       </section>

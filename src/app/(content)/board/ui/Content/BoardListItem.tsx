@@ -39,7 +39,7 @@ export default function BoardListItem({ item }: Props) {
             ) : (
                <Link
                   href={`${ROUTES.BOARD}/${id}?page=${page}`}
-                  className="flex items-center gap-1 group-hover:text-primary"
+                  className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary"
                >
                   <span className="truncate font-medium text-xs sm:text-sm">
                      {title}
