@@ -19,10 +19,12 @@ export default function GlobalLayoutClient({
          </div>
 
          {/* 헤더, 메인, 푸터를 감싸는 래퍼 */}
-         <div className="w-full max-w-[1280px] px-4">
+         <div className="w-full max-w-[1280px] px-1 px-auto flex flex-col flex-1">
             <Header />
-            <main className="min-h-[80vh] w-full">{children}</main>
-            <Footer />
+            <main className="flex-1 w-full">{children}</main>
+            <div className="mt-auto">
+               <Footer />
+            </div>
          </div>
       </div>
    )

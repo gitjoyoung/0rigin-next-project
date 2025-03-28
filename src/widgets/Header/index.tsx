@@ -9,12 +9,12 @@ import ThemeToggle from './ThemeToggle'
 
 export default function Header() {
    return (
-      <header className="flex items-center justify-between px-4 py-2 h-12 w-full border-b border-black shadow-md">
+      <header className="flex items-center justify-between sm:py-2 py-1 sm:h-12 h-10 w-full border-b border-black shadow-md">
          {/* 로고 + 네비게이션 */}
          <div className="flex items-center gap-4">
             {/* 로고 */}
             <Link href="/">
-               <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+               <h3 className="text-xl sm:text-2xl font-semibold tracking-tight">
                   0rigin
                </h3>
             </Link>
@@ -32,7 +32,6 @@ export default function Header() {
          </div>
 
          {/* 검색창 + 인증 버튼 */}
-         {/* 데스크톱 뷰 */}
          <div className="hidden sm:flex  items-center gap-4">
             <ThemeToggle />
             <SearchBox />
