@@ -12,12 +12,14 @@ interface Params {
 export async function generateMetadata({
    searchParams,
 }: Params): Promise<Metadata> {
-   const { page } = searchParams
+   const { page } = await searchParams
    if (page) return { title: `게시판 ${page} Page` }
+   return { title: '게시판' }
 }
 
 export default async function Page({ searchParams }: Params) {
-   const currentPage: number = Number(searchParams.page) || 1
+   const { page } = await searchParams
+   const currentPage: number = Number(page) || 1
 
    const data = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/board?page=${currentPage}`,

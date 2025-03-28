@@ -1,8 +1,8 @@
 'use client'
 
-import { signUpSchema } from '@/schema/signFormSchema'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { signUpSchema } from '../type/schema'
 
 export const useUserSignUp = () => {
    const [error, setError] = useState('')
@@ -20,7 +20,7 @@ export const useUserSignUp = () => {
             console.log(error)
             newErrors.push(error.message)
          })
-         setError(newErrors.join(', '))
+         setError(newErrors.join('\n'))
          return
       }
 

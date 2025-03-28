@@ -1,8 +1,8 @@
 'use client'
 
-import BasicButton from '@/components/common/buttons/BasicButton'
-import { passwordSchema, userEmailSchema } from '@/schema/signFormSchema'
+import { Button } from '@/shared/shadcn/ui/button'
 import { useUserSignUp } from '../hook/useUserSignUp'
+import { passwordSchema, userEmailSchema } from '../type/schema'
 import GenderRadioButton from './GenderRadioButton'
 import InputValidator from './InputValidator'
 
@@ -38,8 +38,12 @@ export default function SignForm() {
                   type="password"
                   validate={passwordSchema}
                />
-               {error && <p className="text-xs text-red-500">{error}</p>}
-               <BasicButton text="회원가입" type="submit" />
+               {error && (
+                  <p className="text-xs text-red-500 whitespace-pre-line font-medium">
+                     {error}
+                  </p>
+               )}
+               <Button type="submit">회원가입</Button>
             </form>
          </div>
       </section>

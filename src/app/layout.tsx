@@ -2,8 +2,10 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import { Roboto } from 'next/font/google'
+import { Suspense } from 'react'
 import GlobalLayoutClient from './GlobalLayoutClient'
 import './globals.css'
+import Loading from './loading'
 import ReactQueryProviders from './ReactQueryProvider'
 
 const roboto = Roboto({
@@ -28,7 +30,9 @@ export default function RootLayout({
                <div id="modal-root" />
                <SessionProvider>
                   <ReactQueryProviders>
-                     <GlobalLayoutClient>{children}</GlobalLayoutClient>
+                     <Suspense fallback={<Loading />}>
+                        <GlobalLayoutClient>{children}</GlobalLayoutClient>
+                     </Suspense>
                   </ReactQueryProviders>
                </SessionProvider>
                <SpeedInsights />

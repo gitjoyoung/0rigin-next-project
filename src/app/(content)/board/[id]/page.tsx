@@ -19,8 +19,8 @@ export async function generateMetadata({
    params,
    searchParams,
 }: IParams): Promise<Metadata> {
-   const { id } = params
-   const { page } = searchParams
+   const { id } = await params
+   const { page } = await searchParams
    if (page === undefined) return { title: `${id}번 게시글` }
    return {
       title: `${id}번 게시글 ${page} 페이지 `,
@@ -36,10 +36,11 @@ interface Response {
 export default async function Page({ params, searchParams }: IParams) {
    const { id } = await params
    if (id === undefined) redirect(ROUTES.BOARD)
-   const page = Number(searchParams.page) || 1
+   const { page } = await searchParams
+   const currentPage = Number(page) || 1
 
    const postData = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${currentPage}`,
       {
          method: 'GET',
          headers: {
@@ -56,7 +57,7 @@ export default async function Page({ params, searchParams }: IParams) {
          <PostRead readData={readData} />
          <CommentList postId={id} />
          <BoardContent postData={fetchedPosts} />
-         <CustomPagination totalPages={lastPostId} currentPage={page} />
+         <CustomPagination totalPages={lastPostId} currentPage={currentPage} />
          <BoardFooter />
       </>
    )

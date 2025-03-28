@@ -1,9 +1,8 @@
 'use client'
 
-import React from 'react'
-import Image from 'next/image'
 import { CONTACT_INFO } from '@/constants/contact/contactNav'
 import { Icons } from '@/shared/ui/icons'
+import Image from 'next/image'
 
 export default function Contact() {
    return (
@@ -14,7 +13,12 @@ export default function Contact() {
             </h1>
             <div className="flex flex-wrap  gap-6 w-full ">
                <div className="flex-1  md:h-auto w-full h-64  overflow-hidden shadow-md relative">
-                  <Image src="/mascot/winksaurus.png" fill alt="apple logo" />
+                  <Image
+                     src="/mascot/winksaurus.png"
+                     fill
+                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                     alt="apple logo"
+                  />
                </div>
 
                <div className="grid grid-cols-1  gap-6 md:w-auto  w-full ">
