@@ -27,7 +27,7 @@ export default function CommentList({ postId }: Props) {
    return (
       <div className="my-2">
          {/* 댓글 헤더 */}
-         <BoardCommentHeader length={comments.length} />
+         <BoardCommentHeader commentCount={comments.length} />
 
          {/* 댓글 리스트 */}
          {comments.map((data) => (

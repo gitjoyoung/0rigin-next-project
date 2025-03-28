@@ -27,40 +27,17 @@ export default function CommentItem({
       setIsEditing(null)
    }
 
-   const handleSubmit = async () => {
+   const handleEditSubmit = async () => {
       if (editContent.trim() === '') return
-
-      try {
-         // TODO: updateComment API 호출
-         setIsEditing(null)
-      } catch (error) {
-         console.error('댓글 수정 실패:', error)
-      }
    }
 
    const handleDelete = async () => {
       if (!confirm('댓글을 삭제하시겠습니까?')) return
-
-      try {
-         await deleteComment(postId, id)
-      } catch (error) {
-         console.error('댓글 삭제 실패:', error)
-      }
-   }
-   const textAreaHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-         e.preventDefault()
-         handleSubmit()
-      }
+      await deleteComment(postId, id)
    }
 
    return (
-      <div
-         className={cn(
-            'flex flex-col min-h-9 group',
-            isEditing && 'bg-gray-100 dark:bg-gray-200',
-         )}
-      >
+      <div className={cn('flex flex-col min-h-9 group')}>
          {/* 댓글 정보 */}
          <div className="flex justify-between items-center py-1">
             {/* 댓글 작성자 정보 */}
@@ -103,7 +80,7 @@ export default function CommentItem({
                         type="button"
                         variant="link"
                         size="icon"
-                        onClick={handleSubmit}
+                        onClick={handleEditSubmit}
                      >
                         <Icons.check size={16} />
                      </Button>
@@ -130,8 +107,13 @@ export default function CommentItem({
                   name="comment"
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  onKeyDown={textAreaHandler}
-                  className="w-full border border-black dark:border-white rounded-none p-1"
+                  onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                     if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        handleEditSubmit()
+                     }
+                  }}
+                  className="w-full border rounded-none p-1"
                   autoFocus
                />
             )}
