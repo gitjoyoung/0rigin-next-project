@@ -32,10 +32,3 @@ function getViewportType(request: NextRequest): 'mobile' | 'desktop' {
    const { device } = userAgent(request)
    return device.type === 'mobile' ? 'mobile' : 'desktop'
 }
-
-export const config = {
-   matcher: [
-      // Skip all internal paths (_next)
-      '/((?!_next|api|favicon.ico).*)',
-   ],
-}
