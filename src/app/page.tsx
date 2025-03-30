@@ -1,7 +1,7 @@
 import { Post, TopPost } from '@/types/boardTypes'
 import AdBanner from '@/widgets/AdBanner/AdBanner'
 import Banner from '@/widgets/Banner/Banner'
-import BoardList from './(content)/board/ui/Content/BoardList'
+import PostList from './(content)/board/ui/Content'
 
 export const metadata = {
    title: {
@@ -31,7 +31,7 @@ export default async function Home() {
       <div className="flex flex-col gap-2">
          <AdBanner />
          <Banner topData={topData} />
-         <BoardList postData={fetchedPosts} />
+         <PostList postData={fetchedPosts} />
       </div>
    )
 }

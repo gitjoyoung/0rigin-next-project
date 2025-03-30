@@ -12,7 +12,7 @@ interface Props {
    item: Post
 }
 
-export default function BoardListItem({ item }: Props) {
+export default function PostListItem({ item }: Props) {
    const {
       id,
       title,

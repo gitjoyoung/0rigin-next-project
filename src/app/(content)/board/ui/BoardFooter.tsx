@@ -9,7 +9,7 @@ const FOOTER_DATA = {
 
 export default function BoardFooter() {
    return (
-      <div className="my-5 mb-10 flex justify-between items-center">
+      <div className="flex justify-between items-center">
          <Link href={ROUTE_BOARD}>
             <Button variant="secondary" className="p-4" size="default">
                {FOOTER_DATA.list}

@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import BoardFooter from './ui/BoardFooter'
-import BoardContent from './ui/Content'
+import PostList from './ui/Content'
 import Pagination from './ui/Pagination/CustomPagination'
 interface Params {
    params: {
@@ -36,10 +36,10 @@ export default async function Page({ searchParams }: Params) {
    const { lastPostId, postData } = await data.json()
 
    return (
-      <>
-         <BoardContent postData={postData} />
+      <section className="flex flex-col gap-4">
+         <PostList postData={postData} />
+         ㄴ <BoardFooter />
          <Pagination totalPages={lastPostId} currentPage={currentPage} />
-         <BoardFooter />
-      </>
+      </section>
    )
 }

@@ -4,7 +4,7 @@ import SearchBox from '@/widgets/SearchBox'
 import Link from 'next/link'
 import AuthButtonGroup from './AuthButtonGroup'
 import { HEADER_NAV_LIST } from './contants/header-list'
-import MobileNavModal from './Mobile/MobileNavModal'
+import MobileNavModal from './Mobile'
 import ThemeToggle from './ThemeToggle'
 
 export default function Header() {

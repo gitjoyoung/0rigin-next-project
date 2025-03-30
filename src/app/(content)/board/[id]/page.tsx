@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import BoardFooter from '../ui/BoardFooter'
 import CommentList from '../ui/Comment'
-import BoardContent from '../ui/Content'
+import PostList from '../ui/Content'
 import CustomPagination from '../ui/Pagination/CustomPagination'
 import PostRead from '../ui/Read'
 
@@ -53,12 +53,12 @@ export default async function Page({ params, searchParams }: IParams) {
       await postData.json()
 
    return (
-      <>
+      <section className="flex flex-col gap-4">
          <PostRead readData={readData} />
          <CommentList postId={id} />
-         <BoardContent postData={fetchedPosts} />
-         <CustomPagination totalPages={lastPostId} currentPage={currentPage} />
+         <PostList postData={fetchedPosts} />
          <BoardFooter />
-      </>
+         <CustomPagination totalPages={lastPostId} currentPage={currentPage} />
+      </section>
    )
 }
