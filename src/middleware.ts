@@ -2,6 +2,42 @@ import { auth } from '@/auth'
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { match } from 'path-to-regexp'
 
+import { createServerClient } from '@supabase/ssr'
+
+export const createClient = (request: NextRequest) => {
+   // Create an unmodified response
+   let supabaseResponse = NextResponse.next({
+      request: {
+         headers: request.headers,
+      },
+   })
+
+   const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+         cookies: {
+            getAll() {
+               return request.cookies.getAll()
+            },
+            setAll(cookiesToSet) {
+               cookiesToSet.forEach(({ name, value, options }) =>
+                  request.cookies.set(name, value),
+               )
+               supabaseResponse = NextResponse.next({
+                  request,
+               })
+               cookiesToSet.forEach(({ name, value, options }) =>
+                  supabaseResponse.cookies.set(name, value, options),
+               )
+            },
+         },
+      },
+   )
+
+   return supabaseResponse
+}
+
 // 인증이 필요한 경로 정의
 const PROTECTED_ROUTES = ['/mypage']
 

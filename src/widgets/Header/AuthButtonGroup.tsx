@@ -1,12 +1,13 @@
 'use client'
 
+import { signOut } from '@/auth'
 import { ROUTE_LOGIN, ROUTE_MYPAGE, ROUTE_SIGN } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from '@supabase/auth-helpers-react'
 import Link from 'next/link'
 
 export default function AuthButtonGroup() {
-   const { data: session } = useSession() // 클라이언트 훅
+   const session = useSession()
 
    return (
       <section className="flex items-end gap-5">
@@ -23,10 +24,7 @@ export default function AuthButtonGroup() {
             <div className="flex flex-col gap-1">
                <p className="m-1 text-xs">{session.user.email}</p>
                <div className="flex gap-2 text-xs">
-                  <Button
-                     onClick={() => signOut({ callbackUrl: '/' })}
-                     size="sm"
-                  >
+                  <Button onClick={() => signOut()} size="sm">
                      로그아웃
                   </Button>
                   <Link href={ROUTE_MYPAGE}>

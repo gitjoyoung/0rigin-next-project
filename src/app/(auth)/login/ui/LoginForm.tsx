@@ -1,6 +1,6 @@
 'use client'
+import { signInWithCredentials } from '@/auth'
 import { ROUTE_FORGET, ROUTE_SIGN } from '@/constants/pathname'
-import { signInWithCredentials } from '@/serverAction/auth'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -20,10 +20,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { LoginSchema, type LoginForm } from '../types/schema'
+import { z } from 'zod'
+import { LoginSchema } from '../types/schema'
 
 export default function Login() {
-   const form = useForm<LoginForm>({
+   const form = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
       defaultValues: {
          email: '',
@@ -31,11 +32,11 @@ export default function Login() {
       },
    })
 
-   const onSubmit = async (data: LoginForm) => {
+   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
       try {
          const formData = new FormData()
-         formData.append('email', data.email)
-         formData.append('password', data.password)
+         formData.append('email', values.email)
+         formData.append('password', values.password)
          await signInWithCredentials(formData)
       } catch (error) {
          console.error('Login error:', error)
@@ -110,16 +111,16 @@ export default function Login() {
                         </Button>
                      </div>
                   </form>
-               </Form>
 
-               <div className="mt-6 flex gap-4 justify-between">
-                  <Button variant="outline" asChild>
-                     <Link href={ROUTE_SIGN}>회원가입</Link>
-                  </Button>
-                  <Button variant="outline" asChild>
-                     <Link href={ROUTE_FORGET}>비밀번호 분실</Link>
-                  </Button>
-               </div>
+                  <div className="mt-6 flex gap-4 justify-between">
+                     <Button variant="outline" asChild>
+                        <Link href={ROUTE_SIGN}>회원가입</Link>
+                     </Button>
+                     <Button variant="outline" asChild>
+                        <Link href={ROUTE_FORGET}>비밀번호 분실</Link>
+                     </Button>
+                  </div>
+               </Form>
             </CardContent>
          </Card>{' '}
       </div>
