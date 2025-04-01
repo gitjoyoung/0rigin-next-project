@@ -9,7 +9,7 @@ import ThemeToggle from './ThemeToggle'
 
 export default function Header() {
    return (
-      <header className="flex items-center justify-between pb-1  sm:h-10 h-8 w-full border-b border-black ">
+      <header className="flex items-center justify-between py-1  sm:h-10 h-8 w-full border-b border-black ">
          {/* 로고 + 네비게이션 */}
          <div className="flex  gap-4">
             {/* 로고 */}

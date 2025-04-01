@@ -1,7 +1,6 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 
 export async function auth() {
    const supabase = await createClient()
@@ -18,23 +17,21 @@ export const signInWithCredentials = async (
    const password = formData.get('password') as string
    const supabase = await createClient()
 
-   const { error, data } = await supabase.auth.signInWithPassword({
+   const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
    })
 
    console.log('로그인 시도 결과:', {
-      success: !error,
+      email,
+      password,
       error: error?.message,
-      user: data?.user,
-      session: data?.session,
    })
-
    if (error) {
       return { error: error.message }
    }
 
-   redirect('/')
+   return { success: true, redirectTo: '/' }
 }
 
 export const signUp = async (formData: FormData): Promise<any> => {
@@ -71,16 +68,17 @@ export const signUp = async (formData: FormData): Promise<any> => {
    return { success: true, message: '이메일 인증을 확인해주세요.' }
 }
 
-export const signOut = async (): Promise<any> => {
+export const signOut = async (): Promise<
+   { success: true } | { error: string }
+> => {
    const supabase = await createClient()
-
    const { error } = await supabase.auth.signOut()
 
    if (error) {
       return { error: error.message }
    }
 
-   redirect('/login')
+   return { success: true }
 }
 
 export const resetPassword = async (formData: FormData): Promise<any> => {

@@ -1,70 +1,77 @@
-import { auth } from '@/auth'
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { match } from 'path-to-regexp'
+import {
+   ROUTE_FORGET,
+   ROUTE_LOGIN,
+   ROUTE_MYPAGE,
+   ROUTE_SIGN,
+   ROUTE_SIGN_FORM,
+   ROUTE_SIGN_TERM,
+} from './constants/pathname'
+import { updateSession } from './lib/supabase/supaMidleware'
 
-import { createServerClient } from '@supabase/ssr'
+// 상수 정의
+const PROTECTED_ROUTES = [ROUTE_MYPAGE]
+export const AUTH_FORBIDDEN_ROUTES = [
+   ROUTE_LOGIN,
+   ROUTE_SIGN,
+   ROUTE_SIGN_FORM,
+   ROUTE_SIGN_TERM,
+   ROUTE_FORGET,
+]
 
-export const createClient = (request: NextRequest) => {
-   // Create an unmodified response
-   let supabaseResponse = NextResponse.next({
-      request: {
-         headers: request.headers,
-      },
-   })
+// 유틸리티 함수들
+const isProtectedRoute = (pathname: string) =>
+   PROTECTED_ROUTES.some((route) => match(route)(pathname))
 
-   const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-         cookies: {
-            getAll() {
-               return request.cookies.getAll()
-            },
-            setAll(cookiesToSet) {
-               cookiesToSet.forEach(({ name, value, options }) =>
-                  request.cookies.set(name, value),
-               )
-               supabaseResponse = NextResponse.next({
-                  request,
-               })
-               cookiesToSet.forEach(({ name, value, options }) =>
-                  supabaseResponse.cookies.set(name, value, options),
-               )
-            },
-         },
-      },
-   )
+const getViewportType = (request: NextRequest): 'mobile' | 'desktop' => {
+   const { device } = userAgent(request)
+   return device.type === 'mobile' ? 'mobile' : 'desktop'
+}
+
+// 인증 페이지 처리
+const handleAuth = async (request: NextRequest, session: any) => {
+   // 인증된 사용자가 접근하면 안 되는 페이지 체크
+   if (
+      session?.user &&
+      AUTH_FORBIDDEN_ROUTES.includes(request.nextUrl.pathname)
+   ) {
+      return NextResponse.redirect(new URL('/', request.url))
+   }
+
+   // 보호된 경로에 대한 인증 체크
+   if (isProtectedRoute(request.nextUrl.pathname) && !session?.user) {
+      return NextResponse.redirect(new URL(ROUTE_LOGIN, request.url))
+   }
+
+   return null
+}
+
+// 메인 미들웨어 함수
+export async function middleware(request: NextRequest) {
+   // 수파베이스에서 세션 정보 가져오기
+   const supabaseResponse = await updateSession(request)
+
+   // 인증 처리
+   const authResponse = await handleAuth(request, supabaseResponse)
+   if (authResponse) return authResponse
+
+   // 뷰포트 설정
+   const viewport = getViewportType(request)
+   request.nextUrl.searchParams.set('viewport', viewport)
 
    return supabaseResponse
 }
 
-// 인증이 필요한 경로 정의
-const PROTECTED_ROUTES = ['/mypage']
-
-export async function middleware(request: NextRequest) {
-   // 보호된 경로 체크
-   if (isProtectedRoute(request.nextUrl.pathname)) {
-      const session = await auth()
-      if (!session) {
-         return NextResponse.redirect(new URL('/auth/login', request.url))
-      }
-   }
-
-   // 뷰포트 설정
-   const response = NextResponse.next()
-   const viewport = getViewportType(request)
-   request.nextUrl.searchParams.set('viewport', viewport)
-
-   return response
-}
-
-// 보호된 경로 체크 함수
-function isProtectedRoute(pathname: string) {
-   return PROTECTED_ROUTES.some((route) => !!match(route)(pathname))
-}
-
-// 뷰포트 타입 결정 함수
-function getViewportType(request: NextRequest): 'mobile' | 'desktop' {
-   const { device } = userAgent(request)
-   return device.type === 'mobile' ? 'mobile' : 'desktop'
+export const config = {
+   matcher: [
+      /*
+       * Match all request paths except for the ones starting with:
+       * - _next/static (static files)
+       * - _next/image (image optimization files)
+       * - favicon.ico (favicon file)
+       * Feel free to modify this pattern to include more paths.
+       */
+      '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+   ],
 }

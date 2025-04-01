@@ -8,13 +8,14 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
+import { LoadingSpinner } from '@/widgets/Spinner/loading-spinner'
 import { useUserSignUp } from '../hook/useUserSignUp'
 import { passwordSchema, userEmailSchema } from '../type/schema'
 import GenderRadioButton from './GenderRadioButton'
 import InputValidator from './InputValidator'
 
 export default function SignForm() {
-   const { error, handleSignUpSubmit } = useUserSignUp()
+   const { error, handleSignUpSubmit, isLoading } = useUserSignUp()
    return (
       <section className="w-full flex justify-center">
          <Card className="w-full max-w-[350px]">
@@ -53,8 +54,15 @@ export default function SignForm() {
                         {error}
                      </p>
                   )}
-                  <Button type="submit" className="w-full">
-                     회원가입
+                  <Button disabled={isLoading} type="submit" className="w-full">
+                     {isLoading ? (
+                        <div className="flex items-center justify-center gap-2">
+                           <LoadingSpinner className="h-4 w-4" />
+                           <span>처리중...</span>
+                        </div>
+                     ) : (
+                        '회원가입'
+                     )}
                   </Button>
                </form>
             </CardContent>

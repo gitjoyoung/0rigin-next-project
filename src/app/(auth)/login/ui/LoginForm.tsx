@@ -1,5 +1,4 @@
 'use client'
-import { signInWithCredentials } from '@/auth'
 import { ROUTE_FORGET, ROUTE_SIGN } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
@@ -21,9 +20,11 @@ import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useLogin } from '../hook/useLogin'
 import { LoginSchema } from '../types/schema'
 
 export default function Login() {
+   const { loginError, onSubmit } = useLogin()
    const form = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
       defaultValues: {
@@ -31,17 +32,6 @@ export default function Login() {
          password: '',
       },
    })
-
-   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-      try {
-         const formData = new FormData()
-         formData.append('email', values.email)
-         formData.append('password', values.password)
-         await signInWithCredentials(formData)
-      } catch (error) {
-         console.error('Login error:', error)
-      }
-   }
 
    return (
       <div className="flex flex-col mt-12 w-full h-full items-center justify-center">
@@ -94,22 +84,25 @@ export default function Login() {
                            </FormItem>
                         )}
                      />
-                     <div className="flex justify-center">
-                        <Button
-                           className="w-full"
-                           type="submit"
-                           disabled={form.formState.isSubmitting}
-                        >
-                           {form.formState.isSubmitting ? (
-                              <>
-                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                 로그인 중...
-                              </>
-                           ) : (
-                              '로그인'
-                           )}
-                        </Button>
-                     </div>
+                     {loginError && (
+                        <div className="text-sm text-red-500 text-center mt-2">
+                           {loginError}
+                        </div>
+                     )}
+                     <Button
+                        className="w-full"
+                        type="submit"
+                        disabled={form.formState.isSubmitting}
+                     >
+                        {form.formState.isSubmitting ? (
+                           <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              로그인 중...
+                           </>
+                        ) : (
+                           '로그인'
+                        )}
+                     </Button>
                   </form>
 
                   <div className="mt-6 flex gap-4 justify-between">
@@ -122,7 +115,7 @@ export default function Login() {
                   </div>
                </Form>
             </CardContent>
-         </Card>{' '}
+         </Card>
       </div>
    )
 }
