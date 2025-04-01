@@ -20,6 +20,10 @@ module.exports = {
          },
       },
       extend: {
+         fontFamily: {
+            sans: ['Noto Sans KR', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+         },
          colors: {
             border: 'hsl(var(--border))',
             input: 'hsl(var(--input))',
