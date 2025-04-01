@@ -1,7 +1,9 @@
+import { createClient } from '@/lib/supabase/server'
 import { Metadata } from 'next'
 import BoardFooter from './ui/BoardFooter'
-import PostList from './ui/Content'
-import Pagination from './ui/Pagination/CustomPagination'
+import CustomPagination from './ui/Pagination/CustomPagination'
+import PostList from './ui/Post'
+
 interface Params {
    params: {
       id: string
@@ -17,29 +19,40 @@ export async function generateMetadata({
    return { title: '게시판' }
 }
 
+const POST_PER_PAGE = 20
 export default async function Page({ searchParams }: Params) {
    const { page } = await searchParams
    const currentPage: number = Number(page) || 1
 
-   const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/board?page=${currentPage}`,
-      {
-         method: 'GET',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         cache: 'no-store',
-      },
-   )
+   const supabase = await createClient()
 
-   // @TODO totalPages 만들어야 함
-   const { lastPostId, postData } = await data.json()
+   const { count } = await supabase
+      .from('posts')
+      .select('*', { count: 'exact', head: true })
+   const totalPages = Math.ceil((count || 0) / POST_PER_PAGE)
+
+   const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('id', { ascending: false })
+      .range((currentPage - 1) * POST_PER_PAGE, currentPage * POST_PER_PAGE - 1)
+
+   if (error) {
+      throw new Error(error.message)
+   }
 
    return (
-      <section className="flex flex-col gap-4">
-         <PostList postData={postData} />
-         ㄴ <BoardFooter />
-         <Pagination totalPages={lastPostId} currentPage={currentPage} />
-      </section>
+      <main>
+         <section className="flex flex-col gap-4 mb-10">
+            <PostList postData={posts || []} />
+            <BoardFooter />
+            <CustomPagination
+               totalPages={totalPages}
+               currentPage={currentPage}
+            />
+         </section>
+      </main>
    )
 }
+
+export const revalidate = 0

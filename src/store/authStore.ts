@@ -13,18 +13,25 @@ export const useAuthStore = create<AuthState>((set) => ({
    initializeAuth: () => {
       const supabase = createClient()
 
-      // 쿠키 기반으로 세션 확인
-      supabase.auth.getSession().then(({ data: { session } }) => {
-         if (session?.user) {
-            set({ user: session.user })
+      // 사용자 인증 상태 확인
+      supabase.auth.getUser().then(({ data: { user } }) => {
+         if (user) {
+            set({ user })
          }
       })
 
       // auth 상태 변경 구독
       const {
          data: { subscription },
-      } = supabase.auth.onAuthStateChange((event, session) => {
-         set({ user: session?.user ?? null })
+      } = supabase.auth.onAuthStateChange(async (event) => {
+         if (event === 'SIGNED_IN') {
+            const {
+               data: { user },
+            } = await supabase.auth.getUser()
+            set({ user })
+         } else if (event === 'SIGNED_OUT') {
+            set({ user: null })
+         }
       })
 
       return () => {

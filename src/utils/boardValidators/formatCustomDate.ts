@@ -1,10 +1,13 @@
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+
+dayjs.extend(utc)
 
 const formatCustomDate = (createdAt: string): string => {
    if (!createdAt) return '데이터 오류'
 
    const today = dayjs().startOf('day')
-   const postDate = dayjs(createdAt)
+   const postDate = dayjs.utc(createdAt)
 
    // 오늘 날짜면 시간만 표시
    if (postDate.isSame(today, 'day')) {

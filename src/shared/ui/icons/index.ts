@@ -15,6 +15,7 @@ import {
    MapPin,
    Menu,
    MessageCircle,
+   MessageSquare,
    Moon,
    MoreHorizontal,
    Pencil,
@@ -62,6 +63,9 @@ export const Icons = {
    more: MoreHorizontal,
    twitter: Twitter,
    instagram: Instagram,
+
+   // 게시글
+   messageSquare: MessageSquare,
 
    // 페이지네이션
    prevPage: ChevronLeft,

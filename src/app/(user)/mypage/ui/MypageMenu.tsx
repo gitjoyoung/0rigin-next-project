@@ -29,7 +29,7 @@ export default function MypageMenu({
    onMenuClick,
 }: MypageMenuProps) {
    return (
-      <div className="relative h-full">
+      <div className="relative h-full ">
          <SidebarProvider defaultOpen>
             <Sidebar className="absolute left-0 top-0 h-full">
                <SidebarHeader className="border-b p-4">

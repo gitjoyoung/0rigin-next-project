@@ -4,8 +4,8 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import BoardFooter from '../ui/BoardFooter'
 import CommentList from '../ui/Comment'
-import PostList from '../ui/Content'
 import CustomPagination from '../ui/Pagination/CustomPagination'
+import PostList from '../ui/Post'
 import PostRead from '../ui/Read'
 
 interface IParams {
