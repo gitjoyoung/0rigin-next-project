@@ -17,15 +17,9 @@ export const signInWithCredentials = async (
    const password = formData.get('password') as string
    const supabase = await createClient()
 
-   const { data, error } = await supabase.auth.signInWithPassword({
+   const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
-   })
-
-   console.log('로그인 시도 결과:', {
-      email,
-      password,
-      error: error?.message,
    })
    if (error) {
       return { error: error.message }
@@ -37,12 +31,18 @@ export const signInWithCredentials = async (
 
    return {
       success: true,
-      redirectTo: '/',
       user,
    }
 }
 
-export const signUp = async (formData: FormData): Promise<any> => {
+export const signUp = async (
+   formData: FormData,
+): Promise<{
+   success: boolean
+   message?: string
+   error?: string
+   user?: any
+}> => {
    const email = formData.get('email') as string
    const password = formData.get('password') as string
    const name = formData.get('name') as string
@@ -59,21 +59,14 @@ export const signUp = async (formData: FormData): Promise<any> => {
       },
    })
 
-   console.log('회원가입 시도 결과:', {
-      data: {
-         email,
-         password,
-         name: 'test',
-      },
-      success: !error,
-      error: error?.message,
-   })
-
    if (error) {
-      return { error: error.message }
+      return { success: false, error: error.message }
    }
+   const {
+      data: { user },
+   } = await supabase.auth.getUser()
 
-   return { success: true, message: '이메일 인증을 확인해주세요.' }
+   return { success: true, user }
 }
 
 export const signOut = async (): Promise<

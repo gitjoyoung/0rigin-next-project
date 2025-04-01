@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/providers/AuthProvider'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
@@ -29,11 +30,13 @@ export default function RootLayout({
             >
                <div id="modal-root" />
                <SessionProvider>
-                  <ReactQueryProviders>
-                     <Suspense fallback={<Loading />}>
-                        <GlobalLayoutClient>{children}</GlobalLayoutClient>
-                     </Suspense>
-                  </ReactQueryProviders>
+                  <AuthProvider>
+                     <ReactQueryProviders>
+                        <Suspense fallback={<Loading />}>
+                           <GlobalLayoutClient>{children}</GlobalLayoutClient>
+                        </Suspense>
+                     </ReactQueryProviders>
+                  </AuthProvider>
                </SessionProvider>
                <SpeedInsights />
             </ThemeProvider>

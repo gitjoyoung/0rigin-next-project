@@ -5,15 +5,9 @@ import { ROUTE_LOGIN, ROUTE_MYPAGE, ROUTE_SIGN } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import { useAuthStore } from '@/store/authStore'
 import Link from 'next/link'
-import { useEffect } from 'react'
 
 export default function AuthButtonGroup() {
-   const { user, initializeAuth, setUser } = useAuthStore()
-
-   useEffect(() => {
-      const cleanup = initializeAuth()
-      return cleanup
-   }, [])
+   const { user, setUser } = useAuthStore()
 
    const handleSignOut = async () => {
       const result = await signOut()

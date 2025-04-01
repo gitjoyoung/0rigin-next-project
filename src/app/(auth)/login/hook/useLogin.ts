@@ -30,7 +30,7 @@ export const useLogin = () => {
             try {
                setUser(result.user ?? null)
                setIsLoading(false)
-               push(result.redirectTo)
+               push(result.redirectTo ?? '/')
             } catch (sessionError) {
                setLoginError('사용자 정보를 가져오는 중 오류가 발생했습니다.')
                setIsLoading(false)

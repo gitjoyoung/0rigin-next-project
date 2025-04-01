@@ -12,7 +12,6 @@ export const useAuthStore = create<AuthState>((set) => ({
    setUser: (user) => set({ user }),
    initializeAuth: () => {
       const supabase = createClient()
-
       // 사용자 인증 상태 확인
       supabase.auth.getUser().then(({ data: { user } }) => {
          if (user) {
