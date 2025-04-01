@@ -19,21 +19,24 @@ export const useUserSignUp = () => {
          const formData = new FormData(e.target as HTMLFormElement)
          const formObject = Object.fromEntries(formData)
          const result = signUpSchema.safeParse(formObject)
-         const newErrors = []
 
-         if (result.success === false) {
-            result.error.errors.forEach((error) => {
-               console.log(error)
-               newErrors.push(error.message)
-            })
-            setError(newErrors.join('\n'))
+         if (!result.success) {
+            const errorMessages = result.error.errors.map(
+               (error) => error.message,
+            )
+            setError(errorMessages.join('\n'))
             return false
          }
+
          await signUp(formData)
          router.push('/sign/welcome')
          return true
       } catch (err) {
-         setError('회원가입 처리 중 오류가 발생했습니다. 다시 시도해주세요.')
+         const errorMessage =
+            err instanceof Error
+               ? `회원가입 처리 중 오류가 발생했습니다: ${err.message}`
+               : '회원가입 처리 중 오류가 발생했습니다. 다시 시도해주세요.'
+         setError(errorMessage)
          console.error('Sign up error:', err)
          return false
       } finally {

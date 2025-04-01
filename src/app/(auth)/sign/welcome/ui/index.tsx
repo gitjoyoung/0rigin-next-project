@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default async function WelcomePage() {
    const session = await auth()
-   const userEmail = session?.user?.email
+   const userEmail = session?.email
 
    return (
       <div className="min-h-72 flex flex-col items-center justify-center">

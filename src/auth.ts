@@ -5,9 +5,9 @@ import { createClient } from '@/lib/supabase/server'
 export async function auth() {
    const supabase = await createClient()
    const {
-      data: { session },
-   } = await supabase.auth.getSession()
-   return session
+      data: { user },
+   } = await supabase.auth.getUser()
+   return user
 }
 
 export const signInWithCredentials = async (
@@ -17,7 +17,7 @@ export const signInWithCredentials = async (
    const password = formData.get('password') as string
    const supabase = await createClient()
 
-   const { error } = await supabase.auth.signInWithPassword({
+   const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
    })
@@ -31,7 +31,15 @@ export const signInWithCredentials = async (
       return { error: error.message }
    }
 
-   return { success: true, redirectTo: '/' }
+   const {
+      data: { user },
+   } = await supabase.auth.getUser()
+
+   return {
+      success: true,
+      redirectTo: '/',
+      user,
+   }
 }
 
 export const signUp = async (formData: FormData): Promise<any> => {

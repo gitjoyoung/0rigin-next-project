@@ -20,12 +20,17 @@ const GENDER_LIST = [
    },
 ]
 
-export default function GenderRadioButton() {
+export default function GenderRadioButton({
+   disabled = false,
+}: {
+   disabled?: boolean
+}) {
    return (
       <RadioGroup
          name="gender"
          defaultValue={GENDER_LIST[0].value}
          className="flex items-center justify-between px-2 py-2"
+         disabled={disabled}
       >
          {GENDER_LIST.map(({ id, value }) => (
             <div key={nanoid()} className="flex items-center space-x-2">

@@ -30,30 +30,35 @@ export default function SignForm() {
                   onSubmit={handleSignUpSubmit}
                   className="flex flex-col gap-3 w-full"
                >
-                  <GenderRadioButton />
-                  <InputValidator
-                     placeholder={'이메일을 입력하세요'}
-                     name="email"
-                     type="email"
-                     validate={userEmailSchema}
-                  />
-                  <InputValidator
-                     placeholder={'비밀번호를 입력하세요'}
-                     name="password"
-                     type="password"
-                     validate={passwordSchema}
-                  />
-                  <InputValidator
-                     placeholder={'비밀번호 재확인'}
-                     name="confirmPassword"
-                     type="password"
-                     validate={passwordSchema}
-                  />
-                  {error && (
-                     <p className="text-xs text-red-500 whitespace-pre-line font-medium">
-                        {error}
-                     </p>
-                  )}
+                  <GenderRadioButton disabled={isLoading} />
+                  <div className="flex flex-col py-2 gap-2">
+                     <InputValidator
+                        disabled={isLoading}
+                        placeholder={'이메일을 입력하세요'}
+                        name="email"
+                        type="email"
+                        validate={userEmailSchema}
+                     />
+                     <InputValidator
+                        disabled={isLoading}
+                        placeholder={'비밀번호를 입력하세요'}
+                        name="password"
+                        type="password"
+                        validate={passwordSchema}
+                     />
+                     <InputValidator
+                        disabled={isLoading}
+                        placeholder={'비밀번호 재확인'}
+                        name="confirmPassword"
+                        type="password"
+                        validate={passwordSchema}
+                     />
+                     {error && (
+                        <p className="text-xs text-red-500 whitespace-pre-line font-medium">
+                           {error}
+                        </p>
+                     )}
+                  </div>
                   <Button disabled={isLoading} type="submit" className="w-full">
                      {isLoading ? (
                         <div className="flex items-center justify-center gap-2">
