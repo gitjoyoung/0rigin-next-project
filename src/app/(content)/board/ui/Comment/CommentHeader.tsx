@@ -4,7 +4,7 @@ import { Icons } from '@/shared/ui/icons'
 import { useRouter } from 'next/navigation'
 
 interface Props {
-   length: number
+   commentCount: number
 }
 
 const COMMENT_HEADER_DATA = {
@@ -13,13 +13,13 @@ const COMMENT_HEADER_DATA = {
    refresh: '새로고침',
 }
 
-export default function CommentHeader({ length }: Props) {
+export default function CommentHeader({ commentCount: commentLength }: Props) {
    const router = useRouter()
    return (
       <div className="border-b border-t border-gray-200 dark:border-gray-700 flex justify-between text-xs  p-1">
          <div className="flex text-gray-700 dark:text-gray-300 items-center gap-2">
             <h1 className="font-bold">{COMMENT_HEADER_DATA.title}</h1>
-            <p className="text-red-500">{length && length}</p>
+            <p className="text-red-500">{commentLength && commentLength}</p>
             <p>{COMMENT_HEADER_DATA.count}</p>
          </div>
          <Button

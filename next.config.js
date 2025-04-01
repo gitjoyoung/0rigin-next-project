@@ -2,7 +2,12 @@
 
 const nextConfig = {
    images: {
-      domains: ['firebasestorage.googleapis.com'],
+      remotePatterns: [
+         {
+            protocol: 'https',
+            hostname: 'firebasestorage.googleapis.com',
+         },
+      ],
    }, // 이미지 도메인 추가
    typescript: {
       ignoreBuildErrors: true,

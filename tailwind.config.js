@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-   darkMode: 'class',
+   darkMode: ['class'],
    content: [
       './src/**/*.{js,ts,jsx,tsx,mdx}',
       './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -53,6 +53,16 @@ module.exports = {
             card: {
                DEFAULT: 'hsl(var(--card))',
                foreground: 'hsl(var(--card-foreground))',
+            },
+            sidebar: {
+               DEFAULT: 'hsl(var(--sidebar))',
+               foreground: 'hsl(var(--sidebar-foreground))',
+               border: 'hsl(var(--sidebar-border))',
+               accent: {
+                  DEFAULT: 'hsl(var(--sidebar-accent))',
+                  foreground: 'hsl(var(--sidebar-accent-foreground))',
+               },
+               ring: 'hsl(var(--sidebar-ring))',
             },
             chart: {
                1: 'hsl(var(--chart-1))',

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import BoardFooter from './ui/BoardFooter'
-import BoardContent from './ui/Content'
-import Pagination from './ui/Pagination/Pagination'
+import PostList from './ui/Content'
+import Pagination from './ui/Pagination/CustomPagination'
 interface Params {
    params: {
       id: string
@@ -12,14 +12,17 @@ interface Params {
 export async function generateMetadata({
    searchParams,
 }: Params): Promise<Metadata> {
-   const { page } = searchParams
+   const { page } = await searchParams
    if (page) return { title: `게시판 ${page} Page` }
+   return { title: '게시판' }
 }
 
 export default async function Page({ searchParams }: Params) {
-   const page = searchParams.page || '1'
+   const { page } = await searchParams
+   const currentPage: number = Number(page) || 1
+
    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/board?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/board?page=${currentPage}`,
       {
          method: 'GET',
          headers: {
@@ -28,12 +31,15 @@ export default async function Page({ searchParams }: Params) {
          cache: 'no-store',
       },
    )
+
+   // @TODO totalPages 만들어야 함
    const { lastPostId, postData } = await data.json()
+
    return (
-      <>
-         <BoardContent postData={postData} />
-         <Pagination lastPostId={lastPostId} pageNum={page} />
-         <BoardFooter />
-      </>
+      <section className="flex flex-col gap-4">
+         <PostList postData={postData} />
+         ㄴ <BoardFooter />
+         <Pagination totalPages={lastPostId} currentPage={currentPage} />
+      </section>
    )
 }

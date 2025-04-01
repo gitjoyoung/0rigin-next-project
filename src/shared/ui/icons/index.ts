@@ -40,7 +40,6 @@ export const Icons = {
    x: X,
    sun: Sun,
    moon: Moon,
-
    // 메뉴
    burger: Menu,
    bell: Bell,
@@ -55,6 +54,7 @@ export const Icons = {
    edit: Pencil,
    delete: Trash,
    check: Check,
+
    // 소셜 액션 아이콘
    heart: Heart,
    comment: MessageCircle,

@@ -8,14 +8,14 @@ const userEmailSchema = z.string().email('이메일 형식이 아닙니다.')
 
 const passwordSchema = z
    .string()
-   .min(8, '비밀번호는 대소문자 특수문자 포함 8자 이상이어야 합니다.')
-   .max(15, '비밀번호는 대소문자 특수문자 포함 15자 이하이어야 합니다.')
+   .min(8, '비밀번호는 대소문자 특수문자 포함 8자 이상')
+   .max(15, '비밀번호는 대소문자 특수문자 포함 15자 이하')
    .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]+$/,
-      '비밀번호는 영어 대소문자, 숫자, 특수문자를 포함해야 합니다.',
+      '비밀번호는 영어 대소문자, 숫자, 특수문자를 포함.',
    )
 
-const confirmPasswordSchema = passwordSchema
+const confirmPasswordSchema = z.string().min(1, '비밀번호가 같지않습니다.')
 
 const signUpSchema = z
    .object({
@@ -26,7 +26,7 @@ const signUpSchema = z
    })
    .passthrough()
    .refine((data) => data.password === data.confirmPassword, {
-      message: '입력하신 비밀번호가 일치하지 않습니다. 다시 한번 확인해주세요.',
+      message: '입력하신 비밀번호가 일치하지 않습니다.',
       path: ['confirmPassword'],
    })
 

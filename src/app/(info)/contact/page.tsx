@@ -1,4 +1,4 @@
-import Contact from '@/components/Contact/Contact'
+import Contact from './ui/Contact'
 
 export default function page() {
    return <Contact />

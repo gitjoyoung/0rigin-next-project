@@ -1,4 +1,5 @@
 'use client'
+
 import { ROUTES } from '@/constants/route'
 import type { Post } from '@/types/boardTypes'
 import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
@@ -11,7 +12,7 @@ interface Props {
    item: Post
 }
 
-export default function BoardListItem({ item }: Props) {
+export default function PostListItem({ item }: Props) {
    const {
       id,
       title,

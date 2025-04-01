@@ -4,8 +4,8 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import BoardFooter from '../ui/BoardFooter'
 import CommentList from '../ui/Comment'
-import BoardContent from '../ui/Content'
-import Pagination from '../ui/Pagination/Pagination'
+import PostList from '../ui/Content'
+import CustomPagination from '../ui/Pagination/CustomPagination'
 import PostRead from '../ui/Read'
 
 interface IParams {
@@ -19,8 +19,8 @@ export async function generateMetadata({
    params,
    searchParams,
 }: IParams): Promise<Metadata> {
-   const { id } = params
-   const { page } = searchParams
+   const { id } = await params
+   const { page } = await searchParams
    if (page === undefined) return { title: `${id}번 게시글` }
    return {
       title: `${id}번 게시글 ${page} 페이지 `,
@@ -34,13 +34,13 @@ interface Response {
    lastPostId: number
 }
 export default async function Page({ params, searchParams }: IParams) {
-   const { id } = params
+   const { id } = await params
    if (id === undefined) redirect(ROUTES.BOARD)
-
-   const page = searchParams.page || '1'
+   const { page } = await searchParams
+   const currentPage = Number(page) || 1
 
    const postData = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${currentPage}`,
       {
          method: 'GET',
          headers: {
@@ -53,12 +53,12 @@ export default async function Page({ params, searchParams }: IParams) {
       await postData.json()
 
    return (
-      <>
+      <section className="flex flex-col gap-4">
          <PostRead readData={readData} />
          <CommentList postId={id} />
-         <BoardContent postData={fetchedPosts} />
-         <Pagination lastPostId={lastPostId} pageNum={page} />
+         <PostList postData={fetchedPosts} />
          <BoardFooter />
-      </>
+         <CustomPagination totalPages={lastPostId} currentPage={currentPage} />
+      </section>
    )
 }

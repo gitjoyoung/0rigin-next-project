@@ -9,3 +9,8 @@ export interface QuizData {
    hint: string
    answer: string
 }
+
+export interface QuizBoardData {
+   name: string
+   path: string
+}

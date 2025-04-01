@@ -13,16 +13,14 @@ export default function GlobalLayoutClient({
 }: RootLayoutClientProps) {
    return (
       <div className="flex min-h-screen flex-col items-center w-full bg-background">
-         {/* Ticker는 전체 너비 사용 */}
-         <div className="w-full">
-            <Ticker />
-         </div>
-
          {/* 헤더, 메인, 푸터를 감싸는 래퍼 */}
-         <div className="w-full max-w-[1280px] px-4">
+         <div className="w-full max-w-[1280px] px-1 px-auto flex flex-col flex-1">
+            <Ticker />
             <Header />
-            <main className="min-h-[80vh] w-full">{children}</main>
-            <Footer />
+            <main className="flex-1 w-full">{children}</main>
+            <div className="mt-auto">
+               <Footer />
+            </div>
          </div>
       </div>
    )

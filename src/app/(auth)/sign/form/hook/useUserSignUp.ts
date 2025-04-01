@@ -1,42 +1,45 @@
 'use client'
 
-import { signUpSchema } from '@/schema/signFormSchema'
+import { signUp } from '@/auth'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { signUpSchema } from '../type/schema'
 
 export const useUserSignUp = () => {
+   const router = useRouter()
    const [error, setError] = useState('')
-   const { push } = useRouter()
+   const [isLoading, setIsLoading] = useState(false)
 
    const handleSignUpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      const formData = new FormData(e.target as HTMLFormElement)
-      const formObject = Object.fromEntries(formData)
-      const result = signUpSchema.safeParse(formObject)
-      const newErrors = []
+      setError('')
+      setIsLoading(true)
 
-      if (result.success === false) {
-         result.error.errors.forEach((error) => {
-            console.log(error)
-            newErrors.push(error.message)
-         })
-         setError(newErrors.join(', '))
-         return
+      try {
+         const formData = new FormData(e.target as HTMLFormElement)
+         const formObject = Object.fromEntries(formData)
+         const result = signUpSchema.safeParse(formObject)
+         const newErrors = []
+
+         if (result.success === false) {
+            result.error.errors.forEach((error) => {
+               console.log(error)
+               newErrors.push(error.message)
+            })
+            setError(newErrors.join('\n'))
+            return false
+         }
+         await signUp(formData)
+         router.push('/sign/welcome')
+         return true
+      } catch (err) {
+         setError('회원가입 처리 중 오류가 발생했습니다. 다시 시도해주세요.')
+         console.error('Sign up error:', err)
+         return false
+      } finally {
+         setIsLoading(false)
       }
-
-      const fetchResult = await fetch('/api/signup', {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(formObject),
-      })
-
-      const { success, message } = await fetchResult.json()
-      if (success) {
-         return push('/')
-      }
-      setError(message)
    }
-   return { error, handleSignUpSubmit }
+
+   return { error, isLoading, handleSignUpSubmit }
 }
