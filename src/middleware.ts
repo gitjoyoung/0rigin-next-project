@@ -33,14 +33,14 @@ const getViewportType = (request: NextRequest): 'mobile' | 'desktop' => {
 const handleAuth = async (request: NextRequest, session: any) => {
    // 인증된 사용자가 접근하면 안 되는 페이지 체크
    if (
-      session?.user &&
+      session?.is_anonymous &&
       AUTH_FORBIDDEN_ROUTES.includes(request.nextUrl.pathname)
    ) {
       return NextResponse.redirect(new URL('/', request.url))
    }
 
    // 보호된 경로에 대한 인증 체크
-   if (isProtectedRoute(request.nextUrl.pathname) && !session?.user) {
+   if (isProtectedRoute(request.nextUrl.pathname) && session?.is_anonymous) {
       return NextResponse.redirect(new URL(ROUTE_LOGIN, request.url))
    }
 
@@ -50,10 +50,10 @@ const handleAuth = async (request: NextRequest, session: any) => {
 // 메인 미들웨어 함수
 export async function middleware(request: NextRequest) {
    // 수파베이스에서 세션 정보 가져오기
-   const supabaseResponse = await updateSession(request)
+   const { supabaseResponse, user } = await updateSession(request)
 
    // 인증 처리
-   const authResponse = await handleAuth(request, supabaseResponse)
+   const authResponse = await handleAuth(request, user)
    if (authResponse) return authResponse
 
    // 뷰포트 설정

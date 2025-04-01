@@ -1,7 +1,5 @@
-import { auth } from '@/auth'
-import MyPage from './_components/MyPage'
+import MyPage from './ui'
 
 export default async function page() {
-   const session = await auth()
-   return <MyPage session={session} />
+   return <MyPage />
 }
