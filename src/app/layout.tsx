@@ -1,13 +1,11 @@
-import { AuthProvider } from '@/providers/AuthProvider'
-import { SpeedInsights } from '@vercel/speed-insights/next'
-import { SessionProvider } from 'next-auth/react'
-import { ThemeProvider } from 'next-themes'
+import AppProviders from '@/providers'
+import Footer from '@/widgets/footer'
+import Header from '@/widgets/header'
+import Ticker from '@/widgets/ticker'
 import { Fira_Code, Roboto } from 'next/font/google'
 import { Suspense } from 'react'
-import GlobalLayoutClient from './global-layout-client'
 import './globals.css'
 import Loading from './loading'
-import ReactQueryProviders from './ReactQueryProvider'
 
 const roboto = Roboto({
    weight: '400',
@@ -33,24 +31,21 @@ export default function RootLayout({
          className={`${roboto.className} ${firaCode.variable}`}
       >
          <body>
-            <ThemeProvider
-               attribute="class"
-               defaultTheme="system"
-               enableSystem
-               disableTransitionOnChange
-            >
+            <AppProviders>
                <div id="modal-root" />
-               <SessionProvider>
-                  <AuthProvider>
-                     <ReactQueryProviders>
-                        <Suspense fallback={<Loading />}>
-                           <GlobalLayoutClient>{children}</GlobalLayoutClient>
-                        </Suspense>
-                     </ReactQueryProviders>
-                  </AuthProvider>
-               </SessionProvider>
-               <SpeedInsights />
-            </ThemeProvider>
+               <div className="flex min-h-screen flex-col items-center w-full bg-background">
+                  <div className="w-full max-w-[1280px] px-1 px-auto flex flex-col flex-1">
+                     <Ticker />
+                     <Header />
+                     <main className="flex-1 w-full">
+                        <Suspense fallback={<Loading />}>{children}</Suspense>
+                     </main>
+                     <div className="mt-auto">
+                        <Footer />
+                     </div>
+                  </div>
+               </div>
+            </AppProviders>
          </body>
       </html>
    )

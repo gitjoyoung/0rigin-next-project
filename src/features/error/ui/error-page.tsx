@@ -11,17 +11,10 @@ import {
 } from '@/shared/shadcn/ui/card'
 import { motion } from 'framer-motion'
 import { AlertCircle } from 'lucide-react'
-import { useEffect } from 'react'
-
-export interface ErrorProps {
-   error: Error & { digest?: string }
-   reset: () => void
-}
-
-export function ErrorPage({ error, reset }: ErrorProps) {
-   useEffect(() => {
-      console.error('Error:', error)
-   }, [error])
+import type { ErrorProps } from 'next/error'
+import { useRouter } from 'next/navigation'
+export function ErrorPage({ statusCode, hostname, title }: ErrorProps) {
+   const router = useRouter()
 
    return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
@@ -36,7 +29,7 @@ export function ErrorPage({ error, reset }: ErrorProps) {
                      <AlertCircle className="h-16 w-16 text-red-500" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-center text-white">
-                     {error.message || '서버 오류가 발생했습니다'}
+                     {title || '서버 오류가 발생했습니다'}
                   </CardTitle>
                </CardHeader>
                <CardContent className="text-center text-slate-300 flex flex-col gap-2">
@@ -45,16 +38,31 @@ export function ErrorPage({ error, reset }: ErrorProps) {
                      후 다시 시도해 주세요.
                   </p>
                   <p className="text-sm text-slate-400">
-                     {error.digest && `오류 코드: ${error.digest}`}
+                     {statusCode && `오류 코드: ${statusCode}`}
                   </p>
                </CardContent>
-               <CardFooter className="flex justify-center">
+               <CardFooter className="flex justify-center gap-4">
                   <Button
-                     onClick={reset}
+                     onClick={() => {
+                        if (hostname) {
+                           window.location.href = hostname
+                        } else {
+                           router.push('/')
+                        }
+                     }}
                      variant="outline"
                      className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
                   >
                      다시 시도
+                  </Button>
+                  <Button
+                     onClick={() => {
+                        router.push('/')
+                     }}
+                     variant="outline"
+                     className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
+                  >
+                     홈으로
                   </Button>
                </CardFooter>
             </Card>

@@ -1,14 +1,22 @@
 // app/global-error.tsx
 'use client'
 
-import type { ErrorProps } from '@/features/error'
 import { ErrorPage } from '@/features/error'
+import type { ErrorProps } from 'next/error'
 
-export default function GlobalError({ error, reset }: ErrorProps) {
+export default function GlobalError({
+   statusCode,
+   hostname,
+   title,
+}: ErrorProps) {
    return (
       <html>
          <body>
-            <ErrorPage error={error} reset={reset} />
+            <ErrorPage
+               statusCode={statusCode}
+               hostname={hostname}
+               title={title}
+            />
          </body>
       </html>
    )

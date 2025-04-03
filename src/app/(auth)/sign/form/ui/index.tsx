@@ -8,11 +8,11 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
-import { LoadingSpinner } from '@/widgets/Spinner/loading-spinner'
+import { LoadingSpinner } from '@/widgets/spinner/loading-spinner'
 import { useUserSignUp } from '../hook/useUserSignUp'
 import { passwordSchema, userEmailSchema } from '../type/schema'
-import GenderRadioButton from './GenderRadioButton'
-import InputValidator from './InputValidator'
+import GenderRadioButton from './gender-radio-button'
+import InputValidator from './input-validator'
 
 export default function SignForm() {
    const { error, handleSignUpSubmit, isLoading } = useUserSignUp()

@@ -1,8 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { Metadata } from 'next'
-import BoardFooter from './ui/BoardFooter'
-import CustomPagination from './ui/Pagination/CustomPagination'
-import PostList from './ui/Post'
+import BoardFooter from './ui/board-footer'
+import CustomPagination from './ui/pagination/custom-pagination'
+import PostList from './ui/post'
 
 interface Params {
    params: {
