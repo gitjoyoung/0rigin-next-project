@@ -1,16 +1,15 @@
 'use client'
 
 import { Button } from '@/shared/shadcn/ui/button'
-import type { CreatePostData, Post } from '@/types/boardTypes'
 import { useRouter } from 'next/navigation'
 import { useBoardForm } from '../../hooks/useBoardForm'
+import type { IPost } from '../../types/post-type'
 import BoardAccordion from './board-accordion'
 import BoardFormHeader from './board-form-header'
-import MarkDownEditor from './mark-down-editor'
 
 interface Props {
-   editData?: Post | null
-   submitPost: (formData: CreatePostData) => void
+   editData?: IPost
+   submitPost: (formData: any) => void
 }
 
 export default function BoardForm({ submitPost, editData = null }: Props) {
@@ -29,10 +28,10 @@ export default function BoardForm({ submitPost, editData = null }: Props) {
             {/* 내용 contentEditTable 로 태그를 추가함 */}
             <BoardAccordion />
             {/* 글쓰기 마크다운 */}
-            <MarkDownEditor
+            {/* <MarkDownEditor
                markDownContent={markdownContent}
                setMarkDownContent={setMarkdownContent}
-            />
+            /> */}
             {/* 제출 버튼 */}
             <div className="flex gap-6 justify-end my-2">
                <Button type="button" onClick={() => router.back()}>

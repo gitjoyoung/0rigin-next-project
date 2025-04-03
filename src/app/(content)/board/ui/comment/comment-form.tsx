@@ -4,17 +4,14 @@ import { commentSchema } from '@/schema/commentSchema'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
-import type { CreateCommentData } from '@/types/commentTypes'
-import { useRouter } from 'next/navigation'
 import React, { useRef } from 'react'
-
+import type { IComment } from '../../types/comment-type'
 interface Props {
    postId: string
 }
 export default function CommentForm({ postId }: Props) {
    // 댓글 폼 참조
    const commentFormRef = useRef(null)
-   const { refresh } = useRouter()
 
    // 필드 초기화
    const clearFormFields = () => {
@@ -26,11 +23,16 @@ export default function CommentForm({ postId }: Props) {
       const password = commentFormRef.current.password.value
       const comment = commentFormRef.current.comment.value
 
-      const commentObject: CreateCommentData = {
-         postId,
-         nickname,
-         password,
-         comment,
+      const commentObject: Partial<IComment> = {
+         post_id: Number(postId),
+         parent_id: 0,
+         content: comment,
+         author_id: nickname,
+         guest_name: nickname,
+         password: password,
+         is_approved: true,
+         is_edited: false,
+         depth: 0,
       }
       const result = commentSchema.safeParse(commentObject)
       if (result.success === false) {

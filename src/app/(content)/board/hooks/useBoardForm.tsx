@@ -1,14 +1,13 @@
 import { boardSchema } from '@/schema/boardSchema'
-import { sanitized } from '@/shared/utils/validators/boardValidators/formatSanized'
-import type { CreatePostData, Post } from '@/types/boardTypes'
 import { useState } from 'react'
+import type { IPost, IPostContent } from '../types/post-type'
 
 export function useBoardForm(
-   editData: Post | null,
-   submitPost: (formData: CreatePostData) => void,
+   editData: IPost,
+   submitPost: (formData: Partial<IPost>) => void,
 ) {
-   const [markdownContent, setMarkdownContent] = useState(
-      editData?.markdown || '',
+   const [markdownContent, setMarkdownContent] = useState<string>(
+      typeof editData?.content === 'string' ? editData.content : '',
    )
 
    const generateThumbnail = (htmlString: string): string => {
@@ -36,26 +35,34 @@ export function useBoardForm(
    ): Promise<void> => {
       e.preventDefault()
       const form = e.currentTarget
-      const nickname = form.nickname?.value
-      const password = form.password?.value
+      const guestName = form.nickname?.value
       const title = form.subject.value
 
-      const markdown = markdownContent
-      const content = await sanitized(markdownContent)
-      const thumbnail = generateThumbnail(content)
-      const summary = generateSummary(content)
-
-      const formData: CreatePostData = {
-         nickname,
-         password,
-         title,
-         content,
-         markdown,
-         summary,
-         thumbnail,
+      const postContent: IPostContent = {
+         type: 'markdown',
+         content: [
+            {
+               type: 'text',
+               text: markdownContent,
+            },
+         ],
       }
 
-      const validateSchema = await boardSchema.safeParse({ ...formData })
+      const formData: Partial<IPost> = {
+         title,
+         content: postContent,
+         author: {
+            id: 'guest',
+            name: guestName || '',
+            email: '',
+         },
+         status: 'published',
+         views: 0,
+         likes: 0,
+         comments: 0,
+      }
+
+      const validateSchema = await boardSchema.safeParse(formData)
       if (!validateSchema.success) {
          console.log(validateSchema.error)
          return
