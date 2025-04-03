@@ -1,8 +1,9 @@
 'use client'
 
-import { fetchComments } from '@/service/board/commentApi'
+import { createClient } from '@/lib/supabase/client'
 import type { CommentData } from '@/types/commentTypes'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import CommentForm from './comment-form'
 import CommentHeader from './comment-header'
 import CommentItem from './comment-item'
@@ -10,32 +11,36 @@ import CommentItem from './comment-item'
 interface Props {
    postId: string
 }
+const supabase = createClient()
+
+const fetchComments = async (postId: string) => {
+   const { data: commentsData } = await supabase
+      .from('comments')
+      .select('*')
+      .eq('post_id', postId)
+   return commentsData
+}
 
 export default function CommentList({ postId }: Props) {
-   const [comments, setComments] = useState<CommentData[]>([])
-   const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
-
-   const fetchData = async (postId: string) => {
-      const commentsData = await fetchComments(postId)
-      setComments(commentsData)
-   }
-
-   useEffect(() => {
-      fetchData(postId)
-   }, [postId])
-
+   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
+      null,
+   )
+   const { data: commentsData = [] } = useQuery<CommentData[]>({
+      queryKey: ['comments', postId],
+      queryFn: () => fetchComments(postId),
+   })
    return (
       <div className="my-2">
          {/* 댓글 헤더 */}
-         <CommentHeader commentCount={comments.length} />
+         <CommentHeader commentCount={commentsData.length} />
 
          {/* 댓글 리스트 */}
-         {comments.map((data) => (
+         {commentsData.map((data) => (
             <CommentItem
                key={data.id}
                commentData={data}
-               isEditing={editingCommentId === data.id}
-               setIsEditing={setEditingCommentId}
+               isEditing={selectedCommentId === data.id}
+               setIsEditing={setSelectedCommentId}
             />
          ))}
 

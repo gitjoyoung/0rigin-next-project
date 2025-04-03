@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import type { IPost } from '../../types/post'
+import type { IPost } from '../../types/post-type'
 import PostListItem from './post-list-item'
 
 interface Props {
@@ -20,7 +20,7 @@ export default function Post({ postData }: Props) {
                <p className="w-16">추천</p>
             </div>
          </div>
-         {Array.isArray(postData) &&
+         {postData &&
             postData.map((item: IPost) => (
                <div
                   key={nanoid()}

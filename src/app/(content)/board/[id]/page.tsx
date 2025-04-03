@@ -49,9 +49,13 @@ export default async function Page({ params, searchParams }: IParams) {
       .eq('id', id)
       .single()
 
+   if (readError) {
+      throw new Error(readError.message)
+   }
+
    return (
       <section className="flex flex-col gap-4">
-         <PostRead readData={readData} />
+         <PostRead {...readData} />
          <CommentList postId={id} />
          <Post postData={posts} />
          <BoardFooter />

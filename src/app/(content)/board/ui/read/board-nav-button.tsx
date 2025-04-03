@@ -1,6 +1,6 @@
 'use client'
-import CustomLink from '@/components/common/links/CustomLink'
 import { ROUTES } from '@/constants/route'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
 interface Props {
@@ -13,17 +13,13 @@ export default function BoardNavButton({ postID }: Props) {
 
    return (
       <div className="flex justify-between p-1 items-center my-3">
-         <CustomLink
-            href={`${ROUTES.BOARD}/${Number(postID) - 1}?page=${search}`}
-         >
+         <Link href={`${ROUTES.BOARD}/${Number(postID) - 1}?page=${search}`}>
             이전 글
-         </CustomLink>
-         <CustomLink href={`${ROUTES.BOARD}`}>목록</CustomLink>
-         <CustomLink
-            href={`${ROUTES.BOARD}/${Number(postID) + 1}?page=${search}`}
-         >
+         </Link>
+         <Link href={`${ROUTES.BOARD}`}>목록</Link>
+         <Link href={`${ROUTES.BOARD}/${Number(postID) + 1}?page=${search}`}>
             다음 글
-         </CustomLink>
+         </Link>
       </div>
    )
 }

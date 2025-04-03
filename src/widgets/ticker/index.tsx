@@ -1,22 +1,21 @@
 'use client'
 
-import type { TickerCounts } from '@/types/tickerTypes'
+import type { IStats } from '@/widgets/ticker/model/ticker-types'
 import { useQuery } from '@tanstack/react-query'
-import { getCountStats } from './api/getCountStats'
-import TickerList from './ui/TickerList'
-import TickerLoader from './ui/TickerLoader'
+import { getDailyStats } from './api/get-daily-stats'
+import TickerList from './ui/ticker-list'
+import TickerLoader from './ui/ticker-loader'
 
 export default function Ticker() {
-   const { data, isLoading } = useQuery<TickerCounts>({
+   const { data: statsData, isLoading } = useQuery<Partial<IStats>>({
       queryKey: ['tickerStats'],
-      queryFn: getCountStats,
+      queryFn: getDailyStats,
       refetchInterval: 5 * 60 * 1000, // 5분마다 자동 갱신
    })
 
    return (
       <aside className="relative bg-black text-white text-xs w-full ">
-         {isLoading && <TickerLoader />}
-         <TickerList counts={data || { post: 0, visit: 0, user: 0 }} />
+         {isLoading ? <TickerLoader /> : <TickerList statsData={statsData} />}
       </aside>
    )
 }

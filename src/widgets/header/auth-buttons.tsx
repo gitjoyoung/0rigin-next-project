@@ -1,7 +1,7 @@
 'use client'
 
-import { signOut } from '@/auth'
-import { ROUTE_LOGIN, ROUTE_MYPAGE, ROUTE_SIGN } from '@/constants/pathname'
+import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
+import { signOut } from '@/shared/actions/auth-action'
 import { Button } from '@/shared/shadcn/ui/button'
 import { useAuthStore } from '@/store/authStore'
 import Link from 'next/link'
@@ -33,7 +33,7 @@ export default function AuthButtons() {
                   <p>로그아웃</p>
                </Button>
                <Button asChild size="sm">
-                  <Link href={ROUTE_MYPAGE}>마이페이지</Link>
+                  <Link href={ROUTE_MY_PAGE}>마이페이지</Link>
                </Button>
             </div>
          )}

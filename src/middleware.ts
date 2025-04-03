@@ -3,15 +3,15 @@ import { match } from 'path-to-regexp'
 import {
    ROUTE_FORGET,
    ROUTE_LOGIN,
-   ROUTE_MYPAGE,
+   ROUTE_MY_PAGE,
    ROUTE_SIGN,
    ROUTE_SIGN_FORM,
    ROUTE_SIGN_TERM,
 } from './constants/pathname'
-import { updateSession } from './lib/supabase/supaMidleware'
+import { updateSession } from './lib/supabase/supabase-session'
 
 // 상수 정의
-const PROTECTED_ROUTES = [ROUTE_MYPAGE]
+const PROTECTED_ROUTES = [ROUTE_MY_PAGE]
 export const AUTH_FORBIDDEN_ROUTES = [
    ROUTE_LOGIN,
    ROUTE_SIGN,

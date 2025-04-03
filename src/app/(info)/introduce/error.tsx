@@ -1,8 +1,8 @@
 // app/introduce/error.tsx
 'use client'
 
-import { ErrorPage } from '@/features/error'
-import type { ErrorProps } from '@/features/error'
+import type { ErrorProps } from '@/widgets/error'
+import { ErrorPage } from '@/widgets/error'
 
 export default function IntroduceError({ error, reset }: ErrorProps) {
    return (

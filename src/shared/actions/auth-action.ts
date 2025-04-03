@@ -10,21 +10,16 @@ export async function auth() {
    return user
 }
 
-export const signInWithCredentials = async (
-   formData: FormData,
-): Promise<any> => {
-   const email = formData.get('email') as string
-   const password = formData.get('password') as string
+export const Login = async (formData: FormData): Promise<any> => {
    const supabase = await createClient()
-
-   const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-   })
+   const loginData = {
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+   }
+   const { error } = await supabase.auth.signInWithPassword(loginData)
    if (error) {
       return { error: error.message }
    }
-
    const {
       data: { user },
    } = await supabase.auth.getUser()

@@ -4,7 +4,7 @@ import { Slot } from '@radix-ui/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
 import * as React from 'react'
 
-import { cn } from '@/shared/utils'
+import { cn } from '@/shared/utils/cn'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from './sheet'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'

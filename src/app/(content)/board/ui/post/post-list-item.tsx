@@ -5,7 +5,7 @@ import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCu
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import type { IPost } from '../../types/post'
+import type { IPost } from '../../types/post-type'
 
 interface Props {
    item: IPost

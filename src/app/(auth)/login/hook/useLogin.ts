@@ -1,8 +1,8 @@
-import { signInWithCredentials } from '@/auth'
 import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod'
+import { Login } from '../../../../shared/actions/auth-action'
 import { LoginSchema } from '../types/schema'
 
 export const useLogin = () => {
@@ -18,7 +18,7 @@ export const useLogin = () => {
          const formData = new FormData()
          formData.append('email', values.email)
          formData.append('password', values.password)
-         const result = await signInWithCredentials(formData)
+         const result = await Login(formData)
 
          if (result.error) {
             setLoginError('아이디 또는 비밀번호가 일치하지 않습니다.')

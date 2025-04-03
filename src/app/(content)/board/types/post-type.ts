@@ -1,6 +1,9 @@
 export interface IPostContent {
-   type: string
-   content: string
+   type: 'text' | 'markdown'
+   content: {
+      type: string
+      text: string
+   }[]
 }
 
 export interface IPost {

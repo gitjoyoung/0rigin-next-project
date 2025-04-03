@@ -1,6 +1,5 @@
 import { AuthProvider } from '@/providers/auth-provider'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import ReactQueryProvider from './react-query-provider'
 
@@ -16,11 +15,9 @@ export default function AppProviders({ children }: AppProvidersProps) {
          enableSystem
          disableTransitionOnChange
       >
-         <SessionProvider>
-            <AuthProvider>
-               <ReactQueryProvider>{children}</ReactQueryProvider>
-            </AuthProvider>
-         </SessionProvider>
+         <AuthProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+         </AuthProvider>
          <SpeedInsights />
       </ThemeProvider>
    )

@@ -8,7 +8,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
-import { LoadingSpinner } from '@/widgets/spinner/loading-spinner'
+import { LoadingSpinner } from '@/shared/ui/spinner/loading-spinner'
 import { useUserSignUp } from '../hook/useUserSignUp'
 import { passwordSchema, userEmailSchema } from '../type/schema'
 import GenderRadioButton from './gender-radio-button'

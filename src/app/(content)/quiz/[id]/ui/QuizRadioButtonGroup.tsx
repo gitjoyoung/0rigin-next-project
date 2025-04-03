@@ -1,7 +1,7 @@
 'use client'
 import { Label } from '@/shared/shadcn/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/shadcn/ui/radio-group'
-import { cn } from '@/shared/utils'
+import { cn } from '@/shared/utils/cn'
 
 interface Props {
    questions: Array<{ id: string; value: string }>

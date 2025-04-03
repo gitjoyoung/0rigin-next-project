@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import MypageMenu from './MypageMenu'
 import LikedPosts from './contents/LikedPosts'
 import MyComments from './contents/MyComments'
-import MyPosts from './contents/MyPosts'
-import Settings from './contents/Settings'
+import MyPosts from './contents/my-posts'
+import Settings from './contents/setting'
 
 type MenuItem = 'posts' | 'comments' | 'likes' | 'settings'
 

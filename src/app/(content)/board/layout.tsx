@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import BoardHeader from './ui/BoardHeader'
+import BoardHeader from './ui/board-header'
 export const metadata: Metadata = {
    title: '게시판 홈',
    description: '누구나 자유롭게 소통 가능한 게시판입니다.',

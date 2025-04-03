@@ -2,7 +2,6 @@
 
 import { Button } from '@/shared/shadcn/ui/button'
 import { useState } from 'react'
-import BoardModal from './BoardModal'
 
 interface Props {
    postId: string
@@ -23,13 +22,7 @@ export default function PostUpdateButtons({ postId }: Props) {
 
    return (
       <>
-         {isModalOpen && (
-            <BoardModal
-               postId={postId}
-               onClose={() => setIsModalOpen(false)}
-               flag={modalMode}
-            />
-         )}
+         {isModalOpen && <div>모달</div>}
          <div className="flex justify-end gap-3 my-2 ">
             <Button variant="outline" size="sm" onClick={handleEdit}>
                수정
