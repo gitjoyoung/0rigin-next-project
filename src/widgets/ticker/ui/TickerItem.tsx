@@ -1,5 +1,5 @@
 'use client'
-import { formatNumberToString } from '@/shared/utils/formatNumberToString'
+import { formatNumberToString } from '@/shared/utils/format-number'
 import { motion } from 'framer-motion'
 
 interface TickerItemProps {

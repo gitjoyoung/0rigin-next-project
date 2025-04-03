@@ -1,16 +1,16 @@
 /* eslint-disable import/prefer-default-export */
 import { db } from '@/lib/firebase'
+import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCustomDate'
 import { CommentData, CreateCommentData } from '@/types/commentTypes'
-import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import {
-   collection,
-   doc,
-   serverTimestamp,
-   deleteDoc,
-   getDocs,
-   query,
-   orderBy,
    addDoc,
+   collection,
+   deleteDoc,
+   doc,
+   getDocs,
+   orderBy,
+   query,
+   serverTimestamp,
 } from 'firebase/firestore'
 
 // 댓글 추가

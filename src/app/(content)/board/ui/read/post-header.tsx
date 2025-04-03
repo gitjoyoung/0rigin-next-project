@@ -1,7 +1,7 @@
 import { Separator } from '@/shared/shadcn/ui/separator'
+import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCustomDate'
+import { formatNumberWithUnit } from '@/shared/utils/validators/boardValidators/formatNumberWithUnit'
 import type { Post } from '@/types/boardTypes'
-import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
-import { formatNumberWithUnit } from '@/utils/boardValidators/formatNumberWithUnit'
 import PostUpdateButtons from './PostUpdateButtons'
 
 const POST_HEADER_DATA = {

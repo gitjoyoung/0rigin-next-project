@@ -1,14 +1,14 @@
 'use client'
 
 import { ROUTES } from '@/constants/route'
-import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
-import { formatValue } from '@/utils/statsValidators/formatNumber'
+import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCustomDate'
+import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import type { Post } from '../../types/post'
+import type { IPost } from '../../types/post'
 
 interface Props {
-   item: Post
+   item: IPost
 }
 
 export default function PostListItem({ item }: Props) {

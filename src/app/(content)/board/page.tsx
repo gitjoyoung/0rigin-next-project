@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Metadata } from 'next'
 import BoardFooter from './ui/board-footer'
 import CustomPagination from './ui/pagination/custom-pagination'
-import PostList from './ui/post'
+import Post from './ui/post'
 
 interface Params {
    params: {
@@ -44,12 +44,9 @@ export default async function Page({ searchParams }: Params) {
    return (
       <main>
          <section className="flex flex-col gap-4 mb-10">
-            <PostList postData={posts || []} />
+            <Post postData={posts || []} />
             <BoardFooter />
-            <CustomPagination
-               totalPages={totalPages}
-               currentPage={currentPage}
-            />
+            <CustomPagination currentPage={currentPage} />
          </section>
       </main>
    )

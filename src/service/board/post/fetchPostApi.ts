@@ -1,3 +1,6 @@
+import { db } from '@/lib/firebase'
+import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCustomDate'
+import { Post, TopPost } from '@/types/boardTypes'
 import {
    collection,
    doc,
@@ -8,9 +11,6 @@ import {
    query,
    startAt,
 } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
-import { Post, TopPost } from '@/types/boardTypes'
-import formatCustomDate from '@/utils/boardValidators/formatCustomDate'
 import { getCommentCount } from '../commentApi'
 
 export const fetchLatestPostId = async (): Promise<number | null> => {

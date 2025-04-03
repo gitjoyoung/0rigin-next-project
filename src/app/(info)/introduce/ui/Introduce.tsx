@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useRef, useState, useEffect } from 'react'
+import { TickerCounts } from '@/types/common/tickerTypes'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import CommunityStats from './StatList'
+import { useEffect, useRef, useState } from 'react'
 import INTRODUCE_TEXT from '../model/constants'
-import { TickerCounts } from '@/types/common/tickerTypes'
+import CommunityStats from './StatList'
 
 interface Props {
    counts: TickerCounts

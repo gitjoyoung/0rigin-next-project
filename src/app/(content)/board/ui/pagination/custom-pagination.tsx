@@ -11,13 +11,10 @@ import { cn } from '@/shared/utils/cn'
 
 interface PaginationProps {
    currentPage: number
-   totalPages: number
 }
 
-export default function CustomPagination({
-   currentPage,
-   totalPages,
-}: PaginationProps) {
+export default function CustomPagination({ currentPage }: PaginationProps) {
+   const totalPages = 100
    const itemsPerPage = 5 // 한 번에 보여줄 페이지 수
 
    const getPageNumbers = () => {

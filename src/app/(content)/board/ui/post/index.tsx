@@ -1,12 +1,12 @@
 import { nanoid } from 'nanoid'
-import type { Post } from '../../types/post'
+import type { IPost } from '../../types/post'
 import PostListItem from './post-list-item'
 
 interface Props {
-   postData: Post[]
+   postData: IPost[]
 }
 
-export default function PostList({ postData }: Props) {
+export default function Post({ postData }: Props) {
    if (!postData) return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
    return (
       <div className="border dark:border-gray-700 border-gray-200 w-full ">
@@ -21,7 +21,7 @@ export default function PostList({ postData }: Props) {
             </div>
          </div>
          {Array.isArray(postData) &&
-            postData.map((item: Post) => (
+            postData.map((item: IPost) => (
                <div
                   key={nanoid()}
                   className={`border-b last:border-b-0 hover:bg-gray-200 dark:hover:bg-gray-800`}

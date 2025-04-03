@@ -1,12 +1,12 @@
-export interface PostContent {
+export interface IPostContent {
    type: string
    content: string
 }
 
-export interface Post {
+export interface IPost {
    id: string
    title: string
-   content: PostContent
+   content: IPostContent
    author: {
       id: string
       name: string
@@ -28,15 +28,15 @@ export interface Post {
    }[]
 }
 
-export interface CreatePostInput {
+export interface ICreatePostInput {
    title: string
-   content: PostContent
+   content: IPostContent
    tags?: string[]
    category?: string
    attachments?: File[]
 }
 
-export interface UpdatePostInput extends Partial<CreatePostInput> {
+export interface UpdatePostInput extends Partial<ICreatePostInput> {
    id: string
-   status?: Post['status']
+   status?: IPost['status']
 }

@@ -16,7 +16,7 @@ export default function MyPage() {
    useEffect(() => {
       const cleanup = initializeAuth()
       return cleanup
-   }, [])
+   }, [user])
 
    const handleMenuClick = (menu: MenuItem) => {
       setSelectedMenu(menu)

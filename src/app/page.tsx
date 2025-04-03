@@ -1,4 +1,7 @@
-import { Post, TopPost } from '@/types/boardTypes'
+import { createClient } from '@/lib/supabase/server'
+import AdSenseBanner from '@/widgets/adsense-banner.tsx'
+import Banner from '@/widgets/banner'
+import Post from './(content)/board/ui/post'
 
 export const metadata = {
    title: {
@@ -9,26 +12,24 @@ export const metadata = {
    keywords: ['origin', '0rigin'],
    icon: '/favicon.ico',
 }
-interface Response {
-   topData: TopPost[]
-   fetchedPosts: Post[]
-}
 
 export default async function Home() {
-   // const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home`, {
-   //    method: 'GET',
-   //    headers: {
-   //       'Content-Type': 'application/json',
-   //    },
-   //    cache: 'no-store',
-   // })
-   // const { topData, fetchedPosts }: Response = await data.json()
+   const supabase = await createClient()
+   const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(5)
+
+   if (error) {
+      throw new Error(error.message)
+   }
 
    return (
       <div className="flex flex-col gap-2">
-         {/* <AdBanner />
-         <Banner topData={topData} />
-         <PostList postData={fetchedPosts} /> */}
+         <AdSenseBanner />
+         <Banner topData={posts} />
+         <Post postData={posts} />
       </div>
    )
 }

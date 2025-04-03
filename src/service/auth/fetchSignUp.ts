@@ -1,5 +1,5 @@
 import { auth, db } from '@/lib/firebase'
-import saltAndHashPassword from '@/utils/authValidators/password'
+import saltAndHashPassword from '@/shared/utils/validators/authValidators/password'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { DocumentReference, addDoc, collection } from 'firebase/firestore'
 

@@ -1,12 +1,12 @@
 import { ROUTES } from '@/constants/route'
-import { Post } from '@/types/boardTypes'
+import { createClient } from '@/lib/supabase/server'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import BoardFooter from '../ui/BoardFooter'
-import CommentList from '../ui/Comment'
-import CustomPagination from '../ui/Pagination/CustomPagination'
-import PostList from '../ui/Post'
-import PostRead from '../ui/Read'
+import BoardFooter from '../ui/board-footer'
+import CommentList from '../ui/comment'
+import CustomPagination from '../ui/pagination/custom-pagination'
+import Post from '../ui/post'
+import PostRead from '../ui/read'
 
 interface IParams {
    params: {
@@ -28,37 +28,34 @@ export async function generateMetadata({
    }
 }
 
-interface Response {
-   fetchedPosts: Post[]
-   readData: Post
-   lastPostId: number
-}
 export default async function Page({ params, searchParams }: IParams) {
    const { id } = await params
    if (id === undefined) redirect(ROUTES.BOARD)
    const { page } = await searchParams
-   const currentPage = Number(page) || 1
+   const currentPage: number = Number(page) || 1
+   const POST_PER_PAGE = 20
 
-   const postData = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/board/read?id=${id}&page=${currentPage}`,
-      {
-         method: 'GET',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         cache: 'no-store',
-      },
-   )
-   const { fetchedPosts, readData, lastPostId }: Response =
-      await postData.json()
+   const supabase = await createClient()
+
+   const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('id', { ascending: false })
+      .range((currentPage - 1) * POST_PER_PAGE, currentPage * POST_PER_PAGE - 1)
+
+   const { data: readData, error: readError } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single()
 
    return (
       <section className="flex flex-col gap-4">
          <PostRead readData={readData} />
          <CommentList postId={id} />
-         <PostList postData={fetchedPosts} />
+         <Post postData={posts} />
          <BoardFooter />
-         <CustomPagination totalPages={lastPostId} currentPage={currentPage} />
+         <CustomPagination currentPage={currentPage} />
       </section>
    )
 }

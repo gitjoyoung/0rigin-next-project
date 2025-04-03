@@ -4,7 +4,7 @@ import uploadImageToFirebase from '@/service/board/imageApi'
 import {
    generateErrorMessage,
    validateFile,
-} from '@/utils/boardValidators/imageValidators'
+} from '@/shared/utils/validators/boardValidators/imageValidators'
 import { PhotoIcon } from '@heroicons/react/20/solid'
 import '@uiw/react-markdown-preview/markdown.css'
 import { ContextStore, commands } from '@uiw/react-md-editor'
