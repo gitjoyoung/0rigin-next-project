@@ -29,13 +29,15 @@ export default function CommentList({ postId }: Props) {
       queryKey: ['comments', postId],
       queryFn: () => fetchComments(postId),
    })
+
+   const today = new Date()
    const textData: IComment[] = [
       {
          id: 1,
          post_id: Number(postId),
          parent_id: 0,
-         created_at: new Date().toISOString(),
-         updated_at: new Date().toISOString(),
+         created_at: today.toISOString(),
+         updated_at: today.toISOString(),
          content: '첫 번째 댓글입니다.',
          author_id: 'user1',
          guest_name: '게스트1',
@@ -49,8 +51,8 @@ export default function CommentList({ postId }: Props) {
          id: 2,
          post_id: Number(postId),
          parent_id: 1,
-         created_at: new Date().toISOString(),
-         updated_at: new Date().toISOString(),
+         created_at: today.toISOString(),
+         updated_at: today.toISOString(),
          content: '첫 번째 댓글의 답글입니다.',
          author_id: 'user2',
          guest_name: '게스트2',
