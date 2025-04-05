@@ -5,5 +5,5 @@ export const metadata: Metadata = {
    description: '0rigin 약관에 동의하고 회원가입을 진행합니다.',
 }
 export default function layout({ children }: { children: React.ReactNode }) {
-   return <div className="mt-12">{children}</div>
+   return <div className="my-12">{children}</div>
 }

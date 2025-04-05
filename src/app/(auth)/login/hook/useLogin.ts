@@ -1,50 +1,45 @@
-import { useAuthStore } from '@/store/authStore'
+import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { z } from 'zod'
 import { Login } from '../../../../shared/actions/auth-action'
 import { LoginSchema } from '../types/schema'
 
 export const useLogin = () => {
    const { push } = useRouter()
-   const { setUser } = useAuthStore()
-   const [loginError, setLoginError] = useState<string | null>(null)
-   const [isLoading, setIsLoading] = useState(false)
 
-   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-      try {
-         setIsLoading(true)
-         setLoginError(null)
+   const { mutate, error, isPending } = useMutation({
+      mutationFn: async (values: z.infer<typeof LoginSchema>) => {
          const formData = new FormData()
-         formData.append('email', values.email)
-         formData.append('password', values.password)
-         const result = await Login(formData)
-
+         Object.entries(values).forEach(([key, value]) => {
+            if (typeof value === 'string') {
+               formData.append(key, value)
+            }
+         })
+         return Login(formData)
+      },
+      onSuccess: (result) => {
          if (result.error) {
-            setLoginError('아이디 또는 비밀번호가 일치하지 않습니다.')
-            setIsLoading(false)
-            return
+            throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.')
          }
 
          if (result.success) {
-            try {
-               setUser(result.user ?? null)
-               setIsLoading(false)
-               push(result.redirectTo ?? '/')
-            } catch (sessionError) {
-               setLoginError('사용자 정보를 가져오는 중 오류가 발생했습니다.')
-               setIsLoading(false)
-            }
+            push(result.redirectTo ?? '/')
          }
-      } catch (error) {
-         setLoginError('로그인 처리 중 오류가 발생했습니다. 다시 시도해주세요.')
-         setIsLoading(false)
-      }
+      },
+      onError: (error) => {
+         throw new Error(
+            '서버와의 통신 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+         )
+      },
+   })
+
+   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+      mutate(values)
    }
 
    return {
-      loginError,
+      loginError: error?.message ?? null,
       onSubmit,
-      isLoading,
+      isPending,
    }
 }

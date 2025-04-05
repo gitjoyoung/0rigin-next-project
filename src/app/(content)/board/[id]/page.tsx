@@ -1,5 +1,4 @@
 import { ROUTES } from '@/constants/route'
-import { createClient } from '@/lib/supabase/server'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import BoardFooter from '../ui/board-footer'
@@ -35,7 +34,7 @@ export default async function Page({ params, searchParams }: IParams) {
    const currentPage: number = Number(page) || 1
    const POST_PER_PAGE = 20
 
-   const supabase = await createClient()
+   const supabase = await createServer()
 
    const { data: posts, error } = await supabase
       .from('posts')

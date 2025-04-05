@@ -20,15 +20,22 @@ const GENDER_LIST = [
    },
 ]
 
+interface GenderRadioButtonProps {
+   disabled?: boolean
+   value?: string
+   onChange?: (value: string) => void
+}
+
 export default function GenderRadioButton({
    disabled = false,
-}: {
-   disabled?: boolean
-}) {
+   value,
+   onChange,
+}: GenderRadioButtonProps) {
    return (
       <RadioGroup
          name="gender"
-         defaultValue={GENDER_LIST[0].value}
+         value={value}
+         onValueChange={onChange}
          className="flex items-center justify-between px-2 py-2"
          disabled={disabled}
       >

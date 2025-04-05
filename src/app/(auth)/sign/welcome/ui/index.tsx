@@ -1,4 +1,4 @@
-import { auth } from '@/auth'
+import { auth } from '@/shared/actions/auth-action'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 

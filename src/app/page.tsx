@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
 import AdSenseBanner from '@/widgets/adsense-banner.tsx'
 import Banner from '@/widgets/banner'
 import Post from './(content)/board/ui/post'
@@ -14,7 +14,7 @@ export const metadata = {
 }
 
 export default async function Home() {
-   const supabase = await createClient()
+   const supabase = await SupabaseServerClient()
    const { data: posts, error } = await supabase
       .from('posts')
       .select('*')

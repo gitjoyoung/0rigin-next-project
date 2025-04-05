@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
 import BoardFooter from './ui/board-footer'
 import CustomPagination from './ui/pagination/custom-pagination'
@@ -24,7 +24,7 @@ export default async function Page({ searchParams }: Params) {
    const { page } = await searchParams
    const currentPage: number = Number(page) || 1
 
-   const supabase = await createClient()
+   const supabase = await SupabaseServerClient()
 
    const { count } = await supabase
       .from('posts')

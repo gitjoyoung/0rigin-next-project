@@ -1,6 +1,6 @@
 'use client'
 
-import { createClient } from '@/lib/supabase/client'
+import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import type { IComment } from '../../types/comment-type'
@@ -11,7 +11,7 @@ import CommentItem from './comment-item'
 interface Props {
    postId: string
 }
-const supabase = createClient()
+const supabase = SupabaseBrowserClient()
 
 const fetchComments = async (postId: string) => {
    const { data: commentsData } = await supabase

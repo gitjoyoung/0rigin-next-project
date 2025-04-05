@@ -1,77 +1,71 @@
 # 0rigin Community Web Page v1.0
+
 철학 기반 커뮤니티 게시판
 
-# 개발 인원
+## 개발 인원
+
 1인 개발
+
 ## 배포 주소
+
 [https://0rigin.vercel.app/](https://0rigin.vercel.app/)
+
 ## 프로젝트 소개
-![프리뷰 이미지](public/preview/board.png)
+
 0rigin project는 AI가 대체할 수 없는 인간의 고유한 가치를 토론하는 커뮤니티 입니다.
 
 ## 프로젝트 구성
-환경 : next.js
-디자인 패턴 : FSD( Feature Sliced Design )
-핵심 라이브러리 : react-markdown 
-css : tailwindcv
-## 기능별 페이지
+
+- 환경: Next.js
+- 디자인 패턴: FSD(Feature Sliced Design)
+- 핵심 라이브러리: react-markdown
+- CSS: TailwindCSS
+- 데이터베이스: Supabase
+
+## 주요 기능
 
 ### 홈 페이지
 
-![메인 이미지](public/preview/main.png)
+- 메인 화면 및 소개
 
 ### 게시판
 
-페이지 네이션 처리
-마크다운 에디터를 사용한 글쓰기 에디터
+- 페이지네이션 처리
+- 마크다운 에디터를 사용한 글쓰기
+- 게시글 조회 및 작성
 
-![게시판 이미지](public/preview/board.png)
-![게시판 이미지](public/preview/read.png)
-![글쓰기 이미지](public/preview/write.png)
+### 사용자 인증
 
-### 로그인
-
-firebase auth
-
-![프리뷰 이미지](public/preview/login.png)
-
-### 회원 가입
-
-firebase auth
-
-![프리뷰 이미지](public/preview/sign.png)
-![프리뷰 이미지](public/preview/signform.png)
+- Supabase Auth를 이용한 로그인
+- 회원가입 기능
 
 ### 퀴즈
 
-퀴즈 풀이
-퀴즈 프로그레스 바
-정답 확인
+- 퀴즈 풀이 기능
+- 진행률 표시
+- 정답 확인 기능
 
 ## 시작 가이드
 
-### Requirements
+### 시스템 요구사항
 
-응용 프로그램을 빌드하고 실행하는 데 필요한 사항:
+- Node.js: 20.8.1
+- pnpm: 8.6.2
+- React: 18.3.1
+- Next.js: 14.2.4
 
-업데이트 중
+### 필수 API 키
 
--  node: 20.8.1
--  pnpm: 8.6.2
--  react: 18.3.1
--  next: 14.2.4
+- Supabase Project URL: Supabase 프로젝트 URL
+- Supabase Anon Key: Supabase 프로젝트의 익명 키
+- NextAuth Secret Key: NextAuth.js 인증을 위한 비밀 키
+- OpenAI API Key: OpenAI 서비스 사용을 위한 API 키
 
-응용 프로그램을 정상적으로 실행하기 위해서는 다음 키가 필요합니다:
+### 환경 변수 설정
 
--  Firebase Key: Firebase 프로젝트를 생성 후, 프로젝트 설정에서 제공되는 Web API 키입니다.
--  NextAuth Secret Key: 안전한 사용자 인증을 위해 NextAuth.js에 필요한 비밀 키입니다. 고유하고 복잡한 문자열을 생성하여 사용하세요.
--  OpenAI API Key: OpenAI 서비스를 사용하기 위해 필요한 API 키입니다. OpenAI 계정을 생성하고 API 키를 발급받으세요.
+프로젝트 루트 디렉토리에 `.env.local` 파일을 생성하고 다음 변수들을 설정해야 합니다:
 
-## 환경 변수 설정
-
-프로젝트의 보안과 구성을 위해 다음 환경 변수를 `.env.local` 파일에 설정해야 합니다. 이 파일은 프로젝트의 루트 디렉토리에 위치해야 합니다.
-
-### Next.js 환경 변수
+#### Next.js 환경 변수
 
 ```env
 API_URL=
@@ -79,20 +73,20 @@ NEXTAUTH_URL_INTERNAL=
 NEXTAUTH_SECRET=
 ```
 
-### firebase 환경변수
+#### Supabase 환경 변수
 
-FIREBASE_API_KEY=
-FIREBASE_AUTH_DOMAIN=
-FIREBASE_PROJECT_ID=
-FIREBASE_STORAGE_BUCKET=
-FIREBASE_MESSAGING_SENDER_ID=
-FIREBASE_APP_ID=
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+```
 
-### openai 설정
+#### OpenAI 설정
 
+```env
 OPENAI_API_KEY=
+```
 
-### Installation
+### 설치 및 실행
 
 ```bash
 $ git clone https://github.com/gitjoyoung/0rigin-next-project.git

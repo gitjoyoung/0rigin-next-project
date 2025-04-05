@@ -24,7 +24,7 @@ import { useLogin } from '../hook/useLogin'
 import { LoginSchema } from '../types/schema'
 
 export default function Login() {
-   const { loginError, onSubmit, isLoading } = useLogin()
+   const { loginError, mutate, isPending } = useLogin()
    const form = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
       defaultValues: {
@@ -48,7 +48,7 @@ export default function Login() {
             <CardContent>
                <Form {...form}>
                   <form
-                     onSubmit={form.handleSubmit(onSubmit)}
+                     onSubmit={form.handleSubmit((data) => mutate(data))}
                      className="space-y-4"
                   >
                      <FormField
@@ -58,7 +58,7 @@ export default function Login() {
                            <FormItem>
                               <FormControl>
                                  <Input
-                                    disabled={isLoading}
+                                    disabled={isPending}
                                     type="email"
                                     placeholder="이메일"
                                     {...field}
@@ -76,7 +76,7 @@ export default function Login() {
                            <FormItem>
                               <FormControl>
                                  <Input
-                                    disabled={isLoading}
+                                    disabled={isPending}
                                     type="password"
                                     placeholder="비밀번호"
                                     {...field}
@@ -94,9 +94,9 @@ export default function Login() {
                      <Button
                         className="w-full"
                         type="submit"
-                        disabled={isLoading}
+                        disabled={isPending}
                      >
-                        {isLoading ? (
+                        {isPending ? (
                            <>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                               로그인 중...
@@ -108,10 +108,10 @@ export default function Login() {
                   </form>
 
                   <div className="mt-6 flex gap-4 justify-between">
-                     <Button disabled={isLoading} variant="outline" asChild>
+                     <Button disabled={isPending} variant="outline" asChild>
                         <Link href={ROUTE_SIGN}>회원가입</Link>
                      </Button>
-                     <Button disabled={isLoading} variant="outline" asChild>
+                     <Button disabled={isPending} variant="outline" asChild>
                         <Link href={ROUTE_FORGET}>비밀번호 분실</Link>
                      </Button>
                   </div>

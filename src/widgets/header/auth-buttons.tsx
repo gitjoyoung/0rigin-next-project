@@ -1,39 +1,59 @@
-'use client'
-
 import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
-import { signOut } from '@/shared/actions/auth-action'
+import { auth, signOut } from '@/shared/actions/auth-action'
 import { Button } from '@/shared/shadcn/ui/button'
-import { useAuthStore } from '@/store/authStore'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-export default function AuthButtons() {
-   const { user, setUser } = useAuthStore()
-
-   const handleSignOut = async () => {
-      const result = await signOut()
-      if ('success' in result) {
-         setUser(null)
-      }
-   }
+export default async function AuthButtons() {
+   const session = await auth()
+   const isAuthenticated = !!session
 
    return (
       <section className="flex items-end gap-5">
-         {!user?.email ? (
+         {!isAuthenticated ? (
             <div className="flex gap-2 text-xs">
-               <Button asChild size="sm" variant="outline">
+               <Button
+                  asChild
+                  size="sm"
+                  variant="outline"
+                  className="dark:bg-white bg-black text-white dark:text-black"
+               >
                   <Link href={ROUTE_LOGIN}>로그인</Link>
                </Button>
-               <Button asChild size="sm" variant="outline">
+               <Button
+                  asChild
+                  size="sm"
+                  variant="outline"
+                  className="dark:bg-white bg-black text-white dark:text-black"
+               >
                   <Link href={ROUTE_SIGN}>회원가입</Link>
                </Button>
             </div>
          ) : (
             <div className="flex gap-2 text-xs">
-               <Button onClick={handleSignOut} size="sm" variant="ghost">
-                  <p>로그아웃</p>
-               </Button>
-               <Button asChild size="sm">
-                  <Link href={ROUTE_MY_PAGE}>마이페이지</Link>
+               <form
+                  action={async () => {
+                     'use server'
+                     await signOut()
+                     redirect('/')
+                  }}
+               >
+                  <Button
+                     type="submit"
+                     className="dark:bg-white bg-black text-white dark:text-black"
+                     size="sm"
+                     variant="outline"
+                  >
+                     <p>로그아웃</p>
+                  </Button>
+               </form>
+               <Button asChild size="sm" variant="outline">
+                  <Link
+                     href={ROUTE_MY_PAGE}
+                     className="dark:bg-white bg-black text-white dark:text-black"
+                  >
+                     마이페이지
+                  </Link>
                </Button>
             </div>
          )}

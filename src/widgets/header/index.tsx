@@ -1,5 +1,3 @@
-'use client'
-
 import { ROUTE_BOARD, ROUTE_INTRODUCE, ROUTE_QUIZ } from '@/constants/pathname'
 import SearchBox from '@/widgets/search-box'
 import Link from 'next/link'

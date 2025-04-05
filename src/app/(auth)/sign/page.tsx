@@ -1,5 +1,5 @@
-import SignUpWelcome from './ui/SignUpWelcome'
+import SignUpLanding from './ui/signup-lending'
 
 export default function SignPage() {
-   return <SignUpWelcome />
+   return <SignUpLanding />
 }

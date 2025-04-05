@@ -6,6 +6,7 @@ import {
    Eye,
    EyeOff,
    FileQuestion,
+   Frown,
    Heart,
    Home,
    Instagram,
@@ -23,6 +24,7 @@ import {
    Search,
    Settings,
    Share,
+   Smile,
    Sun,
    Trash,
    Twitter,
@@ -31,6 +33,10 @@ import {
 } from 'lucide-react'
 
 export const Icons = {
+   // 표정
+   smile: Smile,
+   frown: Frown,
+
    // 일반적인 UI 아이콘
    search: Search,
    home: Home,

@@ -1,6 +1,5 @@
 'use client'
-import { useAuthStore } from '@/store/authStore'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import MypageMenu from './MypageMenu'
 import LikedPosts from './contents/LikedPosts'
 import MyComments from './contents/MyComments'
@@ -10,13 +9,7 @@ import Settings from './contents/setting'
 type MenuItem = 'posts' | 'comments' | 'likes' | 'settings'
 
 export default function MyPage() {
-   const { user, initializeAuth } = useAuthStore()
    const [selectedMenu, setSelectedMenu] = useState<MenuItem>('posts')
-
-   useEffect(() => {
-      const cleanup = initializeAuth()
-      return cleanup
-   }, [user])
 
    const handleMenuClick = (menu: MenuItem) => {
       setSelectedMenu(menu)

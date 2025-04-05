@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import type { IIntroduceStats } from '../model/types'
 
 const DEFAULT_STATS: IIntroduceStats = {
@@ -19,7 +19,7 @@ const DEFAULT_STATS: IIntroduceStats = {
 } as const
 
 export const getDailyStats = async (): Promise<Partial<IIntroduceStats>> => {
-   const supabase = await createClient()
+   const supabase = await SupabaseBrowserClient()
    const { data: dailyStats } = await supabase
       .from('daily_stats')
       .select('*')

@@ -1,6 +1,6 @@
 'use client'
 
-import { createClient } from '@/lib/supabase/client'
+import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
 import { ThumbsUp } from 'lucide-react'
 import { useState } from 'react'
@@ -16,7 +16,7 @@ interface ReactionCounts {
 
 type ReactionType = 'like' | null
 
-const supabase = createClient()
+const supabase = SupabaseBrowserClient()
 const updateLikeCount = async (postId: string, reactionType: ReactionType) => {
    const { data, error } = await supabase
       .from('posts')

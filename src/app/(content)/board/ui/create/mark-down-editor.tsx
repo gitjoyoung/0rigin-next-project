@@ -1,6 +1,5 @@
 'use client'
 
-import uploadImageToFirebase from '@/service/board/imageApi'
 import {
    generateErrorMessage,
    validateFile,
@@ -67,10 +66,6 @@ const MarkDownEditor = ({ markDownContent, setMarkDownContent }: Props) => {
             }
             try {
                const compressedFile = await imageCompression(file, options)
-               const realUrl = await await uploadImageToFirebase(compressedFile)
-               setMarkDownContent(
-                  (prevMarkdown) => `${prevMarkdown}![image](${realUrl})`,
-               )
             } catch (error) {
                alert('이미지 업로드에 실패했습니다.')
             }

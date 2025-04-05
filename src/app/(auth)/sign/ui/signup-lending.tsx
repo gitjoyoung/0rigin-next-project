@@ -16,7 +16,7 @@ const SIGN_UP_TERMS = {
       buttonText: '네 회원가입할래요!',
    },
 }
-export default function SignUpWelcome() {
+export default function SignUpLanding() {
    return (
       <div className="w-full h-full flex flex-col items-center gap-5 justify-center">
          <h1 className="font-bold text-3xl text-center px-4 whitespace-pre-line leading-relaxed">
