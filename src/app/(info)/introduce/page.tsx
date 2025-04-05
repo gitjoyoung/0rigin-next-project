@@ -1,8 +1,7 @@
-import React from 'react'
-import Introduce from './ui/Introduce'
-import { getStats } from './api/getStats'
+import { getDailyStats } from './api/getStats'
+import Introduce from './ui'
 
 export default async function page() {
-   const stats = await getStats() // API 호출
-   return <Introduce counts={stats} />
+   const stats = await getDailyStats() // API 호출
+   return <Introduce stats={stats} />
 }
