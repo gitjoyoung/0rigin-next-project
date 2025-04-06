@@ -1,10 +1,10 @@
 'use client'
 import { useState } from 'react'
-import MypageMenu from './MypageMenu'
 import LikedPosts from './contents/LikedPosts'
 import MyComments from './contents/MyComments'
 import MyPosts from './contents/my-posts'
 import Settings from './contents/setting'
+import MypageMenu from './my-page-menu'
 
 type MenuItem = 'posts' | 'comments' | 'likes' | 'settings'
 

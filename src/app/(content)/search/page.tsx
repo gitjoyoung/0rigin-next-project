@@ -1,4 +1,5 @@
-import Search from './ui/Search'
+import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
+import SearchBoard from './ui'
 
 interface SearchParams {
    searchParams: {
@@ -6,7 +7,18 @@ interface SearchParams {
    }
 }
 
-export default function page({ searchParams }: SearchParams) {
+export default async function page({ searchParams }: SearchParams) {
    const { keyword } = searchParams
-   return <Search keyword={keyword} />
+   const supabase = await SupabaseServerClient()
+   const { data: searchResult, error } = await supabase
+      .from('posts')
+      .select('*')
+      .or(`title.ilike.%${keyword}%,content.ilike.%${keyword}%`)
+      .order('created_at', { ascending: false })
+
+   if (error) {
+      return <div>검색 중 오류가 발생했습니다.</div>
+   }
+
+   return <SearchBoard searchResult={searchResult} />
 }
