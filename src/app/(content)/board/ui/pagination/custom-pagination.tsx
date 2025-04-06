@@ -1,4 +1,5 @@
 import { ROUTE_BOARD } from '@/constants/pathname'
+import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import {
    Pagination,
    PaginationContent,
@@ -13,8 +14,17 @@ interface PaginationProps {
    currentPage: number
 }
 
-export default function CustomPagination({ currentPage }: PaginationProps) {
-   const totalPages = 100
+const POST_PER_PAGE = 20
+export default async function CustomPagination({
+   currentPage,
+}: PaginationProps) {
+   const supabase = await SupabaseBrowserClient()
+   const { count } = await supabase
+      .from('posts')
+      .select('*', { count: 'exact', head: true })
+
+   const totalPages = Math.ceil((count || 0) / POST_PER_PAGE)
+
    const itemsPerPage = 5 // 한 번에 보여줄 페이지 수
 
    const getPageNumbers = () => {

@@ -30,17 +30,14 @@ const getViewportType = (request: NextRequest): 'mobile' | 'desktop' => {
 }
 
 // 인증 페이지 처리
-const handleAuth = async (request: NextRequest, session: any) => {
-   // 인증된 사용자가 접근하면 안 되는 페이지 체크
-   if (
-      session?.is_anonymous &&
-      AUTH_FORBIDDEN_ROUTES.includes(request.nextUrl.pathname)
-   ) {
+const handleAuth = async (request: NextRequest, user: any) => {
+   // 로그인된 사용자가 로그인/회원가입 페이지에 접근하는 경우
+   if (user && AUTH_FORBIDDEN_ROUTES.includes(request.nextUrl.pathname)) {
       return NextResponse.redirect(new URL('/', request.url))
    }
 
    // 보호된 경로에 대한 인증 체크
-   if (isProtectedRoute(request.nextUrl.pathname) && session?.is_anonymous) {
+   if (isProtectedRoute(request.nextUrl.pathname) && !user) {
       return NextResponse.redirect(new URL(ROUTE_LOGIN, request.url))
    }
 

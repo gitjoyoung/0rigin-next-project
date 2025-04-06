@@ -23,7 +23,7 @@ export const useLogin = () => {
          }
 
          if (result.success) {
-            push(result.redirectTo ?? '/')
+            window.location.href = result.redirectTo ?? '/'
          }
       },
       onError: (error) => {
@@ -33,13 +33,9 @@ export const useLogin = () => {
       },
    })
 
-   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-      mutate(values)
-   }
-
    return {
       loginError: error?.message ?? null,
-      onSubmit,
+      mutate,
       isPending,
    }
 }

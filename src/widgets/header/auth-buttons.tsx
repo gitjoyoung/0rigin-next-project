@@ -7,6 +7,12 @@ import { redirect } from 'next/navigation'
 export default async function AuthButtons() {
    const session = await auth()
    const isAuthenticated = !!session
+   console.log('세션 상세 정보:', {
+      session,
+      isAuthenticated,
+      sessionType: typeof session,
+      sessionKeys: session ? Object.keys(session) : [],
+   })
 
    return (
       <section className="flex items-end gap-5">

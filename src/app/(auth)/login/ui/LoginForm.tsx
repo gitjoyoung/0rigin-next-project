@@ -48,7 +48,9 @@ export default function Login() {
             <CardContent>
                <Form {...form}>
                   <form
-                     onSubmit={form.handleSubmit((data) => mutate(data))}
+                     onSubmit={form.handleSubmit((formData) => {
+                        mutate(formData)
+                     })}
                      className="space-y-4"
                   >
                      <FormField

@@ -1,4 +1,5 @@
 import { ROUTES } from '@/constants/route'
+import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import BoardFooter from '../ui/board-footer'
@@ -6,7 +7,6 @@ import CommentList from '../ui/comment'
 import CustomPagination from '../ui/pagination/custom-pagination'
 import Post from '../ui/post'
 import PostRead from '../ui/read'
-
 interface IParams {
    params: {
       id: string
@@ -34,7 +34,7 @@ export default async function Page({ params, searchParams }: IParams) {
    const currentPage: number = Number(page) || 1
    const POST_PER_PAGE = 20
 
-   const supabase = await createServer()
+   const supabase = await SupabaseServerClient()
 
    const { data: posts, error } = await supabase
       .from('posts')

@@ -1,6 +1,6 @@
-import { boardSchema } from '@/schema/boardSchema'
+import { boardSchema } from '@/app/(content)/board/create/types/board-schema'
 import { useState } from 'react'
-import type { IPost, IPostContent } from '../types/post-type'
+import type { IPost, IPostContent } from '../../types/post-type'
 
 export function useBoardForm(
    editData: IPost,

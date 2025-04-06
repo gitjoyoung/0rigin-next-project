@@ -26,11 +26,6 @@ export default async function Page({ searchParams }: Params) {
 
    const supabase = await SupabaseServerClient()
 
-   const { count } = await supabase
-      .from('posts')
-      .select('*', { count: 'exact', head: true })
-   const totalPages = Math.ceil((count || 0) / POST_PER_PAGE)
-
    const { data: posts, error } = await supabase
       .from('posts')
       .select('*')

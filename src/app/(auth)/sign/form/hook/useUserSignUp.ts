@@ -39,7 +39,7 @@ export const useUserSignUp = () => {
          return signUpResult
       },
       onSuccess: () => {
-         router.push('/sign/welcome')
+         window.location.href = '/sign/welcome'
       },
    })
 

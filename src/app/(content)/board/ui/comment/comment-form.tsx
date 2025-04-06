@@ -1,11 +1,12 @@
 'use client'
 
-import { commentSchema } from '@/schema/commentSchema'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
 import React, { useRef } from 'react'
+import { commentSchema } from '../../types/comment-schema'
 import type { IComment } from '../../types/comment-type'
+
 interface Props {
    postId: string
 }

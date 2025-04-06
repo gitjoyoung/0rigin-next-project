@@ -9,6 +9,7 @@ import {
    Frown,
    Heart,
    Home,
+   ImageUp,
    Instagram,
    Lock,
    LogOut,
@@ -72,6 +73,9 @@ export const Icons = {
 
    // 게시글
    messageSquare: MessageSquare,
+
+   // 이미지
+   imageUpload: ImageUp,
 
    // 페이지네이션
    prevPage: ChevronLeft,
