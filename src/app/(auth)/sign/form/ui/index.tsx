@@ -30,7 +30,7 @@ export default function SignForm() {
    const form = useForm<z.infer<typeof signUpSchema>>({
       resolver: zodResolver(signUpSchema),
       defaultValues: {
-         gender: '남성',
+         gender: 'man',
          email: '',
          password: '',
          confirmPassword: '',
@@ -41,9 +41,9 @@ export default function SignForm() {
    return (
       <section className="w-full flex justify-center">
          <Card className="w-full max-w-[350px]">
-            <CardHeader>
+            <CardHeader className="flex flex-col">
                <CardTitle className="text-2xl">0rigin 회원가입</CardTitle>
-               <CardDescription className="text-transparent">
+               <CardDescription className="text-transparent text-sm">
                   자유 의지가 존재할까요?
                </CardDescription>
             </CardHeader>
@@ -53,7 +53,7 @@ export default function SignForm() {
                      onSubmit={form.handleSubmit((formData) =>
                         mutate(formData),
                      )}
-                     className="flex flex-col gap-3 w-full"
+                     className="flex flex-col gap-2 w-full"
                   >
                      <FormField
                         control={form.control}

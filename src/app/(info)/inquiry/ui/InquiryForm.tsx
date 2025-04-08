@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
    CardContent,
@@ -7,19 +7,6 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
-import { Input } from '@/shared/shadcn/ui/input'
-import { Button } from '@/shared/shadcn/ui/button'
-import { Textarea } from '@/shared/shadcn/ui/textarea'
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from '@/shared/shadcn/ui/select'
-import { Alert, AlertDescription } from '@/shared/shadcn/ui/alert'
-import { AlertCircle, Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import {
    Form,
    FormControl,
@@ -28,14 +15,21 @@ import {
    FormLabel,
    FormMessage,
 } from '@/shared/shadcn/ui/form'
+import { Input } from '@/shared/shadcn/ui/input'
+import {
+   Select,
+   SelectContent,
+   SelectItem,
+   SelectTrigger,
+   SelectValue,
+} from '@/shared/shadcn/ui/select'
+import { Textarea } from '@/shared/shadcn/ui/textarea'
+import { Loader2 } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const InquiryForm = () => {
-   const router = useRouter()
    const [isSubmitting, setIsSubmitting] = useState(false)
-   const [isSubmitted, setIsSubmitted] = useState(false)
-   const [serverError, setServerError] = useState('')
-
    const form = useForm({
       defaultValues: {
          title: '',
@@ -48,42 +42,14 @@ const InquiryForm = () => {
 
    const handleSubmit = async (data) => {
       setIsSubmitting(true)
-      setServerError('')
 
-      try {
-         const formData = new FormData()
-         formData.append('title', data.title)
-         formData.append('email', data.email)
-         formData.append('category', data.category)
-         formData.append('content', data.content)
-         if (data.attachFile) {
-            formData.append('file', data.attachFile)
-         }
-
-         const response = await fetch('/api/inquiries', {
-            method: 'POST',
-            body: formData,
-         })
-
-         if (!response.ok) {
-            throw new Error('서버 에러가 발생했습니다.')
-         }
-
-         setIsSubmitted(true)
-         form.reset()
-
-         setTimeout(() => {
-            setIsSubmitted(false)
-         }, 3000)
-
-         router.refresh()
-      } catch (error) {
-         console.error('Submit error:', error)
-         setServerError(
-            '문의 제출 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-         )
-      } finally {
-         setIsSubmitting(false)
+      const formData = new FormData()
+      formData.append('title', data.title)
+      formData.append('email', data.email)
+      formData.append('category', data.category)
+      formData.append('content', data.content)
+      if (data.attachFile) {
+         formData.append('file', data.attachFile)
       }
    }
 
@@ -97,25 +63,6 @@ const InquiryForm = () => {
          </CardHeader>
 
          <CardContent>
-            {isSubmitted && (
-               <Alert className="mb-6 bg-green-50">
-                  <AlertDescription className="flex items-center gap-2">
-                     <AlertCircle className="h-4 w-4" />
-                     문의가 성공적으로 제출되었습니다. 답변은 입력하신 이메일로
-                     발송됩니다.
-                  </AlertDescription>
-               </Alert>
-            )}
-
-            {serverError && (
-               <Alert className="mb-6 bg-red-50">
-                  <AlertDescription className="flex items-center gap-2 text-red-600">
-                     <AlertCircle className="h-4 w-4" />
-                     {serverError}
-                  </AlertDescription>
-               </Alert>
-            )}
-
             <Form {...form}>
                <form
                   onSubmit={form.handleSubmit(handleSubmit)}

@@ -5,18 +5,15 @@ import { nanoid } from 'nanoid'
 const GENDER_LIST = [
    {
       id: 'man',
-      name: 'gender',
-      value: '남성',
+      label: '남성',
    },
    {
-      id: 'girl',
-      name: 'gender',
-      value: '여성',
+      id: 'woman',
+      label: '여성',
    },
    {
-      id: 'other',
-      name: 'gender',
-      value: '기타',
+      id: 'etc',
+      label: '기타',
    },
 ]
 
@@ -39,10 +36,10 @@ export default function GenderRadioButton({
          className="flex items-center justify-between px-2 py-2"
          disabled={disabled}
       >
-         {GENDER_LIST.map(({ id, value }) => (
+         {GENDER_LIST.map(({ id, label }) => (
             <div key={nanoid()} className="flex items-center space-x-2">
-               <RadioGroupItem value={value} id={id} />
-               <Label htmlFor={id}>{value}</Label>
+               <RadioGroupItem value={id} id={id} />
+               <Label htmlFor={id}>{label}</Label>
             </div>
          ))}
       </RadioGroup>

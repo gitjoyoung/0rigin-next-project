@@ -4,7 +4,7 @@ export default function AdSenseBanner() {
    return (
       <div className="relative w-full h-[200px]">
          <Image
-            src="/image/newYear.jpg"
+            src="/images/newYear.jpg"
             alt="지수랑 첫해"
             fill
             sizes="100vw"

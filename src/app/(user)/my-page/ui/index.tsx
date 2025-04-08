@@ -1,15 +1,16 @@
 'use client'
 import { useState } from 'react'
-import LikedPosts from './contents/LikedPosts'
-import MyComments from './contents/MyComments'
+import type { MenuItem } from '../types/menu-type'
+
+import LikedPosts from './contents/like-posts'
+import MyComments from './contents/my-comments'
 import MyPosts from './contents/my-posts'
 import Settings from './contents/setting'
 import MypageMenu from './my-page-menu'
-
-type MenuItem = 'posts' | 'comments' | 'likes' | 'settings'
+import Profile from './profile'
 
 export default function MyPage() {
-   const [selectedMenu, setSelectedMenu] = useState<MenuItem>('posts')
+   const [selectedMenu, setSelectedMenu] = useState<MenuItem>('profile')
 
    const handleMenuClick = (menu: MenuItem) => {
       setSelectedMenu(menu)
@@ -17,6 +18,8 @@ export default function MyPage() {
 
    const renderContent = () => {
       switch (selectedMenu) {
+         case 'profile':
+            return <Profile />
          case 'posts':
             return <MyPosts />
          case 'comments':
@@ -31,14 +34,14 @@ export default function MyPage() {
    }
 
    return (
-      <section className="flex min-h-[100vh]  ">
-         <div className="relative h-full w-[250px] sm:">
+      <section className="flex w-full min-h-[200vh]">
+         <div className="relative h-full hidden sm:flex sm:w-[250px]">
             <MypageMenu
                selectedMenu={selectedMenu}
                onMenuClick={handleMenuClick}
             />
          </div>
-         <div className="flex-1  overflow-hidden p-4">{renderContent()}</div>
+         <div className="flex-1 p-4">{renderContent()}</div>
       </section>
    )
 }

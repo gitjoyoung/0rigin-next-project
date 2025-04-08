@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 const genderSchema = z
    .string()
-   .regex(/^(남성|여성|기타)$/, '성별을 선택 해주세요')
+   .regex(/^(man|woman|etc)$/, '성별을 선택 해주세요')
 
 const userEmailSchema = z.string().email('이메일 형식이 아닙니다.')
 

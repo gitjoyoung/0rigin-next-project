@@ -9,8 +9,7 @@ import {
    SidebarMenuItem,
    SidebarProvider,
 } from '@/shared/shadcn/ui/sidebar'
-
-type MenuItem = 'posts' | 'comments' | 'likes' | 'settings'
+import type { MenuItem } from '../types/menu-type'
 
 interface MypageMenuProps {
    selectedMenu: MenuItem
@@ -18,6 +17,7 @@ interface MypageMenuProps {
 }
 
 const MENU_LIST: { id: MenuItem; label: string }[] = [
+   { id: 'profile', label: '프로필' },
    { id: 'posts', label: '내가 작성한 글' },
    { id: 'comments', label: '내가 작성한 댓글' },
    { id: 'likes', label: '좋아요한 글' },
@@ -33,7 +33,7 @@ export default function MypageMenu({
          <SidebarProvider defaultOpen>
             <Sidebar className="absolute left-0 top-0 h-full">
                <SidebarHeader className="border-b p-4">
-                  <h2 className="text-lg font-semibold">프로필 메뉴</h2>
+                  <h2 className="text-lg font-semibold">마이페이지</h2>
                </SidebarHeader>
                <SidebarContent>
                   <SidebarMenu>

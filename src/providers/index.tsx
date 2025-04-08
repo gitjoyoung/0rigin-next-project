@@ -1,3 +1,4 @@
+import { Toaster } from '@/shared/shadcn/ui/toaster'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { ThemeProvider } from 'next-themes'
 import ReactQueryProvider from './react-query-provider'
@@ -14,7 +15,10 @@ export default function AppProviders({ children }: AppProvidersProps) {
          enableSystem
          disableTransitionOnChange
       >
-         <ReactQueryProvider>{children}</ReactQueryProvider>
+         <ReactQueryProvider>
+            <Toaster />
+            {children}
+         </ReactQueryProvider>
          <SpeedInsights />
       </ThemeProvider>
    )
