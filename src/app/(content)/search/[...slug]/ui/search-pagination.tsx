@@ -15,7 +15,7 @@ interface PaginationProps {
 }
 
 const POST_PER_PAGE = 20
-export default async function CustomPagination({
+export default async function SearchPagination({
    currentPage,
    baseRoute,
 }: PaginationProps) {
@@ -53,7 +53,7 @@ export default async function CustomPagination({
          <PaginationContent>
             <PaginationItem>
                <PaginationPrevious
-                  href={`${baseRoute}?page=${currentPage - 1}`}
+                  href={`${baseRoute}/${currentPage - 1}`}
                   className={cn(
                      currentPage <= 1 && 'pointer-events-none opacity-50',
                   )}
@@ -63,7 +63,7 @@ export default async function CustomPagination({
             {pageNumbers.map((page) => (
                <PaginationItem key={page}>
                   <PaginationLink
-                     href={`${baseRoute}?page=${page}`}
+                     href={`${baseRoute}/${page}`}
                      isActive={page === currentPage}
                   >
                      {page}
@@ -73,7 +73,7 @@ export default async function CustomPagination({
 
             <PaginationItem>
                <PaginationNext
-                  href={`${baseRoute}?page=${currentPage + 1}`}
+                  href={`${baseRoute}/${currentPage + 1}`}
                   className={cn(
                      currentPage >= totalPages &&
                         'pointer-events-none opacity-50',

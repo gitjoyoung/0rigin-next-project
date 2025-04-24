@@ -17,6 +17,5 @@ export const boardSchema = z.object({
    title: z.string().min(2, '제목을 입력해주세요.'),
    content: z.string().min(2, '내용을 입력해주세요.'),
    summary: z.string(),
-   thumbnail: z.string(),
    markdown: z.string().min(2, '마크다운을 입력해주세요.'),
 })

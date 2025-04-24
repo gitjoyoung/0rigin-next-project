@@ -58,7 +58,10 @@ export default async function Page({ params, searchParams }: IParams) {
          <CommentList postId={id} />
          <Post postData={posts} />
          <BoardFooter />
-         <CustomPagination currentPage={currentPage} />
+         <CustomPagination
+            currentPage={currentPage}
+            baseRoute={`/board/${id}`}
+         />
       </section>
    )
 }

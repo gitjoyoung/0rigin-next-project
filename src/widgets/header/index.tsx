@@ -27,7 +27,7 @@ export default function Header() {
    return (
       <header className="flex items-center justify-between py-1  sm:h-10 h-8 w-full border-b border-black ">
          {/* 로고 + 네비게이션 */}
-         <div className="flex  gap-4">
+         <div className="flex gap-4">
             {/* 로고 */}
             <Link href="/">
                <h3 className="text-xl sm:text-2xl font-mono font-bold">
@@ -51,8 +51,8 @@ export default function Header() {
 
          {/* 검색창 + 인증 버튼 */}
          <div className="hidden sm:flex  items-center gap-4">
-            <ThemeToggle />
             <SearchBox />
+            <ThemeToggle />
             <AuthButton />
          </div>
 

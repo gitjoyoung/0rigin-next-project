@@ -1,20 +1,21 @@
 'use client'
 import { ROUTES } from '@/constants/route'
 import { Button } from '@/shared/shadcn/ui/button'
-import { Input } from '@/shared/shadcn/ui/input'
+import { Icons } from '@/shared/ui/icons'
+import { cn } from '@/shared/utils/cn'
 import { useRouter } from 'next/navigation'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 
 export default function SearchBox() {
    const router = useRouter()
    const searchInputRef = useRef<HTMLInputElement | null>()
-
+   const [isFocus, setIsFocus] = useState(false)
    const handleSearch = async () => {
       const searchTrim = searchInputRef.current?.value.trim()
       if (!searchTrim) return
 
       const processedSearchTerm = searchTrim.replace(/\s+/g, '+')
-      await router.push(`${ROUTES.SEARCH}?keyword=${processedSearchTerm}`)
+      await router.push(`${ROUTES.SEARCH}/${processedSearchTerm}`)
    }
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -25,24 +26,35 @@ export default function SearchBox() {
    }
 
    return (
-      <article className="flex items-center gap-1 h-8">
-         <Input
+      <article
+         className={cn(
+            'flex items-center gap-1 h-8 border border-black rounded-md transition-all duration-300',
+            isFocus ? 'w-48' : 'w-24',
+         )}
+      >
+         <input
             ref={searchInputRef}
-            spellCheck={false}
-            type="text"
+            spellCheck={true}
             onKeyDown={handleKeyDown}
             placeholder="검색"
-            maxLength={50}
-            // ▼ 높이, 글자 크기, 내부 여백 등 통일
-            className="h-8 px-2 text-sm"
+            maxLength={30}
+            className={cn(
+               'px-2 h-full w-full  text-sm rounded-md focus:outline-none focus:ring-0 focus:border-transparent placeholder:text-xs',
+            )}
+            onFocus={() => {
+               setIsFocus(true)
+            }}
+            onBlur={() => {
+               setIsFocus(false)
+            }}
          />
          <Button
-            variant="outline"
+            variant="link"
             className="h-8 px-2 text-sm"
             onClick={handleSearch}
             type="button"
          >
-            검색
+            <Icons.search size={16} />
          </Button>
       </article>
    )

@@ -38,10 +38,9 @@ export default function BoardPostForm() {
    useEffect(() => {
       const checkAuth = async () => {
          const session = await auth()
-         console.log(session)
          setIsAuthenticated(!!session)
-         const email = session?.user_metadata?.email || ''
-         form.setValue('nickname', email)
+         const nickname = session?.user_metadata?.nickname || ''
+         form.setValue('nickname', nickname)
          setIsLoading(false)
       }
       checkAuth()
@@ -78,42 +77,50 @@ export default function BoardPostForm() {
                            </FormItem>
                         )}
                      />
-                     <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                           <FormItem className="w-full max-w-[180px]">
-                              <FormControl>
-                                 <div className="relative ">
-                                    <Input
-                                       className="text-sm sm:text-base"
-                                       type={showPassword ? 'text' : 'password'}
-                                       placeholder="비밀번호"
-                                       disabled={isLoading || isAuthenticated}
-                                       {...field}
-                                    />
-                                    <Button
-                                       type="button"
-                                       variant="link"
-                                       size="icon"
-                                       className="absolute right-2 top-1/2 -translate-y-1/2"
-                                       onClick={() =>
-                                          setShowPassword(!showPassword)
-                                       }
-                                       disabled={isLoading || isAuthenticated}
-                                    >
-                                       {showPassword ? (
-                                          <EyeOff className="h-4 w-4" />
-                                       ) : (
-                                          <Eye className="h-4 w-4" />
-                                       )}
-                                    </Button>
-                                 </div>
-                              </FormControl>
-                              <FormMessage />
-                           </FormItem>
-                        )}
-                     />
+                     {!isAuthenticated && (
+                        <FormField
+                           control={form.control}
+                           name="password"
+                           render={({ field }) => (
+                              <FormItem className="w-full max-w-[180px]">
+                                 <FormControl>
+                                    <div className="relative ">
+                                       <Input
+                                          className="text-sm sm:text-base"
+                                          type={
+                                             showPassword ? 'text' : 'password'
+                                          }
+                                          placeholder="비밀번호"
+                                          disabled={
+                                             isLoading || isAuthenticated
+                                          }
+                                          {...field}
+                                       />
+                                       <Button
+                                          type="button"
+                                          variant="link"
+                                          size="icon"
+                                          className="absolute right-2 top-1/2 -translate-y-1/2"
+                                          onClick={() =>
+                                             setShowPassword(!showPassword)
+                                          }
+                                          disabled={
+                                             isLoading || isAuthenticated
+                                          }
+                                       >
+                                          {showPassword ? (
+                                             <EyeOff className="h-4 w-4" />
+                                          ) : (
+                                             <Eye className="h-4 w-4" />
+                                          )}
+                                       </Button>
+                                    </div>
+                                 </FormControl>
+                                 <FormMessage />
+                              </FormItem>
+                           )}
+                        />
+                     )}
                   </div>
 
                   <FormField
