@@ -1,6 +1,6 @@
 import { Separator } from '@/shared/shadcn/ui/separator'
-import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCustomDate'
-import { formatNumberWithUnit } from '@/shared/utils/validators/boardValidators/formatNumberWithUnit'
+import formatDate from '@/shared/utils/validators/board/format-date'
+import { formatNumberWithUnit } from '@/shared/utils/validators/board/formatNumberWithUnit'
 import type { IPost } from '../../types/post-type'
 import PostUpdateButtons from './post-update-buttons'
 
@@ -35,7 +35,7 @@ export default function PostHeader(post: Partial<IPost>) {
                <Separator orientation="vertical" />
                <li className="flex gap-1">
                   <p>{POST_HEADER_DATA.date}</p>
-                  <p>{formatCustomDate(created_at)}</p>
+                  <p>{formatDate(created_at)}</p>
                </li>
             </ul>
             <PostUpdateButtons postId={id} />

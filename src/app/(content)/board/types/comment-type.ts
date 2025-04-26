@@ -6,7 +6,7 @@ export interface IComment {
    updated_at: string
    content: string
    author_id: string
-   guest_name: string
+   nickname: string
    password: string
    likes: number
    is_approved: boolean

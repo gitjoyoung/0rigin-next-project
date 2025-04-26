@@ -15,20 +15,26 @@ export const metadata = {
 
 export default async function Home() {
    const supabase = await SupabaseServerClient()
-   const { data: posts, error } = await supabase
+   const { data: bestPosts, error: bestPostsError } = await supabase
       .from('posts')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('likes', { ascending: false })
       .limit(5)
 
-   if (error) {
-      throw new Error(error.message)
+   const { data: posts, error: postsError } = await supabase
+      .from('posts')
+      .select('*')
+      .order('likes', { ascending: false })
+      .limit(20)
+
+   if (postsError || bestPostsError) {
+      throw new Error(postsError?.message || bestPostsError?.message)
    }
 
    return (
       <div className="flex flex-col gap-2">
          <AdSenseBanner />
-         <Banner topData={posts} />
+         <Banner topData={bestPosts} />
          <Post postData={posts} />
       </div>
    )

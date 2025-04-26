@@ -1,7 +1,7 @@
 'use client'
 
 import { ROUTES } from '@/constants/route'
-import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCustomDate'
+import formatDate from '@/shared/utils/validators/board/format-date'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -57,9 +57,7 @@ export default function PostListItem({ item }: Props) {
             <p className="font-bold text-start w-32 px-2 flex justify-center">
                {author?.name || '닉네임'}
             </p>
-            <p className="w-12 flex justify-center">
-               {formatCustomDate(created_at)}
-            </p>
+            <p className="w-12 flex justify-center">{formatDate(created_at)}</p>
             <p className="w-16 flex justify-center">
                조회 {formatValue(views)}
             </p>

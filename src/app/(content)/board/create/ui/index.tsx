@@ -150,11 +150,18 @@ export default function BoardPostForm() {
                   setValue={form.setValue}
                   register={form.register}
                />
-               <div className="flex gap-6 justify-end my-2">
-                  <Button type="button" onClick={() => router.back()}>
-                     취소 하기
+               <div className="flex gap-6 justify-end my-2 item">
+                  <Button
+                     type="button"
+                     size="lg"
+                     className="bg-gray-400 hover:bg-gray-500"
+                     onClick={() => router.back()}
+                  >
+                     취소
                   </Button>
-                  <Button type="submit">제출 하기</Button>
+                  <Button size="lg" type="submit">
+                     제출 하기
+                  </Button>
                </div>
             </form>
          </Form>

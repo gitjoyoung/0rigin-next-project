@@ -1,10 +1,11 @@
 'use client'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/shadcn/ui/avatar'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
 import { Icons } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
-import formatCustomDate from '@/shared/utils/validators/boardValidators/formatCustomDate'
+import formatDate from '@/shared/utils/validators/board/format-date'
 import { useState } from 'react'
 import type { IComment } from '../../types/comment-type'
 
@@ -19,7 +20,7 @@ export default function CommentItem({
    isEditing,
    setIsEditing,
 }: Props) {
-   const { id, guest_name, content, created_at } = commentData
+   const { id, nickname, content, created_at } = commentData
    const [editContent, setEditContent] = useState(content)
 
    const handleCancel = () => {
@@ -36,88 +37,104 @@ export default function CommentItem({
    }
 
    return (
-      <div className={cn('flex flex-col min-h-9 group')}>
-         {/* 댓글 정보 */}
-         <div className="flex justify-between items-center py-1">
-            {/* 댓글 작성자 정보 */}
-            <div className="flex gap-1 items-center px-1">
-               <p className="whitespace-nowrap text-left truncate font-semibold text-sm">
-                  {guest_name}
-               </p>
-               <p className="text-xs text-gray-600">
-                  {formatCustomDate(created_at)}
-               </p>
+      <div className="flex gap-1 py-2 ">
+         <Avatar className={cn('w-10 h-10 my-2 ')}>
+            <AvatarImage
+               src="https://github.com/shadcn.png"
+               alt="shadcn"
+               className="w-full h-full"
+            />
+            <AvatarFallback>{nickname.slice(0, 2)}</AvatarFallback>
+         </Avatar>
+
+         <div className={cn('flex flex-col min-h-9 group flex-1')}>
+            {/* 댓글 헤더 */}
+            <div className="flex justify-between items-center py-1">
+               {/* 댓글 작성자 정보 */}
+               <div className="flex gap-1 items-center px-1">
+                  <p className="whitespace-nowrap text-left truncate font-semibold text-sm">
+                     {nickname}
+                  </p>
+                  <p className="text-xs text-gray-600">
+                     {formatDate(created_at)}
+                  </p>
+               </div>
+               {/* 버튼 그룹 */}
+               <div className="flex items-center h-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {!isEditing ? (
+                     <>
+                        <Button
+                           type="button"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              setIsEditing(id.toString())
+                           }}
+                           variant="link"
+                           size="icon"
+                        >
+                           <Icons.edit size={16} />
+                        </Button>
+                        <Button
+                           type="button"
+                           onClick={(e) => {
+                              e.stopPropagation()
+                              handleDelete()
+                           }}
+                           variant="link"
+                           size="icon"
+                        >
+                           <Icons.delete size={16} />
+                        </Button>
+                     </>
+                  ) : (
+                     <>
+                        <Button
+                           type="button"
+                           variant="link"
+                           size="icon"
+                           onClick={handleEditSubmit}
+                        >
+                           <Icons.check size={16} />
+                        </Button>
+                        <Button
+                           type="button"
+                           onClick={handleCancel}
+                           variant="link"
+                           size="icon"
+                        >
+                           <Icons.x size={16} />
+                        </Button>
+                     </>
+                  )}
+               </div>
             </div>
-            {/* 버튼 그룹 */}
-            <div className="flex items-center h-5 opacity-0 group-hover:opacity-100 transition-opacity">
+            {/* 댓글 내용 */}
+            <div className="pt-0.5">
                {!isEditing ? (
-                  <>
-                     <Button
-                        type="button"
-                        onClick={(e) => {
-                           e.stopPropagation()
-                           setIsEditing(id.toString())
-                        }}
-                        variant="link"
-                        size="icon"
-                     >
-                        <Icons.edit size={16} />
-                     </Button>
-                     <Button
-                        type="button"
-                        onClick={(e) => {
-                           e.stopPropagation()
-                           handleDelete()
-                        }}
-                        variant="link"
-                        size="icon"
-                     >
-                        <Icons.delete size={16} />
-                     </Button>
-                  </>
+                  <p className="text-sm break-words break-all min-w-60 whitespace-pre-wrap px-1">
+                     {content}
+                  </p>
                ) : (
-                  <>
-                     <Button
-                        type="button"
-                        variant="link"
-                        size="icon"
-                        onClick={handleEditSubmit}
-                     >
-                        <Icons.check size={16} />
-                     </Button>
-                     <Button
-                        type="button"
-                        onClick={handleCancel}
-                        variant="link"
-                        size="icon"
-                     >
-                        <Icons.x size={16} />
-                     </Button>
-                  </>
+                  <Textarea
+                     name="comment"
+                     value={editContent}
+                     onChange={(e) => setEditContent(e.target.value)}
+                     onKeyDown={(
+                        e: React.KeyboardEvent<HTMLTextAreaElement>,
+                     ) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                           e.preventDefault()
+                           handleEditSubmit()
+                        }
+                     }}
+                     className={cn(
+                        'w-full border rounded-none p-1 focus-visible:outline-none rounded-sm',
+                        isEditing && 'h-20 sm:text-sm',
+                     )}
+                     autoFocus
+                  />
                )}
             </div>
-         </div>
-         {/* 댓글 내용 */}
-         <div className="pt-1">
-            {!isEditing ? (
-               <p className="text-sm break-words break-all min-w-60 whitespace-pre-wrap px-1">
-                  {content}
-               </p>
-            ) : (
-               <Textarea
-                  name="comment"
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                  onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-                     if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        handleEditSubmit()
-                     }
-                  }}
-                  className="w-full border rounded-none p-1"
-                  autoFocus
-               />
-            )}
          </div>
       </div>
    )

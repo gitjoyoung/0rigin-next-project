@@ -1,9 +1,7 @@
-import { TopPost } from '@/types/boardTypes'
 import Link from 'next/link'
-import React from 'react'
 
 interface Props {
-   topData: TopPost[]
+   topData: any[]
    selectedPost: number
 }
 

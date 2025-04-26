@@ -3,7 +3,7 @@ import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 
-const formatCustomDate = (createdAt: string): string => {
+const formatDate = (createdAt: string): string => {
    if (!createdAt) return '데이터 오류'
 
    const today = dayjs().startOf('day')
@@ -17,4 +17,4 @@ const formatCustomDate = (createdAt: string): string => {
    return postDate.format('YY.MM.DD')
 }
 
-export default formatCustomDate
+export default formatDate

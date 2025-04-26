@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid'
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { match } from 'path-to-regexp'
 import {
@@ -20,13 +21,51 @@ export const AUTH_FORBIDDEN_ROUTES = [
    ROUTE_FORGET,
 ]
 
-// 유틸리티 함수들
+// 보호된 경로 확인
 const isProtectedRoute = (pathname: string) =>
    PROTECTED_ROUTES.some((route) => match(route)(pathname))
 
-const getViewportType = (request: NextRequest): 'mobile' | 'desktop' => {
+// 뷰포트 타입 확인
+const getViewportType = (
+   request: NextRequest,
+): 'mobile' | 'tablet' | 'desktop' => {
    const { device } = userAgent(request)
-   return device.type === 'mobile' ? 'mobile' : 'desktop'
+
+   if (device.type === 'mobile') return 'mobile'
+   if (device.type === 'tablet') return 'tablet'
+   return 'desktop'
+}
+
+// 방문자 정보 저장 함수
+const saveVisitorInfo = async (request: NextRequest, supabase: any) => {
+   // 쿠키를 통해 이미 방문한 사용자인지 확인
+   const cookieId = request.cookies.get('visitor_id')?.value || nanoid()
+
+   // 방문자 정보 수집
+   const { browser, device, engine, os } = userAgent(request)
+   const visitorData = {
+      visitor_id: cookieId,
+      ip_address: request.headers.get('x-forwarded-for') || 'unknown',
+      device_type: getViewportType(request),
+      browser: browser.name,
+      os: os.name,
+      language:
+         request.headers.get('accept-language')?.split(',')[0] || 'unknown',
+      referrer: request.headers.get('referer') || 'direct',
+      page_url: request.nextUrl.pathname,
+   }
+
+   // 매 방문마다 저장 (기존 방문자도 새 페이지 방문 시 기록)
+   const { data, error } = await supabase
+      .from('visitors')
+      .insert(visitorData)
+      .select('id')
+      .single()
+
+   return {
+      id: cookieId,
+      isNewVisitor: !request.cookies.get('visitor_id')?.value,
+   }
 }
 
 // 인증 페이지 처리
@@ -47,7 +86,23 @@ const handleAuth = async (request: NextRequest, user: any) => {
 // 메인 미들웨어 함수
 export async function middleware(request: NextRequest) {
    // 수파베이스에서 세션 정보 가져오기
-   const { supabaseResponse, user } = await updateSession(request)
+   const { supabaseResponse, user, supabase } = await updateSession(request)
+
+   // 방문자 정보 저장
+   const { id: visitorId, isNewVisitor } = await saveVisitorInfo(
+      request,
+      supabase,
+   )
+
+   // 새 방문자인 경우 쿠키 설정
+   if (isNewVisitor && visitorId) {
+      supabaseResponse.cookies.set('visitor_id', visitorId, {
+         httpOnly: true,
+         maxAge: 60 * 60 * 24, // 24시간
+         path: '/',
+         sameSite: 'lax',
+      })
+   }
 
    // 인증 처리
    const authResponse = await handleAuth(request, user)

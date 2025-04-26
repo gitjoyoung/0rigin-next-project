@@ -4,7 +4,7 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 
-export const sanitized = async (arg) => {
+export const sanitized = async (arg: string) => {
    const sanitizedContent = await unified()
       .use(remarkParse) // Markdown 문서를 파싱
       .use(remarkRehype) // 파싱된 Markdown을 HTML로 변환
@@ -16,7 +16,7 @@ export const sanitized = async (arg) => {
    return resultHtml
 }
 
-export const sanitizeHTML = async (htmlString) => {
+export const sanitizeHTML = async (htmlString: string) => {
    const sanitizedContent = await unified()
       .use(remarkParse) // Markdown 문서를 파싱
       .use(rehypeSanitize) // 살균 처리

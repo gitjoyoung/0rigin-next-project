@@ -17,6 +17,8 @@ export default function CommentForm({ postId }: Props) {
    // 필드 초기화
    const clearFormFields = () => {
       commentFormRef.current.comment.value = ''
+      commentFormRef.current.nickname.value = ''
+      commentFormRef.current.password.value = ''
    }
    const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -29,7 +31,7 @@ export default function CommentForm({ postId }: Props) {
          parent_id: 0,
          content: comment,
          author_id: nickname,
-         guest_name: nickname,
+         nickname: nickname,
          password: password,
          is_approved: true,
          is_edited: false,
@@ -44,37 +46,35 @@ export default function CommentForm({ postId }: Props) {
    }
 
    return (
-      <div className="py-2 ">
-         <form
-            ref={commentFormRef}
-            onSubmit={handleComment}
-            className="flex flex-col gap-2"
-         >
-            <div className="flex  gap-2 text-sm ">
-               <Input
-                  name="nickname"
-                  type="text"
-                  autoComplete="off"
-                  placeholder="닉네임"
-                  className="max-w-40 rounded-none"
-               />
-               <Input
-                  name="password"
-                  type="password"
-                  maxLength={10}
-                  autoComplete="off"
-                  placeholder="비밀번호"
-                  className="max-w-40 rounded-none"
-               />
-            </div>
-
-            <Textarea
-               name="comment"
-               className=" border rounded-none"
-               placeholder="댓글 입력"
+      <form
+         ref={commentFormRef}
+         onSubmit={handleComment}
+         className="flex flex-col gap-2"
+      >
+         <div className="flex  gap-2 text-sm ">
+            <Input
+               name="nickname"
+               type="text"
+               autoComplete="off"
+               placeholder="닉네임"
+               className="max-w-40 rounded-none"
             />
-            <Button type="submit">댓글달기</Button>
-         </form>
-      </div>
+            <Input
+               name="password"
+               type="password"
+               maxLength={10}
+               autoComplete="off"
+               placeholder="비밀번호"
+               className="max-w-40 rounded-none"
+            />
+         </div>
+
+         <Textarea
+            name="comment"
+            className=" border rounded-none"
+            placeholder="댓글 입력"
+         />
+         <Button type="submit">댓글달기</Button>
+      </form>
    )
 }

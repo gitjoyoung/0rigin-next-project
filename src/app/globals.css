@@ -79,7 +79,6 @@
    * {
       @apply border-border;
       -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-gutter: stable;
       scrollbar-width: thin;
       scrollbar-color: hsl(var(--muted-foreground) / 0.3)
          hsl(var(--muted) / 0.5);
@@ -107,6 +106,12 @@
    .markdown-list ol {
       list-style: decimal;
    }
+}
+@font-face {
+   font-family: 'DOS';
+   src: url('/fonts/modern_dos/ModernDOS8x16.ttf') format('ttf');
+   font-weight: normal;
+   font-style: normal;
 }
 
 /* Select 컴포넌트 스크롤바 문제 */

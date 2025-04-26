@@ -1,19 +1,14 @@
 'use client'
 
 import { Progress } from '@/shared/shadcn/ui/progress'
-import { TopPost } from '@/types/boardTypes'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import BannerList from './banner-list'
 import Thumbnail from './banner-thumbnail'
 
-interface Props {
-   topData: TopPost[]
-}
-
 const TIMER = 5000
 const DURATION = TIMER / 100
 
-export default function Banner({ topData }: Props) {
+export default function Banner({ topData }: any) {
    const [currentSlide, setCurrentSlide] = useState(0)
    const [progress, setProgress] = useState(0)
    const intervalRef = useRef<NodeJS.Timeout | null>(null)
@@ -21,7 +16,6 @@ export default function Banner({ topData }: Props) {
    // 🔹 Progress 업데이트 및 슬라이드 변경 로직
    const updateTimer = useCallback(() => {
       setProgress(0) // 초기화
-
       intervalRef.current = setInterval(() => {
          setProgress((prev) => {
             if (prev >= 100) {
@@ -31,7 +25,7 @@ export default function Banner({ topData }: Props) {
             return prev + 1
          })
       }, DURATION)
-   }, [topData.length]) // 🔥 DURATION 제거 (고정값이므로 필요 없음)
+   }, [topData.length])
 
    useEffect(() => {
       updateTimer()

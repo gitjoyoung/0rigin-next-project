@@ -1,9 +1,8 @@
-import { TopPost } from '@/types/boardTypes'
 import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
-   data: TopPost
+   data: any
 }
 
 export default function BannerThumbnail({ data }: Props) {

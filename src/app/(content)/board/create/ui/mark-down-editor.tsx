@@ -14,7 +14,7 @@ import { Icons } from '@/shared/ui/icons'
 import {
    generateErrorMessage,
    validateFile,
-} from '@/shared/utils/validators/boardValidators/imageValidators'
+} from '@/shared/utils/validators/board/imageValidators'
 import '@uiw/react-markdown-preview/markdown.css'
 import { commands } from '@uiw/react-md-editor'
 import '@uiw/react-md-editor/markdown-editor.css'

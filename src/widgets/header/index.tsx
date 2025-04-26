@@ -30,7 +30,12 @@ export default function Header() {
          <div className="flex gap-4">
             {/* 로고 */}
             <Link href="/">
-               <h3 className="text-xl sm:text-2xl font-mono font-bold">
+               <h3
+                  style={{
+                     fontFamily: 'DOS',
+                  }}
+                  className="text-xl sm:text-2xl font-DOS font-bold"
+               >
                   0rigin
                </h3>
             </Link>
