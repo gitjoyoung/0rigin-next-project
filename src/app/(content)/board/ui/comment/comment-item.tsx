@@ -1,5 +1,6 @@
 'use client'
 
+import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/shadcn/ui/avatar'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
@@ -13,15 +14,19 @@ interface Props {
    commentData: IComment
    isEditing: boolean
    setIsEditing: React.Dispatch<React.SetStateAction<string | null>>
+   refetch: () => void
 }
 
 export default function CommentItem({
    commentData,
    isEditing,
    setIsEditing,
+   refetch,
 }: Props) {
    const { id, nickname, content, created_at } = commentData
    const [editContent, setEditContent] = useState(content)
+
+   const supabase = SupabaseBrowserClient()
 
    const handleCancel = () => {
       setEditContent(content)
@@ -30,10 +35,30 @@ export default function CommentItem({
 
    const handleEditSubmit = async () => {
       if (editContent.trim() === '') return
+      const { error } = await supabase
+         .from('comments')
+         .update({
+            content: editContent,
+            is_edited: true,
+         })
+         .eq('id', id)
+      if (error) {
+         alert(`댓글 수정 오류: ${JSON.stringify(error)}`)
+      } else {
+         setIsEditing(null)
+         refetch()
+      }
    }
 
    const handleDelete = async () => {
       if (!confirm('댓글을 삭제하시겠습니까?')) return
+      const { error } = await supabase.from('comments').delete().eq('id', id)
+      if (error) {
+         alert(`댓글 삭제 오류: ${JSON.stringify(error)}`)
+      } else {
+         setIsEditing(null)
+         refetch()
+      }
    }
 
    return (

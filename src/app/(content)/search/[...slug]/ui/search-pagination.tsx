@@ -1,4 +1,3 @@
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import {
    Pagination,
    PaginationContent,
@@ -10,29 +9,33 @@ import {
 import { cn } from '@/shared/utils/cn'
 
 interface PaginationProps {
-   currentPage: number
-   baseRoute: string
+   activePage: number
+   paginationBaseUrl: string
+   totalItemCount: number
 }
 
 const POST_PER_PAGE = 20
 export default async function SearchPagination({
-   currentPage,
-   baseRoute,
+   totalItemCount,
+   activePage,
+   paginationBaseUrl,
 }: PaginationProps) {
-   const supabase = await SupabaseBrowserClient()
-   const { count } = await supabase
-      .from('posts')
-      .select('*', { count: 'exact', head: true })
-
-   const totalPages = Math.ceil((count || 0) / POST_PER_PAGE)
+   const totalPages = Math.ceil((totalItemCount || 0) / POST_PER_PAGE)
 
    const itemsPerPage = 5 // 한 번에 보여줄 페이지 수
 
    const getPageNumbers = () => {
       const pages = []
+
+      console.log('totalPages', totalItemCount, totalPages)
+      // totalPages가 0인 경우 1페이지만 표시
+      if (totalPages <= 0) {
+         return [1]
+      }
+
       const halfItemsPerPage = Math.floor(itemsPerPage / 2)
 
-      let startPage = Math.max(1, currentPage - halfItemsPerPage)
+      let startPage = Math.max(1, activePage - halfItemsPerPage)
       let endPage = Math.min(totalPages, startPage + itemsPerPage - 1)
 
       if (endPage - startPage + 1 < itemsPerPage) {
@@ -53,9 +56,9 @@ export default async function SearchPagination({
          <PaginationContent>
             <PaginationItem>
                <PaginationPrevious
-                  href={`${baseRoute}/${currentPage - 1}`}
+                  href={`${paginationBaseUrl}/${activePage - 1}`}
                   className={cn(
-                     currentPage <= 1 && 'pointer-events-none opacity-50',
+                     activePage <= 1 && 'pointer-events-none opacity-50',
                   )}
                />
             </PaginationItem>
@@ -63,8 +66,8 @@ export default async function SearchPagination({
             {pageNumbers.map((page) => (
                <PaginationItem key={page}>
                   <PaginationLink
-                     href={`${baseRoute}/${page}`}
-                     isActive={page === currentPage}
+                     href={`${paginationBaseUrl}/${page}`}
+                     isActive={page === activePage}
                   >
                      {page}
                   </PaginationLink>
@@ -73,9 +76,9 @@ export default async function SearchPagination({
 
             <PaginationItem>
                <PaginationNext
-                  href={`${baseRoute}/${currentPage + 1}`}
+                  href={`${paginationBaseUrl}/${activePage + 1}`}
                   className={cn(
-                     currentPage >= totalPages &&
+                     activePage >= totalPages &&
                         'pointer-events-none opacity-50',
                   )}
                />

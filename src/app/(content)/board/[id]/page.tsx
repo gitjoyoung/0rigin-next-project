@@ -1,4 +1,4 @@
-import { ROUTES } from '@/constants/route'
+import { ROUTE_BOARD } from '@/constants/pathname'
 import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -29,7 +29,7 @@ export async function generateMetadata({
 
 export default async function Page({ params, searchParams }: IParams) {
    const { id } = await params
-   if (id === undefined) redirect(ROUTES.BOARD)
+   if (id === undefined) redirect(ROUTE_BOARD)
    const { page } = await searchParams
    const currentPage: number = Number(page) || 1
    const POST_PER_PAGE = 20

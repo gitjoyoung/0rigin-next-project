@@ -1,6 +1,6 @@
 'use client'
 
-import { ROUTES } from '@/constants/route'
+import { ROUTE_BOARD } from '@/constants/pathname'
 import formatDate from '@/shared/utils/validators/board/format-date'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
@@ -37,7 +37,7 @@ export default function PostListItem({ item }: Props) {
                </p>
             ) : (
                <Link
-                  href={`${ROUTES.BOARD}/${id}?page=${page}`}
+                  href={`${ROUTE_BOARD}/${id}?page=${page}`}
                   className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary"
                >
                   <h2 className="truncate font-medium text-xs sm:text-sm">

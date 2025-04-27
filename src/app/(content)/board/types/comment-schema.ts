@@ -5,7 +5,7 @@ export const commentSchema = z.object({
    parent_id: z.number(),
    content: z.string().min(1, '댓글 내용을 입력해주세요.'),
    author_id: z.string(),
-   guest_name: z.string().min(2, '닉네임은 2자 이상이어야 합니다.'),
+   nickname: z.string().min(2, '닉네임은 2자 이상이어야 합니다.'),
    password: z
       .string()
       .min(4, '비밀번호는 4자 이상이어야 합니다.')

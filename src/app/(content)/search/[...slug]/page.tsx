@@ -8,11 +8,9 @@ export default async function page({
    params: Promise<{ slug: string[] }>
 }) {
    const { slug } = await params
-
    const keyword = decodeURIComponent(slug[0] || '')
-   const page = slug[1] || '1'
-
-   console.log(`Keyword: ${keyword}, Page: ${page}`)
+   const activePage = parseInt(slug[1] || '1')
+   const offset = (activePage - 1) * 20
 
    const supabase = await SupabaseServerClient()
 
@@ -20,18 +18,6 @@ export default async function page({
       .from('posts')
       .select('*', { count: 'exact', head: true })
       .ilike('title', `%${keyword}%`)
-
-   if (count === 0) {
-      return (
-         <div className="w-full h-[500px] flex items-center justify-center m-auto">
-            <div className="flex flex-col items-center justify-center">
-               <h1 className="text-2xl font-bold">검색 결과가 없습니다.</h1>
-            </div>
-         </div>
-      )
-   }
-
-   const offset = (parseInt(page) - 1) * 20
 
    const { data: searchResult, error } = await supabase
       .from('posts')
@@ -63,8 +49,9 @@ export default async function page({
          />
          <div className="flex items-center my-12">
             <SearchPagination
-               currentPage={parseInt(page)}
-               baseRoute={`/search/${keyword}`}
+               totalItemCount={count}
+               activePage={activePage}
+               paginationBaseUrl={`/search/${keyword}`}
             />
          </div>
       </div>

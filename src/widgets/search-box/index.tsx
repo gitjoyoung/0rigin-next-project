@@ -1,12 +1,11 @@
 'use client'
-import { ROUTES } from '@/constants/route'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Icons } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 
-export default function SearchBox() {
+export default function SearchBox({ className }: { className?: string }) {
    const router = useRouter()
    const searchInputRef = useRef<HTMLInputElement | null>()
    const [isFocus, setIsFocus] = useState(false)
@@ -15,7 +14,7 @@ export default function SearchBox() {
       if (!searchTrim) return
 
       const processedSearchTerm = searchTrim.replace(/\s+/g, '+')
-      await router.push(`${ROUTES.SEARCH}/${processedSearchTerm}`)
+      await router.push(`/search/${processedSearchTerm}`)
    }
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -29,6 +28,7 @@ export default function SearchBox() {
       <article
          className={cn(
             'flex items-center gap-1 h-8 border border-black rounded-md transition-all duration-300',
+            className,
             isFocus ? 'w-48' : 'w-24',
          )}
       >

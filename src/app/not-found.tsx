@@ -1,4 +1,3 @@
-import { ROUTES } from '@/constants/route'
 import { Button } from '@/shared/shadcn/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,7 +18,7 @@ export default function NotFound() {
             죄송합니다. 찾고 계신 페이지가 존재하지 않습니다.
          </p>
 
-         <Link href={ROUTES.HOME}>
+         <Link href="/">
             <Button>홈으로 돌아가기 </Button>
          </Link>
       </div>

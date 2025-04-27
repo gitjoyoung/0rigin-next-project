@@ -25,7 +25,7 @@ export default function CommentList({ postId }: Props) {
    const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
       null,
    )
-   const { data: commentsData = [] } = useQuery<IComment[]>({
+   const { data: commentsData = [], refetch } = useQuery<IComment[]>({
       queryKey: ['comments', postId],
       queryFn: () => fetchComments(postId),
    })
@@ -43,13 +43,14 @@ export default function CommentList({ postId }: Props) {
                   commentData={data}
                   isEditing={selectedCommentId === data.id.toString()}
                   setIsEditing={setSelectedCommentId}
+                  refetch={refetch}
                />
             ))}
          </div>
 
          {/* 댓글 작성 폼 */}
          <Separator className="my-2" />
-         <CommentForm postId={postId} />
+         <CommentForm postId={postId} refetch={refetch} />
       </div>
    )
 }

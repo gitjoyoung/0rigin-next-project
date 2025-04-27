@@ -1,28 +1,19 @@
-import IMAGE_PICKER_CONFIG from '@/constants/board/imagePicker'
-
-/**
- * 파일 사이즈 검사
- * @param file
- * @returns
- */
+const MAX_FILE_SIZE_MB = 10
+const IMAGE_PICKER_CONFIG = {
+   IMAGES_TYPES: ['image/png', 'image/jpeg', 'image/jpg'],
+   MAX_FILE_SIZE: MAX_FILE_SIZE_MB * 1024 * 1024, // 20MB
+   MAX_FILE_SIZE_MB,
+   MAX_FILE_COUNT: 10, // 최대 10개의 이미지
+}
+// 파일 사이즈 검사
 const checkFileSize = (file: File) => {
    return file.size <= IMAGE_PICKER_CONFIG.MAX_FILE_SIZE
 }
-
-/**
- * 지정한 파일 타입 검사
- * @param file
- * @returns boolean
- */
+// 파일 타입 검사
 const checkFileType = (file: File): boolean => {
    return IMAGE_PICKER_CONFIG.IMAGES_TYPES.includes(file.type)
 }
-
-/**
- *  이미지 파일 사이즈 변환 함수
- * @param number
- * @returns string : `${number.toString()}bytes`
- */
+// 파일 사이즈 변환
 export const validFileSize = (number: number): string => {
    if (number < 1024) {
       return `${number.toString()}bytes`
