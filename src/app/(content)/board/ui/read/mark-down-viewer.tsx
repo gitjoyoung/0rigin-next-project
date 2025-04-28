@@ -20,7 +20,7 @@ export default function MarkDownViewer({ content }: { content: IPostContent }) {
                color: 'inherit',
                fontFamily: 'inherit',
             }}
-            source={content.content.map((item) => item.text).join('\n')}
+            source={content.markdown}
             remarkPlugins={[remarkBreaks]}
             rehypePlugins={[rehypeSanitize]}
          />

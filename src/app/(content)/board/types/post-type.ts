@@ -1,9 +1,6 @@
 export interface IPostContent {
-   type: 'text' | 'markdown'
-   content: {
-      type: string
-      text: string
-   }[]
+   markdown: string
+   html?: string // 서버에서 미리 변환된 HTML 콘텐츠
 }
 
 export interface IPost {

@@ -1,6 +1,10 @@
 'use client'
 
-import { boardSchema } from '@/app/(content)/board/create/types/board-schema'
+import {
+   boardSchema,
+   type BoardFormType,
+} from '@/app/(content)/board/create/types/board-schema'
+import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import { auth } from '@/shared/actions/auth-action'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
@@ -11,26 +15,29 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
+import { markdownToSanitizedHTML } from '@/shared/utils/validators/board/formatSanized'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeOff } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import type { BoardFormData } from '../types/board-types'
 import BoardAccordion from './board-accordion'
 import MarkDownEditor from './mark-down-editor'
+
+const supabase = SupabaseBrowserClient()
 
 export default function BoardPostForm() {
    const router = useRouter()
    const [isLoading, setIsLoading] = useState(true)
    const [isAuthenticated, setIsAuthenticated] = useState(false)
    const [showPassword, setShowPassword] = useState(false)
-   const form = useForm<BoardFormData>({
+
+   const form = useForm<BoardFormType>({
       resolver: zodResolver(boardSchema),
       defaultValues: {
          nickname: '',
          password: '',
-         subject: '',
+         title: '',
          content: '',
       },
    })
@@ -45,13 +52,32 @@ export default function BoardPostForm() {
       }
       checkAuth()
    }, [])
+   const onSubmit = async (data: BoardFormType) => {
+      console.log('글쓰기 데이터', data)
 
-   const onSubmit = async (data: BoardFormData) => {
-      console.log(data)
+      // 마크다운을 HTML로 변환
+      const markdownContent = data.content
+      const htmlContent = await markdownToSanitizedHTML(markdownContent)
+
+      const { data: postData, error } = await supabase.from('posts').insert({
+         nickname: data.nickname,
+         password: data.password,
+         title: data.title,
+         content: {
+            markdown: markdownContent,
+            html: htmlContent,
+         },
+      })
+      if (error) {
+         alert('글쓰기 오류' + JSON.stringify(error.message))
+      } else {
+         alert('글쓰기 성공')
+         router.push('/board')
+      }
    }
 
    return (
-      <section className="w-full px-3 py-2">
+      <section className="w-full py-2">
          <Form {...form}>
             <form
                className="w-full flex flex-col gap-2"
@@ -125,7 +151,7 @@ export default function BoardPostForm() {
 
                   <FormField
                      control={form.control}
-                     name="subject"
+                     name="title"
                      render={({ field }) => (
                         <FormItem>
                            <FormControl>

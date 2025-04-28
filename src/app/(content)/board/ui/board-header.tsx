@@ -22,7 +22,7 @@ export default function BoardHeader() {
             </p>
          </div>
          <Link href={ROUTE_BOARD_CREATE}>
-            <Button variant="secondary" className="p-4" size="default">
+            <Button variant="default" className="p-4" size="default">
                {HEADER_DATA.create}
             </Button>
          </Link>

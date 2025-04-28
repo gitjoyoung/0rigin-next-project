@@ -25,11 +25,11 @@ export default function PostRead({
          />
 
          {/* 글내용 마크다운 뷰어 */}
-         <div className="my-10 min-h-[200px]">
+         <div className="my-10 min-h-[200px] px-1">
             <MarkDownViewer content={content} />
          </div>
          {/* 싫어요,좋아요  버튼 */}
-         <BoardLikeButton postId={id} like={likes} />
+         <BoardLikeButton postId={id} />
       </section>
    )
 }

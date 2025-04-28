@@ -16,6 +16,7 @@ export const boardSchema = z.object({
       ),
    title: z.string().min(2, '제목을 입력해주세요.'),
    content: z.string().min(2, '내용을 입력해주세요.'),
-   summary: z.string(),
-   markdown: z.string().min(2, '마크다운을 입력해주세요.'),
 })
+
+// Zod 스키마에서 타입스크립트 타입 추출
+export type BoardFormType = z.infer<typeof boardSchema>
