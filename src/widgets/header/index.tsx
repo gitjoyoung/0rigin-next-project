@@ -25,19 +25,12 @@ export const HEADER_NAV_LIST = [
 
 export default function Header() {
    return (
-      <header className="flex items-center justify-between py-1  sm:h-10 h-8 w-full border-b border-black ">
+      <header className="flex items-center justify-between py-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">
          {/* 로고 + 네비게이션 */}
-         <div className="flex gap-4">
+         <div className="flex gap-4 items-center">
             {/* 로고 */}
-            <Link href="/">
-               <h3
-                  style={{
-                     fontFamily: 'DOS',
-                  }}
-                  className="text-xl sm:text-2xl font-DOS font-bold"
-               >
-                  0rigin
-               </h3>
+            <Link className="text-xl sm:text-2xl font-dos font-bold" href="/">
+               0RIGIN
             </Link>
 
             {/* 데스크톱 네비게이션 */}
@@ -53,16 +46,16 @@ export default function Header() {
                ))}
             </nav>
          </div>
-
-         {/* 검색창 + 인증 버튼 */}
-         <div className="hidden sm:flex  items-center gap-4">
+         <div className="flex items-center gap-4">
             <SearchBox />
             <ThemeToggle />
-            <AuthButton />
+            {/* 검색창 + 인증 버튼 */}
+            <div className="hidden sm:flex  items-center gap-4">
+               <AuthButton />
+            </div>
+            {/* 모바일 메뉴 토글 */}
+            <MobileSideMenu />{' '}
          </div>
-
-         {/* 모바일 메뉴 토글 */}
-         <MobileSideMenu />
       </header>
    )
 }

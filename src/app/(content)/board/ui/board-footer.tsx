@@ -16,7 +16,7 @@ export default function BoardFooter() {
             </Button>
          </Link>
          <Link href={ROUTE_BOARD_CREATE}>
-            <Button variant="secondary" className="p-4" size="default">
+            <Button variant="default" className="p-4" size="default">
                {FOOTER_DATA.create}
             </Button>
          </Link>

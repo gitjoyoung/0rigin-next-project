@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js'
 
 export const formatValue = (value: number | string): string => {
-   if (value === 0) return '0'
+   if (value === 0 || value === undefined || value === null) return '0'
    if (value === undefined || value === null) return ''
 
    try {

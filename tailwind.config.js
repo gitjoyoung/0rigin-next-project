@@ -99,6 +99,24 @@ module.exports = {
                   height: '0',
                },
             },
+            'rotate-fade-in': {
+               '0%': {
+                  opacity: '0',
+                  transform: 'rotate(-180deg) scale(0.5)',
+               },
+               '100%': {
+                  opacity: '1',
+                  transform: 'rotate(0deg) scale(1)',
+               },
+            },
+            'fade-in': {
+               from: {
+                  opacity: '0',
+               },
+               to: {
+                  opacity: '1',
+               },
+            },
             'marquee-y': {
                '0%': { transform: 'translateY(0)' },
                '100%': { transform: 'translateY(-50%)' },
@@ -107,6 +125,9 @@ module.exports = {
          animation: {
             'accordion-down': 'accordion-down 0.2s ease-out',
             'accordion-up': 'accordion-up 0.2s ease-out',
+            'rotate-fade-in':
+               'rotate-fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+            'fade-in': 'fade-in 0.3s ease-out forwards',
             'marquee-y': 'marquee-y 10s linear infinite',
          },
       },

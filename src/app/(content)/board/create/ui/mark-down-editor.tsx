@@ -27,6 +27,19 @@ import remarkBreaks from 'remark-breaks'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: true })
 
+// 제목 밑줄 제거를 위한 스타일
+const customStyles = `
+  .w-md-editor-preview h1,
+  .w-md-editor-preview h2,
+  .w-md-editor-preview h3,
+  .w-md-editor-preview h4,
+  .w-md-editor-preview h5,
+  .w-md-editor-preview h6 {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+`
+
 const IMAGE_COMPRESSION_OPTIONS = {
    maxSizeMB: 0.5,
    maxWidthOrHeight: 1200,
@@ -148,6 +161,7 @@ const MarkDownEditor = ({
 
    return (
       <>
+         <style>{customStyles}</style>
          <input
             type="file"
             accept="image/*"
@@ -209,6 +223,7 @@ const MarkDownEditor = ({
                   fontSize: '14px',
                },
             }}
+            className="markdown-preview"
          />
       </>
    )

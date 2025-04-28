@@ -37,13 +37,11 @@ export default async function Page({ searchParams }: Params) {
    }
 
    return (
-      <main>
-         <section className="flex flex-col gap-4 mb-10">
-            <Post postData={posts || []} />
-            <BoardFooter />
-            <CustomPagination currentPage={currentPage} baseRoute="/board" />
-         </section>
-      </main>
+      <section className="flex flex-col gap-4 mb-10">
+         <Post postData={posts || []} />
+         <CustomPagination currentPage={currentPage} baseRoute="/board" />
+         <BoardFooter />
+      </section>
    )
 }
 

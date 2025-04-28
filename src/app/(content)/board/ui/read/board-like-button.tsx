@@ -70,15 +70,12 @@ export default function BoardLikeButton({ postId }: Props) {
       <div className="flex justify-center my-5">
          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
-               variant="outline"
-               size="lg"
+               variant="ghost"
                onClick={() => toggleLike()}
                disabled={isLoading}
                className={cn(
-                  'flex justify-between items-center h-auto py-2 transition-all duration-300',
-                  'hover:shadow-lg hover:shadow-pink-100/50',
-                  'border-gray-200 hover:border-pink-300',
-                  'hover:bg-pink-50/50',
+                  'flex  items-center h-auto py-2 transition-all duration-300 rounded-full',
+                  'hover:bg-pink-50/50 hover:shadow-lg hover:shadow-pink-100/50 hover:border-pink-300',
                   hasLiked &&
                      'bg-gradient-to-r from-pink-50 to-purple-50 border-pink-300 text-pink-600',
                )}
@@ -109,7 +106,10 @@ export default function BoardLikeButton({ postId }: Props) {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className={cn('font-medium', hasLiked && 'text-pink-600')}
+                  className={cn(
+                     'font-dos font-medium',
+                     hasLiked && 'text-pink-600',
+                  )}
                >
                   {reactionCounts.likes}
                </motion.span>

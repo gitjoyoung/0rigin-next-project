@@ -23,8 +23,8 @@ export default function CommentHeader({ commentCount: commentLength }: Props) {
             <p>{COMMENT_HEADER_DATA.count}</p>
          </div>
          <Button
-            className="p-1 py-0 text-xs flex gap-1 bg-transparent text-black dark:text-white 
-            hover:bg-gray-100 dark:hover:bg-gray-800
+            variant="link"
+            className="p-1 py-0 text-xs flex gap-1  text-black dark:text-white 
             items-center h-5"
             onClick={() => router.refresh()}
          >

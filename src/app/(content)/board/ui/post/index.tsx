@@ -1,34 +1,92 @@
-import { nanoid } from 'nanoid'
+'use client'
+
+import { ROUTE_BOARD } from '@/constants/pathname'
+import {
+   Table,
+   TableBody,
+   TableCell,
+   TableHead,
+   TableHeader,
+   TableRow,
+} from '@/shared/shadcn/ui/table'
+import formatDate from '@/shared/utils/validators/board/format-date'
+import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import type { IPost } from '../../types/post-type'
-import PostListItem from './post-list-item'
 
 interface Props {
    postData: IPost[]
 }
 
 export default function Post({ postData }: Props) {
+   const page = useSearchParams().get('page') || 1
+
    if (!postData) return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
    return (
-      <div className="border dark:border-gray-700 border-gray-200 w-full ">
-         <div className="flex items-center py-1 px-1 font-semibold border-b bg-gray-100 dark:bg-gray-700 text-xs sm:text-sm">
-            <p className="w-14 text-center ">번호</p>
-            <p className="flex-1 min-w-0 text-center">제목</p>
-            <div className=" gap-2 text-center sm:flex hidden">
-               <p className="w-32 px-2">작성자</p>
-               <p className="w-12">작성일</p>
-               <p className="w-16">조회</p>
-               <p className="w-16">추천</p>
-            </div>
-         </div>
-         {postData &&
-            postData.map((item: IPost) => (
-               <div
-                  key={nanoid()}
-                  className={`border-b last:border-b-0 hover:bg-gray-200 dark:hover:bg-gray-800`}
-               >
-                  <PostListItem item={item} />
-               </div>
-            ))}
-      </div>
+      <Table className="w-full font-dos  ">
+         <TableHeader>
+            <TableRow className="text-xs sm:text-sm">
+               <TableHead className="text-center w-[5%] min-w-[40px]">
+                  번호
+               </TableHead>
+               <TableHead className="w-auto min-w-[150px]">제목</TableHead>
+               <TableHead className="text-center w-[5%] min-w-[60px]">
+                  작성자
+               </TableHead>
+               <TableHead className="text-center w-[5%] min-w-[100px] hidden sm:table-cell">
+                  작성일
+               </TableHead>
+               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
+                  조회
+               </TableHead>
+               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
+                  추천
+               </TableHead>
+            </TableRow>
+         </TableHeader>
+         <TableBody>
+            {postData.map((item: IPost) => {
+               return (
+                  <TableRow
+                     key={item.id}
+                     className="hover:bg-gray-200 dark:hover:bg-gray-800 text-xs sm:text-sm"
+                  >
+                     <TableCell className="w-[5%] min-w-[40px] text-center">
+                        {item.id}
+                     </TableCell>
+                     <TableCell className="w-auto min-w-[100px] overflow-ellipsis">
+                        <Link
+                           href={`${ROUTE_BOARD}/${item.id}?page=${page}`}
+                           className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary"
+                        >
+                           <h2 className="truncate font-medium">
+                              {item.title}
+                           </h2>
+                           {item.comments > 0 && (
+                              <span className="text-muted-foreground">
+                                 [{item.comments}]
+                              </span>
+                           )}
+                        </Link>
+                     </TableCell>
+
+                     <TableCell className="w-[5%] min-w-[60px] text-center text-xs">
+                        {item.author?.name || '닉네임'}
+                     </TableCell>
+                     <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">
+                        {formatDate(item.created_at)}
+                     </TableCell>
+                     <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
+                        {formatValue(item.views)}
+                     </TableCell>
+                     <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
+                        {formatValue(item.likes)}
+                     </TableCell>
+                  </TableRow>
+               )
+            })}
+         </TableBody>
+      </Table>
    )
 }

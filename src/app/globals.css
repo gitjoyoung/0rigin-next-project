@@ -106,10 +106,19 @@
    .markdown-list ol {
       list-style: decimal;
    }
+   .markdown-preview h1,
+   .markdown-preview h2,
+   .markdown-preview h3,
+   .markdown-preview h4,
+   .markdown-preview h5,
+   .markdown-preview h6 {
+      border-bottom: none;
+      padding-bottom: 0;
+   }
 }
 @font-face {
-   font-family: 'DOS';
-   src: url('/fonts/modern_dos/ModernDOS8x16.ttf') format('ttf');
+   font-family: 'dos';
+   src: url('/fonts/modern_dos/ModernDOS8x16.ttf') format('truetype');
    font-weight: normal;
    font-style: normal;
 }
