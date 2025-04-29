@@ -121,6 +121,7 @@
    src: url('/fonts/modern_dos/ModernDOS8x16.ttf') format('truetype');
    font-weight: normal;
    font-style: normal;
+   font-display: swap; /* 폰트가 로드될 때까지 시스템 폰트로 먼저 표시  */
 }
 
 /* Select 컴포넌트 스크롤바 문제 */

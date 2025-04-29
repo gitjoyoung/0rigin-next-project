@@ -20,19 +20,25 @@ export default function PostHeader(post: Partial<IPost>) {
          <div className="flex justify-between items-center flex-wrap">
             <ul className="flex gap-2 text-xs h-5 items-center">
                <li className="font-bold max-w-[90px] flex items-center ">
-                  <h3>{authorName}</h3>
+                  <p>{authorName}</p>
                </li>
-               <Separator orientation="vertical" />
+               <li>
+                  <Separator orientation="vertical" />
+               </li>
                <li className="flex gap-1">
                   <p>{POST_HEADER_DATA.like}</p>
                   <p>{formatNumberWithUnit(likes)}</p>
                </li>
-               <Separator orientation="vertical" />
+               <li>
+                  <Separator orientation="vertical" />
+               </li>
                <li className="flex gap-1">
                   <p>{POST_HEADER_DATA.views}</p>
                   <p>{formatNumberWithUnit(views)}</p>
                </li>
-               <Separator orientation="vertical" />
+               <li>
+                  <Separator orientation="vertical" />
+               </li>
                <li className="flex gap-1">
                   <p>{POST_HEADER_DATA.date}</p>
                   <p>{formatDate(created_at)}</p>

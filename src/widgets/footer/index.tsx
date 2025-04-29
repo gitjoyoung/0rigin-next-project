@@ -8,7 +8,7 @@ const FOOTER_NAV = Object.freeze([
 ])
 export default function Footer() {
    return (
-      <div className="text-xs flex flex-col items-center justify-center gap-2  bottom-0  p-4 w-full border-t-2 border-black">
+      <div className="text-xs flex flex-col items-center justify-center gap-2   p-4 w-full border-t-2 border-black">
          <ul className="flex flex-wrap font-semibold divide-x divide-black dark:divide-white">
             {FOOTER_NAV.map(({ name, link, id }, index) => (
                <li key={id} className="px-1.5 first:pl-0 last:pr-0">

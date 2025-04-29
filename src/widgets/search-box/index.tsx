@@ -34,6 +34,7 @@ export default function SearchBox({ className }: { className?: string }) {
       >
          <input
             ref={searchInputRef}
+            aria-label="검색 입력"
             spellCheck={true}
             onKeyDown={handleKeyDown}
             maxLength={25}
@@ -53,6 +54,7 @@ export default function SearchBox({ className }: { className?: string }) {
             className="h-8 px-2 text-sm"
             onClick={handleSearch}
             type="button"
+            aria-label="검색"
             onFocus={() => {
                setIsFocus(true)
             }}

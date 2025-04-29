@@ -2,26 +2,30 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
-   data: any
+   postData: any
 }
 
-export default function BannerThumbnail({ data }: Props) {
+export default function BannerThumbnail({ postData }: Props) {
    const {
       id = '/',
       title = '제목',
       summary = '요약',
       thumbnail,
       nickname = '닉네임',
-   } = data
+   } = postData
+
+   console.log(postData)
 
    return (
       <div className=" w-full md:w-7/12 md:border-r border-black ">
          <div className="relative w-full  h-56   ">
             <Link href={`/board/${id}`}>
                <Image
-                  alt="Banner Thumbnail"
+                  alt="배너 섬네일"
                   src={thumbnail || '/mascot/winksaurus.png'}
                   fill
+                  priority
+                  quality={85}
                   style={{ objectFit: 'cover' }}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                />

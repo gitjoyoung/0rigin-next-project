@@ -1,5 +1,4 @@
 import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
-import AdSenseBanner from '@/widgets/adsense-banner.tsx'
 import Banner from '@/widgets/banner'
 import Post from './(content)/board/ui/post'
 
@@ -33,7 +32,7 @@ export default async function Home() {
 
    return (
       <div className="flex flex-col gap-2">
-         <AdSenseBanner />
+         {/* <AdSenseBanner /> */}
          <Banner topData={bestPosts} />
          <Post postData={posts} />
       </div>

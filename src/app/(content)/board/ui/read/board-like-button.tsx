@@ -33,7 +33,6 @@ const fetchPostLikes = async (postId: string): Promise<number> => {
 export default function BoardLikeButton({ postId }: Props) {
    const [hasLiked, setHasLiked] = useState(false)
    const queryClient = useQueryClient()
-
    // 좋아요 데이터 조회 쿼리
    const { data: reactionCounts = { likes: 0 } } = useQuery({
       queryKey: ['postLikes', postId],
@@ -74,10 +73,9 @@ export default function BoardLikeButton({ postId }: Props) {
                onClick={() => toggleLike()}
                disabled={isLoading}
                className={cn(
-                  'flex  items-center h-auto py-2 transition-all duration-300 rounded-full',
+                  'flex  items-center h-auto py-2 transition-all duration-300 rounded-full font-dos',
                   'hover:bg-pink-50/50 hover:shadow-lg hover:shadow-pink-100/50 hover:border-pink-300',
-                  hasLiked &&
-                     'bg-gradient-to-r from-pink-50 to-purple-50 border-pink-300 text-pink-600',
+                  hasLiked && ' border-pink-300 text-pink-600',
                )}
             >
                <AnimatePresence mode="wait">
@@ -90,8 +88,8 @@ export default function BoardLikeButton({ postId }: Props) {
                   >
                      <Heart
                         fill={hasLiked ? 'pink-500' : 'black'}
-                        stroke={hasLiked ? 'pink' : 'currentColor'}
-                        strokeWidth={hasLiked ? 2 : 0}
+                        stroke={hasLiked ? 'pink' : 'white'}
+                        strokeWidth={2}
                         absoluteStrokeWidth
                         className={cn(
                            'h-5 w-5 transition-colors duration-300',
@@ -106,10 +104,6 @@ export default function BoardLikeButton({ postId }: Props) {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 10, opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className={cn(
-                     'font-dos font-medium',
-                     hasLiked && 'text-pink-600',
-                  )}
                >
                   {reactionCounts.likes}
                </motion.span>

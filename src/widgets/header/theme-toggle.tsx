@@ -19,6 +19,7 @@ export default function ThemeToggle() {
    return (
       <div className="flex items-center">
          <button
+            aria-label="다크모드 토글"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="cursor-pointer transition-all duration-300"
          >

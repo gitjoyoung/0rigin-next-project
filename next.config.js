@@ -17,7 +17,8 @@ const nextConfig = {
       fetches: {
          fullUrl: true,
       },
-   }, // fetches 로그에 전체 URL을 출력합니다.
+   },
+   optimizeFonts: true,
 }
 
 // 프로덕션 환경에서 콘솔 로그 제거 설정을 조건부로 추가합니다.

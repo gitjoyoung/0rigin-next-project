@@ -2,7 +2,7 @@ import AppProviders from '@/providers'
 import Footer from '@/widgets/footer'
 import Header from '@/widgets/header'
 import Ticker from '@/widgets/ticker'
-import { Fira_Code, Roboto } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import { Suspense } from 'react'
 import './globals.css'
 import Loading from './loading'
@@ -10,13 +10,6 @@ import Loading from './loading'
 const roboto = Roboto({
    weight: '400',
    subsets: ['latin'],
-})
-
-const firaCode = Fira_Code({
-   subsets: ['latin'],
-   weight: ['400', '500', '700'],
-   display: 'swap',
-   variable: '--font-fira-code',
 })
 
 export default function RootLayout({
@@ -28,7 +21,7 @@ export default function RootLayout({
       <html
          lang="ko"
          suppressHydrationWarning
-         className={`${roboto.className} ${firaCode.variable}`}
+         className={`${roboto.className}`}
       >
          <body>
             <AppProviders>
@@ -37,12 +30,10 @@ export default function RootLayout({
                   <div className="w-full max-w-[1280px] px-1 px-auto flex flex-col flex-1">
                      <Ticker />
                      <Header />
-                     <main className="flex-1 w-full">
+                     <main className="flex-1 w-full min-h-screen">
                         <Suspense fallback={<Loading />}>{children}</Suspense>
                      </main>
-                     <div className="mt-auto">
-                        <Footer />
-                     </div>
+                     <Footer />
                   </div>
                </div>
             </AppProviders>

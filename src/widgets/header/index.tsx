@@ -1,4 +1,9 @@
-import { ROUTE_BOARD, ROUTE_INTRODUCE, ROUTE_QUIZ } from '@/constants/pathname'
+import {
+   ROUTE_BOARD,
+   ROUTE_INTRODUCE,
+   ROUTE_QUIZ,
+   ROUTE_UTILS,
+} from '@/constants/pathname'
 import SearchBox from '@/widgets/search-box'
 import Link from 'next/link'
 import AuthButton from './auth-buttons'
@@ -20,6 +25,11 @@ export const HEADER_NAV_LIST = [
       id: 'quiz',
       title: '퀴즈',
       url: ROUTE_QUIZ,
+   },
+   {
+      id: 'utils',
+      title: '유틸리티',
+      url: ROUTE_UTILS,
    },
 ]
 

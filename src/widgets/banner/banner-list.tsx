@@ -1,16 +1,16 @@
 import Link from 'next/link'
 
 interface Props {
-   topData: any[]
+   postData: any[]
    selectedPost: number
 }
 
-export default function BannerList({ topData, selectedPost }: Props) {
+export default function BannerList({ postData, selectedPost }: Props) {
    return (
       <div className="  w-full p-2">
          <h1 className="font-bold ">베스트 게시글 TOP 5</h1>
          <div>
-            {topData.map(({ title, id, like }, index) => (
+            {postData.map(({ title, id, like }, index) => (
                <Link
                   key={`post-${id}`}
                   className={`border flex justify-between mt-1 p-1 text-sm ${

@@ -13,9 +13,8 @@ export default function Banner({ topData }: any) {
    const [progress, setProgress] = useState(0)
    const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
-   // 🔹 Progress 업데이트 및 슬라이드 변경 로직
    const updateTimer = useCallback(() => {
-      setProgress(0) // 초기화
+      setProgress(0)
       intervalRef.current = setInterval(() => {
          setProgress((prev) => {
             if (prev >= 100) {
@@ -37,13 +36,14 @@ export default function Banner({ topData }: any) {
    return (
       <div className="w-full">
          <div className="flex flex-wrap border border-black">
-            {/* 게시물 프리뷰 */}
-            <Thumbnail data={topData[currentSlide]} />
+            <Thumbnail postData={topData[currentSlide]} />
             <div className="flex flex-1 flex-col justify-between">
-               {/* 베스트 게시물 리스트 */}
-               <BannerList topData={topData} selectedPost={currentSlide} />
-               {/* 프로그레스바 */}
-               <Progress className="rounded-none" value={progress} />
+               <BannerList postData={topData} selectedPost={currentSlide} />
+               <Progress
+                  aria-label="게시물 슬라이드 프로그레스바"
+                  className="rounded-none"
+                  value={progress}
+               />
             </div>
          </div>
       </div>
