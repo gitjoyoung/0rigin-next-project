@@ -40,11 +40,19 @@ export default function SignForm() {
 
    return (
       <section className="w-full flex justify-center">
+         {isPending && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+               <div className="flex flex-col items-center gap-4">
+                  <Icons.refreshCcw className="h-8 w-8 animate-spin text-white" />
+                  <p className="text-white">회원가입 처리중...</p>
+               </div>
+            </div>
+         )}
          <Card className="w-full max-w-[350px]">
             <CardHeader className="flex flex-col">
                <CardTitle className="text-2xl">0rigin 회원가입</CardTitle>
-               <CardDescription className="text-transparent text-sm">
-                  자유 의지가 존재할까요?
+               <CardDescription className="text-transparent text-sm ">
+                  자유 의지란 존재하나요?
                </CardDescription>
             </CardHeader>
             <CardContent>
@@ -59,19 +67,15 @@ export default function SignForm() {
                         control={form.control}
                         name="gender"
                         render={({ field }) => (
-                           <GenderRadioButton
-                              disabled={isPending}
-                              value={field.value}
-                              onChange={(value) => field.onChange(value)}
-                           />
+                           <GenderRadioButton disabled={isPending} {...field} />
                         )}
                      />
-                     <div className="flex flex-col py-2 gap-3">
+                     <div className="flex flex-col py-2 gap-3 h-60">
                         <FormField
                            control={form.control}
                            name="email"
                            render={({ field, fieldState }) => (
-                              <FormItem>
+                              <FormItem className="h-14">
                                  <FormControl>
                                     <Input
                                        disabled={isPending}
@@ -83,7 +87,7 @@ export default function SignForm() {
                                     />
                                  </FormControl>
                                  {fieldState.error && field.value && (
-                                    <FormMessage className="pl-2 text-xs" />
+                                    <FormMessage className="pl-2 text-xs text-red-500" />
                                  )}
                               </FormItem>
                            )}
@@ -92,7 +96,7 @@ export default function SignForm() {
                            control={form.control}
                            name="password"
                            render={({ field, fieldState }) => (
-                              <FormItem>
+                              <FormItem className="h-14">
                                  <FormControl>
                                     <Input
                                        disabled={isPending}
@@ -104,7 +108,7 @@ export default function SignForm() {
                                     />
                                  </FormControl>
                                  {fieldState.error && field.value && (
-                                    <FormMessage className="pl-2 text-xs" />
+                                    <FormMessage className="pl-2 text-xs text-red-500" />
                                  )}
                               </FormItem>
                            )}
@@ -113,7 +117,7 @@ export default function SignForm() {
                            control={form.control}
                            name="confirmPassword"
                            render={({ field, fieldState }) => (
-                              <FormItem>
+                              <FormItem className="h-14">
                                  <FormControl>
                                     <Input
                                        disabled={isPending}
@@ -125,7 +129,7 @@ export default function SignForm() {
                                     />
                                  </FormControl>
                                  {fieldState.error && field.value && (
-                                    <FormMessage className="pl-2 text-xs" />
+                                    <FormMessage className="pl-2 text-xs text-red-500" />
                                  )}
                               </FormItem>
                            )}

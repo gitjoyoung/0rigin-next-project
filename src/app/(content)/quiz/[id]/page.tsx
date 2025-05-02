@@ -19,5 +19,11 @@ export default async function page({ params }: Params) {
    const { id } = await params
    // 퀴즈 데이터를 나중에 서버에서 받아올 예정
    const { data } = QUIZ_DATA.find((q) => q.path === id)
-   return <Quiz quizData={data} />
+   return (
+      <div className="flex justify-center items-center ">
+         <div className="my-20">
+            <Quiz quizData={data} />
+         </div>
+      </div>
+   )
 }

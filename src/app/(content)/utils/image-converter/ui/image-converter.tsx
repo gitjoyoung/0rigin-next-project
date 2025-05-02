@@ -27,6 +27,7 @@ import {
 } from '@/shared/shadcn/ui/select'
 import { Icons } from '@/shared/ui/icons'
 import { compressImage, ImageFileType } from '@/shared/utils/compress-image'
+import Image from 'next/image'
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
@@ -147,7 +148,7 @@ export default function ImageConverter() {
                   <div className="h-64 flex items-center justify-center">
                      {preview ? (
                         <div className="space-y-4 w-full">
-                           <img
+                           <Image
                               src={preview}
                               alt="미리보기"
                               className="max-h-56 mx-auto rounded-lg object-contain"

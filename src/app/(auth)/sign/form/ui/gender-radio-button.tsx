@@ -1,6 +1,5 @@
 import { Label } from '@/shared/shadcn/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/shadcn/ui/radio-group'
-import { nanoid } from 'nanoid'
 
 const GENDER_LIST = [
    {
@@ -15,7 +14,7 @@ const GENDER_LIST = [
       id: 'etc',
       label: '기타',
    },
-]
+] as const
 
 interface GenderRadioButtonProps {
    disabled?: boolean
@@ -35,9 +34,10 @@ export default function GenderRadioButton({
          onValueChange={onChange}
          className="flex items-center justify-between px-2 py-2"
          disabled={disabled}
+         aria-label="성별 선택"
       >
          {GENDER_LIST.map(({ id, label }) => (
-            <div key={nanoid()} className="flex items-center space-x-2">
+            <div key={id} className="flex items-center space-x-2">
                <RadioGroupItem value={id} id={id} />
                <Label htmlFor={id}>{label}</Label>
             </div>

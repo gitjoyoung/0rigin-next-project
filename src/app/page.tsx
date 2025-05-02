@@ -1,4 +1,5 @@
 import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
+import AdSenseBanner from '@/widgets/adsense-banner.tsx'
 import Banner from '@/widgets/banner'
 import Post from './(content)/board/ui/post'
 
@@ -23,8 +24,10 @@ export default async function Home() {
    const { data: posts, error: postsError } = await supabase
       .from('posts')
       .select('*')
-      .order('likes', { ascending: false })
+      .order('created_at', { ascending: false })
       .limit(20)
+
+   console.log('server', posts)
 
    if (postsError || bestPostsError) {
       throw new Error(postsError?.message || bestPostsError?.message)
@@ -32,8 +35,8 @@ export default async function Home() {
 
    return (
       <div className="flex flex-col gap-2">
-         {/* <AdSenseBanner /> */}
-         <Banner topData={bestPosts} />
+         <AdSenseBanner />
+         <Banner data={bestPosts} />
          <Post postData={posts} />
       </div>
    )

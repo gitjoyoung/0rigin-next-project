@@ -16,6 +16,11 @@ export const boardSchema = z.object({
       ),
    title: z.string().min(2, '제목을 입력해주세요.'),
    content: z.string().min(2, '내용을 입력해주세요.'),
+   thumbnail: z.string().optional(),
+   summary: z
+      .string()
+      .max(160, '요약은 최대 160자 이하로 작성해주세요.')
+      .optional(),
 })
 
 // Zod 스키마에서 타입스크립트 타입 추출

@@ -11,10 +11,7 @@ import {
 } from '@/shared/shadcn/ui/alert-dialog'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Icons } from '@/shared/ui/icons'
-import {
-   generateErrorMessage,
-   validateFile,
-} from '@/shared/utils/validators/board/imageValidators'
+import { compressImage } from '@/shared/utils/compress-image'
 import '@uiw/react-markdown-preview/markdown.css'
 import { commands } from '@uiw/react-md-editor'
 import '@uiw/react-md-editor/markdown-editor.css'
@@ -90,42 +87,27 @@ const MarkDownEditor = ({
          return
       }
 
-      // 파일 크기 제한 (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-         setError('파일 크기는 5MB를 초과할 수 없습니다.')
-         setIsOpen(true)
-         return
-      }
-
-      if (!validateFile(file)) {
-         const errorMessage = generateErrorMessage()
-         setError(errorMessage)
-         setIsOpen(true)
-         return
-      }
-
       try {
-         const timestamp = dayjs().format('YYYYMMDDHHmmss')
-         const fileExtension = file.name.split('.').pop()?.toLowerCase()
-
-         // 파일 형식 검증
-         const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']
-         if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-            setError(
-               '지원하지 않는 파일 형식입니다. (jpg, jpeg, png, gif, webp, svg 가능)',
-            )
+         const result = await compressImage(file, {
+            fileType: 'image/jpeg',
+            maxSizeMB: 0.1,
+            maxWidthOrHeight: 1920,
+         })
+         if (result.status === 'error') {
+            setError(`이미지 압축에 실패했습니다.  ${result.errorMessage}`)
             setIsOpen(true)
             return
          }
-
+         const timestamp = dayjs().format('YYYYMMDDHHmmss')
+         const fileExtension = file.name.split('.').pop()?.toLowerCase()
          const newFileName = `public/image_${timestamp}.${fileExtension}`
 
          const { data, error } = await supabase.storage
             .from('images')
-            .upload(newFileName, file, {
+            .upload(newFileName, result.file, {
                cacheControl: '3600',
                upsert: false,
-               contentType: file.type,
+               contentType: result.file.type,
             })
 
          if (error) {
@@ -183,7 +165,7 @@ const MarkDownEditor = ({
                         <Icons.imageUpload />
                         <p>이미지 업로드 오류</p>
                      </AlertDialogTitle>
-                     <AlertDialogDescription className="">
+                     <AlertDialogDescription className="whitespace-pre-line">
                         {error}
                      </AlertDialogDescription>
                   </AlertDialogHeader>

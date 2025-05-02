@@ -27,6 +27,14 @@ const defaultOptions: CompressImageOptions = {
    fileType: 'image/jpeg',
 }
 
+const ALLOWED_MIME_TYPES: ImageFileType[] = [
+   'image/jpeg',
+   'image/png',
+   'image/webp',
+   'image/gif',
+   'image/jpg',
+]
+
 /**
  * 이미지 압축 함수
  * @param file 압축할 이미지 파일
@@ -42,6 +50,16 @@ export const compressImage = async (
    file: File,
    options?: CompressImageOptions,
 ): Promise<CompressImageResult> => {
+   // 파일 타입 검증
+   if (!ALLOWED_MIME_TYPES.includes(file.type as ImageFileType)) {
+      return {
+         status: 'error',
+         file: file,
+         errorMessage:
+            '허용되지 않은 파일 형식입니다. 이미지 파일만 업로드 가능합니다.',
+      }
+   }
+
    const finalOptions = {
       ...defaultOptions,
       ...options,

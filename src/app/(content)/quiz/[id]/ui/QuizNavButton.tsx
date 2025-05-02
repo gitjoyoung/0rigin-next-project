@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/shared/shadcn/ui/button'
+import { Icons } from '@/shared/ui/icons'
 import React from 'react'
 
 interface Props {
@@ -28,19 +29,21 @@ export default function QuizNavButton({
       <div className=" flex gap-2 w-full justify-between sm:mx-auto">
          <Button
             type="button"
-            className="px-6 py-4"
+            size="lg"
             onClick={() => handleNavigate(-1)}
             disabled={isFirstDisabled}
          >
             이전
+            <Icons.arrowLeft size={20} />
          </Button>
          <Button
             type="button"
-            className="px-6 py-4"
+            size="lg"
             onClick={() => handleNavigate(1)}
             disabled={isLastDisabled}
          >
             다음
+            <Icons.arrowRight size={20} />
          </Button>
       </div>
    )

@@ -1,5 +1,6 @@
 import {
    ArrowLeft,
+   ArrowRight,
    Bell,
    Check,
    ChevronLeft,
@@ -53,6 +54,7 @@ export const Icons = {
    burger: Menu,
    bell: Bell,
    arrowLeft: ArrowLeft,
+   arrowRight: ArrowRight,
 
    // 폼 관련 아이콘
    email: Mail,

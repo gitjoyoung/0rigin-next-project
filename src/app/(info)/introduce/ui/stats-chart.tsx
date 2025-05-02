@@ -145,7 +145,7 @@ export default function StatsChart() {
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
                <CardTitle className="text-3xl flex items-center gap-2">
                   숫자로 보는
-                  <h3 className="text-xl sm:text-2xl font-mono">0rigin</h3>
+                  <h3 className="text-xl sm:text-2xl font-dos">0RIGIN</h3>
                </CardTitle>
                <CardTitle>성장 통계</CardTitle>
                <CardDescription>

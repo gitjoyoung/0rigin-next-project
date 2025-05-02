@@ -1,7 +1,13 @@
-import { ROUTE_CONTACT, ROUTE_HELP, ROUTE_INQUIRY } from '@/constants/pathname'
+import {
+   ROUTE_CONTACT,
+   ROUTE_HELP,
+   ROUTE_INQUIRY,
+   ROUTE_INTRODUCE,
+} from '@/constants/pathname'
 import Link from 'next/link'
 
 const FOOTER_NAV = Object.freeze([
+   { id: 'introduce', name: '소개', link: ROUTE_INTRODUCE },
    { id: 'inquiry', name: '1:1문의', link: ROUTE_INQUIRY },
    { id: 'help', name: '고객센터', link: ROUTE_HELP },
    { id: 'contact', name: 'contact', link: ROUTE_CONTACT },

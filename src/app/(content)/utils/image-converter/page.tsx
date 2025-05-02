@@ -1,14 +1,18 @@
 import { Icons } from '@/shared/ui/icons'
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 import Link from 'next/link'
 import ImageConverter from './ui/image-converter'
 
 export const metadata: Metadata = {
    title: '이미지 변환기',
-   description: '이미지 변환기',
+   description: '이미지 형식을 변환하고 압축할 수 있는 도구입니다.',
+   robots: {
+      index: false,
+      follow: true,
+   },
 }
 
-export default function page() {
+export default function Page() {
    return (
       <section className="flex flex-col gap-4 mb-10">
          <div className="relative flex items-center justify-center py-4">

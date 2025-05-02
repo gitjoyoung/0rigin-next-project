@@ -18,7 +18,7 @@ export default function QuizRadioButtonGroup({
 }: Props) {
    return (
       <RadioGroup
-         className="flex-col flex gap-2 my-2 justify-center"
+         className="flex-col flex gap-3 my-2 justify-center"
          onValueChange={onSelect}
          value={selectedOption || ''}
          defaultValue=""
@@ -30,9 +30,7 @@ export default function QuizRadioButtonGroup({
                   htmlFor={id}
                   className={cn(
                      'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-                     selectedOption === id && id === answer
-                        ? 'text-green-500'
-                        : '',
+                     selectedOption === id && id === answer && 'text-green-500',
                   )}
                >
                   {value}

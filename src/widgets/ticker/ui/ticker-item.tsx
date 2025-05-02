@@ -10,7 +10,7 @@ type Props = {
 
 export default function TickerItem({ label, value, ariaLabel }: Props) {
    return (
-      <div className="flex items-center text-[11px]">
+      <div className="flex items-center  text-[11px]">
          <strong className="px-1">{label}</strong>
          <motion.span
             aria-label={ariaLabel}
@@ -19,7 +19,7 @@ export default function TickerItem({ label, value, ariaLabel }: Props) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
          >
-            {formatNumberToString(value || 0)}
+            <strong>{formatNumberToString(value || 0)}</strong>
          </motion.span>
       </div>
    )

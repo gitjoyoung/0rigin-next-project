@@ -2,7 +2,7 @@
 
 const nextConfig = {
    images: {
-      domains: ['source.unsplash.com'],
+      domains: ['source.unsplash.com', 'wqgbhahmhmeuzjvrszjj.supabase.co'],
    },
    typescript: {
       ignoreBuildErrors: true,

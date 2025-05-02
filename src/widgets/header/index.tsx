@@ -1,9 +1,4 @@
-import {
-   ROUTE_BOARD,
-   ROUTE_INTRODUCE,
-   ROUTE_QUIZ,
-   ROUTE_UTILS,
-} from '@/constants/pathname'
+import { ROUTE_BOARD, ROUTE_QUIZ, ROUTE_UTILS } from '@/constants/pathname'
 import SearchBox from '@/widgets/search-box'
 import Link from 'next/link'
 import AuthButton from './auth-buttons'
@@ -11,11 +6,6 @@ import MobileSideMenu from './mobile-side-menu'
 import ThemeToggle from './theme-toggle'
 
 export const HEADER_NAV_LIST = [
-   {
-      id: 'introduce',
-      title: '소개',
-      url: ROUTE_INTRODUCE,
-   },
    {
       id: 'board',
       title: '게시판',

@@ -6,12 +6,12 @@ interface TickerListProps {
 }
 
 export default function TickerList({ statsData }: TickerListProps) {
-   const { view_count, post_count, new_user_count } = statsData
+   const { visitor_count, post_count, user_count } = statsData
    const STATS_DATA = [
       {
          ariaLabel: '방문 수',
          label: 'today',
-         value: view_count,
+         value: visitor_count,
       },
       {
          ariaLabel: '게시물 수',
@@ -21,7 +21,7 @@ export default function TickerList({ statsData }: TickerListProps) {
       {
          ariaLabel: '유저 수',
          label: 'user',
-         value: new_user_count,
+         value: user_count,
       },
    ]
 
