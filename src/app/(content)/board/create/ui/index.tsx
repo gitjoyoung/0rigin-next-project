@@ -73,19 +73,17 @@ export default function BoardPostForm() {
    }, [])
 
    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault()
       const file = e.target.files?.[0]
       if (!file) return
-
       setUploading(true)
-
       try {
          const result = await compressImage(file, {
-            fileType: 'image/jpeg',
+            fileType: 'image/webp',
             maxSizeMB: 0.1,
             maxWidthOrHeight: 1920,
          })
          if (result.status === 'error') {
-            alert('이미지 압축에 실패했습니다.')
             setUploading(false)
             return
          }
@@ -96,8 +94,8 @@ export default function BoardPostForm() {
          const { data, error } = await supabase.storage
             .from('images')
             .upload(newFileName, result.file, {
-               cacheControl: '3600',
-               upsert: false,
+               cacheControl: '3600', // 캐시 제어 헤더 설정
+               upsert: false, // 이미 존재하는 파일이면 덮어쓰기 하지 않음
                contentType: result.file.type,
             })
 
@@ -110,7 +108,6 @@ export default function BoardPostForm() {
          form.setValue('thumbnail', publicUrl)
          setUploading(false)
       } catch (error) {
-         console.error('이미지 업로드 오류:', error)
          alert('이미지 업로드에 실패했습니다.')
          setUploading(false)
       }

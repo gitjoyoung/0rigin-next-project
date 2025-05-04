@@ -18,7 +18,7 @@ const SIGN_UP_TERMS = {
 }
 export default function SignUpLanding() {
    return (
-      <div className="w-full h-full flex flex-col items-center gap-5 justify-center">
+      <div className="w-full h-full flex flex-col items-center gap-5 justify-center ">
          <h1 className="font-bold text-3xl text-center px-4 whitespace-pre-line leading-relaxed">
             {SIGN_UP_TERMS.welcomeMessage}
          </h1>

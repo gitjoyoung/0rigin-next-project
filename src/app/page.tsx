@@ -27,8 +27,6 @@ export default async function Home() {
       .order('created_at', { ascending: false })
       .limit(20)
 
-   console.log('server', posts)
-
    if (postsError || bestPostsError) {
       throw new Error(postsError?.message || bestPostsError?.message)
    }

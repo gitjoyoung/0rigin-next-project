@@ -1,5 +1,5 @@
 'use client'
-import { ROUTE_FORGET, ROUTE_SIGN } from '@/constants/pathname'
+import { ROUTE_FORGET_PASSWORD, ROUTE_SIGN } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -23,7 +23,7 @@ import { z } from 'zod'
 import { useLogin } from '../hook/useLogin'
 import { LoginSchema } from '../types/schema'
 
-export default function Login() {
+export default function LoginForm() {
    const { loginError, mutate, isPending } = useLogin()
    const form = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
@@ -34,13 +34,7 @@ export default function Login() {
    })
 
    return (
-      <div className="flex flex-col mt-12 w-full h-full items-center justify-center">
-         <div className="text-center space-y-2 mb-8">
-            <h2 className="text-3xl font-bold tracking-tight">환영합니다</h2>
-            <p className="text-muted-foreground text-sm">
-               {'"모든 위대한 여정은 작은 한 걸음에서 시작됩니다"'}
-            </p>
-         </div>
+      <div className="flex flex-col w-full h-full items-center justify-center">
          <Card className="w-full max-w-md">
             <CardHeader>
                <CardTitle>로그인</CardTitle>
@@ -114,7 +108,7 @@ export default function Login() {
                         <Link href={ROUTE_SIGN}>회원가입</Link>
                      </Button>
                      <Button disabled={isPending} variant="outline" asChild>
-                        <Link href={ROUTE_FORGET}>비밀번호 분실</Link>
+                        <Link href={ROUTE_FORGET_PASSWORD}>비밀번호 분실</Link>
                      </Button>
                   </div>
                </Form>

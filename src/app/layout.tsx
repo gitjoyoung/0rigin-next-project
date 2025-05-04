@@ -27,7 +27,7 @@ export default function RootLayout({
             <AppProviders>
                <div id="modal-root" />
                <div className="flex min-h-screen flex-col items-center w-full bg-background">
-                  <div className="w-full max-w-[1280px] px-1 px-auto flex flex-col flex-1">
+                  <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
                      <Ticker />
                      <Header />
                      <main className="flex-1 w-full min-h-screen">

@@ -29,7 +29,10 @@ export default function Header() {
          {/* 로고 + 네비게이션 */}
          <div className="flex gap-4 items-center">
             {/* 로고 */}
-            <Link className="text-xl sm:text-2xl font-dos font-bold" href="/">
+            <Link
+               className="text-xl sm:text-2xl font-dos font-bold px-1"
+               href="/"
+            >
                0RIGIN
             </Link>
 
