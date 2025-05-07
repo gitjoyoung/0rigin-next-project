@@ -1,5 +1,4 @@
-import type { IPost } from '../../types/post-type'
-import BoardLikeButton from './board-like-button'
+import type { IPost } from '../../../types/post-type'
 import MarkDownViewer from './mark-down-viewer'
 import PostHeader from './post-header'
 
@@ -29,7 +28,6 @@ export default function PostRead({
             <MarkDownViewer content={content} />
          </div>
          {/* 싫어요,좋아요  버튼 */}
-         <BoardLikeButton postId={id} />
       </section>
    )
 }

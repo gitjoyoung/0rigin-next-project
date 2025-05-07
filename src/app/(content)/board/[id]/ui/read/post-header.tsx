@@ -1,7 +1,7 @@
 import { Separator } from '@/shared/shadcn/ui/separator'
 import formatDate from '@/shared/utils/validators/board/format-date'
 import { formatNumberWithUnit } from '@/shared/utils/validators/board/formatNumberWithUnit'
-import type { IPost } from '../../types/post-type'
+import type { IPost } from '../../../types/post-type'
 import PostUpdateButtons from './post-update-buttons'
 
 const POST_HEADER_DATA = {

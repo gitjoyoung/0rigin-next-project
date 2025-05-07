@@ -6,7 +6,8 @@ import BoardFooter from '../ui/board-footer'
 import CommentList from '../ui/comment'
 import CustomPagination from '../ui/pagination/custom-pagination'
 import Post from '../ui/post'
-import PostRead from '../ui/read'
+import PostLike from './ui/like/post-like'
+import PostRead from './ui/read'
 interface IParams {
    params: {
       id: string
@@ -55,6 +56,7 @@ export default async function Page({ params, searchParams }: IParams) {
    return (
       <section className="flex flex-col gap-4">
          <PostRead {...readData} />
+         <PostLike postId={id} />
          <CommentList postId={id} />
          <Post postData={posts} />
          <BoardFooter />
