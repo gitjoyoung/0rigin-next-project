@@ -2,9 +2,9 @@ import { nanoid } from 'nanoid'
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { match } from 'path-to-regexp'
 import {
-   ROUTE_FORGET,
    ROUTE_LOGIN,
    ROUTE_MY_PAGE,
+   ROUTE_RESET_PASSWORD,
    ROUTE_SIGN,
    ROUTE_SIGN_FORM,
    ROUTE_SIGN_TERM,
@@ -14,11 +14,12 @@ import { updateSession } from './lib/supabase/supabase-session'
 // 상수 정의
 const PROTECTED_ROUTES = [ROUTE_MY_PAGE]
 export const AUTH_FORBIDDEN_ROUTES = [
+   //
    ROUTE_LOGIN,
    ROUTE_SIGN,
    ROUTE_SIGN_FORM,
    ROUTE_SIGN_TERM,
-   ROUTE_FORGET,
+   ROUTE_RESET_PASSWORD,
 ]
 
 // 보호된 경로 확인
