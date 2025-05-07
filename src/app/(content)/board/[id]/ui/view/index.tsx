@@ -2,7 +2,7 @@ import type { IPost } from '../../../types/post-type'
 import MarkDownViewer from './mark-down-viewer'
 import PostHeader from './post-header'
 
-export default function PostRead({
+export default function PostView({
    title,
    author,
    likes,
