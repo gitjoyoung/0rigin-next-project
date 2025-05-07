@@ -132,6 +132,17 @@ export default function ImageConverter() {
       }
    }
 
+   const getFileExtension = (mimeType: string) => {
+      const extensionMap: Record<string, string> = {
+         'image/jpeg': 'jpg',
+         'image/jpg': 'jpg',
+         'image/png': 'png',
+         'image/webp': 'webp',
+         'image/gif': 'gif',
+      }
+      return extensionMap[mimeType] || 'jpg'
+   }
+
    return (
       <div className="w-full max-w-2xl mx-auto p-4">
          <Card>
@@ -151,6 +162,8 @@ export default function ImageConverter() {
                            <Image
                               src={preview}
                               alt="미리보기"
+                              width={500}
+                              height={300}
                               className="max-h-56 mx-auto rounded-lg object-contain"
                            />
                            <p className="text-sm text-gray-500">
@@ -280,7 +293,7 @@ export default function ImageConverter() {
                   <Button asChild disabled={!downloadUrl}>
                      <a
                         href={downloadUrl || '#'}
-                        download={`compressed_${image?.name.split('.')[0]}.${selectedFormat}`}
+                        download={`compressed_${image?.name.split('.')[0]}.${getFileExtension(selectedFormat)}`}
                         className="flex items-center gap-2"
                      >
                         <Icons.imageUpload className="h-4 w-4" />

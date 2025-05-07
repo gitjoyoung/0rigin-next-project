@@ -13,14 +13,18 @@ export default function PostHeader(post: Partial<IPost>) {
    const { title, author, likes = 0, created_at, views = 0, id } = post
    const authorName = author?.name || '익명'
    return (
-      <div className="border-b  grid gap-2 pt-2 pb-2 ">
+      <div className="border-b  grid  py-2 ">
          <div className="flex justify-between items-center">
             <h1 className="text-2xl">{title}</h1>
          </div>
          <div className="flex justify-between items-center flex-wrap">
-            <ul className="flex gap-2 text-xs h-5 items-center">
-               <li className="font-bold max-w-[90px] flex items-center ">
-                  <p>{authorName}</p>
+            <ul className="flex gap-2 text-xs h-5 items-center text-gray-700 dark:text-gray-400">
+               <li className=" max-w-[90px] flex items-center gap-1 ">
+                  <p>닉네임</p>
+                  <p className="font-bold">{authorName}</p>
+                  {/* <Link href={`/user/${author?.id}`} className="font-bold">
+                     {authorName}
+                  </Link> */}
                </li>
                <li>
                   <Separator orientation="vertical" />

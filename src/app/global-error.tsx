@@ -11,15 +11,12 @@ import {
 import { motion } from 'framer-motion'
 import { AlertCircle } from 'lucide-react'
 import type { ErrorProps } from 'next/error'
-import { useRouter } from 'next/navigation'
 
 export default function GlobalError({
    statusCode,
    hostname,
    title,
 }: ErrorProps) {
-   const router = useRouter()
-
    return (
       <html>
          <body>
@@ -50,11 +47,7 @@ export default function GlobalError({
                      <CardFooter className="flex justify-center gap-4">
                         <Button
                            onClick={() => {
-                              if (hostname) {
-                                 window.location.href = hostname
-                              } else {
-                                 router.push('/')
-                              }
+                              window.location.reload()
                            }}
                            variant="outline"
                            className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600"
@@ -63,7 +56,7 @@ export default function GlobalError({
                         </Button>
                         <Button
                            onClick={() => {
-                              router.push('/')
+                              window.location.href = '/'
                            }}
                            variant="outline"
                            className="bg-slate-700 hover:bg-slate-600 text-white border-slate-600"

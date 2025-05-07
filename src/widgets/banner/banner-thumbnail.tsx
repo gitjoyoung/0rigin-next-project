@@ -1,42 +1,83 @@
+import { cn } from '@/shared/utils/cn'
 import Image from 'next/image'
 import Link from 'next/link'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 
-interface Props {
-   postData: any
+interface PostData {
+   id: string
+   title: string
+   summary: string
+   thumbnail?: string
+   nickname: string
 }
 
-function BannerThumbnail({ postData }: Props) {
+const DEFAULT_VALUES = {
+   id: '/',
+   title: '제목',
+   summary: '요약',
+   nickname: '닉네임',
+   thumbnail: '/images/banner/windsaurus.webp',
+}
+
+function BannerThumbnail({ postData }: { postData: PostData }) {
    const {
-      id = '/',
-      title = '제목',
-      summary = '요약',
-      thumbnail,
-      nickname = '닉네임',
+      id = DEFAULT_VALUES.id,
+      title = DEFAULT_VALUES.title,
+      summary = DEFAULT_VALUES.summary,
+      thumbnail = DEFAULT_VALUES.thumbnail,
+      nickname = DEFAULT_VALUES.nickname,
    } = postData
 
-   console.log('BannerThumbnail rerender')
+   const imageAlt = useMemo(
+      () => `${title} - ${nickname}의 게시물`,
+      [title, nickname],
+   )
+
    return (
-      <div className=" w-full md:w-7/12 md:border-r border-black ">
-         <div className="relative w-full h-56">
-            <div className="absolute top-0 bg-black text-white text-sm right-0 p-1">
-               <p>{nickname}</p>
-            </div>
-            <Link href={`/board/${id}`}>
+      <div
+         className={cn(
+            'w-full md:w-7/12 md:border-r border-black',
+            'transition-all duration-300',
+         )}
+         role="article"
+         aria-label={title}
+      >
+         <div className="relative w-full h-56 group">
+            {nickname && (
+               <div
+                  className="absolute top-0 bg-black/80 text-white text-sm right-0 p-1.5 z-20"
+                  role="complementary"
+                  aria-label="작성자 정보"
+               >
+                  <p>{nickname}</p>
+               </div>
+            )}
+            <Link
+               href={`/board/${id}`}
+               className="block h-full relative before:absolute before:inset-0 before:bg-black/30 before:z-10 before:transition-opacity before:duration-300 group-hover:before:opacity-0"
+               aria-label={`${title} 게시물로 이동`}
+            >
                <Image
-                  alt="배너 섬네일"
-                  src={thumbnail || '/mascot/winksaurus.png'}
+                  alt={imageAlt}
+                  src={thumbnail}
                   fill
                   priority
                   quality={85}
-                  style={{ objectFit: 'cover' }}
+                  className="object-cover"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  onError={(e) => {
+                     const target = e.target as HTMLImageElement
+                     target.src = DEFAULT_VALUES.thumbnail
+                  }}
                />
-               <div className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-5 p-4 text-white">
-                  <h1 className="text-2xl font-bold line-clamp-1 max-w-prose">
+               <div
+                  className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-5 p-4 text-white z-20"
+                  role="contentinfo"
+               >
+                  <h2 className="text-2xl font-bold line-clamp-1 max-w-prose">
                      {title}
-                  </h1>
-                  <p className="break-words text-sm line-clamp-2 max-w-prose">
+                  </h2>
+                  <p className="break-words text-sm line-clamp-2 max-w-prose mt-1">
                      {summary}
                   </p>
                </div>
