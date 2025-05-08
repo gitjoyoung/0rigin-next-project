@@ -24,6 +24,7 @@ module.exports = {
             sans: ['Noto Sans KR', 'sans-serif'],
             mono: ['Fira Code', 'monospace'],
             dos: ['DOS', 'monospace'],
+            noto: ['Noto Sans KR', 'sans-serif'],
          },
          colors: {
             border: 'hsl(var(--border))',

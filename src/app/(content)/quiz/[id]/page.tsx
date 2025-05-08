@@ -20,8 +20,8 @@ export default async function page({ params }: Params) {
    // 퀴즈 데이터를 나중에 서버에서 받아올 예정
    const { data } = QUIZ_DATA.find((q) => q.path === id)
    return (
-      <div className="flex justify-center items-center ">
-         <div className="my-20">
+      <div className="w-full flex justify-center">
+         <div className="flex justify-center px-2 py-5  max-w-[600px] w-full">
             <Quiz quizData={data} />
          </div>
       </div>

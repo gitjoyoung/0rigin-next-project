@@ -33,43 +33,43 @@ export default function Quiz({ quizData }: { quizData: IQuizData[] }) {
    }
 
    return (
-      <section className="flex justify-center items-center gap-3 flex-wrap">
-         <div className="w-[600px] flex flex-col gap-2">
-            <Progress value={progress} />
-            <Card className="p-4">
-               <CardHeader>
-                  <CardTitle>{quizData[curIndex].question}</CardTitle>
-                  <CardDescription>
-                     <Accordion type="single" collapsible className="w-full ">
-                        <AccordionItem value="item-1">
-                           <AccordionTrigger>
-                              <div className="flex items-center gap-2">
-                                 <Icons.fileQuestion size={20} />
-                                 <p>힌트 보기</p>
-                              </div>
-                           </AccordionTrigger>
-                           <AccordionContent>
-                              {quizData[curIndex].hint}
-                           </AccordionContent>
-                        </AccordionItem>
-                     </Accordion>
-                  </CardDescription>
-               </CardHeader>
-               <CardContent>
-                  <QuizRadioButtonGroup
-                     questions={quizData[curIndex].options}
-                     answer={quizData[curIndex].answer}
-                     selectedOption={selectedOption}
-                     onSelect={setSelectedOption}
-                  />
-               </CardContent>
-            </Card>
-            <QuizNavButton
-               curIndex={curIndex}
-               setCurIndex={handleIndexChange}
-               quizDataLength={quizDataLength}
-            />
-         </div>
+      <section className="flex flex-col justify-center w-full gap-3 ">
+         <Progress value={progress} />
+         <Card className="font-noto ">
+            <CardHeader>
+               <CardTitle className="leading-relaxed">
+                  {quizData[curIndex].question}
+               </CardTitle>
+               <CardDescription>
+                  <Accordion type="single" collapsible className="w-full ">
+                     <AccordionItem value="item-1">
+                        <AccordionTrigger>
+                           <div className="flex items-center gap-2">
+                              <Icons.fileQuestion size={20} />
+                              <p>힌트 보기</p>
+                           </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                           {quizData[curIndex].hint}
+                        </AccordionContent>
+                     </AccordionItem>
+                  </Accordion>
+               </CardDescription>
+            </CardHeader>
+            <CardContent>
+               <QuizRadioButtonGroup
+                  questions={quizData[curIndex].options}
+                  answer={quizData[curIndex].answer}
+                  selectedOption={selectedOption}
+                  onSelect={setSelectedOption}
+               />
+            </CardContent>
+         </Card>
+         <QuizNavButton
+            curIndex={curIndex}
+            setCurIndex={handleIndexChange}
+            quizDataLength={quizDataLength}
+         />
       </section>
    )
 }

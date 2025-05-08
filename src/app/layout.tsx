@@ -3,14 +3,15 @@ import { Toaster } from '@/shared/shadcn/ui/toaster'
 import Footer from '@/widgets/footer'
 import Header from '@/widgets/header'
 import Ticker from '@/widgets/ticker'
-import { Roboto } from 'next/font/google'
+import { Noto_Sans_KR } from 'next/font/google'
 import { Suspense } from 'react'
 import './globals.css'
 import Loading from './loading'
 
-const roboto = Roboto({
-   weight: '400',
+const notoSansKR = Noto_Sans_KR({
+   weight: ['400', '500', '700'],
    subsets: ['latin'],
+   display: 'swap',
 })
 
 export default function RootLayout({
@@ -22,7 +23,7 @@ export default function RootLayout({
       <html
          lang="ko"
          suppressHydrationWarning
-         className={`${roboto.className}`}
+         className={`${notoSansKR.className}`}
       >
          <body>
             <AppProviders>
