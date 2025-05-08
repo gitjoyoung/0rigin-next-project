@@ -1,7 +1,9 @@
+'use client'
+
 import { ROUTE_BOARD, ROUTE_QUIZ, ROUTE_UTILS } from '@/constants/pathname'
-import SearchBox from '@/widgets/search-box'
 import Link from 'next/link'
-import AuthButton from './auth-buttons'
+import SearchBox from '../search-box'
+import AuthButtons, { useAuthSession } from './auth-buttons'
 import MobileSideMenu from './mobile-side-menu'
 import ThemeToggle from './theme-toggle'
 
@@ -24,8 +26,10 @@ export const HEADER_NAV_LIST = [
 ]
 
 export default function Header() {
+   const session = useAuthSession()
+
    return (
-      <header className="flex items-center justify-between py-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">
+      <header className="flex items-center justify-between p-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">
          {/* 로고 + 네비게이션 */}
          <div className="flex gap-4 items-center">
             {/* 로고 */}
@@ -52,12 +56,10 @@ export default function Header() {
          <div className="flex items-center gap-4">
             <SearchBox />
             <ThemeToggle />
-            {/* 검색창 + 인증 버튼 */}
-            <div className="hidden sm:flex  items-center gap-4">
-               <AuthButton />
+            <MobileSideMenu session={session} />
+            <div className="hidden sm:flex items-center gap-4">
+               <AuthButtons session={session} />
             </div>
-            {/* 모바일 메뉴 토글 */}
-            <MobileSideMenu />{' '}
          </div>
       </header>
    )

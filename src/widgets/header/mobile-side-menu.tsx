@@ -1,3 +1,5 @@
+'use client'
+
 import {
    Sheet,
    SheetClose,
@@ -6,15 +8,24 @@ import {
    SheetTitle,
    SheetTrigger,
 } from '@/shared/shadcn/ui/sheet'
+import type { Session } from '@supabase/supabase-js'
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 import { HEADER_NAV_LIST } from '.'
-import AuthButton from './auth-buttons'
+import AuthButtons from './auth-buttons'
 import ThemeToggle from './theme-toggle'
 
-export default function MobileSideMenu() {
+interface MobileSideMenuProps {
+   session: Session | null
+}
+
+export default function MobileSideMenu({ session }: MobileSideMenuProps) {
+   const [isOpen, setIsOpen] = useState(false)
+   const handleClose = () => setIsOpen(false)
+
    return (
-      <Sheet>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
          <SheetTrigger asChild>
             <button className="md:hidden" aria-label="Open Mobile Menu">
                <Menu />
@@ -28,7 +39,9 @@ export default function MobileSideMenu() {
             <div className="flex flex-col">
                {/* 모바일 화면 로그인, 회원가입 */}
                <div className="flex justify-center border-b gap-2 py-4">
-                  <AuthButton />
+                  <SheetClose asChild>
+                     <AuthButtons session={session} onClick={handleClose} />
+                  </SheetClose>
                </div>
 
                {/* 모바일 화면 네비게이터 */}

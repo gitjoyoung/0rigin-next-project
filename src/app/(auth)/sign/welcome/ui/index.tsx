@@ -7,7 +7,7 @@ export default async function WelcomePage() {
    const userEmail = session?.email
 
    return (
-      <div className="min-h-72 flex flex-col items-center justify-center">
+      <div className="min-h-72 flex flex-col items-center justify-center px-2">
          <div className="max-w-md w-full space-y-8 p-8 rounded-lg">
             <div className="text-center">
                <h2 className="text-2xl font-bold tracking-tight">

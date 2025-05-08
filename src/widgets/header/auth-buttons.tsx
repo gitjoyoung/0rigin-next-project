@@ -1,66 +1,99 @@
 import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
-import { auth, signOut } from '@/shared/actions/auth-action'
+import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
+import { signOut } from '@/shared/actions/auth-action'
 import { Button } from '@/shared/shadcn/ui/button'
+import type { Session } from '@supabase/supabase-js'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-export default async function AuthButtons() {
-   const session = await auth()
+export function useAuthSession() {
+   const [session, setSession] = useState<Session | null>(null)
+   const supabase = SupabaseBrowserClient()
+
+   useEffect(() => {
+      const getSession = async () => {
+         const {
+            data: { session },
+         } = await supabase.auth.getSession()
+         setSession(session)
+      }
+      getSession()
+   }, [])
+
+   return session
+}
+
+interface AuthButtonsProps {
+   session: Session | null
+   className?: string
+   onClick?: () => void
+}
+
+interface AuthButtonProps {
+   href?: string
+   onClick?: () => void
+   children: React.ReactNode
+   className?: string
+   type?: 'submit'
+}
+
+function AuthButton({
+   href,
+   onClick,
+   children,
+   className = '',
+   type,
+   ...props
+}: AuthButtonProps) {
+   return (
+      <Button
+         {...props}
+         size="sm"
+         asChild={!!href}
+         variant="outline"
+         className={`dark:bg-white bg-black text-white dark:text-black ${className}`}
+         type={type}
+         onClick={onClick}
+      >
+         {href ? <Link href={href}>{children}</Link> : children}
+      </Button>
+   )
+}
+
+export default function AuthButtons({
+   session,
+   className = '',
+   onClick,
+}: AuthButtonsProps) {
    const isAuthenticated = !!session
-   console.log('세션 상세 정보:', {
-      session,
-      isAuthenticated,
-      sessionType: typeof session,
-      sessionKeys: session ? Object.keys(session) : [],
-   })
 
    return (
       <section className="flex items-end gap-5">
          {!isAuthenticated ? (
             <div className="flex gap-2 text-xs">
-               <Button
-                  asChild
-                  size="sm"
-                  variant="outline"
-                  className="dark:bg-white bg-black text-white dark:text-black"
-               >
-                  <Link href={ROUTE_LOGIN}>로그인</Link>
-               </Button>
-               <Button
-                  asChild
-                  size="sm"
-                  variant="outline"
-                  className="dark:bg-white bg-black text-white dark:text-black"
-               >
-                  <Link href={ROUTE_SIGN}>회원가입</Link>
-               </Button>
+               <AuthButton href={ROUTE_LOGIN} onClick={onClick}>
+                  로그인
+               </AuthButton>
+               <AuthButton href={ROUTE_SIGN} onClick={onClick}>
+                  회원가입
+               </AuthButton>
             </div>
          ) : (
             <div className="flex gap-2 text-xs">
                <form
                   action={async () => {
-                     'use server'
                      await signOut()
                      redirect('/')
                   }}
                >
-                  <Button
-                     type="submit"
-                     className="dark:bg-white bg-black text-white dark:text-black"
-                     size="sm"
-                     variant="outline"
-                  >
-                     <p>로그아웃</p>
-                  </Button>
+                  <AuthButton type="submit" onClick={onClick}>
+                     로그아웃
+                  </AuthButton>
                </form>
-               <Button asChild size="sm" variant="outline">
-                  <Link
-                     href={ROUTE_MY_PAGE}
-                     className="dark:bg-white bg-black text-white dark:text-black"
-                  >
-                     마이페이지
-                  </Link>
-               </Button>
+               <AuthButton href={ROUTE_MY_PAGE} onClick={onClick}>
+                  마이페이지
+               </AuthButton>
             </div>
          )}
       </section>

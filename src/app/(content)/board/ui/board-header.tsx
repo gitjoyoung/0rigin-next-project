@@ -10,7 +10,7 @@ const HEADER_DATA = {
 
 export default function BoardHeader() {
    return (
-      <article className="my-4 flex justify-between items-center border-b border-slate-200 pb-4">
+      <article className="my-4 px-1 flex justify-between items-center border-b border-slate-200 pb-4">
          <div className="space-y-1">
             <Link href={ROUTE_BOARD}>
                <h1 className="text-2xl font-bold tracking-tight hover:text-slate-700 transition-colors">

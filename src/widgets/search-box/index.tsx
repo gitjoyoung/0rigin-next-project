@@ -1,5 +1,6 @@
 'use client'
-import { Button } from '@/shared/shadcn/ui/button'
+import { Input } from '@/shared/shadcn/ui/input'
+import { Label } from '@/shared/shadcn/ui/label'
 import { Icons } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
 import { useRouter } from 'next/navigation'
@@ -27,12 +28,13 @@ export default function SearchBox({ className }: { className?: string }) {
    return (
       <article
          className={cn(
-            'flex items-center  transition-all duration-300 overflow-ellipsis  border-b border-gray-400 ',
+            'flex items-center transition-all duration-300 overflow-ellipsis relative',
             className,
             isFocus ? 'w-44 ' : 'w-14 border-transparent',
          )}
       >
-         <input
+         <Input
+            id="search"
             ref={searchInputRef}
             aria-label="검색 입력"
             spellCheck={true}
@@ -40,7 +42,7 @@ export default function SearchBox({ className }: { className?: string }) {
             maxLength={25}
             placeholder="검색"
             className={cn(
-               'h-full w-full text-sm font-bold  focus:outline-none focus:ring-0 focus:border-transparent placeholder:text-xs',
+               'h-full w-full text-sm font-bold ring-0 border-0 focus:outline-none focus:ring-0 focus:border-none border-none placeholder:text-xs shadow-none',
             )}
             onFocus={() => {
                setIsFocus(true)
@@ -49,11 +51,9 @@ export default function SearchBox({ className }: { className?: string }) {
                setIsFocus(false)
             }}
          />
-         <Button
-            variant="link"
-            className="h-8 px-2 text-sm"
+         <Label
+            htmlFor="search"
             onClick={handleSearch}
-            type="button"
             aria-label="검색"
             onFocus={() => {
                setIsFocus(true)
@@ -61,9 +61,10 @@ export default function SearchBox({ className }: { className?: string }) {
             onBlur={() => {
                setIsFocus(false)
             }}
+            className="absolute right-1"
          >
             <Icons.search size={16} />
-         </Button>
+         </Label>
       </article>
    )
 }
