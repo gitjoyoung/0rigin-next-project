@@ -8,7 +8,7 @@ type BackgroundType = 'image' | 'video'
 // 개발 단계에서 배경 타입을 쉽게 변경할 수 있는 상수
 const BACKGROUND_TYPE: BackgroundType = 'video'
 const IMAGE_SRC = '/images/banner/compressed_newYear.webp'
-const VIDEO_SRC = '/videos/sample-video.mp4'
+const VIDEO_SRC = '/videos/sample-logo-video.mp4'
 const ALT_TEXT = '지수랑 첫해'
 
 // 배너 텍스트 상수
@@ -55,7 +55,7 @@ export default function AdSenseBanner() {
    }
 
    return (
-      <div className="relative w-full h-[250px]">
+      <div className="relative w-full h-[300px]">
          {BACKGROUND_TYPE === 'image' ? (
             <Image
                src={IMAGE_SRC}
@@ -72,7 +72,7 @@ export default function AdSenseBanner() {
                   muted
                   loop
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover object-[top_10%]"
                >
                   <source src={VIDEO_SRC} type="video/mp4" />
                </video>
