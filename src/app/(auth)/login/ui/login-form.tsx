@@ -57,6 +57,7 @@ export default function LoginForm() {
                                     disabled={isPending}
                                     type="email"
                                     placeholder="이메일"
+                                    autoComplete="email"
                                     {...field}
                                  />
                               </FormControl>
@@ -75,6 +76,7 @@ export default function LoginForm() {
                                     disabled={isPending}
                                     type="password"
                                     placeholder="비밀번호"
+                                    autoComplete="current-password"
                                     {...field}
                                  />
                               </FormControl>

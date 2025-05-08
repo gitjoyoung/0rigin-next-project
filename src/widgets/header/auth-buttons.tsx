@@ -1,28 +1,9 @@
 import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import { signOut } from '@/shared/actions/auth-action'
 import { Button } from '@/shared/shadcn/ui/button'
 import type { Session } from '@supabase/supabase-js'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import { useEffect, useState } from 'react'
-
-export function useAuthSession() {
-   const [session, setSession] = useState<Session | null>(null)
-   const supabase = SupabaseBrowserClient()
-
-   useEffect(() => {
-      const getSession = async () => {
-         const {
-            data: { session },
-         } = await supabase.auth.getSession()
-         setSession(session)
-      }
-      getSession()
-   }, [])
-
-   return session
-}
+import { redirect, useRouter } from 'next/navigation'
 
 interface AuthButtonsProps {
    session: Session | null
@@ -61,12 +42,9 @@ function AuthButton({
    )
 }
 
-export default function AuthButtons({
-   session,
-   className = '',
-   onClick,
-}: AuthButtonsProps) {
+export default function AuthButtons({ session, onClick }: AuthButtonsProps) {
    const isAuthenticated = !!session
+   const router = useRouter()
 
    return (
       <section className="flex items-end gap-5">
@@ -81,16 +59,16 @@ export default function AuthButtons({
             </div>
          ) : (
             <div className="flex gap-2 text-xs">
-               <form
-                  action={async () => {
+               <AuthButton
+                  type="submit"
+                  onClick={async () => {
                      await signOut()
+                     onClick?.()
                      redirect('/')
                   }}
                >
-                  <AuthButton type="submit" onClick={onClick}>
-                     로그아웃
-                  </AuthButton>
-               </form>
+                  로그아웃
+               </AuthButton>
                <AuthButton href={ROUTE_MY_PAGE} onClick={onClick}>
                   마이페이지
                </AuthButton>

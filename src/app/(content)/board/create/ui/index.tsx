@@ -6,6 +6,7 @@ import {
 } from '@/app/(content)/board/create/types/board-schema'
 import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import { auth } from '@/shared/actions/auth-action'
+import { useToast } from '@/shared/hooks/use-toast'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -20,22 +21,26 @@ import { cn } from '@/shared/utils/cn'
 import { compressImage } from '@/shared/utils/compress-image'
 import { markdownToSanitizedHTML } from '@/shared/utils/validators/board/formatSanized'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { Eye, EyeOff, Upload } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import LoadingModal from './loading-modal'
 import MarkDownEditor from './mark-down-editor'
+import MarkDownTip from './markdown-tip'
 
 const supabase = SupabaseBrowserClient()
 
 export default function BoardPostForm() {
    const router = useRouter()
-   const [isLoading, setIsLoading] = useState(true)
-   const [isAuthenticated, setIsAuthenticated] = useState(false)
+   const queryClient = useQueryClient()
+   const { toast } = useToast()
    const [showPassword, setShowPassword] = useState(false)
    const [uploading, setUploading] = useState(false)
+   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
    const form = useForm<BoardFormType>({
       resolver: zodResolver(boardSchema),
@@ -49,44 +54,35 @@ export default function BoardPostForm() {
       },
    })
 
-   useEffect(() => {
-      const initializeForm = async () => {
-         try {
-            const session = await auth()
-            const isAuth = !!session
+   // 사용자 인증 데이터 가져오기
+   const { data: userData } = useQuery({
+      queryKey: ['user'],
+      queryFn: async () => {
+         const session = await auth()
+         if (!session) return null
 
-            setIsAuthenticated(isAuth)
+         const { data, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.id)
+            .single()
 
-            if (isAuth && session) {
-               const nickname = session.user_metadata?.nickname || ''
-               form.setValue('nickname', nickname)
-            }
-         } catch (error) {
-            console.error('인증 확인 중 오류:', error)
-         } finally {
-            setIsLoading(false)
-         }
-      }
+         if (error) throw error
+         return { session, user: data }
+      },
+   })
 
-      initializeForm()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [])
-
-   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      e.preventDefault()
-      const file = e.target.files?.[0]
-      if (!file) return
-      setUploading(true)
-      try {
+   // 이미지 업로드 뮤테이션
+   const uploadImageMutation = useMutation({
+      mutationFn: async (file: File) => {
          const result = await compressImage(file, {
             fileType: 'image/webp',
             maxSizeMB: 0.1,
             maxWidthOrHeight: 1920,
          })
-         if (result.status === 'error') {
-            setUploading(false)
-            return
-         }
+
+         if (result.status === 'error') throw new Error('이미지 압축 실패')
+
          const timestamp = dayjs().format('YYYYMMDDHHmmss')
          const fileExtension = file.name.split('.').pop()?.toLowerCase()
          const newFileName = `public/thumbnail_${timestamp}.${fileExtension}`
@@ -94,8 +90,8 @@ export default function BoardPostForm() {
          const { data, error } = await supabase.storage
             .from('images')
             .upload(newFileName, result.file, {
-               cacheControl: '3600', // 캐시 제어 헤더 설정
-               upsert: false, // 이미 존재하는 파일이면 덮어쓰기 하지 않음
+               cacheControl: '3600',
+               upsert: false,
                contentType: result.file.type,
             })
 
@@ -105,40 +101,86 @@ export default function BoardPostForm() {
             data: { publicUrl },
          } = supabase.storage.from('images').getPublicUrl(data.path)
 
+         return publicUrl
+      },
+      onSuccess: (publicUrl) => {
          form.setValue('thumbnail', publicUrl)
          setUploading(false)
-      } catch (error) {
+      },
+      onError: () => {
          alert('이미지 업로드에 실패했습니다.')
          setUploading(false)
+      },
+   })
+
+   useEffect(() => {
+      if (userData?.user) {
+         setIsAuthenticated(true)
+         const nickname =
+            userData.user.nickname ||
+            'holder_' + userData.session.id.slice(0, 4)
+         const password = userData.session.id.slice(0, 4)
+         form.setValue('nickname', nickname)
+         form.setValue('password', password)
       }
+   }, [userData, form])
+
+   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault()
+      const file = e.target.files?.[0]
+      if (!file) return
+      setUploading(true)
+      uploadImageMutation.mutate(file)
    }
 
-   const onSubmit = async (data: BoardFormType) => {
-      console.log('글쓰기 데이터', data)
+   // 게시글 작성 뮤테이션
+   const { mutate: submitPost, isPending: isSubmittingPost } = useMutation({
+      mutationFn: async (data: BoardFormType) => {
+         const markdownContent = data.content
+         const htmlContent = await markdownToSanitizedHTML(markdownContent)
 
-      // 마크다운을 HTML로 변환
-      const markdownContent = data.content
-      const htmlContent = await markdownToSanitizedHTML(markdownContent)
+         const { data: postData, error } = await supabase.from('posts').insert({
+            nickname: data.nickname,
+            password: data.password,
+            title: data.title,
+            summary: data.summary,
+            thumbnail: data.thumbnail,
+            content: {
+               markdown: markdownContent,
+               html: htmlContent,
+            },
+            ...(userData?.session?.id && { author_id: userData.session.id }),
+         })
 
-      const { data: postData, error } = await supabase.from('posts').insert({
-         nickname: data.nickname,
-         password: data.password,
-         title: data.title,
-         content: {
-            markdown: markdownContent,
-            html: htmlContent,
-         },
-      })
-      if (error) {
-         alert('글쓰기 오류' + JSON.stringify(error.message))
-      } else {
-         alert('글쓰기 성공')
+         if (error) throw error
+         return postData
+      },
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ['posts'] })
+         toast({
+            title: '성공',
+            description: '게시글이 성공적으로 작성되었습니다.',
+            duration: 3000,
+         })
          router.push('/board')
-      }
+      },
+      onError: (error) => {
+         toast({
+            variant: 'destructive',
+            title: '오류',
+            description: `글쓰기 오류: ${error.message}`,
+            duration: 3000,
+         })
+      },
+   })
+
+   const onSubmit = (data: BoardFormType) => {
+      submitPost(data)
    }
 
    return (
       <section className="w-full py-2">
+         <LoadingModal isOpen={isSubmittingPost} />
          <Form {...form}>
             <form
                className="w-full flex flex-col gap-2"
@@ -156,7 +198,7 @@ export default function BoardPostForm() {
                                  <Input
                                     className="text-sm sm:text-base"
                                     placeholder="닉네임"
-                                    disabled={isLoading || isAuthenticated}
+                                    disabled={isAuthenticated}
                                     {...field}
                                  />
                               </FormControl>
@@ -178,9 +220,7 @@ export default function BoardPostForm() {
                                              showPassword ? 'text' : 'password'
                                           }
                                           placeholder="비밀번호"
-                                          disabled={
-                                             isLoading || isAuthenticated
-                                          }
+                                          disabled={isAuthenticated}
                                           {...field}
                                        />
                                        <Button
@@ -191,9 +231,7 @@ export default function BoardPostForm() {
                                           onClick={() =>
                                              setShowPassword(!showPassword)
                                           }
-                                          disabled={
-                                             isLoading || isAuthenticated
-                                          }
+                                          disabled={isAuthenticated}
                                        >
                                           {showPassword ? (
                                              <EyeOff className="h-4 w-4" />
@@ -219,8 +257,8 @@ export default function BoardPostForm() {
                               <Input
                                  className="text-sm sm:text-base"
                                  placeholder="제목을 입력해주세요"
-                                 disabled={isLoading}
                                  {...field}
+                                 disabled={isSubmittingPost}
                               />
                            </FormControl>
                            <FormMessage />
@@ -229,8 +267,7 @@ export default function BoardPostForm() {
                   />
                </div>
 
-               {/* <BoardAccordion /> */}
-
+               {/* 요약 입력 필드 */}
                <div className="flex justify-between gap-2 flex-wrap flex-1 w-full min-h-[80px]">
                   <FormField
                      control={form.control}
@@ -296,6 +333,9 @@ export default function BoardPostForm() {
                      </div>
                   </div>
                </div>
+               {/* 마크다운 사용법 */}
+               <MarkDownTip />
+
                {/* 마크다운 입력 필드 */}
                <MarkDownEditor
                   name="content"
@@ -308,10 +348,11 @@ export default function BoardPostForm() {
                      size="lg"
                      className="bg-gray-400 hover:bg-gray-500"
                      onClick={() => router.back()}
+                     disabled={isSubmittingPost}
                   >
                      취소
                   </Button>
-                  <Button size="lg" type="submit">
+                  <Button size="lg" type="submit" disabled={isSubmittingPost}>
                      제출 하기
                   </Button>
                </div>

@@ -1,4 +1,5 @@
 import AppProviders from '@/providers'
+import { Toaster } from '@/shared/shadcn/ui/toaster'
 import Footer from '@/widgets/footer'
 import Header from '@/widgets/header'
 import Ticker from '@/widgets/ticker'
@@ -36,6 +37,7 @@ export default function RootLayout({
                      <Footer />
                   </div>
                </div>
+               <Toaster />
             </AppProviders>
          </body>
       </html>

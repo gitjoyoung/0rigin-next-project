@@ -27,7 +27,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@/shared/shadcn/ui/select'
-import Spinner from '@/shared/ui/spinner/loader-sppiner'
+import { LoadingSpinner } from '@/shared/ui/spinner/loading-spinner'
 import { useState } from 'react'
 import { ChangePasswordModal } from './change-password-modal'
 import { useProfile } from './hooks/use-profile'
@@ -51,7 +51,7 @@ export default function Profile() {
    if (isLoading) {
       return (
          <div className="flex flex-col items-center justify-center mx-auto">
-            <Spinner />
+            <LoadingSpinner />
             <h1 className="text-2xl font-bold">로딩중... </h1>
          </div>
       )

@@ -59,7 +59,7 @@ function BannerThumbnail({ postData }: { postData: PostData }) {
             >
                <Image
                   alt={imageAlt}
-                  src={thumbnail}
+                  src={thumbnail || DEFAULT_VALUES.thumbnail}
                   fill
                   priority
                   quality={85}

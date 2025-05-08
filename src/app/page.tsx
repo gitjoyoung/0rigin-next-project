@@ -1,6 +1,7 @@
 import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
 import AdSenseBanner from '@/widgets/adsense-banner.tsx'
 import Banner from '@/widgets/banner'
+import Link from 'next/link'
 import Post from './(content)/board/ui/post'
 
 export const metadata = {
@@ -18,7 +19,7 @@ export default async function Home() {
    const { data: bestPosts, error: bestPostsError } = await supabase
       .from('posts')
       .select('*')
-      .order('likes', { ascending: false })
+      .order('view_count', { ascending: false })
       .limit(5)
 
    const { data: posts, error: postsError } = await supabase
@@ -32,10 +33,21 @@ export default async function Home() {
    }
 
    return (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1 min-h-screen">
          <AdSenseBanner />
          <Banner data={bestPosts} />
-         <Post postData={posts} />
+         <div className="flex flex-col gap-2 px-2 flex-grow">
+            <div className="flex justify-between py-2 border-b-2 border-gray-200">
+               <h1 className="text-xl font-bold ">최신 게시물</h1>
+               <Link
+                  href="/board"
+                  className="text-xs text-end self-end text-gray-500"
+               >
+                  더보기
+               </Link>
+            </div>
+            <Post postData={posts} />
+         </div>
       </div>
    )
 }

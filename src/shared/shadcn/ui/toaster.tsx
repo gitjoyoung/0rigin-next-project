@@ -1,6 +1,6 @@
 'use client'
 
-import { useToast } from '@/shared/shadcn/hooks/use-toast'
+import { useToast } from '@/shared/hooks/use-toast'
 import {
    Toast,
    ToastClose,

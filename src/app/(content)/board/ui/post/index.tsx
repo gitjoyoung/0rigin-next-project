@@ -13,7 +13,7 @@ import formatDate from '@/shared/utils/validators/board/format-date'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import type { IPost } from '../../types/post-type'
+import type { IPost, IPostListItem } from '../../types/post-type'
 
 interface Props {
    postData: IPost[]
@@ -48,7 +48,7 @@ export default function Post({ postData }: Props) {
             </TableRow>
          </TableHeader>
          <TableBody>
-            {postData.map((item: IPost) => {
+            {postData.map((item: IPostListItem) => {
                return (
                   <TableRow
                      key={item.id}
@@ -74,13 +74,13 @@ export default function Post({ postData }: Props) {
                      </TableCell>
 
                      <TableCell className="w-[5%] min-w-[60px] text-center text-xs">
-                        {item.author?.name || '닉네임'}
+                        {item.nickname || '닉네임'}
                      </TableCell>
                      <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">
                         {formatDate(item.created_at)}
                      </TableCell>
                      <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
-                        {formatValue(item.views)}
+                        {formatValue(item.view_count)}
                      </TableCell>
                      <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
                         {formatValue(item.likes)}

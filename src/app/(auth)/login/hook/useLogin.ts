@@ -1,12 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 import { Login } from '../../../../shared/actions/auth-action'
 import { LoginSchema } from '../types/schema'
 
 export const useLogin = () => {
-   const { push } = useRouter()
-
    const { mutate, error, isPending } = useMutation({
       mutationFn: async (values: z.infer<typeof LoginSchema>) => {
          const formData = new FormData()

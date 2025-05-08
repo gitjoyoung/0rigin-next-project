@@ -14,7 +14,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { HEADER_NAV_LIST } from '.'
 import AuthButtons from './auth-buttons'
-import ThemeToggle from './theme-toggle'
 
 interface MobileSideMenuProps {
    session: Session | null
@@ -57,9 +56,6 @@ export default function MobileSideMenu({ session }: MobileSideMenuProps) {
                      </SheetClose>
                   ))}
                </nav>
-               <div className="flex justify-center border-b gap-2 py-4">
-                  <ThemeToggle />
-               </div>
             </div>
          </SheetContent>
       </Sheet>
