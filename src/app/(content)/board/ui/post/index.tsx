@@ -24,23 +24,25 @@ export default function Post({ postData }: Props) {
 
    if (!postData) return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
    return (
-      <Table className="w-full font-dos  ">
+      <Table className="w-full font-dos">
          <TableHeader>
             <TableRow className="text-xs sm:text-sm">
-               <TableHead className="text-center w-[5%] min-w-[40px]">
+               <TableHead className="text-center w-[5%] min-w-[40px] h-[32px]">
                   번호
                </TableHead>
-               <TableHead className="w-auto min-w-[150px]">제목</TableHead>
-               <TableHead className="text-center w-[5%] min-w-[60px]">
+               <TableHead className="w-auto min-w-[150px] h-[32px]">
+                  제목
+               </TableHead>
+               <TableHead className="text-center w-[5%] min-w-[60px] h-[32px]">
                   작성자
                </TableHead>
-               <TableHead className="text-center w-[5%] min-w-[100px] hidden sm:table-cell">
+               <TableHead className="text-center w-[5%] min-w-[100px] hidden sm:table-cell h-[32px]">
                   작성일
                </TableHead>
-               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
+               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell h-[32px]">
                   조회
                </TableHead>
-               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
+               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell h-[32px]">
                   추천
                </TableHead>
             </TableRow>

@@ -30,7 +30,7 @@ export default function RootLayout({
                   <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
                      <Ticker />
                      <Header />
-                     <main className="flex-1 w-full min-h-screen">
+                     <main className="flex-1 w-full min-h-screen font-dos">
                         <Suspense fallback={<Loading />}>{children}</Suspense>
                      </main>
                      <Footer />
