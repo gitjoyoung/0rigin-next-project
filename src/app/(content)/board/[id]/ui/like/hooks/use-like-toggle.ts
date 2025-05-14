@@ -1,4 +1,4 @@
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 

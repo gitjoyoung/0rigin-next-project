@@ -1,4 +1,4 @@
-import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import AdSenseBanner from '@/widgets/adsense-banner.tsx'
 import Banner from '@/widgets/banner'
 import Link from 'next/link'

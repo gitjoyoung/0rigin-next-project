@@ -1,4 +1,4 @@
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import type { IStats } from '../model/ticker-types'
 
 const DEFAULT_STATS: Partial<IStats> = {

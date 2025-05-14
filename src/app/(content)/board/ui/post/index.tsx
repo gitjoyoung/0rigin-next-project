@@ -1,6 +1,6 @@
 'use client'
 
-import { ROUTE_BOARD } from '@/constants/pathname'
+import { ROUTE_BOARD } from '@/shared/constants/pathname'
 import {
    Table,
    TableBody,

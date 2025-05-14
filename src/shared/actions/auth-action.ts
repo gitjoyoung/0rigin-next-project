@@ -1,118 +1,242 @@
 'use server'
 
-import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 
-export async function auth() {
-   const supabase = await SupabaseServerClient()
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
-   return user
+// 인증 관련 응답 타입 정의
+export type TAuthResponse<T = any> =
+   | { success: true; data: T; message?: string }
+   | { success: false; error: string; code?: string }
+
+// 타입 정의
+export interface LoginParams {
+   email: string
+   password: string
 }
 
-export const Login = async (formData: FormData): Promise<any> => {
-   const supabase = await SupabaseServerClient()
-   const loginData = {
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-   }
-   const { error } = await supabase.auth.signInWithPassword(loginData)
-   if (error) {
-      return { error: error.message }
-   }
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
+export interface SignUpParams {
+   email: string
+   password: string
+   nickname: string
+   gender: string
+}
 
+// 에러 처리 유틸리티 함수
+const handleError = (
+   error: unknown,
+   defaultMessage: string,
+): TAuthResponse<never> => {
    return {
-      success: true,
-      user,
+      success: false,
+      error: error instanceof Error ? error.message : defaultMessage,
    }
+}
+
+// 성공 응답 유틸리티 함수
+const successResponse = <T>(data: T, message?: string): TAuthResponse<T> => {
+   return { success: true, data, message }
+}
+
+// 서버 액션 래퍼 함수
+const withErrorHandling = async <T>(
+   actionFn: () => Promise<TAuthResponse<T>>,
+   errorMessage: string,
+): Promise<TAuthResponse<T>> => {
+   try {
+      return await actionFn()
+   } catch (error) {
+      return handleError(error, errorMessage)
+   }
+}
+
+export async function auth(): Promise<TAuthResponse<{ user: any }>> {
+   return withErrorHandling(async () => {
+      const supabase = await SupabaseServerClient()
+      const {
+         data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+         return { success: false, error: '인증된 사용자가 없습니다.' }
+      }
+
+      return successResponse({ user })
+   }, '인증 처리 중 오류가 발생했습니다.')
+}
+
+export const Login = async (
+   params: LoginParams,
+): Promise<TAuthResponse<{ user: any }>> => {
+   // 인자 유효성 검사
+   if (!params.email) {
+      return {
+         success: false,
+         error: '이메일을 입력해주세요.',
+         code: 'MISSING_EMAIL',
+      }
+   }
+   if (!params.password) {
+      return {
+         success: false,
+         error: '비밀번호를 입력해주세요.',
+         code: 'MISSING_PASSWORD',
+      }
+   }
+
+   return withErrorHandling(async () => {
+      const supabase = await SupabaseServerClient()
+      const { error } = await supabase.auth.signInWithPassword({
+         email: params.email,
+         password: params.password,
+      })
+
+      if (error) {
+         return { success: false, error: error.message }
+      }
+
+      const {
+         data: { user },
+      } = await supabase.auth.getUser()
+      return successResponse({ user }, '로그인 성공')
+   }, '로그인 처리 중 오류가 발생했습니다.')
 }
 
 export const signUp = async (
-   formData: FormData,
-): Promise<{
-   success: boolean
-   message?: string
-   error?: string
-   user?: any
-}> => {
-   const email = formData.get('email') as string
-   const password = formData.get('password') as string
-   const name = formData.get('name') as string
+   params: SignUpParams,
+): Promise<TAuthResponse<{ user: any }>> => {
+   // 인자 유효성 검사
+   if (!params.email) {
+      return {
+         success: false,
+         error: '이메일을 입력해주세요.',
+         code: 'MISSING_EMAIL',
+      }
+   }
+   if (!params.password) {
+      return {
+         success: false,
+         error: '비밀번호를 입력해주세요.',
+         code: 'MISSING_PASSWORD',
+      }
+   }
+   if (!params.nickname) {
+      return {
+         success: false,
+         error: '닉네임을 입력해주세요.',
+         code: 'MISSING_NICKNAME',
+      }
+   }
+   if (!params.gender) {
+      return {
+         success: false,
+         error: '성별을 선택해주세요.',
+         code: 'MISSING_GENDER',
+      }
+   }
 
-   const supabase = await SupabaseServerClient()
-
-   const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-         data: {
-            name: name,
+   return withErrorHandling(async () => {
+      const supabase = await SupabaseServerClient()
+      const { error } = await supabase.auth.signUp({
+         email: params.email,
+         password: params.password,
+         options: {
+            data: {
+               nickname: params.nickname,
+               gender: params.gender,
+            },
          },
-      },
-   })
+      })
 
-   if (error) {
-      return { success: false, error: error.message }
-   }
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
+      if (error) {
+         return { success: false, error: error.message }
+      }
 
-   return { success: true, user }
+      const {
+         data: { user },
+      } = await supabase.auth.getUser()
+      return successResponse({ user }, '회원가입 성공')
+   }, '회원가입 처리 중 오류가 발생했습니다.')
 }
 
-export const signOut = async (): Promise<
-   { success: true } | { error: string }
-> => {
-   const supabase = await SupabaseServerClient()
-   const { error } = await supabase.auth.signOut()
+export const signOut = async (): Promise<TAuthResponse<null>> => {
+   return withErrorHandling(async () => {
+      const supabase = await SupabaseServerClient()
+      const { error } = await supabase.auth.signOut()
 
-   if (error) {
-      return { error: error.message }
-   }
+      if (error) {
+         return { success: false, error: error.message }
+      }
 
-   return { success: true }
+      return successResponse(null, '로그아웃 성공')
+   }, '로그아웃 처리 중 오류가 발생했습니다.')
 }
 
-export const resetPassword = async (formData: FormData): Promise<any> => {
-   const email = formData.get('email') as string
+export const resetPassword = async (
+   formData: FormData,
+): Promise<TAuthResponse<null>> => {
+   return withErrorHandling(async () => {
+      const email = formData.get('email') as string
 
-   const supabase = await SupabaseServerClient()
+      if (!email) {
+         return {
+            success: false,
+            error: '이메일을 입력해주세요.',
+            code: 'MISSING_EMAIL',
+         }
+      }
 
-   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
-   })
+      const supabase = await SupabaseServerClient()
 
-   if (error) {
-      return { error: error.message }
-   }
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+         redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+      })
 
-   return { success: true, message: '비밀번호 재설정 이메일을 확인해주세요.' }
+      if (error) {
+         return { success: false, error: error.message }
+      }
+
+      return successResponse(null, '비밀번호 재설정 이메일을 확인해주세요.')
+   }, '비밀번호 재설정 처리 중 오류가 발생했습니다.')
 }
 
-export const updatePassword = async (formData: FormData): Promise<any> => {
-   const password = formData.get('password') as string
+export const updatePassword = async (
+   formData: FormData,
+): Promise<TAuthResponse<null>> => {
+   return withErrorHandling(async () => {
+      const password = formData.get('password') as string
 
-   const supabase = await SupabaseServerClient()
+      if (!password) {
+         return {
+            success: false,
+            error: '새 비밀번호를 입력해주세요.',
+            code: 'MISSING_PASSWORD',
+         }
+      }
 
-   const { error } = await supabase.auth.updateUser({
-      password,
-   })
+      const supabase = await SupabaseServerClient()
 
-   if (error) {
-      return { error: error.message }
-   }
+      const { error } = await supabase.auth.updateUser({
+         password,
+      })
 
-   return { success: true, message: '비밀번호가 변경되었습니다.' }
+      if (error) {
+         return { success: false, error: error.message }
+      }
+
+      return successResponse(null, '비밀번호가 변경되었습니다.')
+   }, '비밀번호 변경 중 오류가 발생했습니다.')
 }
 
-export async function getUser() {
-   const supabase = await SupabaseServerClient()
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
-   return user
+export async function getUser(): Promise<TAuthResponse<{ user: any }>> {
+   return withErrorHandling(async () => {
+      const supabase = await SupabaseServerClient()
+      const {
+         data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+         return { success: false, error: '사용자 정보를 찾을 수 없습니다.' }
+      }
+
+      return successResponse({ user })
+   }, '사용자 정보 조회 중 오류가 발생했습니다.')
 }

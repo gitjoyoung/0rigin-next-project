@@ -1,5 +1,9 @@
-import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
 import { signOut } from '@/shared/actions/auth-action'
+import {
+   ROUTE_LOGIN,
+   ROUTE_MY_PAGE,
+   ROUTE_SIGN,
+} from '@/shared/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import type { Session } from '@supabase/supabase-js'
 import Link from 'next/link'

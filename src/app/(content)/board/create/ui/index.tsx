@@ -4,9 +4,9 @@ import {
    boardSchema,
    type BoardFormType,
 } from '@/app/(content)/board/create/types/board-schema'
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
 import { auth } from '@/shared/actions/auth-action'
 import { useToast } from '@/shared/hooks/use-toast'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -58,19 +58,35 @@ export default function BoardPostForm() {
    const { data: userData } = useQuery({
       queryKey: ['user'],
       queryFn: async () => {
-         const session = await auth()
-         if (!session) return null
+         const authResponse = await auth()
+         if (!authResponse.success) return null
+
+         const userId = authResponse.data.user.id
 
          const { data, error } = await supabase
             .from('users')
             .select('*')
-            .eq('id', session.id)
+            .eq('id', userId)
             .single()
 
          if (error) throw error
-         return { session, user: data }
+         return { session: authResponse.data.user, user: data }
       },
    })
+
+   // useEffect를 유지하되, 의존성을 명확히 하고 최적화
+   useEffect(() => {
+      if (!userData?.user) return // 데이터가 없으면 일찍 반환
+
+      setIsAuthenticated(true)
+      const nickname =
+         userData.user.nickname || 'holder_' + userData.session.id.slice(0, 4)
+      const password = userData.session.id.slice(0, 4)
+
+      // 한 번에 여러 필드 설정
+      form.setValue('nickname', nickname)
+      form.setValue('password', password)
+   }, [userData, form.setValue]) // form 전체가 아닌 form.setValue만 의존성으로 사용
 
    // 이미지 업로드 뮤테이션
    const uploadImageMutation = useMutation({
@@ -112,18 +128,6 @@ export default function BoardPostForm() {
          setUploading(false)
       },
    })
-
-   useEffect(() => {
-      if (userData?.user) {
-         setIsAuthenticated(true)
-         const nickname =
-            userData.user.nickname ||
-            'holder_' + userData.session.id.slice(0, 4)
-         const password = userData.session.id.slice(0, 4)
-         form.setValue('nickname', nickname)
-         form.setValue('password', password)
-      }
-   }, [userData, form])
 
    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault()

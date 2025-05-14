@@ -1,4 +1,4 @@
-import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import SearchBoard from './ui'
 import SearchPagination from './ui/search-pagination'
 

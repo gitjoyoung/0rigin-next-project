@@ -1,4 +1,4 @@
-import { ROUTE_QUIZ } from '@/constants/pathname'
+import { ROUTE_QUIZ } from '@/shared/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Separator } from '@/shared/shadcn/ui/separator'
 import Link from 'next/link'

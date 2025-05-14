@@ -1,4 +1,4 @@
-import AppProviders from '@/providers'
+import AppProviders from '@/shared/providers'
 import { Toaster } from '@/shared/shadcn/ui/toaster'
 import Footer from '@/widgets/footer'
 import Header from '@/widgets/header'

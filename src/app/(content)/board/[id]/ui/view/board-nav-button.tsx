@@ -1,5 +1,5 @@
 'use client'
-import { ROUTE_BOARD } from '@/constants/pathname'
+import { ROUTE_BOARD } from '@/shared/constants/pathname'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 

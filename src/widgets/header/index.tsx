@@ -1,7 +1,11 @@
 'use client'
 
-import { ROUTE_BOARD, ROUTE_QUIZ, ROUTE_UTILS } from '@/constants/pathname'
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
+import {
+   ROUTE_BOARD,
+   ROUTE_QUIZ,
+   ROUTE_UTILS,
+} from '@/shared/constants/pathname'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import SearchBox from '../search-box'

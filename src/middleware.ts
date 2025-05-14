@@ -8,13 +8,13 @@ import {
    ROUTE_SIGN,
    ROUTE_SIGN_FORM,
    ROUTE_SIGN_TERM,
-} from './constants/pathname'
-import { updateSession } from './lib/supabase/supabase-session'
+} from './shared/constants/pathname'
+import { updateSession } from './shared/lib/supabase/supabase-session'
 
 // 상수 정의
 const PROTECTED_ROUTES = [ROUTE_MY_PAGE]
 export const AUTH_FORBIDDEN_ROUTES = [
-   //
+   // 인증 필요 없는 경로
    ROUTE_LOGIN,
    ROUTE_SIGN,
    ROUTE_SIGN_FORM,

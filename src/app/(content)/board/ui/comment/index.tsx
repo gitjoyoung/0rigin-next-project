@@ -1,6 +1,6 @@
 'use client'
 
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Separator } from '@/shared/shadcn/ui/separator'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'

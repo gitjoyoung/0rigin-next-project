@@ -1,6 +1,6 @@
 'use client'
 
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/shadcn/ui/avatar'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Textarea } from '@/shared/shadcn/ui/textarea'

@@ -1,4 +1,4 @@
-import { ROUTE_BOARD } from '@/constants/pathname'
+import { ROUTE_BOARD } from '@/shared/constants/pathname'
 import { Badge } from '@/shared/shadcn/ui/badge'
 import {
    Card,

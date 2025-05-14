@@ -1,6 +1,6 @@
 'use client'
 
-import { SupabaseBrowserClient } from '@/lib/supabase/supabase-browser-client'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import LikeButton from './like-button'
 import LikeUserList from './like-user-list'
 

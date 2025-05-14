@@ -1,4 +1,4 @@
-import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import BoardFooter from './ui/board-footer'

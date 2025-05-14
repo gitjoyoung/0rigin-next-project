@@ -1,5 +1,5 @@
-import { ROUTE_BOARD } from '@/constants/pathname'
-import { SupabaseServerClient } from '@/lib/supabase/supabase-server-client'
+import { ROUTE_BOARD } from '@/shared/constants/pathname'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import BoardFooter from '../ui/board-footer'

@@ -1,4 +1,4 @@
-import { QUIZ_DATA } from '@/constants/quiz/quizData'
+import { QUIZ_DATA } from '@/shared/constants/quiz/quizData'
 import { Metadata } from 'next'
 import Quiz from './ui'
 interface Params {

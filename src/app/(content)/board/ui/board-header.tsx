@@ -1,4 +1,4 @@
-import { ROUTE_BOARD, ROUTE_BOARD_CREATE } from '@/constants/pathname'
+import { ROUTE_BOARD, ROUTE_BOARD_CREATE } from '@/shared/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 

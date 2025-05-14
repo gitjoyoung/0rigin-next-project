@@ -3,7 +3,7 @@ import {
    ROUTE_HELP,
    ROUTE_INQUIRY,
    ROUTE_INTRODUCE,
-} from '@/constants/pathname'
+} from '@/shared/constants/pathname'
 import Link from 'next/link'
 
 const FOOTER_NAV = Object.freeze([
