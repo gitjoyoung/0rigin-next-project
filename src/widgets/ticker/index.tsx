@@ -14,7 +14,7 @@ export default function Ticker() {
    })
 
    return (
-      <aside className="relative bg-black text-white text-xs w-full ">
+      <aside className="relative bg-black text-white text-xs w-full h-[12px] ">
          {isLoading ? <TickerLoader /> : <TickerList statsData={statsData} />}
       </aside>
    )

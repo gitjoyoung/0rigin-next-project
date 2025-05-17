@@ -41,9 +41,7 @@ export default function MypageMenu({
                         <SidebarMenuItem key={item.id}>
                            <SidebarMenuButton
                               onClick={() => onMenuClick(item.id)}
-                              className={
-                                 selectedMenu === item.id ? 'bg-gray-100' : ''
-                              }
+                              isActive={selectedMenu === item.id}
                            >
                               {item.label}
                            </SidebarMenuButton>

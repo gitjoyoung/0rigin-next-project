@@ -1,7 +1,6 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 import { LoginSchema } from '../types/schema'
 
@@ -42,14 +41,13 @@ const fetchLogin = async (values: z.infer<typeof LoginSchema>) => {
 }
 // 로그인 훅
 export const useLogin = () => {
-   const router = useRouter()
    const { mutate, error, isPending } = useMutation({
       mutationFn: fetchLogin,
       onSuccess: (result) => {
          if (!result.success) {
             throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.')
          }
-         router.push('/')
+         window.location.href = '/'
       },
       onError: (error) => {
          throw new Error(
