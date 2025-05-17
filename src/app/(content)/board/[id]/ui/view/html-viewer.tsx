@@ -1,4 +1,4 @@
-import { IPostContent } from '../../../types/post-type'
+import { IPostContent } from '../../../../types/post-type'
 
 export default function HtmlViewer({ content }: { content: IPostContent }) {
    // 서버에서 가져온 HTML 콘텐츠를 직접 표시

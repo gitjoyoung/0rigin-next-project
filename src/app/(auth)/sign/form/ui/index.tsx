@@ -1,5 +1,6 @@
 'use client'
 
+import { SignUpParamsSchema } from '@/entities/auth/types/sign-up'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -22,16 +23,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useUserSignUp } from '../hook/useUserSignUp'
-import { signUpSchema } from '../type/schema'
 import GenderRadioButton from './gender-radio-button'
 
 export default function SignForm() {
    const { error, mutate, isPending } = useUserSignUp()
-   const form = useForm<z.infer<typeof signUpSchema>>({
-      resolver: zodResolver(signUpSchema),
+   const form = useForm<z.infer<typeof SignUpParamsSchema>>({
+      resolver: zodResolver(SignUpParamsSchema),
       defaultValues: {
          gender: 'man',
          email: '',
+         nickname: '',
          password: '',
          confirmPassword: '',
       },
@@ -94,6 +95,27 @@ export default function SignForm() {
                         />
                         <FormField
                            control={form.control}
+                           name="nickname"
+                           render={({ field, fieldState }) => (
+                              <FormItem className="h-14">
+                                 <FormControl>
+                                    <Input
+                                       disabled={isPending}
+                                       placeholder={'닉네임을 입력하세요'}
+                                       name="nickname"
+                                       type="text"
+                                       maxLength={12}
+                                       {...field}
+                                    />
+                                 </FormControl>
+                                 {fieldState.error && field.value && (
+                                    <FormMessage className="pl-2 text-xs text-red-500" />
+                                 )}
+                              </FormItem>
+                           )}
+                        />
+                        <FormField
+                           control={form.control}
                            name="password"
                            render={({ field, fieldState }) => (
                               <FormItem className="h-14">
@@ -103,7 +125,7 @@ export default function SignForm() {
                                        placeholder={'비밀번호를 입력하세요'}
                                        name="password"
                                        type="password"
-                                       maxLength={30}
+                                       maxLength={20}
                                        {...field}
                                     />
                                  </FormControl>
@@ -124,7 +146,7 @@ export default function SignForm() {
                                        placeholder={'비밀번호 재확인'}
                                        name="confirmPassword"
                                        type="password"
-                                       maxLength={30}
+                                       maxLength={20}
                                        {...field}
                                     />
                                  </FormControl>

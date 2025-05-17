@@ -1,43 +1,48 @@
 'use client'
 
-import { signUp } from '@/shared/actions/auth-action'
+import type { SignUpParams } from '@/entities/auth/types/sign-up'
 import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import { z } from 'zod'
-import { signUpSchema } from '../type/schema'
 
+// 회원가입 API 요청 함수 분리
+const fetchSignUp = async (values: SignUpParams) => {
+   try {
+      const response = await fetch(
+         process.env.NEXT_PUBLIC_API_URL + '/api/auth/signup',
+         {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+         },
+      )
+
+      const data = await response.json()
+
+      if (!response.ok) {
+         throw new Error(
+            data.message || '회원가입 처리 중 오류가 발생했습니다.',
+         )
+      }
+
+      return data.message || '회원가입이 완료되었습니다.'
+   } catch (error) {
+      throw new Error(
+         error instanceof Error
+            ? error.message
+            : '회원가입 처리 중 오류가 발생했습니다.',
+      )
+   }
+}
+
+// 회원가입 훅
 export const useUserSignUp = () => {
-   const router = useRouter()
-
    const {
       mutate,
       error,
       isPending = false,
    } = useMutation({
-      mutationFn: async (values: z.infer<typeof signUpSchema>) => {
-         const formData = new FormData()
-         Object.entries(values).forEach(([key, value]) => {
-            if (typeof value === 'string') {
-               formData.append(key, value)
-            }
-         })
-         const signUpResult = await signUp(formData)
-         if (!signUpResult.success) {
-            switch (signUpResult.error) {
-               case 'User already registered':
-                  throw new Error('이미 등록된 사용자입니다.')
-               case 'Invalid email format':
-                  throw new Error('올바르지 않은 이메일 형식입니다.')
-               case 'Password too weak':
-                  throw new Error('비밀번호가 너무 약합니다.')
-               default:
-                  throw new Error(
-                     signUpResult.error || '회원가입에 실패했습니다.',
-                  )
-            }
-         }
-         return signUpResult
-      },
+      mutationFn: fetchSignUp,
       onSuccess: () => {
          window.location.href = '/sign/welcome'
       },

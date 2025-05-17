@@ -1,10 +1,6 @@
 'use client'
 
-import {
-   boardSchema,
-   type BoardFormType,
-} from '@/app/(content)/board/create/types/board-schema'
-import { auth } from '@/shared/actions/auth-action'
+import { getUser } from '@/entities/auth'
 import { useToast } from '@/shared/hooks/use-toast'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
@@ -28,6 +24,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { boardSchema, type BoardFormType } from '../types/board-schema'
 import LoadingModal from './loading-modal'
 import MarkDownEditor from './mark-down-editor'
 import MarkDownTip from './markdown-tip'
@@ -58,19 +55,16 @@ export default function BoardPostForm() {
    const { data: userData } = useQuery({
       queryKey: ['user'],
       queryFn: async () => {
-         const authResponse = await auth()
-         if (!authResponse.success) return null
-
-         const userId = authResponse.data.user.id
+         const user = await getUser()
 
          const { data, error } = await supabase
             .from('users')
             .select('*')
-            .eq('id', userId)
+            .eq('id', user.id)
             .single()
 
          if (error) throw error
-         return { session: authResponse.data.user, user: data }
+         return { session: user, user: data }
       },
    })
 

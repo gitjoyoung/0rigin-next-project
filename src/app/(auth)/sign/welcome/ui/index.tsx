@@ -1,10 +1,10 @@
-import { auth } from '@/shared/actions/auth-action'
+import { getUser } from '@/entities/auth'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 
 export default async function WelcomePage() {
-   const session = await auth()
-   const userEmail = session?.email
+   const user = await getUser()
+   const userEmail = user?.email
 
    return (
       <div className="min-h-72 flex flex-col items-center justify-center px-2">

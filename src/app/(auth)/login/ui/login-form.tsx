@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useLogin } from '../hook/useLogin'
 import { LoginSchema } from '../types/schema'
+import GoogleLogin from './google-login'
 
 export default function LoginForm() {
    const { loginError, mutate, isPending } = useLogin()
@@ -104,8 +105,11 @@ export default function LoginForm() {
                         )}
                      </Button>
                   </form>
+                  <div className="my-2">
+                     <GoogleLogin />
+                  </div>
 
-                  <div className="mt-6 flex gap-4 justify-between">
+                  <div className="my-2 flex gap-4 justify-between">
                      <Button disabled={isPending} variant="outline" asChild>
                         <Link href={ROUTE_SIGN}>회원가입</Link>
                      </Button>

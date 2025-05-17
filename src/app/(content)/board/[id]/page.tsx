@@ -2,12 +2,14 @@ import { ROUTE_BOARD } from '@/shared/constants/pathname'
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+
 import BoardFooter from '../ui/board-footer'
 import CommentList from '../ui/comment'
 import CustomPagination from '../ui/pagination/custom-pagination'
 import Post from '../ui/post'
 import PostLike from './ui/like/post-like'
 import PostView from './ui/view'
+
 interface IParams {
    params: {
       id: string

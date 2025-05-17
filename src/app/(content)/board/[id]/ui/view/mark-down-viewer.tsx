@@ -4,7 +4,7 @@ import { Skeleton } from '@/shared/shadcn/ui/skeleton'
 import dynamic from 'next/dynamic'
 import rehypeSanitize from 'rehype-sanitize'
 import remarkBreaks from 'remark-breaks'
-import { IPostContent } from '../../../types/post-type'
+import { IPostContent } from '../../../../types/post-type'
 
 const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
    ssr: false,

@@ -1,5 +1,9 @@
 'use client'
 
+import {
+   confirmPasswordSchema,
+   passwordSchema,
+} from '@/entities/auth/types/common'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -25,8 +29,8 @@ import * as z from 'zod'
 
 const formSchema = z
    .object({
-      password: z.string().min(8, '비밀번호는 8자 이상이어야 합니다'),
-      confirmPassword: z.string(),
+      password: passwordSchema,
+      confirmPassword: confirmPasswordSchema,
    })
    .refine((data) => data.password === data.confirmPassword, {
       message: '비밀번호가 일치하지 않습니다',

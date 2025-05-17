@@ -1,27 +1,55 @@
+'use client'
+
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { z } from 'zod'
-import { Login } from '../../../../shared/actions/auth-action'
 import { LoginSchema } from '../types/schema'
 
+// 로그인 API 요청 함수 분리
+const fetchLogin = async (values: z.infer<typeof LoginSchema>) => {
+   console.log('fetchLogin', values)
+   try {
+      const response = await fetch(
+         process.env.NEXT_PUBLIC_API_URL + '/api/auth/login',
+         {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+         },
+      )
+
+      const data = await response.json()
+
+      if (!response.ok) {
+         return {
+            success: false,
+            message: data.message || '로그인 처리 중 오류가 발생했습니다.',
+         }
+      }
+
+      return data
+   } catch (error) {
+      return {
+         success: false,
+         message:
+            error instanceof Error
+               ? error.message
+               : '로그인 처리 중 오류가 발생했습니다.',
+      }
+   }
+}
+// 로그인 훅
 export const useLogin = () => {
+   const router = useRouter()
    const { mutate, error, isPending } = useMutation({
-      mutationFn: async (values: z.infer<typeof LoginSchema>) => {
-         const formData = new FormData()
-         Object.entries(values).forEach(([key, value]) => {
-            if (typeof value === 'string') {
-               formData.append(key, value)
-            }
-         })
-         return Login(formData)
-      },
+      mutationFn: fetchLogin,
       onSuccess: (result) => {
-         if (result.error) {
+         if (!result.success) {
             throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.')
          }
-
-         if (result.success) {
-            window.location.href = result.redirectTo ?? '/'
-         }
+         router.push('/')
       },
       onError: (error) => {
          throw new Error(

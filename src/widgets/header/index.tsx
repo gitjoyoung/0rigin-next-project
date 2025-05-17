@@ -45,6 +45,7 @@ function useAuthSession() {
 }
 export default function Header() {
    const { data: session } = useAuthSession()
+   console.log(session)
 
    return (
       <header className="flex items-center justify-between p-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">

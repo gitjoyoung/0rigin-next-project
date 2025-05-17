@@ -1,5 +1,5 @@
-import SignUpLanding from './ui/signup-lending'
+import SignupLanding from './ui/signup-landing'
 
-export default function SignPage() {
-   return <SignUpLanding />
+export default function Page() {
+   return <SignupLanding />
 }
