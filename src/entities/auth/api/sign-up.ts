@@ -3,7 +3,7 @@
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import type { AuthResponse } from '../types/common'
 import { SignUpParamsSchema, type SignUpParams } from '../types/sign-up'
-import { handleTryCatch } from './auth-utils'
+import { handleTryCatch } from './try-catch'
 
 export const signUp = async ({
    email,

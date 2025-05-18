@@ -1,7 +1,7 @@
 // 타입 내보내기
 
 // 유틸리티 함수 내보내기
-export { handleTryCatch } from './api/auth-utils'
+export { handleTryCatch } from './api/try-catch'
 
 // 인증 상태 함수 내보내기
 export { getUser } from './api/get-user'

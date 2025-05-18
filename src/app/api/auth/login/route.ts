@@ -1,13 +1,16 @@
 import { signIn } from '@/entities/auth'
 import { LoginParamsSchema } from '@/entities/auth/types/login'
+import { decryptObject } from '@/shared/utils/crypto-helper'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
    // 1. 요청 바디 파싱
    const body = await request.json().catch(() => ({}))
 
+   const decryptedBody = decryptObject(body)
+
    // 2. 유효성 검사
-   const result = LoginParamsSchema.safeParse(body)
+   const result = LoginParamsSchema.safeParse(decryptedBody)
    if (!result.success) {
       return NextResponse.json(
          {

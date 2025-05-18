@@ -1,13 +1,14 @@
 'use client'
 
+import { encryptObject } from '@/shared/utils/crypto-helper'
 import { useMutation } from '@tanstack/react-query'
 import { z } from 'zod'
 import { LoginSchema } from '../types/schema'
 
 // 로그인 API 요청 함수 분리
 const fetchLogin = async (values: z.infer<typeof LoginSchema>) => {
-   console.log('fetchLogin', values)
    try {
+      const encryptedValues = encryptObject(values)
       const response = await fetch(
          process.env.NEXT_PUBLIC_API_URL + '/api/auth/login',
          {
@@ -15,7 +16,7 @@ const fetchLogin = async (values: z.infer<typeof LoginSchema>) => {
             headers: {
                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(values),
+            body: JSON.stringify(encryptedValues),
          },
       )
 

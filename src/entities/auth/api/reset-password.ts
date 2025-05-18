@@ -2,7 +2,7 @@
 
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import type { AuthResponse } from '../types/common'
-import { handleTryCatch } from './auth-utils'
+import { handleTryCatch } from './try-catch'
 
 export const resetPassword = async (email: string): Promise<AuthResponse> => {
    return handleTryCatch(async () => {

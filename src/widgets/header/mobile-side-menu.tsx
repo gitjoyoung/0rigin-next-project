@@ -8,18 +8,17 @@ import {
    SheetTitle,
    SheetTrigger,
 } from '@/shared/shadcn/ui/sheet'
-import type { Session } from '@supabase/supabase-js'
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
-import { HEADER_NAV_LIST } from '.'
+import { HEADER_NAV_LIST } from './\bconstant/header-menu'
 import AuthButtons from './auth-buttons'
 
-interface MobileSideMenuProps {
-   session: Session | null
+interface Props {
+   session: any
 }
 
-export default function MobileSideMenu({ session }: MobileSideMenuProps) {
+export default function MobileSideMenu({ session }: Props) {
    const [isOpen, setIsOpen] = useState(false)
    const handleClose = () => setIsOpen(false)
 
@@ -36,14 +35,12 @@ export default function MobileSideMenu({ session }: MobileSideMenuProps) {
             </SheetHeader>
 
             <div className="flex flex-col">
-               {/* 모바일 화면 로그인, 회원가입 */}
                <div className="flex justify-center border-b gap-2 py-4">
                   <SheetClose asChild>
                      <AuthButtons session={session} onClick={handleClose} />
                   </SheetClose>
                </div>
 
-               {/* 모바일 화면 네비게이터 */}
                <nav className="flex flex-col">
                   {HEADER_NAV_LIST.map(({ id, url, title }) => (
                      <SheetClose asChild key={id}>

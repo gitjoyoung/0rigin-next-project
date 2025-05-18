@@ -5,15 +5,8 @@ import {
    ROUTE_SIGN,
 } from '@/shared/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
-import type { Session } from '@supabase/supabase-js'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
-
-interface AuthButtonsProps {
-   session: Session | null
-   className?: string
-   onClick?: () => void
-}
 
 interface AuthButtonProps {
    href?: string
@@ -26,11 +19,9 @@ interface AuthButtonProps {
 
 function AuthButton({
    href,
-   onClick,
    children,
    className = '',
    type,
-   disabled,
    ...props
 }: AuthButtonProps) {
    return (
@@ -41,8 +32,6 @@ function AuthButton({
          variant="outline"
          className={`dark:bg-white bg-black text-white dark:text-black ${className}`}
          type={type}
-         onClick={onClick}
-         disabled={disabled}
       >
          {href ? <Link href={href}>{children}</Link> : children}
       </Button>
@@ -51,36 +40,21 @@ function AuthButton({
 
 // 로그아웃 API 요청 함수
 const fetchLogout = async () => {
-   try {
-      const response = await fetch(
-         process.env.NEXT_PUBLIC_API_URL + '/api/auth/logout',
-         {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
+   const response = await fetch(
+      process.env.NEXT_PUBLIC_API_URL + '/api/auth/logout',
+      {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
          },
-      )
+      },
+   )
+   return response.json()
+}
 
-      const result = await response.json()
-
-      if (!response.ok) {
-         return {
-            success: false,
-            message: result.message || '로그아웃 중 오류가 발생했습니다.',
-         }
-      }
-
-      return result
-   } catch (error) {
-      return {
-         success: false,
-         message:
-            error instanceof Error
-               ? error.message
-               : '로그아웃 처리 중 오류가 발생했습니다.',
-      }
-   }
+interface AuthButtonsProps {
+   session: any
+   onClick?: () => void
 }
 
 export default function AuthButtons({ session, onClick }: AuthButtonsProps) {
@@ -98,7 +72,6 @@ export default function AuthButtons({ session, onClick }: AuthButtonsProps) {
          }
       },
       onError: (error) => {
-         console.error('로그아웃 중 오류:', error)
          alert('로그아웃 처리 중 오류가 발생했습니다.')
       },
    })

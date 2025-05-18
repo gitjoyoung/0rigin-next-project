@@ -3,7 +3,7 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import type { AuthResponse } from '../types/common'
 import { LoginParamsSchema, type LoginParams } from '../types/login'
-import { handleTryCatch } from './auth-utils'
+import { handleTryCatch } from './try-catch'
 
 export const signIn = async (params: LoginParams): Promise<AuthResponse> => {
    return handleTryCatch(async () => {
