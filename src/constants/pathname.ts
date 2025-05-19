@@ -1,7 +1,8 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-05-17T11:50:21.646Z
+// 생성 시간: 2025-05-19T16:47:47.171Z
 // 동적 라우트([param])는 제외됨
 
+export const ROUTE_AUTH_CALLBACK = '/auth/callback'
 export const ROUTE_FORGET_PASSWORD = '/forget/password'
 export const ROUTE_LOGIN = '/login'
 export const ROUTE_LOGIN_TEST = '/login/test'

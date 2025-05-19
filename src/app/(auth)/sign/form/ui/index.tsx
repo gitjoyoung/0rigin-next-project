@@ -25,13 +25,17 @@ import { z } from 'zod'
 import { useUserSignUp } from '../hook/useUserSignUp'
 import GenderRadioButton from './gender-radio-button'
 
-export default function SignForm() {
+interface SignFormProps {
+   email: string | null
+}
+
+export default function SignForm({ email }: SignFormProps) {
    const { error, mutate, isPending } = useUserSignUp()
    const form = useForm<z.infer<typeof SignUpParamsSchema>>({
       resolver: zodResolver(SignUpParamsSchema),
       defaultValues: {
+         email: email || '',
          gender: 'man',
-         email: '',
          nickname: '',
          password: '',
          confirmPassword: '',
@@ -72,27 +76,32 @@ export default function SignForm() {
                         )}
                      />
                      <div className="flex flex-col py-2 gap-3 h-60">
-                        <FormField
-                           control={form.control}
-                           name="email"
-                           render={({ field, fieldState }) => (
-                              <FormItem className="h-14">
-                                 <FormControl>
-                                    <Input
-                                       disabled={isPending}
-                                       placeholder={'이메일을 입력하세요'}
-                                       name="email"
-                                       type="email"
-                                       maxLength={30}
-                                       {...field}
-                                    />
-                                 </FormControl>
-                                 {fieldState.error && field.value && (
-                                    <FormMessage className="pl-2 text-xs text-red-500" />
-                                 )}
-                              </FormItem>
+                        <div>
+                           <FormField
+                              control={form.control}
+                              name="email"
+                              render={({ field }) => (
+                                 <FormItem>
+                                    <FormControl>
+                                       <Input
+                                          disabled={true}
+                                          placeholder="이메일"
+                                          {...field}
+                                       />
+                                    </FormControl>
+                                    <FormMessage />
+                                 </FormItem>
+                              )}
+                           />
+                           {email && (
+                              <div className="flex px-2 items-center gap-1 text-xs text-muted-foreground mb-2">
+                                 <Icons.google className="h-4 w-4" />
+                                 <span className="text-green-500">
+                                    Google 계정으로 로그인되었습니다.
+                                 </span>
+                              </div>
                            )}
-                        />
+                        </div>
                         <FormField
                            control={form.control}
                            name="nickname"

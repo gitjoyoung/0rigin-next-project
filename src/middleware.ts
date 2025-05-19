@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid'
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { match } from 'path-to-regexp'
+import { checkSignupCompleteServer } from './entities/auth/api/google'
 import {
    ROUTE_LOGIN,
    ROUTE_MY_PAGE,
@@ -17,7 +18,6 @@ export const AUTH_FORBIDDEN_ROUTES = [
    // 인증 필요 없는 경로
    ROUTE_LOGIN,
    ROUTE_SIGN,
-   ROUTE_SIGN_FORM,
    ROUTE_SIGN_TERM,
    ROUTE_RESET_PASSWORD,
 ]
@@ -49,7 +49,6 @@ const saveVisitorInfo = async (request: NextRequest, supabase: any) => {
       ip_address: request.headers.get('x-forwarded-for') || 'unknown',
       device_type: getViewportType(request),
       browser: browser.name,
-      os: os.name,
       language:
          request.headers.get('accept-language')?.split(',')[0] || 'unknown',
       referrer: request.headers.get('referer') || 'direct',
@@ -57,11 +56,7 @@ const saveVisitorInfo = async (request: NextRequest, supabase: any) => {
    }
 
    // 매 방문마다 저장 (기존 방문자도 새 페이지 방문 시 기록)
-   const { data, error } = await supabase
-      .from('visitors')
-      .insert(visitorData)
-      .select('id')
-      .single()
+   await supabase.from('visitors').insert(visitorData).select('id').single()
 
    return {
       id: cookieId,
@@ -71,14 +66,34 @@ const saveVisitorInfo = async (request: NextRequest, supabase: any) => {
 
 // 인증 페이지 처리
 const handleAuth = async (request: NextRequest, user: any) => {
-   // 로그인된 사용자가 로그인/회원가입 페이지에 접근하는 경우
-   if (user && AUTH_FORBIDDEN_ROUTES.includes(request.nextUrl.pathname)) {
-      return NextResponse.redirect(new URL('/', request.url))
+   if (!user) {
+      // 로그인하지 않은 사용자는 보호된 경로 접근 불가
+      if (isProtectedRoute(request.nextUrl.pathname)) {
+         return NextResponse.redirect(new URL(ROUTE_LOGIN, request.url))
+      }
+      return null
    }
 
-   // 보호된 경로에 대한 인증 체크
-   if (isProtectedRoute(request.nextUrl.pathname) && !user) {
-      return NextResponse.redirect(new URL(ROUTE_LOGIN, request.url))
+   // 로그인한 사용자의 회원가입 상태 확인
+   const isSignupComplete = await checkSignupCompleteServer()
+
+   // 회원가입이 완료되지 않은 경우
+   if (!isSignupComplete) {
+      // 회원가입 관련 페이지로만 접근 가능
+      if (
+         ![ROUTE_SIGN, ROUTE_SIGN_FORM, ROUTE_SIGN_TERM].includes(
+            request.nextUrl.pathname,
+         )
+      ) {
+         return NextResponse.redirect(new URL(ROUTE_SIGN, request.url))
+      }
+      return null
+   }
+
+   // 회원가입이 완료된 경우
+   // 로그인/회원가입 페이지 접근 불가
+   if (AUTH_FORBIDDEN_ROUTES.includes(request.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL('/', request.url))
    }
 
    return null

@@ -1,3 +1,4 @@
+import { getUser } from '@/entities/auth'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -10,10 +11,8 @@ export function useLikeToggle(postId: string) {
 
    useEffect(() => {
       const checkLikeStatus = async () => {
-         const {
-            data: { session },
-         } = await supabase.auth.getSession()
-         const userId = session?.user?.id
+         const user = await getUser()
+         const userId = user?.id
 
          if (userId) {
             const { data } = await supabase

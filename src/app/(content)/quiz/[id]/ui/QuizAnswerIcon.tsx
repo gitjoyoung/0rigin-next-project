@@ -1,9 +1,8 @@
-import { CheckBadgeIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import React from 'react'
+import { Icons } from '@/shared/ui/icons'
 
 export default function QuizAnswerIcon({ id, answer }) {
    if (id === answer) {
-      return <CheckBadgeIcon className="text-green-500" />
+      return <Icons.check className="text-green-500" />
    }
-   return <XMarkIcon className="text-red-500" />
+   return <Icons.x className="text-red-500" />
 }

@@ -1,4 +1,6 @@
 'use client'
+
+import { signOut } from '@/entities/auth/api/sign-out'
 import {
    ROUTE_LOGIN,
    ROUTE_MY_PAGE,
@@ -12,44 +14,23 @@ interface AuthButtonProps {
    href?: string
    onClick?: () => void
    children: React.ReactNode
-   className?: string
    type?: 'submit'
    disabled?: boolean
 }
 
-function AuthButton({
-   href,
-   children,
-   className = '',
-   type,
-   ...props
-}: AuthButtonProps) {
+function AuthButton({ href, children, type, ...props }: AuthButtonProps) {
    return (
       <Button
          {...props}
          size="sm"
          asChild={!!href}
          variant="outline"
-         className={`dark:bg-white bg-black text-white dark:text-black ${className}`}
+         className={`dark:bg-white bg-black text-white dark:text-black`}
          type={type}
       >
          {href ? <Link href={href}>{children}</Link> : children}
       </Button>
    )
-}
-
-// 로그아웃 API 요청 함수
-const fetchLogout = async () => {
-   const response = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + '/api/auth/logout',
-      {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      },
-   )
-   return response.json()
 }
 
 interface AuthButtonsProps {
@@ -60,47 +41,49 @@ interface AuthButtonsProps {
 export default function AuthButtons({ session, onClick }: AuthButtonsProps) {
    const isAuthenticated = !!session
 
-   // 로그아웃 뮤테이션
    const { mutate: logout, isPending: isLogoutPending } = useMutation({
-      mutationFn: fetchLogout,
-      onSuccess: (data) => {
-         if (data.success) {
-            onClick?.()
-            window.location.reload()
-         } else {
-            alert(data.message || '로그아웃 중 오류가 발생했습니다.')
-         }
+      mutationFn: async () => {
+         await signOut()
+      },
+      onSuccess: () => {
+         onClick?.()
+         window.location.href = '/'
       },
       onError: (error) => {
+         console.error('클라이언트 로그아웃 에러:', error)
          alert('로그아웃 처리 중 오류가 발생했습니다.')
       },
    })
 
+   const guestButtons = [
+      { label: '로그인', href: ROUTE_LOGIN },
+      { label: '회원가입', href: ROUTE_SIGN },
+   ]
+
+   const authButtons = [
+      {
+         label: isLogoutPending ? '처리 중...' : '로그아웃',
+         onClick: () => logout(),
+      },
+      { label: '마이페이지', href: ROUTE_MY_PAGE },
+   ]
+
+   const buttonsToRender = isAuthenticated ? authButtons : guestButtons
+
    return (
       <section className="flex items-end gap-5">
-         {!isAuthenticated ? (
-            <div className="flex gap-2 text-xs">
-               <AuthButton href={ROUTE_LOGIN} onClick={onClick}>
-                  로그인
-               </AuthButton>
-               <AuthButton href={ROUTE_SIGN} onClick={onClick}>
-                  회원가입
-               </AuthButton>
-            </div>
-         ) : (
-            <div className="flex gap-2 text-xs">
-               <AuthButton onClick={() => logout()} disabled={isLogoutPending}>
-                  {isLogoutPending ? '처리 중...' : '로그아웃'}
-               </AuthButton>
+         <div className="flex gap-2 text-xs">
+            {buttonsToRender.map((btn, i) => (
                <AuthButton
-                  href={ROUTE_MY_PAGE}
-                  onClick={onClick}
+                  key={i}
+                  href={btn.href}
+                  onClick={btn.onClick ?? onClick}
                   disabled={isLogoutPending}
                >
-                  마이페이지
+                  {btn.label}
                </AuthButton>
-            </div>
-         )}
+            ))}
+         </div>
       </section>
    )
 }

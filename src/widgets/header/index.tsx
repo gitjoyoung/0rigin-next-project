@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import type { User } from '@supabase/supabase-js'
 import Link from 'next/link'
 import SearchBox from '../search-box'

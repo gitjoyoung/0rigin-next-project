@@ -105,6 +105,7 @@ export default function LoginForm() {
                         )}
                      </Button>
                   </form>
+                  {/* 구글 로그인 */}
                   <div className="my-2">
                      <GoogleLogin />
                   </div>

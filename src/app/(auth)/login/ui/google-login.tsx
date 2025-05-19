@@ -2,7 +2,7 @@
 
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
-import { FcGoogle } from 'react-icons/fc'
+import { Icons } from '@/shared/ui/icons'
 
 interface GoogleLoginButtonProps {
    className?: string
@@ -19,7 +19,8 @@ export default function GoogleLogin({
          const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-               redirectTo: redirectTo || `${window.location.origin}/login/test`,
+               redirectTo:
+                  redirectTo || `${window.location.origin}/auth/callback`,
                queryParams: {
                   prompt: 'select_account',
                },
@@ -40,7 +41,7 @@ export default function GoogleLogin({
          className={`w-full flex items-center justify-center gap-2 ${className}`}
          onClick={handleGoogleLogin}
       >
-         <FcGoogle className="w-5 h-5" />
+         <Icons.google className="w-5 h-5" />
          <span>Google로 계속하기</span>
       </Button>
    )

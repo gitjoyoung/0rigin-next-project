@@ -5,6 +5,7 @@ import {
    Check,
    ChevronLeft,
    ChevronRight,
+   Chrome,
    Eye,
    EyeOff,
    FileQuestion,
@@ -74,6 +75,7 @@ export const Icons = {
    more: MoreHorizontal,
    twitter: Twitter,
    instagram: Instagram,
+   google: Chrome,
 
    // 게시글
    messageSquare: MessageSquare,

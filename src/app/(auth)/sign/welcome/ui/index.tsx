@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 
