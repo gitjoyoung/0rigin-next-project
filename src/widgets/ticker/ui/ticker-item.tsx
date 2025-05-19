@@ -10,7 +10,7 @@ type Props = {
 
 export default function TickerItem({ label, value, ariaLabel }: Props) {
    return (
-      <div className="flex items-center  text-[11px]">
+      <div className="flex items-center  text-[10px]">
          <strong className="px-1">{label}</strong>
          <motion.span
             aria-label={ariaLabel}

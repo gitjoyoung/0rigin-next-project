@@ -2,11 +2,13 @@ import type { IStats } from '../model/ticker-types'
 import TickerItem from './ticker-item'
 
 interface TickerListProps {
-   statsData: Partial<IStats>
+   statsData?: Partial<IStats>
 }
 
 export default function TickerList({ statsData }: TickerListProps) {
-   const { visitor_count, post_count, user_count } = statsData
+   // statsData가 없을 경우 빈 객체 할당
+   const { visitor_count = 0, post_count = 0, user_count = 0 } = statsData || {}
+
    const STATS_DATA = [
       {
          ariaLabel: '방문 수',
@@ -26,7 +28,7 @@ export default function TickerList({ statsData }: TickerListProps) {
    ]
 
    return (
-      <div className="flex w-full justify-end items-center">
+      <div className="flex w-full items-center">
          {STATS_DATA.map((item) => (
             <TickerItem key={item.label} {...item} />
          ))}

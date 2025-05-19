@@ -1,3 +1,4 @@
+import { getUser } from '@/entities/auth'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useToast } from '@/shared/shadcn/hooks/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -27,26 +28,23 @@ export type Profile = {
 
 async function fetchProfile(): Promise<Profile> {
    const supabase = await SupabaseBrowserClient()
-   const {
-      data: { user },
-      error: userError,
-   } = await supabase.auth.getUser()
+   const user = await getUser()
 
-   if (userError || !user) {
+   if (!user) {
       throw new Error('사용자 정보를 불러올 수 없습니다.')
    }
 
-   const { data: profile, error: profileError } = await supabase
+   const { data, error } = await supabase
       .from('users')
       .select('*')
       .eq('id', user.id)
       .single()
 
-   if (profileError) {
+   if (error) {
       throw new Error('프로필 정보를 불러올 수 없습니다.')
    }
 
-   return profile as Profile
+   return data as Profile
 }
 
 async function updateProfile({

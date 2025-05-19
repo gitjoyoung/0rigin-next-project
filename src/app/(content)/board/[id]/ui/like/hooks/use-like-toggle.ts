@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'

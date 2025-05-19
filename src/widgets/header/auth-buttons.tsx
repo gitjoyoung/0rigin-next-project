@@ -1,6 +1,5 @@
 'use client'
 
-import { signOut } from '@/entities/auth/api/sign-out'
 import {
    ROUTE_LOGIN,
    ROUTE_MY_PAGE,
@@ -43,7 +42,19 @@ export default function AuthButtons({ session, onClick }: AuthButtonsProps) {
 
    const { mutate: logout, isPending: isLogoutPending } = useMutation({
       mutationFn: async () => {
-         await signOut()
+         const response = await fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         })
+
+         if (!response.ok) {
+            const error = await response.json()
+            throw new Error(error.message)
+         }
+
+         return response.json()
       },
       onSuccess: () => {
          onClick?.()

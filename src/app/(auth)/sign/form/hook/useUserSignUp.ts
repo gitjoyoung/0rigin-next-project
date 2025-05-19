@@ -1,38 +1,27 @@
 'use client'
 
 import type { SignUpParams } from '@/entities/auth/types/sign-up'
+import { encryptObject } from '@/shared/utils/crypto-helper'
 import { useMutation } from '@tanstack/react-query'
 
+interface SignUpResponse {
+   success: boolean
+   message: string
+   errors?: any[]
+}
+
 // 회원가입 API 요청 함수 분리
-const fetchSignUp = async (values: SignUpParams) => {
-   try {
-      const response = await fetch(
-         process.env.NEXT_PUBLIC_API_URL + '/api/auth/signup',
-         {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-         },
-      )
+const fetchSignUp = async (values: SignUpParams): Promise<SignUpResponse> => {
+   const encryptedValues = encryptObject(values)
+   const response = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(encryptedValues),
+   })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-         throw new Error(
-            data.message || '회원가입 처리 중 오류가 발생했습니다.',
-         )
-      }
-
-      return data.message || '회원가입이 완료되었습니다.'
-   } catch (error) {
-      throw new Error(
-         error instanceof Error
-            ? error.message
-            : '회원가입 처리 중 오류가 발생했습니다.',
-      )
-   }
+   return await response.json()
 }
 
 // 회원가입 훅
@@ -42,9 +31,15 @@ export const useUserSignUp = () => {
       error,
       isPending = false,
    } = useMutation({
+      mutationKey: ['signup'],
       mutationFn: fetchSignUp,
-      onSuccess: () => {
-         window.location.href = '/sign/welcome'
+      onSuccess: (data) => {
+         if (data.success) {
+            alert(data.message)
+            // window.location.href = '/sign/welcome'
+         } else {
+            alert(data.message)
+         }
       },
    })
 

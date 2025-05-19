@@ -1,6 +1,6 @@
 'use server'
 
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import type { AuthResponse } from '../types/common'
 import { SignUpParamsSchema, type SignUpParams } from '../types/sign-up'
 import { handleTryCatch } from './try-catch'
@@ -32,7 +32,7 @@ export const signUp = async ({
       }
 
       const validatedData = result.data
-      const supabase = await SupabaseBrowserClient()
+      const supabase = await SupabaseServerClient()
       const { error } = await supabase.auth.signUp({
          email: validatedData.email,
          password: validatedData.password,
