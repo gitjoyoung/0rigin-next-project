@@ -10,9 +10,9 @@ export default async function layout({
    children: React.ReactNode
 }) {
    return (
-      <>
+      <section className="w-full font-dos">
          <BoardHeader />
          {children}
-      </>
+      </section>
    )
 }

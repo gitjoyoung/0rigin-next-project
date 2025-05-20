@@ -87,7 +87,7 @@ export default function MarkDownViewer({
             source={displayMarkdown}
             remarkPlugins={[remarkBreaks, remarkGfm]}
             rehypePlugins={[rehypeSanitize]}
-            className="prose dark:prose-invert max-w-none"
+            className="prose dark:prose-invert max-w-none font-sans [&_*]:font-sans"
          />
       </div>
    )
