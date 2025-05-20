@@ -38,11 +38,12 @@ function BannerThumbnail({ postData }: { postData: PostData }) {
          className={cn(
             'w-full md:w-7/12 md:border-r border-black',
             'transition-all duration-300',
+            'relative h-56 md:h-64',
          )}
          role="article"
          aria-label={title}
       >
-         <div className="relative w-full h-56 group">
+         <div className="relative w-full h-full group">
             {nickname && (
                <div
                   className="absolute top-0 bg-black/80 text-white text-sm right-0 p-1.5 z-20"
@@ -66,6 +67,7 @@ function BannerThumbnail({ postData }: { postData: PostData }) {
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   onError={(e) => {
+                     console.log('이미지 로드 오류:', e)
                      const target = e.target as HTMLImageElement
                      target.src = DEFAULT_VALUES.thumbnail
                   }}

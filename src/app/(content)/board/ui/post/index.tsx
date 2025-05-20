@@ -25,24 +25,22 @@ export default function Post({ postData }: Props) {
    if (!postData) return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
    return (
       <Table className="w-full font-dos">
-         <TableHeader>
-            <TableRow className="text-xs sm:text-sm">
-               <TableHead className="text-center w-[5%] min-w-[40px] h-[32px]">
+         <TableHeader className="border-y [&_th]:!h-[32px] [&_th]:max-sm:!h-[24px]">
+            <TableRow className="text-xs ">
+               <TableHead className="text-center w-[5%] min-w-[40px]">
                   번호
                </TableHead>
-               <TableHead className="w-auto min-w-[150px] h-[32px]">
-                  제목
-               </TableHead>
-               <TableHead className="text-center w-[5%] min-w-[60px] h-[32px]">
+               <TableHead className="w-auto min-w-[150px]">제목</TableHead>
+               <TableHead className="text-center w-[10%] min-w-[60px] hidden sm:table-cell">
                   작성자
                </TableHead>
-               <TableHead className="text-center w-[5%] min-w-[100px] hidden sm:table-cell h-[32px]">
+               <TableHead className="text-center w-[5%] min-w-[100px] hidden sm:table-cell">
                   작성일
                </TableHead>
-               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell h-[32px]">
+               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
                   조회
                </TableHead>
-               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell h-[32px]">
+               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
                   추천
                </TableHead>
             </TableRow>
@@ -52,28 +50,28 @@ export default function Post({ postData }: Props) {
                return (
                   <TableRow
                      key={item.id}
-                     className="hover:bg-gray-200 dark:hover:bg-gray-800 text-xs sm:text-sm"
+                     className="hover:bg-gray-200 dark:hover:bg-gray-800 text-sm max-sm:text-xs h-[32px] max-sm:h-[24px]"
                   >
                      <TableCell className="w-[5%] min-w-[40px] text-center">
                         {item.id}
                      </TableCell>
-                     <TableCell className="w-auto min-w-[100px] overflow-ellipsis">
+                     <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
                         <Link
                            href={`${ROUTE_BOARD}/${item.id}?page=${page}`}
-                           className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary"
+                           className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden"
                         >
-                           <h2 className="truncate font-medium">
+                           <h2 className="truncate font-medium w-full">
                               {item.title}
                            </h2>
                            {item.comments > 0 && (
-                              <span className="text-muted-foreground">
+                              <span className="text-muted-foreground whitespace-nowrap flex-shrink-0">
                                  [{item.comments}]
                               </span>
                            )}
                         </Link>
                      </TableCell>
 
-                     <TableCell className="w-[5%] min-w-[60px] text-center text-xs">
+                     <TableCell className="w-[5%] min-w-[60px] text-center text-xs hidden sm:table-cell">
                         {item.nickname || '닉네임'}
                      </TableCell>
                      <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">

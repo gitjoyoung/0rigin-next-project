@@ -49,7 +49,7 @@ export default function Banner({ data }: any) {
 
    return (
       <div className="w-full">
-         <div className="flex flex-wrap border border-black">
+         <div className="flex flex-wrap border ">
             <Thumbnail postData={data[currentSlide]} />
             <div className="flex flex-1 flex-col justify-between">
                <BannerList postData={data} selectedPost={currentSlide} />

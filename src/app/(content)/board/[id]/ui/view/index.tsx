@@ -1,25 +1,25 @@
-import type { IPost } from '../../../../types/post-type'
+import type { IPost } from '../../../types/post-type'
 import MarkDownViewer from './mark-down-viewer'
 import PostHeader from './post-header'
 
 export default function PostView({
    title,
-   author,
-   likes,
+   nickname,
    created_at,
-   views,
+   view_count,
    content,
    id,
+   likes,
 }: IPost) {
    return (
       <section>
          {/* 글제목 */}
          <PostHeader
             title={title}
-            author={author}
+            author={nickname}
             likes={likes}
             created_at={created_at}
-            views={views}
+            views={view_count}
             id={id}
          />
 

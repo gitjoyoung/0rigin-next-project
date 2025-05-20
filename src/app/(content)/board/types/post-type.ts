@@ -22,6 +22,9 @@ export interface IPost {
    summary: string
    created_at: string
    updated_at: string
+   likes: number
+   comments: number
+   is_liked: boolean
 }
 
 export interface ICreatePostInput {

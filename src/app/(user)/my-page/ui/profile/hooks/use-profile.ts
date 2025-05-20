@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useToast } from '@/shared/shadcn/hooks/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
