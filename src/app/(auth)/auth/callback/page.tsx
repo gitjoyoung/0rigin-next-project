@@ -12,12 +12,10 @@ export default async function AuthCallback() {
 
    const isSignupComplete = await checkSignupCompleteServer()
 
-   // 타임스탬프를 추가하여 캐시를 무효화
-   const timestamp = Date.now()
-
    if (!isSignupComplete) {
-      redirect(`${ROUTE_SIGN}?t=${timestamp}`)
+      // return을 추가하여 함수 실행 종료
+      return redirect(process.env.NEXT_PUBLIC_URL + ROUTE_SIGN)
    }
 
-   redirect(`/?t=${timestamp}`)
+   return redirect(process.env.NEXT_PUBLIC_URL)
 }
