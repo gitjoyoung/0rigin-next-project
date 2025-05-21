@@ -14,8 +14,8 @@ export default async function AuthCallback() {
 
    if (!isSignupComplete) {
       // return을 추가하여 함수 실행 종료
-      return redirect(process.env.NEXT_PUBLIC_URL + ROUTE_SIGN)
+      return redirect(ROUTE_SIGN)
    }
 
-   return redirect(process.env.NEXT_PUBLIC_URL)
+   return redirect('/')
 }

@@ -7,7 +7,6 @@ import {
    ROUTE_MY_PAGE,
    ROUTE_RESET_PASSWORD,
    ROUTE_SIGN,
-   ROUTE_SIGN_FORM,
    ROUTE_SIGN_TERM,
 } from './shared/constants/pathname'
 import { updateSession } from './shared/lib/supabase/supabase-session'
@@ -79,14 +78,7 @@ const handleAuth = async (request: NextRequest, user: any) => {
 
    // 회원가입이 완료되지 않은 경우
    if (!isSignupComplete) {
-      // 회원가입 관련 페이지로만 접근 가능
-      if (
-         ![ROUTE_SIGN, ROUTE_SIGN_FORM, ROUTE_SIGN_TERM].includes(
-            request.nextUrl.pathname,
-         )
-      ) {
-         return NextResponse.redirect(new URL(ROUTE_SIGN, request.url))
-      }
+      // 모든 페이지 접근 허용 (리다이렉트 없음)
       return null
    }
 

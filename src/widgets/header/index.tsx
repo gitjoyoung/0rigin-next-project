@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth/api/get-user'
+import { getUserServer } from '@/entities/auth/api/get-user'
 import type { User } from '@supabase/supabase-js'
 import Link from 'next/link'
 import SearchBox from '../search-box'
@@ -8,7 +8,7 @@ import MobileSideMenu from './mobile-side-menu'
 import ThemeToggle from './theme-toggle'
 
 export default async function Header() {
-   const user: User | null = await getUser()
+   const user: User | null = await getUserServer()
 
    return (
       <header className="flex items-center justify-between p-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">
