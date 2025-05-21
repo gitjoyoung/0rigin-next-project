@@ -5,7 +5,8 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
-import { ThumbsUp } from 'lucide-react'
+import { Icons } from '@/shared/ui/icons'
+import { formatNumberToString } from '@/shared/utils/format-number'
 import Link from 'next/link'
 
 interface Props {
@@ -37,10 +38,10 @@ export default function BannerList({ postData, selectedPost }: Props) {
                      </h2>
                      <Badge
                         variant="outline"
-                        className="ml-2 flex items-center space-x-1"
+                        className="flex items-center gap-2"
                      >
-                        <ThumbsUp className="h-3 w-3" />
-                        <span>{like || 0}</span>
+                        <Icons.heart className="h-3 w-3" />
+                        <span>{formatNumberToString(like) || 0}</span>
                      </Badge>
                   </Link>
                ))}
