@@ -1,5 +1,4 @@
 import { cn } from '@/shared/utils/cn'
-import Image from 'next/image'
 import Link from 'next/link'
 import { memo, useMemo } from 'react'
 
@@ -33,6 +32,12 @@ function BannerThumbnail({ postData }: { postData: PostData }) {
       [title, nickname],
    )
 
+   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+      console.log('이미지 로드 오류:', e)
+      const target = e.target as HTMLImageElement
+      target.src = DEFAULT_VALUES.thumbnail
+   }
+
    return (
       <div
          className={cn(
@@ -58,19 +63,11 @@ function BannerThumbnail({ postData }: { postData: PostData }) {
                className="block h-full relative before:absolute before:inset-0 before:bg-black/30 before:z-10 before:transition-opacity before:duration-300 group-hover:before:opacity-0"
                aria-label={`${title} 게시물로 이동`}
             >
-               <Image
+               <img
                   alt={imageAlt}
                   src={thumbnail || DEFAULT_VALUES.thumbnail}
-                  fill
-                  priority
-                  quality={85}
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  onError={(e) => {
-                     console.log('이미지 로드 오류:', e)
-                     const target = e.target as HTMLImageElement
-                     target.src = DEFAULT_VALUES.thumbnail
-                  }}
+                  className="w-full h-full object-cover"
+                  onError={handleImageError}
                />
                <div
                   className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-5 p-4 text-white z-20"

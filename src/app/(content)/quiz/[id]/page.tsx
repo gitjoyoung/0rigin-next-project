@@ -1,6 +1,7 @@
 import { QUIZ_DATA } from '@/shared/constants/quiz/quizData'
 import { Metadata } from 'next'
 import Quiz from './ui'
+import QuizHeader from './ui/quiz-header'
 interface Params {
    params: {
       id: string
@@ -18,11 +19,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 export default async function page({ params }: Params) {
    const { id } = await params
    // 퀴즈 데이터를 나중에 서버에서 받아올 예정
-   const { data } = QUIZ_DATA.find((q) => q.path === id)
+   const data = QUIZ_DATA.find((q) => q.path === id)
+   const quizData = data?.data
    return (
-      <div className="w-full flex justify-center">
-         <div className="flex justify-center px-2 py-5  max-w-[600px] w-full">
-            <Quiz quizData={data} />
+      <div className="w-full flex flex-col justify-center items-center">
+         <div className="flex flex-col justify-center px-2 py-5  max-w-[600px] w-full">
+            <QuizHeader quizData={data} />
+            <Quiz quizData={quizData} />
          </div>
       </div>
    )

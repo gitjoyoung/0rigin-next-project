@@ -13,4 +13,6 @@ export interface QuizData {
 export interface QuizBoardData {
    name: string
    path: string
+   description?: string
+   imageSrc?: string
 }

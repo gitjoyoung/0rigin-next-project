@@ -8,21 +8,31 @@ interface Props {
    quizDataLength: number
    curIndex: number
    setCurIndex: React.Dispatch<React.SetStateAction<number>>
+   onShowResult?: () => void
 }
 
 export default function QuizNavButton({
    quizDataLength,
    curIndex,
    setCurIndex,
+   onShowResult,
 }: Props) {
    const isFirstDisabled = curIndex === 0
-   const isLastDisabled = curIndex === quizDataLength - 1
+   const isLastQuestion = curIndex === quizDataLength - 1
 
    const handleNavigate = (step: 1 | -1) => {
       setCurIndex((prevIndex) => {
          const nextIndex = prevIndex + step
          return Math.max(0, Math.min(nextIndex, quizDataLength - 1))
       })
+   }
+
+   const handleNext = () => {
+      if (isLastQuestion && onShowResult) {
+         onShowResult()
+      } else {
+         handleNavigate(1)
+      }
    }
 
    return (
@@ -36,13 +46,8 @@ export default function QuizNavButton({
             이전
             <Icons.arrowLeft size={20} />
          </Button>
-         <Button
-            type="button"
-            size="lg"
-            onClick={() => handleNavigate(1)}
-            disabled={isLastDisabled}
-         >
-            다음
+         <Button type="button" size="lg" onClick={handleNext}>
+            {isLastQuestion ? '결과 보기' : '다음'}
             <Icons.arrowRight size={20} />
          </Button>
       </div>
