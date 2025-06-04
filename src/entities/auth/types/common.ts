@@ -29,7 +29,8 @@ export const confirmPasswordSchema = z
 // 성별 스키마
 export const genderSchema = z
    .string()
-   .regex(/^(man|woman|etc)$/, '성별을 선택해주세요')
+   .min(1, '성별을 선택해주세요')
+   .regex(/^(man|women|etc)$/, '성별을 선택해주세요')
 
 // 닉네임 스키마
 export const nicknameSchema = z

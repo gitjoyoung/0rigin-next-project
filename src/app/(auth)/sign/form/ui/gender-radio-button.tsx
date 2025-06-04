@@ -1,20 +1,15 @@
 import { Label } from '@/shared/shadcn/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/shadcn/ui/radio-group'
 
-const GENDER_LIST = [
+const genderOptions = [
+   { id: 'man', label: '남성', value: 'man' },
    {
-      id: 'man',
-      label: '남성',
-   },
-   {
-      id: 'woman',
+      id: 'women',
       label: '여성',
+      value: 'women',
    },
-   {
-      id: 'etc',
-      label: '기타',
-   },
-] as const
+   { id: 'etc', label: '기타', value: 'etc' },
+]
 
 interface GenderRadioButtonProps {
    disabled?: boolean
@@ -36,7 +31,7 @@ export default function GenderRadioButton({
          disabled={disabled}
          aria-label="성별 선택"
       >
-         {GENDER_LIST.map(({ id, label }) => (
+         {genderOptions.map(({ id, label }) => (
             <div key={id} className="flex items-center space-x-2">
                <RadioGroupItem value={id} id={id} />
                <Label htmlFor={id}>{label}</Label>

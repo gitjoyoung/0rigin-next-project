@@ -27,7 +27,7 @@ export type Profile = {
 }
 
 async function fetchProfile(): Promise<Profile> {
-   const supabase = await SupabaseBrowserClient()
+   const supabase = SupabaseBrowserClient()
    const user = await getUser()
 
    if (!user) {
@@ -35,7 +35,7 @@ async function fetchProfile(): Promise<Profile> {
    }
 
    const { data, error } = await supabase
-      .from('users')
+      .from('profile')
       .select('*')
       .eq('id', user.id)
       .single()
@@ -54,7 +54,7 @@ async function updateProfile({
    nickname: string
    gender: string
 }) {
-   const supabase = await SupabaseBrowserClient()
+   const supabase = SupabaseBrowserClient()
    const {
       data: { user },
    } = await supabase.auth.getUser()
@@ -64,7 +64,7 @@ async function updateProfile({
    }
 
    const { error } = await supabase
-      .from('users')
+      .from('profile')
       .update({ nickname, gender })
       .eq('id', user.id)
 

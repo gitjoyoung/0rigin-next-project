@@ -1,11 +1,11 @@
-import { getUser } from '@/entities/auth/api/get-user'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 
-export default async function WelcomePage() {
-   const user = await getUser()
-   const userEmail = user?.email
-
+export default async function WelcomePage({
+   userEmail,
+}: {
+   userEmail: string
+}) {
    return (
       <div className="min-h-72 flex flex-col items-center justify-center px-2">
          <div className="max-w-md w-full space-y-8 p-8 rounded-lg">

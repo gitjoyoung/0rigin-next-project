@@ -144,10 +144,10 @@ export default function Profile() {
                                        </FormControl>
                                        <SelectContent>
                                           <SelectGroup className="overflow-y-auto max-h-[10rem]">
-                                             <SelectItem value="male">
+                                             <SelectItem value="man">
                                                 남성
                                              </SelectItem>
-                                             <SelectItem value="female">
+                                             <SelectItem value="women">
                                                 여성
                                              </SelectItem>
                                              <SelectItem value="etc">
