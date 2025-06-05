@@ -14,11 +14,7 @@ import { useState } from 'react'
 import { HEADER_NAV_LIST } from './\bconstant/header-menu'
 import AuthButtons from './auth-buttons'
 
-interface Props {
-   session: any
-}
-
-export default function MobileSideMenu({ session }: Props) {
+export default function MobileSideMenu() {
    const [isOpen, setIsOpen] = useState(false)
    const handleClose = () => setIsOpen(false)
 
@@ -37,7 +33,7 @@ export default function MobileSideMenu({ session }: Props) {
             <div className="flex flex-col">
                <div className="flex justify-center border-b gap-2 py-4">
                   <SheetClose asChild>
-                     <AuthButtons session={session} onClick={handleClose} />
+                     <AuthButtons onClick={handleClose} />
                   </SheetClose>
                </div>
 

@@ -1,6 +1,5 @@
 'use client'
 
-import { ROUTE_BOARD } from '@/shared/constants/pathname'
 import {
    Table,
    TableBody,
@@ -57,7 +56,7 @@ export default function Post({ postData }: Props) {
                      </TableCell>
                      <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
                         <Link
-                           href={`${ROUTE_BOARD}/${item.id}?page=${page}`}
+                           href={`/board/${item.category}/${item.id}?page=${page}`}
                            className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden"
                         >
                            <h2 className="truncate font-medium w-full">

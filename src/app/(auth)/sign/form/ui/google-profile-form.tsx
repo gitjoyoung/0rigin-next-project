@@ -28,7 +28,9 @@ const GoogleProfileSchema = z.object({
    nickname: z
       .string()
       .min(2, { message: '닉네임은 2글자 이상이어야 합니다.' }),
-   gender: z.enum(['man', 'women'], { required_error: '성별을 선택해주세요.' }),
+   gender: z.enum(['man', 'women', 'etc'], {
+      required_error: '성별을 선택해주세요.',
+   }),
 })
 
 interface GoogleProfileFormProps {

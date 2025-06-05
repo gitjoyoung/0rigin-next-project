@@ -4,6 +4,7 @@ import {
    confirmPasswordSchema,
    passwordSchema,
 } from '@/entities/auth/types/common'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -21,7 +22,6 @@ import {
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -40,7 +40,7 @@ const formSchema = z
 export default function ResetPassword() {
    const searchParams = useSearchParams()
    const router = useRouter()
-   const supabase = createClientComponentClient()
+   const supabase = SupabaseBrowserClient()
 
    const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),

@@ -1,4 +1,4 @@
-import type { IPost } from '../../../types/post-type'
+import type { IPost } from '../../types/post-type'
 import MarkDownViewer from './mark-down-viewer'
 import PostHeader from './post-header'
 

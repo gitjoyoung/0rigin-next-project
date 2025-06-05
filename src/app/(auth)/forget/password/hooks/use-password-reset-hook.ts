@@ -1,5 +1,5 @@
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import dayjs from 'dayjs'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -87,7 +87,7 @@ export const usePasswordResetForm = () => {
       'idle' | 'success' | 'error'
    >('idle')
    const [isSubmitted, setIsSubmitted] = React.useState(false)
-   const supabase = createClientComponentClient()
+   const supabase = SupabaseBrowserClient()
 
    const form = useForm({
       resolver: zodResolver(findPasswordSchema),

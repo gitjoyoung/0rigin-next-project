@@ -1,5 +1,3 @@
-import { getUserServer } from '@/entities/auth/api/get-user-server'
-import type { User } from '@supabase/supabase-js'
 import Link from 'next/link'
 import SearchBox from '../search-box'
 import { HEADER_NAV_LIST } from './\bconstant/header-menu'
@@ -8,8 +6,6 @@ import MobileSideMenu from './mobile-side-menu'
 import ThemeToggle from './theme-toggle'
 
 export default async function Header() {
-   const user: User | null = await getUserServer()
-
    return (
       <header className="flex items-center justify-between p-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">
          {/* 로고 + 네비게이션 */}
@@ -30,7 +26,7 @@ export default async function Header() {
                      key={id}
                      href={url}
                   >
-                     {title}
+                     {title}{' '}
                   </Link>
                ))}
             </nav>
@@ -39,9 +35,9 @@ export default async function Header() {
          <div className="flex items-center gap-4">
             <SearchBox />
             <ThemeToggle />
-            <MobileSideMenu session={user} />
+            <MobileSideMenu />
             <div className="hidden sm:flex items-center gap-4">
-               <AuthButtons session={user} />
+               <AuthButtons />
             </div>
          </div>
       </header>

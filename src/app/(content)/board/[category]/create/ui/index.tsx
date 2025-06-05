@@ -31,7 +31,11 @@ import MarkDownTip from './markdown-tip'
 
 const supabase = SupabaseBrowserClient()
 
-export default function BoardPostForm() {
+interface Props {
+   category: string
+}
+
+export default function BoardPostForm({ category }: Props) {
    const router = useRouter()
    const queryClient = useQueryClient()
    const { toast } = useToast()
@@ -148,6 +152,7 @@ export default function BoardPostForm() {
                html: htmlContent,
             },
             ...(userData?.session?.id && { author_id: userData.session.id }),
+            category: category,
          })
 
          if (error) throw error
@@ -160,7 +165,7 @@ export default function BoardPostForm() {
             description: '게시글이 성공적으로 작성되었습니다.',
             duration: 3000,
          })
-         router.push('/board')
+         router.push(`/board/${category}`)
       },
       onError: (error) => {
          toast({

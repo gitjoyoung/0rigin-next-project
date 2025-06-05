@@ -14,7 +14,7 @@ const GoogleProfileSchema = z.object({
 
 export interface GoogleProfileParams {
    nickname: string
-   gender: 'man' | 'women'
+   gender: 'man' | 'women' | 'etc'
 }
 
 // 구글 로그인 사용자의 프로필 생성

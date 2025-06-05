@@ -5,9 +5,11 @@ import {
    ROUTE_MY_PAGE,
    ROUTE_SIGN,
 } from '@/shared/constants/pathname'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 interface AuthButtonProps {
    href?: string
@@ -32,13 +34,30 @@ function AuthButton({ href, children, type, ...props }: AuthButtonProps) {
    )
 }
 
-interface AuthButtonsProps {
-   session: any
+interface Props {
    onClick?: () => void
 }
 
-export default function AuthButtons({ session, onClick }: AuthButtonsProps) {
-   const isAuthenticated = !!session
+export default function AuthButtons({ onClick }: Props) {
+   const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+   const supabase = SupabaseBrowserClient()
+   useEffect(() => {
+      const session = supabase.auth.getSession()
+      setIsAuthenticated(!!session)
+      const {
+         data: { subscription },
+      } = supabase.auth.onAuthStateChange((_, session) => {
+         setIsAuthenticated(!!session)
+      })
+
+      // 컴포넌트 언마운트 시 구독 해제
+
+      return
+      ;() => {
+         subscription.unsubscribe()
+      }
+   }, [supabase])
 
    const { mutate: logout, isPending: isLogoutPending } = useMutation({
       mutationFn: async () => {
