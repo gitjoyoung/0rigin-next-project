@@ -1,5 +1,6 @@
 'use client'
 
+import { getUser } from '@/entities/auth/api/get-user'
 import {
    ROUTE_LOGIN,
    ROUTE_MY_PAGE,
@@ -7,8 +8,10 @@ import {
 } from '@/shared/constants/pathname'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
+import type { User } from '@supabase/supabase-js'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface AuthButtonProps {
@@ -34,33 +37,55 @@ function AuthButton({ href, children, type, ...props }: AuthButtonProps) {
    )
 }
 
-interface Props {
+interface AuthButtonsProps {
    onClick?: () => void
 }
 
-export default function AuthButtons({ onClick }: Props) {
-   const [isAuthenticated, setIsAuthenticated] = useState(false)
-
+export default function AuthButtons({ onClick }: AuthButtonsProps) {
+   const [user, setUser] = useState<User | null>(null)
+   const [loading, setLoading] = useState(true)
+   const [isLoggingOut, setIsLoggingOut] = useState(false)
+   const router = useRouter()
    const supabase = SupabaseBrowserClient()
+
    useEffect(() => {
-      const session = supabase.auth.getSession()
-      setIsAuthenticated(!!session)
+      const fetchUser = async () => {
+         try {
+            const userData = await getUser()
+            setUser(userData)
+         } catch (error) {
+            console.error('Failed to fetch user:', error)
+         } finally {
+            setLoading(false)
+         }
+      }
+
+      fetchUser()
+
+      // 세션 상태 변경을 실시간으로 감지
       const {
          data: { subscription },
-      } = supabase.auth.onAuthStateChange((_, session) => {
-         setIsAuthenticated(!!session)
+      } = supabase.auth.onAuthStateChange(async (event, session) => {
+         console.log('Auth state changed:', event, session?.user?.email)
+
+         if (event === 'SIGNED_IN') {
+            setUser(session?.user ?? null)
+            setIsLoggingOut(false)
+         } else if (event === 'SIGNED_OUT') {
+            setUser(null)
+            setIsLoggingOut(false)
+         }
       })
 
-      // 컴포넌트 언마운트 시 구독 해제
+      return () => subscription.unsubscribe()
+   }, [supabase.auth])
 
-      return
-      ;() => {
-         subscription.unsubscribe()
-      }
-   }, [supabase])
+   const isAuthenticated = !!user
 
    const { mutate: logout, isPending: isLogoutPending } = useMutation({
       mutationFn: async () => {
+         setIsLoggingOut(true)
+
          const response = await fetch('/api/auth/logout', {
             method: 'POST',
             headers: {
@@ -76,12 +101,17 @@ export default function AuthButtons({ onClick }: Props) {
          return response.json()
       },
       onSuccess: () => {
+         // 로그아웃 성공 시 즉시 사용자 상태를 null로 설정
+         setUser(null)
          onClick?.()
-         window.location.href = '/'
+
+         // 페이지 새로고침 없이 홈으로 이동만
+         router.push('/')
       },
       onError: (error) => {
          console.error('클라이언트 로그아웃 에러:', error)
          alert('로그아웃 처리 중 오류가 발생했습니다.')
+         setIsLoggingOut(false)
       },
    })
 
@@ -99,6 +129,16 @@ export default function AuthButtons({ onClick }: Props) {
    ]
 
    const buttonsToRender = isAuthenticated ? authButtons : guestButtons
+
+   // 로그아웃 중이거나 로딩 중일 때 처리
+   if (loading && !isLoggingOut) {
+      return (
+         <div className="flex gap-2">
+            <div className="w-16 h-8 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+            <div className="w-20 h-8 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+         </div>
+      )
+   }
 
    return (
       <section className="flex items-end gap-5">

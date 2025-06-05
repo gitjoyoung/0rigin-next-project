@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import SearchBox from '../search-box'
-import { HEADER_NAV_LIST } from './\bconstant/header-menu'
 import AuthButtons from './auth-buttons'
+import { HEADER_NAV_LIST } from './constant/header-menu'
 import MobileSideMenu from './mobile-side-menu'
 import ThemeToggle from './theme-toggle'
 

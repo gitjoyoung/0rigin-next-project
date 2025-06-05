@@ -11,8 +11,8 @@ import {
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
-import { HEADER_NAV_LIST } from './\bconstant/header-menu'
 import AuthButtons from './auth-buttons'
+import { HEADER_NAV_LIST } from './constant/header-menu'
 
 export default function MobileSideMenu() {
    const [isOpen, setIsOpen] = useState(false)

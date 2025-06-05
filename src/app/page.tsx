@@ -2,7 +2,7 @@ import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-clie
 import AdSenseBanner from '@/widgets/adsense-banner'
 import Banner from '@/widgets/banner'
 import Link from 'next/link'
-import Post from './(content)/board/ui/post'
+import Post from './(content)/board/[category]/ui/post'
 
 export const metadata = {
    title: {
