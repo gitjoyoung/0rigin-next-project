@@ -31,10 +31,12 @@ export default async function Create({ params }: IParams) {
       .eq('is_active', true)
       .single()
 
+   const { data: userData } = await supabase.auth.getUser()
+   const { user } = userData
    // 카테고리가 존재하지 않으면 게시판 홈으로 리다이렉트
    if (error || !categoryData) {
       redirect('/board/all')
    }
 
-   return <BoardPostForm category={category} />
+   return <BoardPostForm category={category} user={user} />
 }

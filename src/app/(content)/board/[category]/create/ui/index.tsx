@@ -1,6 +1,5 @@
 'use client'
 
-import { getUser } from '@/entities/auth/api/get-user'
 import { useToast } from '@/shared/hooks/use-toast'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
@@ -33,9 +32,11 @@ const supabase = SupabaseBrowserClient()
 
 interface Props {
    category: string
+   user: any
 }
 
-export default function BoardPostForm({ category }: Props) {
+export default function BoardPostForm({ category, user }: Props) {
+   console.log(user)
    const router = useRouter()
    const queryClient = useQueryClient()
    const { toast } = useToast()
@@ -57,12 +58,10 @@ export default function BoardPostForm({ category }: Props) {
 
    // 사용자 인증 데이터 가져오기
    const { data: userData } = useQuery({
-      queryKey: ['user'],
+      queryKey: ['user', user.id],
       queryFn: async () => {
-         const user = await getUser()
-
          const { data, error } = await supabase
-            .from('users')
+            .from('profile')
             .select('*')
             .eq('id', user.id)
             .single()

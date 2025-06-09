@@ -34,8 +34,8 @@ export default function MyPage() {
    }
 
    return (
-      <section className="flex w-full min-h-[200vh]">
-         <div className="relative h-full hidden sm:flex sm:w-[250px]">
+      <section className="flex w-full min-h-[200px]">
+         <div className=" h-full">
             <MypageMenu
                selectedMenu={selectedMenu}
                onMenuClick={handleMenuClick}
