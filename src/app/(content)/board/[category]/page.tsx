@@ -1,8 +1,12 @@
 import { ROUTE_BOARD } from '@/shared/constants/pathname'
-import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
-import { notFound, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
+import { getCategoryInfo } from '@/entities/auth/api/get-category-info'
+import {
+   getPostInfo,
+   getTotalPostCount,
+} from '@/entities/auth/api/get-post-info'
 import BoardFooter from './ui/board-footer'
 import BoardHeader from './ui/board-header'
 import CustomPagination from './ui/pagination/custom-pagination'
@@ -38,8 +42,6 @@ export default async function Page({ params, searchParams }: IParams) {
    const currentPage: number = Number(page) || 1
    const POST_PER_PAGE = 20
 
-   const supabase = await SupabaseServerClient()
-
    // 카테고리 정보 조회
    let categoryInfo = {
       slug: 'all',
@@ -47,50 +49,29 @@ export default async function Page({ params, searchParams }: IParams) {
       description: '최신 게시물을 확인해보세요.',
    }
    if (category !== 'all') {
-      const { data: categoryData, error: categoryError } = await supabase
-         .from('categories')
-         .select('*')
-         .eq('slug', category)
-         .single()
-
-      // 카테고리가 존재하지 않으면 all로 리다이렉트
-      if (categoryError || !categoryData) {
-         redirect('/board/all')
-      }
-
+      const categoryData = await getCategoryInfo(category)
       categoryInfo = categoryData
    }
 
-   // 카테고리별 쿼리 구성
-   let query = supabase
-      .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-   // 'all'이 아닌 경우에만 카테고리 필터 적용
-   if (category !== 'all') {
-      query = query.eq('category', category)
-   }
-
-   const { data: posts, error } = await query.range(
-      (currentPage - 1) * POST_PER_PAGE,
-      currentPage * POST_PER_PAGE - 1,
+   const { data: posts, error } = await getPostInfo(
+      category,
+      currentPage,
+      POST_PER_PAGE,
    )
 
-   if (error) {
-      console.error('게시물 조회 중 오류 발생:', error)
-      return notFound()
-   }
-
+   const { count } = await getTotalPostCount()
    return (
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-2 px-1">
          <BoardHeader category={categoryInfo} />
          <Post postData={posts || []} />
          <BoardFooter />
-         <CustomPagination
-            currentPage={currentPage}
-            baseRoute={`/board/${category}`}
-         />
+         <div className=" my-4">
+            <CustomPagination
+               count={count || 0}
+               currentPage={currentPage}
+               baseRoute={`/board/${category}`}
+            />
+         </div>
       </section>
    )
 }

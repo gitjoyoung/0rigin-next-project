@@ -21,11 +21,13 @@ interface Props {
 export default function Post({ postData }: Props) {
    const page = useSearchParams().get('page') || 1
 
-   if (!postData) return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
+   if (!postData || !Array.isArray(postData) || postData.length === 0) {
+      return <p className="text-xl">무, 공, 허무 그리고 아포리아</p>
+   }
    return (
       <Table className="w-full font-dos">
-         <TableHeader className="border-y [&_th]:!h-[32px] [&_th]:max-sm:!h-[24px]">
-            <TableRow className="text-xs ">
+         <TableHeader className="border-y">
+            <TableRow className="text-xs [&_th]:!h-[24px] [&_th]:max-sm:!h-[24px]">
                <TableHead className="text-center w-[5%] min-w-[40px]">
                   번호
                </TableHead>
@@ -51,18 +53,18 @@ export default function Post({ postData }: Props) {
                      key={item.id}
                      className="hover:bg-gray-200 dark:hover:bg-gray-800 text-sm max-sm:text-xs h-[32px] max-sm:h-[24px]"
                   >
-                     <TableCell className="w-[5%] min-w-[40px] text-center">
-                        {item.id}
+                     <TableCell className="w-[5%] min-w-[40px] text-center ">
+                        {item.id || '-'}
                      </TableCell>
                      <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
                         <Link
-                           href={`/board/${item.category}/${item.id}?page=${page}`}
+                           href={`/board/${item.category || 'general'}/${item.id || 0}?page=${page}`}
                            className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden"
                         >
                            <h2 className="truncate font-medium w-full">
-                              {item.title}
+                              {item.title || '제목 없음'}
                            </h2>
-                           {item.comments > 0 && (
+                           {item.comments && item.comments > 0 && (
                               <span className="text-muted-foreground whitespace-nowrap flex-shrink-0">
                                  [{item.comments}]
                               </span>
@@ -70,17 +72,17 @@ export default function Post({ postData }: Props) {
                         </Link>
                      </TableCell>
 
-                     <TableCell className="w-[5%] min-w-[60px] text-center text-xs hidden sm:table-cell">
-                        {item.nickname || '닉네임'}
+                     <TableCell className="max-w-[24px] min-w-[60px] text-left text-xs hidden sm:table-cell truncate">
+                        {item.nickname || '익명'}
                      </TableCell>
                      <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">
                         {formatDate(item.created_at)}
                      </TableCell>
                      <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
-                        {formatValue(item.view_count)}
+                        {formatValue(item.view_count || 0)}
                      </TableCell>
                      <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
-                        {formatValue(item.likes)}
+                        {formatValue(item.likes || 0)}
                      </TableCell>
                   </TableRow>
                )
