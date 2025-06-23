@@ -1,15 +1,24 @@
-export const formatNumberToString = (value: any): string => {
-   // 값을 숫자로 변환 (숫자, 숫자형 문자열 처리)
-   const num = Number(value)
+// 기본 Intl.NumberFormat 사용 (브라우저와 Node.js 모두 지원)
+const formatter = new Intl.NumberFormat('en-US', {
+   notation: 'compact',
+   compactDisplay: 'short',
+   maximumFractionDigits: 2,
+   minimumFractionDigits: 0,
+   useGrouping: false,
+})
 
-   // 유효하지 않은 숫자면 0 반환
+export const formatNumberToString = (value: any): string => {
+   const num = Number(value)
    if (isNaN(num) || num === 0) return '0'
 
-   // 숫자 크기에 따른 포맷팅
-   if (num >= 1e9) return `${(num / 1e9).toFixed(1)}B`
-   if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`
-   if (num >= 1000) return `${(num / 1000).toFixed(1)}K`
+   const isNegative = num < 0
+   const abs = Math.abs(num)
 
-   // 1000 미만 숫자
-   return num.toLocaleString('ko-KR')
+   // 소수점 절삭: 둘째 자리까지 유지
+   const truncated = Math.floor(abs * 100) / 100
+
+   // compact notation 적용
+   const formatted = formatter.format(truncated)
+
+   return isNegative ? `-${formatted}` : formatted
 }
