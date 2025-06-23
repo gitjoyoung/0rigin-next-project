@@ -1,0 +1,41 @@
+{
+   "name": "0rigin 커뮤니티",
+   "short_name": "0rigin",
+   "description": "0rigin 커뮤니티",
+   "start_url": "/",
+   "display": "standalone",
+   "background_color": "#ffffff",
+   "theme_color": "#000000",
+   "orientation": "portrait-primary",
+   "scope": "/",
+   "lang": "ko",
+   "icons": [
+      {
+         "src": "/images/introduce/logo.png",
+         "sizes": "192x192",
+         "type": "image/png",
+         "purpose": "any maskable"
+      },
+      {
+         "src": "/images/introduce/logo.png",
+         "sizes": "512x512",
+         "type": "image/png",
+         "purpose": "any maskable"
+      }
+   ],
+   "categories": ["education", "social", "utilities"],
+   "screenshots": [
+      {
+         "src": "/preview/main.png",
+         "sizes": "1280x720",
+         "type": "image/png",
+         "form_factor": "wide"
+      },
+      {
+         "src": "/preview/main.png",
+         "sizes": "750x1334",
+         "type": "image/png",
+         "form_factor": "narrow"
+      }
+   ]
+}

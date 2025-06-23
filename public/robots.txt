@@ -1,0 +1,64 @@
+User-agent: *
+Allow: /
+
+# 관리자 및 인증 관련 페이지 차단
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /login
+Disallow: /sign/
+Disallow: /reset/
+Disallow: /forget/
+
+# 검색 결과 페이지 차단 (무한 페이지 생성 방지)
+Disallow: /search/
+Disallow: *?search=*
+Disallow: *?q=*
+Disallow: *?query=*
+
+# 필터링된 결과 페이지 차단
+Disallow: *?category=*
+Disallow: *?page=*
+Disallow: *?sort=*
+Disallow: *?filter=*
+
+# 세션 및 임시 페이지 차단
+Disallow: *?session=*
+Disallow: *?token=*
+Disallow: *?auth=*
+Disallow: /callback/
+
+# 미리보기 및 임시 페이지 차단
+Disallow: *?preview=*
+Disallow: *?draft=*
+Disallow: /preview/
+
+# 에러 페이지 차단
+Disallow: /404
+Disallow: /500
+Disallow: /error
+
+# 개발 및 테스트 페이지 차단
+Disallow: /dev/
+Disallow: /test/
+Disallow: /staging/
+
+# 파일 확장자 차단 (필요한 경우)
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+
+# 특정 디렉토리 허용
+Allow: /board/
+Allow: /quiz/
+Allow: /utils/
+Allow: /introduce/
+Allow: /contact/
+Allow: /help/
+Allow: /inquiry/
+
+# 사이트맵 위치 지정
+Sitemap: https://0rigin.space/sitemap.xml
+
+# 크롤링 지연 설정 (선택사항)
+Crawl-delay: 1 

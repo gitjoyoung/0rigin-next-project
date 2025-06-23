@@ -3,6 +3,7 @@ import { Toaster } from '@/shared/shadcn/ui/toaster'
 import Footer from '@/widgets/footer'
 import Header from '@/widgets/header'
 import Ticker from '@/widgets/ticker'
+import type { Metadata } from 'next'
 import { Noto_Sans_KR } from 'next/font/google'
 import { Suspense } from 'react'
 import './globals.css'
@@ -13,6 +14,75 @@ const notoSansKR = Noto_Sans_KR({
    subsets: ['latin'],
    display: 'swap',
 })
+
+export const metadata: Metadata = {
+   title: {
+      template: '%s | 0rigin',
+      default: '0rigin - 무, 공, 허무 그리고 아포리아',
+   },
+   description:
+      '0rigin은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
+   keywords: [
+      '철학',
+      '기술',
+      '과학',
+      '수학',
+      '커뮤니티',
+      '토론',
+      '퀴즈',
+      '0rigin',
+   ],
+   authors: [{ name: '0rigin Team' }],
+   creator: '0rigin',
+   publisher: '0rigin',
+   formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+   },
+   metadataBase: new URL('https://0rigin.space'),
+   alternates: {
+      canonical: '/',
+   },
+   openGraph: {
+      type: 'website',
+      locale: 'ko_KR',
+      url: 'https://0rigin.space',
+      title: '0rigin - 무, 공, 허무 그리고 아포리아',
+      description:
+         '0rigin은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
+      siteName: '0rigin',
+      images: [
+         {
+            url: '/images/introduce/logo.png',
+            width: 1200,
+            height: 630,
+            alt: '0rigin 로고',
+         },
+      ],
+   },
+   twitter: {
+      card: 'summary_large_image',
+      title: '0rigin - 무, 공, 허무 그리고 아포리아',
+      description:
+         '0rigin은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
+      images: ['/images/introduce/logo.png'],
+   },
+   robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+         index: true,
+         follow: true,
+         'max-video-preview': -1,
+         'max-image-preview': 'large',
+         'max-snippet': -1,
+      },
+   },
+   verification: {
+      google: 'your-google-verification-code',
+   },
+}
 
 export default function RootLayout({
    children,
@@ -25,6 +95,15 @@ export default function RootLayout({
          suppressHydrationWarning
          className={`${notoSansKR.className}`}
       >
+         <head>
+            <link rel="icon" href="/favicon.ico" />
+            <link rel="apple-touch-icon" href="/images/introduce/logo.png" />
+            <link rel="manifest" href="/manifest.json" />
+            <meta
+               name="naver-site-verification"
+               content="f79a49708c95844fd87df7edf84526d803d6f736"
+            />
+         </head>
          <body>
             <AppProviders>
                <div id="modal-root" />
