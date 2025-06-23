@@ -4,14 +4,15 @@
    "private": true,
    "scripts": {
       "dev": "node updatePath.js && NODE_OPTIONS='--inspect' next dev",
-      "build": "node updatePath.js && next build",
+      "build": "node updatePath.js && next build && next-sitemap",
       "start": "next start",
       "lint-staged": "lint-staged",
       "prepare": "husky",
       "format": "prettier --cache --write .",
       "lint": "next lint",
       "typecheck": "tsc --noEmit",
-      "test": "jest"
+      "test": "jest",
+      "postbuild": "next-sitemap"
    },
    "dependencies": {
       "@auth/supabase-adapter": "^1.8.0",
@@ -59,6 +60,7 @@
       "nanoid": "^5.0.9",
       "negotiator": "^1.0.0",
       "next": "15.2.4",
+      "next-sitemap": "^4.2.3",
       "next-themes": "^0.4.4",
       "openai": "^4.77.0",
       "path-to-regexp": "^8.2.0",

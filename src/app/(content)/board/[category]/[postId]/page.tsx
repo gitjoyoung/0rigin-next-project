@@ -9,9 +9,9 @@ import BreadcrumbWidget from '@/widgets/breadcrumb'
 import BoardFooter from '../ui/board-footer'
 import BoardHeader from '../ui/board-header'
 import Comment from '../ui/comment'
-import PostLike from '../ui/like/post-like'
 import Post from '../ui/post'
-import PostView from '../ui/view'
+import PostLike from '../ui/post-like/post-like'
+import PostView from '../ui/post-view/index'
 
 interface IParams {
    params: {
