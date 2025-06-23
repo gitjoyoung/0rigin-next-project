@@ -1,5 +1,5 @@
 'use client'
-import { ROUTE_FORGET_PASSWORD, ROUTE_SIGN } from '@/shared/constants/pathname'
+import { ROUTE_FORGET_PASSWORD, ROUTE_SIGN } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,

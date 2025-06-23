@@ -1,4 +1,4 @@
-import { ROUTE_LOGIN, ROUTE_SIGN_TERM } from '@/shared/constants/pathname'
+import { ROUTE_LOGIN, ROUTE_SIGN_TERM } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 const SIGN_UP_TERMS = {

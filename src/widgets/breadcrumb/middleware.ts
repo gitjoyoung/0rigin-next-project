@@ -1,15 +1,15 @@
-import { nanoid } from 'nanoid'
-import { NextRequest, NextResponse, userAgent } from 'next/server'
-import { match } from 'path-to-regexp'
 import {
    ROUTE_LOGIN,
    ROUTE_MY_PAGE,
    ROUTE_RESET_PASSWORD,
    ROUTE_SIGN,
    ROUTE_SIGN_TERM,
-} from './constants/pathname'
-import { checkSignupCompleteServer } from './entities/auth/api/google'
-import { updateSession } from './shared/lib/supabase/supabase-session'
+} from '@/constants/pathname'
+import { checkSignupCompleteServer } from '@/entities/auth/api/google'
+import { updateSession } from '@/shared/lib/supabase/supabase-session'
+import { nanoid } from 'nanoid'
+import { NextRequest, NextResponse, userAgent } from 'next/server'
+import { match } from 'path-to-regexp'
 
 // 상수 정의
 const PROTECTED_ROUTES = [ROUTE_MY_PAGE]

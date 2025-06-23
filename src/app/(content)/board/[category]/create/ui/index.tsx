@@ -1,7 +1,5 @@
 'use client'
 
-import { useToast } from '@/shared/hooks/use-toast'
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -12,173 +10,56 @@ import {
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
-import { cn } from '@/shared/utils/cn'
-import { compressImage } from '@/shared/utils/compress-image'
-import { markdownToSanitizedHTML } from '@/shared/utils/validators/board/formatSanized'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import dayjs from 'dayjs'
-import { Eye, EyeOff, Upload } from 'lucide-react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { boardSchema, type BoardFormType } from '../types/board-schema'
+import { Eye, EyeOff } from 'lucide-react'
+import { useBoardForm, useBoardPost } from '../hook'
 import LoadingModal from './loading-modal'
 import MarkDownEditor from './mark-down-editor'
 import MarkDownTip from './markdown-tip'
-
-const supabase = SupabaseBrowserClient()
+import ThumbnailUpload from './thumbnail-upload'
 
 interface Props {
    category: string
-   user: any
+   userProfile?: any
 }
 
-export default function BoardPostForm({ category, user }: Props) {
-   console.log(user)
-   const router = useRouter()
-   const queryClient = useQueryClient()
-   const { toast } = useToast()
-   const [showPassword, setShowPassword] = useState(false)
-   const [uploading, setUploading] = useState(false)
-   const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-   const form = useForm<BoardFormType>({
-      resolver: zodResolver(boardSchema),
-      defaultValues: {
-         nickname: '',
-         password: '',
-         title: '',
-         content: '',
-         summary: '',
-         thumbnail: '/images/compressed_newYear.image_webp',
-      },
+export default function BoardPostForm({ category, userProfile }: Props) {
+   // 게시글 작성 로직 훅
+   const {
+      userData,
+      uploading,
+      isSubmittingPost,
+      uploadImageMutation,
+      onSubmit,
+   } = useBoardPost({
+      category,
+      userProfile,
    })
 
-   // 사용자 인증 데이터 가져오기
-   const { data: userData } = useQuery({
-      queryKey: ['user', user.id],
-      queryFn: async () => {
-         const { data, error } = await supabase
-            .from('profile')
-            .select('*')
-            .eq('id', user.id)
-            .single()
-
-         if (error) throw error
-         return { session: user, user: data }
-      },
+   // 폼 상태 관리 훅
+   const {
+      form,
+      showPassword,
+      setShowPassword,
+      isAuthenticated,
+      setThumbnail,
+   } = useBoardForm({
+      userData: userProfile ? { user: userProfile } : null,
    })
 
-   // useEffect를 유지하되, 의존성을 명확히 하고 최적화
-   useEffect(() => {
-      if (!userData?.user) return // 데이터가 없으면 일찍 반환
-
-      setIsAuthenticated(true)
-      const nickname =
-         userData.user.nickname || 'holder_' + userData.session.id.slice(0, 4)
-      const password = userData.session.id.slice(0, 4)
-
-      // 한 번에 여러 필드 설정
-      form.setValue('nickname', nickname)
-      form.setValue('password', password)
-   }, [userData, form.setValue]) // form 전체가 아닌 form.setValue만 의존성으로 사용
-
-   // 이미지 업로드 뮤테이션
-   const uploadImageMutation = useMutation({
-      mutationFn: async (file: File) => {
-         const result = await compressImage(file, {
-            fileType: 'image/webp',
-            maxSizeMB: 0.1,
-            maxWidthOrHeight: 1920,
-         })
-
-         if (result.status === 'error') throw new Error('이미지 압축 실패')
-
-         const timestamp = dayjs().format('YYYYMMDDHHmmss')
-         const fileExtension = file.name.split('.').pop()?.toLowerCase()
-         const newFileName = `public/thumbnail_${timestamp}.${fileExtension}`
-
-         const { data, error } = await supabase.storage
-            .from('images')
-            .upload(newFileName, result.file, {
-               cacheControl: '3600',
-               upsert: false,
-               contentType: result.file.type,
-            })
-
-         if (error) throw error
-
-         const {
-            data: { publicUrl },
-         } = supabase.storage.from('images').getPublicUrl(data.path)
-
-         return publicUrl
-      },
-      onSuccess: (publicUrl) => {
-         form.setValue('thumbnail', publicUrl)
-         setUploading(false)
-      },
-      onError: () => {
-         alert('이미지 업로드에 실패했습니다.')
-         setUploading(false)
-      },
-   })
-
+   // 이미지 업로드 처리
    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault()
       const file = e.target.files?.[0]
       if (!file) return
-      setUploading(true)
-      uploadImageMutation.mutate(file)
+
+      uploadImageMutation.mutate(file, {
+         onSuccess: (publicUrl) => {
+            setThumbnail(publicUrl)
+         },
+      })
    }
 
-   // 게시글 작성 뮤테이션
-   const { mutate: submitPost, isPending: isSubmittingPost } = useMutation({
-      mutationFn: async (data: BoardFormType) => {
-         const markdownContent = data.content
-         const htmlContent = await markdownToSanitizedHTML(markdownContent)
-
-         const { data: postData, error } = await supabase.from('posts').insert({
-            nickname: data.nickname,
-            password: data.password,
-            title: data.title,
-            summary: data.summary,
-            thumbnail: data.thumbnail,
-            content: {
-               markdown: markdownContent,
-               html: htmlContent,
-            },
-            ...(userData?.session?.id && { author_id: userData.session.id }),
-            category: category,
-         })
-
-         if (error) throw error
-         return postData
-      },
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: ['posts'] })
-         toast({
-            title: '성공',
-            description: '게시글이 성공적으로 작성되었습니다.',
-            duration: 3000,
-         })
-         router.push(`/board/${category}`)
-      },
-      onError: (error) => {
-         toast({
-            variant: 'destructive',
-            title: '오류',
-            description: `글쓰기 오류: ${error.message}`,
-            duration: 3000,
-         })
-      },
-   })
-
-   const onSubmit = (data: BoardFormType) => {
-      submitPost(data)
-   }
+   const thumbnailUrl = form.watch('thumbnail')
 
    return (
       <section className="w-full py-2">
@@ -202,6 +83,11 @@ export default function BoardPostForm({ category, user }: Props) {
                                     placeholder="닉네임"
                                     disabled={isAuthenticated}
                                     {...field}
+                                    value={
+                                       isAuthenticated
+                                          ? userProfile?.nickname || '익명'
+                                          : field.value
+                                    }
                                  />
                               </FormControl>
                               <FormMessage />
@@ -222,7 +108,6 @@ export default function BoardPostForm({ category, user }: Props) {
                                              showPassword ? 'text' : 'password'
                                           }
                                           placeholder="비밀번호"
-                                          disabled={isAuthenticated}
                                           {...field}
                                        />
                                        <Button
@@ -233,7 +118,6 @@ export default function BoardPostForm({ category, user }: Props) {
                                           onClick={() =>
                                              setShowPassword(!showPassword)
                                           }
-                                          disabled={isAuthenticated}
                                        >
                                           {showPassword ? (
                                              <EyeOff className="h-4 w-4" />
@@ -249,25 +133,25 @@ export default function BoardPostForm({ category, user }: Props) {
                         />
                      )}
                   </div>
-
-                  <FormField
-                     control={form.control}
-                     name="title"
-                     render={({ field }) => (
-                        <FormItem>
-                           <FormControl>
-                              <Input
-                                 className="text-sm sm:text-base"
-                                 placeholder="제목을 입력해주세요"
-                                 {...field}
-                                 disabled={isSubmittingPost}
-                              />
-                           </FormControl>
-                           <FormMessage />
-                        </FormItem>
-                     )}
-                  />
                </div>
+
+               <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                     <FormItem>
+                        <FormControl>
+                           <Input
+                              className="text-sm sm:text-base"
+                              placeholder="제목을 입력해주세요"
+                              {...field}
+                              disabled={isSubmittingPost}
+                           />
+                        </FormControl>
+                        <FormMessage />
+                     </FormItem>
+                  )}
+               />
 
                {/* 요약 입력 필드 */}
                <div className="flex justify-between gap-2 flex-wrap flex-1 w-full min-h-[80px]">
@@ -294,45 +178,17 @@ export default function BoardPostForm({ category, user }: Props) {
                            className="font-bold text-xl overflow-hidden text-ellipsis line-clamp-2 
                            whitespace-pre-wrap text-[##3d00b3] dark:text-[#7EAAFF] min-h-[20px] break-words"
                         >
-                           {form.watch('title') || '제목을 미리보기'}
+                           {form.watch('title') || '제목 미리보기'}
                         </h1>
                         <p className="text-sm overflow-hidden text-ellipsis line-clamp-3 whitespace-pre-wrap text-[#767676] dark:text-[#CDCDCD] break-words">
                            {form.watch('summary') || '요약내용 미리보기'}
                         </p>
                      </div>
-                     <div className="relative group w-[75px] h-[75px] flex-shrink-0">
-                        <Image
-                           src={form.watch('thumbnail')}
-                           alt="thumbnail"
-                           fill
-                           sizes="75px"
-                           className="rounded-md object-cover"
-                        />
-                        <label
-                           htmlFor="thumbnail-upload"
-                           className={cn(
-                              `absolute inset-0 flex items-center justify-center rounded-md cursor-pointer transition-opacity duration-200 ${
-                                 uploading
-                                    ? 'opacity-100 bg-black/30'
-                                    : 'opacity-0 group-hover:opacity-100 group-hover:bg-black/30'
-                              }`,
-                           )}
-                        >
-                           {uploading ? (
-                              <div className="w-6 h-6 border-2 border-slate-100 border-t-transparent rounded-full animate-spin" />
-                           ) : (
-                              <Upload className="w-6 h-6 text-slate-100" />
-                           )}
-                        </label>
-                        <input
-                           id="thumbnail-upload"
-                           type="file"
-                           accept="image/*"
-                           className="hidden"
-                           onChange={handleImageUpload}
-                           disabled={uploading}
-                        />
-                     </div>
+                     <ThumbnailUpload
+                        thumbnailUrl={thumbnailUrl}
+                        uploading={uploading}
+                        onImageUpload={handleImageUpload}
+                     />
                   </div>
                </div>
                {/* 마크다운 사용법 */}
@@ -349,7 +205,7 @@ export default function BoardPostForm({ category, user }: Props) {
                      type="button"
                      size="lg"
                      className="bg-gray-400 hover:bg-gray-500"
-                     onClick={() => router.back()}
+                     onClick={() => window.history.back()}
                      disabled={isSubmittingPost}
                   >
                      취소

@@ -16,19 +16,22 @@ export default function MarkDownTip() {
       <Accordion
          type="single"
          collapsible
-         className="w-full bg-transparent dark:bg-slate-50 border dark:border-slate-200 rounded-sm "
+         className="w-full bg-transparent border  rounded-sm  "
       >
-         <AccordionItem value="item-1" className="border-none">
-            <AccordionTrigger className="h-5 hover:no-underline">
-               <div className="flex gap-2 items-center text-slate-700">
-                  <Icons.fileQuestion size={20} className="text-slate-500" />
-                  <h1 className="text-base font-medium">
+         <AccordionItem value="item-1" className="border-none px-2">
+            <AccordionTrigger className="h-5 hover:no-underline ">
+               <div className="flex gap-2 items-center text-slate-700  ">
+                  <Icons.fileQuestion
+                     size={20}
+                     className="text-slate-700 dark:text-white"
+                  />
+                  <h1 className="text-base font-medium text-slate-700 dark:text-white">
                      {ACCORDION_DATA.title}
                   </h1>
                </div>
             </AccordionTrigger>
             <AccordionContent>
-               <p className="font-medium leading-7 break-words whitespace-pre-line px-4 py-2 text-slate-600">
+               <p className="font-medium leading-7 break-words whitespace-pre-line px-4 py-2 text-slate-600 dark:text-white">
                   {ACCORDION_DATA.content}
                </p>
             </AccordionContent>

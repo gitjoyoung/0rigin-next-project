@@ -18,7 +18,9 @@ export default function BannerList({ postData, selectedPost }: Props) {
    return (
       <Card className="w-full p-0 rounded-none">
          <CardHeader className="p-2 pb-1">
-            <CardTitle className="text-base">베스트 게시글 TOP 5</CardTitle>
+            <CardTitle className="text-base flex items-center gap-1">
+               👍 베스트 게시글
+            </CardTitle>
          </CardHeader>
          <CardContent className="p-2 pt-0">
             <div className="space-y-1">

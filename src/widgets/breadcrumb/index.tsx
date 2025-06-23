@@ -9,7 +9,7 @@ import {
    BreadcrumbSeparator,
 } from '@/shared/shadcn/ui/breadcrumb'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 // 경로명을 한국어로 변환하는 매핑 객체
 const pathNameMap: Record<string, string> = {
@@ -20,7 +20,19 @@ const pathNameMap: Record<string, string> = {
 }
 
 export default function BreadcrumbWidget() {
-   const pathname = usePathname()
+   const [pathname, setPathname] = useState('')
+
+   useEffect(() => {
+      setPathname(window.location.pathname)
+
+      // 경로 변경 감지를 위한 이벤트 리스너
+      const handleRouteChange = () => {
+         setPathname(window.location.pathname)
+      }
+
+      window.addEventListener('popstate', handleRouteChange)
+      return () => window.removeEventListener('popstate', handleRouteChange)
+   }, [])
 
    // board로 시작하지 않는 경로면 breadcrumb을 표시하지 않음
    if (!pathname.startsWith('/board')) {

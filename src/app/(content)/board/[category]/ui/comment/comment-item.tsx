@@ -62,8 +62,8 @@ export default function CommentItem({
    }
 
    return (
-      <div className="flex gap-1 py-2 ">
-         <Avatar className={cn('w-10 h-10 my-2 ')}>
+      <div className="flex gap-3 py-3 ">
+         <Avatar className={cn('w-10 h-10 my-1 ')}>
             <AvatarImage
                src="https://github.com/shadcn.png"
                alt="shadcn"
@@ -76,7 +76,7 @@ export default function CommentItem({
             {/* 댓글 헤더 */}
             <div className="flex justify-between items-center py-1">
                {/* 댓글 작성자 정보 */}
-               <div className="flex gap-1 items-center px-1">
+               <div className="flex  gap-3 items-center px-1">
                   <p className="whitespace-nowrap text-left truncate font-semibold text-sm">
                      {nickname}
                   </p>
@@ -134,7 +134,7 @@ export default function CommentItem({
                </div>
             </div>
             {/* 댓글 내용 */}
-            <div className="pt-0.5">
+            <div>
                {!isEditing ? (
                   <p className="text-sm break-words break-all min-w-60 whitespace-pre-wrap px-1">
                      {content}

@@ -21,7 +21,7 @@ export default function LikeButton({ postId }: Props) {
             disabled={isLoading}
             className={cn(
                'flex items-center h-auto py-2 transition-all duration-300 rounded-full font-dos',
-               'hover:bg-pink-50/50 hover:shadow-lg hover:shadow-pink-100/50 hover:border-pink-300',
+               'hover:bg-pink-50/50 hover:shadow-pink-100/50 hover:border-pink-300',
                hasLiked && 'border-pink-300 text-pink-600',
             )}
          >

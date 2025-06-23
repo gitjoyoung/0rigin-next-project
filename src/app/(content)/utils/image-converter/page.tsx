@@ -1,6 +1,7 @@
 import { Icons } from '@/shared/ui/icons'
 import { Metadata } from 'next'
 import Link from 'next/link'
+import { utilList } from '../ui/util-list'
 import ImageConverter from './ui/image-converter'
 
 export const metadata: Metadata = {
@@ -22,9 +23,14 @@ export default function Page() {
             >
                <Icons.arrowLeft className="w-8 h-8" />
             </Link>
-            <div className="flex items-center gap-2">
-               <Icons.imageUpload className="w-6 h-6" />
-               <h1 className="text-xl font-bold">이미지 변환 툴</h1>
+            <div className="flex items-center gap-2 flex-col">
+               <div className="flex items-center gap-2">
+                  <Icons.imageUpload className="w-6 h-6" />
+                  <h1 className="text-xl font-bold">{utilList[0].name}</h1>
+               </div>
+               <p className="text-sm text-muted-foreground">
+                  {utilList[0].description}
+               </p>
             </div>
          </div>
          <ImageConverter />

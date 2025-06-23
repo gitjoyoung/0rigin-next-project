@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import SearchBox from '../search-box'
 import AuthButtons from './auth-buttons'
-import { HEADER_NAV_LIST } from './constant/header-menu'
 import MobileSideMenu from './mobile-side-menu'
 import ThemeToggle from './theme-toggle'
+import Navigation from './ui/navigation'
 
 export default async function Header() {
    return (
@@ -19,17 +19,7 @@ export default async function Header() {
             </Link>
 
             {/* 데스크톱 네비게이션 */}
-            <nav className="ml-4 items-end text-base hidden md:flex gap-4">
-               {HEADER_NAV_LIST.map(({ id, url, title }) => (
-                  <Link
-                     className="hover:font-semibold text-md"
-                     key={id}
-                     href={url}
-                  >
-                     {title}{' '}
-                  </Link>
-               ))}
-            </nav>
+            <Navigation />
          </div>
          {/* 모바일 네비게이션  클라이언트 컴포넌트 */}
          <div className="flex items-center gap-4">

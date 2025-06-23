@@ -1,4 +1,4 @@
-import { ROUTE_BOARD, ROUTE_BOARD_CREATE } from '@/shared/constants/pathname'
+import { ROUTE_BOARD } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 
@@ -15,7 +15,7 @@ export default function BoardFooter() {
                {FOOTER_DATA.list}
             </Button>
          </Link>
-         <Link href={ROUTE_BOARD_CREATE}>
+         <Link href="#">
             <Button variant="default" className="p-4" size="default">
                {FOOTER_DATA.create}
             </Button>

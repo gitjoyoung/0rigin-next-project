@@ -21,7 +21,7 @@ const fetchComments = async (postId: string) => {
    return commentsData
 }
 
-export default function CommentList({ postId }: Props) {
+export default function Comment({ postId }: Props) {
    const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
       null,
    )

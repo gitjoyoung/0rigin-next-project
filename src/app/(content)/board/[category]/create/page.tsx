@@ -1,6 +1,5 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
-import { Metadata } from 'next'
-import { redirect } from 'next/navigation'
+
 import BoardPostForm from './ui'
 
 export const metadata: Metadata = {
@@ -30,13 +29,27 @@ export default async function Create({ params }: IParams) {
       .eq('slug', category)
       .eq('is_active', true)
       .single()
-
-   const { data: userData } = await supabase.auth.getUser()
-   const { user } = userData
-   // 카테고리가 존재하지 않으면 게시판 홈으로 리다이렉트
    if (error || !categoryData) {
       redirect('/board/all')
    }
+   const { data: userData } = await supabase.auth.getUser()
+   const { user } = userData
 
-   return <BoardPostForm category={category} user={user} />
+   let userProfile = null
+   if (user?.id) {
+      const { data: profile } = await supabase
+         .from('profile')
+         .select('*')
+         .eq('id', user.id)
+         .single()
+      userProfile = profile
+   }
+
+   return (
+      <BoardPostForm
+         category={category}
+         user={user}
+         userProfile={userProfile}
+      />
+   )
 }

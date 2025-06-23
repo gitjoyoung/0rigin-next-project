@@ -1,17 +1,12 @@
 'use client'
 
+import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
 import { getUser } from '@/entities/auth/api/get-user'
-import {
-   ROUTE_LOGIN,
-   ROUTE_MY_PAGE,
-   ROUTE_SIGN,
-} from '@/shared/constants/pathname'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
 import type { User } from '@supabase/supabase-js'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface AuthButtonProps {
@@ -45,7 +40,6 @@ export default function AuthButtons({ onClick }: AuthButtonsProps) {
    const [user, setUser] = useState<User | null>(null)
    const [loading, setLoading] = useState(true)
    const [isLoggingOut, setIsLoggingOut] = useState(false)
-   const router = useRouter()
    const supabase = SupabaseBrowserClient()
 
    useEffect(() => {
@@ -106,7 +100,7 @@ export default function AuthButtons({ onClick }: AuthButtonsProps) {
          onClick?.()
 
          // 페이지 새로고침 없이 홈으로 이동만
-         router.push('/')
+         window.location.href = '/'
       },
       onError: (error) => {
          console.error('클라이언트 로그아웃 에러:', error)

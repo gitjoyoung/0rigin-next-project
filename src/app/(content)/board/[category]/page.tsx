@@ -1,4 +1,4 @@
-import { ROUTE_BOARD } from '@/shared/constants/pathname'
+import { ROUTE_BOARD } from '@/constants/pathname'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
