@@ -1,12 +1,12 @@
 import { ROUTE_QUIZ } from '@/constants/pathname'
+import { Quiz } from '@/entities/quiz/types'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Separator } from '@/shared/shadcn/ui/separator'
 import Link from 'next/link'
-import type { QuizBoardData } from '../types/quizTypes'
 import QuizBoardList from './QuizBoardList'
 
 interface Props {
-   quizList: QuizBoardData[]
+   quizList: Quiz[]
 }
 
 export default function QuizBoard({ quizList }: Props) {

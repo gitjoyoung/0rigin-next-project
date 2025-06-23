@@ -1,5 +1,6 @@
 'use client'
 
+import { QuizQuestion } from '@/entities/quiz/types'
 import { Badge } from '@/shared/shadcn/ui/badge'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Card, CardContent, CardHeader } from '@/shared/shadcn/ui/card'
@@ -9,10 +10,26 @@ import { useEffect, useState } from 'react'
 
 interface Props {
    totalQuestions: number
-   correctAnswers: number
+   userAnswers: Record<number, string>
+   questions: QuizQuestion[]
 }
 
-export default function QuizResult({ totalQuestions, correctAnswers }: Props) {
+export default function QuizResult({
+   totalQuestions,
+   userAnswers,
+   questions,
+}: Props) {
+   // 정답 개수 계산
+   const correctAnswers = Object.entries(userAnswers).reduce(
+      (count, [index, answer]) => {
+         const question = questions[Number(index)]
+         return question?.correct_answer.toString() === answer
+            ? count + 1
+            : count
+      },
+      0,
+   )
+
    const percentage = Math.round((correctAnswers / totalQuestions) * 100)
    const incorrectAnswers = totalQuestions - correctAnswers
    const [animatedPercentage, setAnimatedPercentage] = useState(0)

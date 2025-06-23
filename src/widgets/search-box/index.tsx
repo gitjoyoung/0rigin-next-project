@@ -30,7 +30,7 @@ export default function SearchBox({ className }: { className?: string }) {
          className={cn(
             'flex items-center transition-all duration-300 overflow-ellipsis relative',
             className,
-            isFocus ? 'w-44 ' : 'w-14 border-transparent',
+            isFocus ? 'w-44 ' : 'w-24 border-transparent',
          )}
       >
          <Input
@@ -42,7 +42,7 @@ export default function SearchBox({ className }: { className?: string }) {
             maxLength={25}
             placeholder="검색"
             className={cn(
-               'h-full w-full text-sm font-bold ring-0 border-0 focus:outline-none focus:ring-0 focus:border-none border-none placeholder:text-xs shadow-none',
+               'h-full w-full text-sm font-bold ring-0 border-0 focus:outline-none focus:ring-0 focus:border-none border-none placeholder:text-xs shadow-none ',
             )}
             onFocus={() => {
                setIsFocus(true)
@@ -61,7 +61,7 @@ export default function SearchBox({ className }: { className?: string }) {
             onBlur={() => {
                setIsFocus(false)
             }}
-            className="absolute right-1"
+            className="absolute right-1 bg-background px-1 py-0.5 rounded"
          >
             <Icons.search size={16} />
          </Label>

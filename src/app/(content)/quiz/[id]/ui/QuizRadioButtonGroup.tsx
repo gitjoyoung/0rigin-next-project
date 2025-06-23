@@ -5,20 +5,18 @@ import { cn } from '@/shared/utils/cn'
 
 interface Props {
    questions: Array<{ id: string; value: string }>
-   answer: string
    selectedOption: string | null
    onSelect: (value: string) => void
 }
 
 export default function QuizRadioButtonGroup({
    questions,
-   answer,
    selectedOption,
    onSelect,
 }: Props) {
    return (
       <RadioGroup
-         className="flex-col flex gap-3 my-2 justify-center"
+         className="flex-col flex gap-3 my-2 justify-center "
          onValueChange={onSelect}
          value={selectedOption || ''}
          defaultValue=""
@@ -30,7 +28,8 @@ export default function QuizRadioButtonGroup({
                   htmlFor={id}
                   className={cn(
                      'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-                     selectedOption === id && id === answer && 'text-green-500',
+                     selectedOption === id &&
+                        'text-blue-600 dark:text-blue-400 font-semibold',
                   )}
                >
                   {value}

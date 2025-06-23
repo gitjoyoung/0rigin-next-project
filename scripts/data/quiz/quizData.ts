@@ -1,7 +1,13 @@
-import { computerScienceQuestions } from './computerScienceQuestions'
-import { philosophyQuestions } from './philosophyQuestions'
-import { programmingQuestions } from './programmingQuestions'
-import { scienceQuestions } from './scienceQuestions'
+/**
+ * @deprecated 이 파일은 더 이상 사용되지 않습니다.
+ * 실제 퀴즈 데이터는 API를 통해 가져옵니다.
+ * 참고용으로만 유지됩니다.
+ */
+
+import { computerScienceQuestions } from './computer-science-questions'
+import { philosophyQuestions } from './philosophy-questions'
+import { programmingQuestions } from './programming-questions'
+import { scienceQuestions } from './science-questions'
 
 export const QUIZ_DATA = [
    {

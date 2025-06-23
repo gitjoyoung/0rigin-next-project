@@ -1,5 +1,6 @@
 'use client'
 
+import { Alert, AlertDescription } from '@/shared/shadcn/ui/alert'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -9,154 +10,35 @@ import {
 } from '@/shared/shadcn/ui/card'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Label } from '@/shared/shadcn/ui/label'
-import { X } from 'lucide-react'
-import { useState } from 'react'
-
-interface IQuizForm {
-   title: string
-   questionCount: number
-   questions: IQuizQuestion[]
-}
-
-interface IQuizQuestion {
-   question: string
-   options: { id: string; value: string }[]
-   answer: string
-   hint: string
-   type: 'single' | 'multiple'
-}
+import { Switch } from '@/shared/shadcn/ui/switch'
+import { Textarea } from '@/shared/shadcn/ui/textarea'
+import { AlertCircle, X } from 'lucide-react'
+import { useQuizCreate } from '../hook/use-quiz-create'
 
 export default function QuizCreateForm() {
-   const [form, setForm] = useState<IQuizForm>({
-      title: '',
-      questionCount: 1,
-      questions: [
-         {
-            question: '',
-            options: [{ id: '1', value: '' }],
-            answer: '',
-            hint: '',
-            type: 'single',
-         },
-      ],
-   })
+   const {
+      form,
+      isSubmitting,
+      errors,
+      submitQuiz,
+      updateFormField,
+      addQuestion,
+      removeQuestion,
+      updateQuestionField,
+      addOption,
+      removeOption,
+      updateOptionValue,
+   } = useQuizCreate()
 
-   const handleAddQuestion = () => {
-      setForm((prev) => ({
-         ...prev,
-         questions: [
-            ...prev.questions,
-            {
-               question: '',
-               options: [{ id: '1', value: '' }],
-               answer: '',
-               hint: '',
-               type: 'single',
-            },
-         ],
-      }))
-   }
-
-   const handleAddOption = (questionIndex: number) => {
-      if (form.questions[questionIndex].options.length >= 6) return
-
-      setForm((prev) => {
-         const newQuestions = [...prev.questions]
-         const currentOptions = [...newQuestions[questionIndex].options]
-         const maxId = Math.max(
-            ...currentOptions.map((option) => parseInt(option.id)),
-            0,
-         )
-         const newId = (maxId + 1).toString()
-
-         newQuestions[questionIndex] = {
-            ...newQuestions[questionIndex],
-            options: [
-               ...currentOptions,
-               {
-                  id: newId,
-                  value: '',
-               },
-            ],
-         }
-         return { ...prev, questions: newQuestions }
-      })
-   }
-
-   const handleRemoveOption = (questionIndex: number, optionId: string) => {
-      console.log('선택지 삭제')
-      setForm((prev) => {
-         const newQuestions = [...prev.questions]
-         newQuestions[questionIndex].options = newQuestions[
-            questionIndex
-         ].options.filter((option) => option.id !== optionId)
-         return { ...prev, questions: newQuestions }
-      })
-   }
-
-   const handleQuestionChange = (index: number, value: string) => {
-      setForm((prev) => {
-         const newQuestions = [...prev.questions]
-         newQuestions[index].question = value
-         return { ...prev, questions: newQuestions }
-      })
-   }
-
-   const handleOptionChange = (
-      questionIndex: number,
-      optionIndex: number,
-      value: string,
-   ) => {
-      setForm((prev) => {
-         const newQuestions = [...prev.questions]
-         newQuestions[questionIndex].options[optionIndex].value = value
-         return { ...prev, questions: newQuestions }
-      })
-   }
-
-   const handleHintChange = (questionIndex: number, hint: string) => {
-      setForm((prev) => {
-         const newQuestions = [...prev.questions]
-         newQuestions[questionIndex].hint = hint
-         return { ...prev, questions: newQuestions }
-      })
-   }
-
-   const handleTypeChange = (
-      questionIndex: number,
-      type: 'single' | 'multiple',
-   ) => {
-      setForm((prev) => {
-         const newQuestions = [...prev.questions]
-         newQuestions[questionIndex].type = type
-         return { ...prev, questions: newQuestions }
-      })
-   }
-
-   const handleAnswerChange = (questionIndex: number, optionId: string) => {
-      setForm((prev) => {
-         const newQuestions = [...prev.questions]
-         const question = newQuestions[questionIndex]
-
-         if (question.type === 'single') {
-            question.answer = optionId
-         } else {
-            const currentAnswers = question.answer
-               ? question.answer.split(',')
-               : []
-            const answerIndex = currentAnswers.indexOf(optionId)
-
-            if (answerIndex === -1) {
-               currentAnswers.push(optionId)
-            } else {
-               currentAnswers.splice(answerIndex, 1)
-            }
-
-            question.answer = currentAnswers.join(',')
-         }
-
-         return { ...prev, questions: newQuestions }
-      })
+   // 현재 선택지 개수 계산
+   const getValidOptionCount = (question: any) => {
+      return [
+         question.option_1,
+         question.option_2,
+         question.option_3,
+         question.option_4,
+         question.option_5,
+      ].filter((option) => option.trim() !== '').length
    }
 
    return (
@@ -168,166 +50,230 @@ export default function QuizCreateForm() {
             <CardContent>
                <div className="space-y-4">
                   <div className="space-y-2">
-                     <Label htmlFor="title">퀴즈 제목</Label>
+                     <Label htmlFor="title">퀴즈 제목 *</Label>
                      <Input
                         id="title"
                         value={form.title}
                         onChange={(e) =>
-                           setForm((prev) => ({
-                              ...prev,
-                              title: e.target.value,
-                           }))
+                           updateFormField('title', e.target.value)
                         }
                         placeholder="퀴즈 제목을 입력하세요"
                      />
                   </div>
 
                   <div className="space-y-2">
-                     <Label htmlFor="questionCount">문항 수</Label>
-                     <Input
-                        id="questionCount"
-                        type="number"
-                        value={form.questionCount}
+                     <Label htmlFor="description">퀴즈 설명</Label>
+                     <Textarea
+                        id="description"
+                        value={form.description}
                         onChange={(e) =>
-                           setForm((prev) => ({
-                              ...prev,
-                              questionCount: parseInt(e.target.value),
-                           }))
+                           updateFormField('description', e.target.value)
                         }
-                        min="1"
+                        placeholder="퀴즈 설명을 입력하세요"
+                        rows={3}
                      />
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                     <Switch
+                        id="is_public"
+                        checked={form.is_public}
+                        onCheckedChange={(checked) =>
+                           updateFormField('is_public', checked)
+                        }
+                     />
+                     <Label htmlFor="is_public">공개 퀴즈</Label>
                   </div>
                </div>
             </CardContent>
          </Card>
 
-         {form.questions.map((question, questionIndex) => (
-            <Card key={questionIndex} className="mb-6">
-               <CardHeader>
-                  <CardTitle>문제 {questionIndex + 1}</CardTitle>
-               </CardHeader>
-               <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                     <Label htmlFor={`question-${questionIndex}`}>문제</Label>
-                     <Input
-                        id={`question-${questionIndex}`}
-                        value={question.question}
-                        onChange={(e) =>
-                           handleQuestionChange(questionIndex, e.target.value)
-                        }
-                        placeholder="문제를 입력하세요"
-                     />
-                  </div>
-
-                  <div className="space-y-2">
-                     <Label>정답 유형</Label>
-                     <div className="flex gap-4">
+         {form.questions.map((question, questionIndex) => {
+            const validOptionCount = getValidOptionCount(question)
+            return (
+               <Card key={questionIndex} className="mb-6">
+                  <CardHeader className="flex flex-row items-center justify-between">
+                     <CardTitle>문제 {question.question_number}</CardTitle>
+                     {form.questions.length > 1 && (
                         <Button
-                           variant={
-                              question.type === 'single' ? 'default' : 'outline'
-                           }
-                           onClick={() =>
-                              handleTypeChange(questionIndex, 'single')
-                           }
+                           variant="ghost"
+                           size="icon"
+                           onClick={() => removeQuestion(questionIndex)}
                         >
-                           단수 정답
-                        </Button>
-                        <Button
-                           variant={
-                              question.type === 'multiple'
-                                 ? 'default'
-                                 : 'outline'
-                           }
-                           onClick={() =>
-                              handleTypeChange(questionIndex, 'multiple')
-                           }
-                        >
-                           복수 정답
-                        </Button>
-                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                     <Label htmlFor={`hint-${questionIndex}`}>힌트</Label>
-                     <Input
-                        id={`hint-${questionIndex}`}
-                        value={question.hint}
-                        onChange={(e) =>
-                           handleHintChange(questionIndex, e.target.value)
-                        }
-                        placeholder="힌트를 입력하세요"
-                     />
-                  </div>
-
-                  <div className="space-y-2">
-                     <Label>선택지</Label>
-                     {question.options.map((option, optionIndex) => (
-                        <div
-                           key={option.id}
-                           className="flex items-center gap-2"
-                        >
-                           {question.type === 'single' ? (
-                              <input
-                                 type="radio"
-                                 name={`answer-${questionIndex}`}
-                                 checked={question.answer === option.id}
-                                 onChange={() =>
-                                    handleAnswerChange(questionIndex, option.id)
-                                 }
-                                 className="h-4 w-4"
-                              />
-                           ) : (
-                              <input
-                                 type="checkbox"
-                                 checked={question.answer
-                                    ?.split(',')
-                                    .includes(option.id)}
-                                 onChange={() =>
-                                    handleAnswerChange(questionIndex, option.id)
-                                 }
-                                 className="h-4 w-4"
-                              />
-                           )}
-                           <Input
-                              value={option.value}
-                              onChange={(e) =>
-                                 handleOptionChange(
-                                    questionIndex,
-                                    optionIndex,
-                                    e.target.value,
-                                 )
-                              }
-                              placeholder={`선택지 ${optionIndex + 1}`}
-                           />
-                           <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() =>
-                                 handleRemoveOption(questionIndex, option.id)
-                              }
-                           >
-                              <X className="h-4 w-4" />
-                           </Button>
-                        </div>
-                     ))}
-                     {question.options.length < 6 && (
-                        <Button
-                           variant="outline"
-                           onClick={() => handleAddOption(questionIndex)}
-                           className="w-full"
-                           type="button"
-                        >
-                           선택지 추가
+                           <X className="h-4 w-4" />
                         </Button>
                      )}
-                  </div>
-               </CardContent>
-            </Card>
-         ))}
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                     <div className="space-y-2">
+                        <Label htmlFor={`question-${questionIndex}`}>
+                           문제 제목
+                        </Label>
+                        <Textarea
+                           id={`question-${questionIndex}`}
+                           value={question.question_text}
+                           onChange={(e) =>
+                              updateQuestionField(
+                                 questionIndex,
+                                 'question_text',
+                                 e.target.value,
+                              )
+                           }
+                           placeholder="문제 제목을 입력하세요"
+                           rows={2}
+                        />
+                     </div>
 
-         <Button onClick={handleAddQuestion} className="w-full">
-            문제 추가
-         </Button>
+                     <div className="space-y-2">
+                        <Label htmlFor={`explanation-${questionIndex}`}>
+                           힌트
+                        </Label>
+                        <Textarea
+                           id={`explanation-${questionIndex}`}
+                           value={question.explanation}
+                           onChange={(e) =>
+                              updateQuestionField(
+                                 questionIndex,
+                                 'explanation',
+                                 e.target.value,
+                              )
+                           }
+                           placeholder="정답에 대한 설명을 입력하세요"
+                           rows={2}
+                        />
+                     </div>
+
+                     <div className="space-y-2">
+                        <Label>정답 선택</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                           {Array.from(
+                              { length: question.option_count },
+                              (_, i) => i + 1,
+                           ).map((optionNumber) => {
+                              const optionValue = question[
+                                 `option_${optionNumber}` as keyof typeof question
+                              ] as string
+                              return (
+                                 <div
+                                    key={optionNumber}
+                                    className="flex items-center space-x-2"
+                                 >
+                                    <input
+                                       type="radio"
+                                       name={`answer-${questionIndex}`}
+                                       checked={
+                                          question.correct_answer ===
+                                          optionNumber
+                                       }
+                                       onChange={() =>
+                                          updateQuestionField(
+                                             questionIndex,
+                                             'correct_answer',
+                                             optionNumber,
+                                          )
+                                       }
+                                       className="h-4 w-4"
+                                    />
+                                    <Label className="text-sm">
+                                       {optionValue || `선택지 ${optionNumber}`}
+                                    </Label>
+                                 </div>
+                              )
+                           })}
+                        </div>
+                     </div>
+
+                     <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                           <Label>선택지 (최소 2개, 최대 5개)</Label>
+                           <span className="text-sm text-muted-foreground">
+                              {validOptionCount}/5
+                           </span>
+                        </div>
+
+                        {Array.from(
+                           { length: question.option_count },
+                           (_, i) => i + 1,
+                        ).map((optionNumber) => (
+                           <div
+                              key={optionNumber}
+                              className="flex items-center gap-2"
+                           >
+                              <Input
+                                 value={
+                                    question[
+                                       `option_${optionNumber}` as keyof typeof question
+                                    ] as string
+                                 }
+                                 onChange={(e) =>
+                                    updateOptionValue(
+                                       questionIndex,
+                                       optionNumber,
+                                       e.target.value,
+                                    )
+                                 }
+                                 placeholder={`선택지 ${optionNumber}`}
+                              />
+                              {validOptionCount > 2 && (
+                                 <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() =>
+                                       removeOption(questionIndex, optionNumber)
+                                    }
+                                 >
+                                    <X className="h-4 w-4" />
+                                 </Button>
+                              )}
+                           </div>
+                        ))}
+                        {question.option_count < 5 && (
+                           <Button
+                              variant="outline"
+                              onClick={() => addOption(questionIndex)}
+                              className="w-full"
+                              type="button"
+                           >
+                              선택지 추가
+                           </Button>
+                        )}
+                     </div>
+                  </CardContent>
+               </Card>
+            )
+         })}
+
+         <div className="space-y-4">
+            <Button onClick={addQuestion} className="w-full" variant="outline">
+               문제 추가
+            </Button>
+
+            {/* 에러 메시지 표시 */}
+            {errors.length > 0 && (
+               <Card className="border-destructive">
+                  <CardContent className="pt-6">
+                     <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>
+                           <ul className="list-disc list-inside space-y-1">
+                              {errors.map((error, index) => (
+                                 <li key={index}>{error}</li>
+                              ))}
+                           </ul>
+                        </AlertDescription>
+                     </Alert>
+                  </CardContent>
+               </Card>
+            )}
+
+            <Button
+               onClick={submitQuiz}
+               className="w-full"
+               disabled={isSubmitting}
+            >
+               {isSubmitting ? '퀴즈 생성 중...' : '퀴즈 생성'}
+            </Button>
+         </div>
       </div>
    )
 }

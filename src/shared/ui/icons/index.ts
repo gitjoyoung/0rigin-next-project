@@ -30,6 +30,7 @@ import {
    Share,
    Smile,
    Sun,
+   Target,
    Trash,
    Twitter,
    User,
@@ -40,7 +41,7 @@ export const Icons = {
    // 표정
    smile: Smile,
    frown: Frown,
-
+   target: Target,
    // 일반적인 UI 아이콘
    search: Search,
    home: Home,

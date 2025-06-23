@@ -1,5 +1,5 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-06-23T19:25:19.803Z
+// 생성 시간: 2025-06-23T22:33:40.527Z
 // 동적 라우트([param])는 제외됨
 
 export const ROUTE_AUTH_CALLBACK = '/auth/callback'
