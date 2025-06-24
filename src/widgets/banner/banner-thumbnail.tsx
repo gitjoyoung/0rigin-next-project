@@ -33,6 +33,7 @@ function BannerThumbnail({ postData }: { postData?: PostData }) {
       target.src = DEFAULT_VALUES.thumbnail
    }
 
+   console.log('banner-thumbnail render')
    return (
       <div
          className={cn(
