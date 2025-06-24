@@ -39,6 +39,9 @@ export default function Profile() {
       useState(false)
    const [editingField, setEditingField] = useState<string | null>(null)
 
+   console.log(profile, 'profile')
+   console.log(form.getValues(), 'form')
+
    if (error) {
       return (
          <div className="flex flex-col items-center justify-center mx-auto">
@@ -132,30 +135,30 @@ export default function Profile() {
                                              : 'Edit'}
                                        </Badge>
                                     </div>
-                                    <Select
-                                       onValueChange={field.onChange}
-                                       defaultValue={field.value}
-                                       disabled={editingField !== 'gender'}
-                                    >
-                                       <FormControl>
+                                    <FormControl>
+                                       <Select
+                                          onValueChange={field.onChange}
+                                          value={field.value || profile.gender}
+                                          disabled={editingField !== 'gender'}
+                                       >
                                           <SelectTrigger>
                                              <SelectValue placeholder="성별을 선택하세요" />
                                           </SelectTrigger>
-                                       </FormControl>
-                                       <SelectContent>
-                                          <SelectGroup className="overflow-y-auto max-h-[10rem]">
-                                             <SelectItem value="man">
-                                                남성
-                                             </SelectItem>
-                                             <SelectItem value="women">
-                                                여성
-                                             </SelectItem>
-                                             <SelectItem value="etc">
-                                                기타
-                                             </SelectItem>
-                                          </SelectGroup>
-                                       </SelectContent>
-                                    </Select>
+                                          <SelectContent>
+                                             <SelectGroup className="overflow-y-auto max-h-[10rem]">
+                                                <SelectItem value="man">
+                                                   남성
+                                                </SelectItem>
+                                                <SelectItem value="women">
+                                                   여성
+                                                </SelectItem>
+                                                <SelectItem value="etc">
+                                                   기타
+                                                </SelectItem>
+                                             </SelectGroup>
+                                          </SelectContent>
+                                       </Select>
+                                    </FormControl>
                                     <FormMessage />
                                  </FormItem>
                               )}

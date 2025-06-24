@@ -16,16 +16,11 @@ const DEFAULT_VALUES = {
    summary: '요약',
    nickname: '닉네임',
    thumbnail: '/images/banner/windsaurus.webp',
-}
+} as const
 
-function BannerThumbnail({ postData }: { postData: PostData }) {
-   const {
-      id = DEFAULT_VALUES.id,
-      title = DEFAULT_VALUES.title,
-      summary = DEFAULT_VALUES.summary,
-      thumbnail = DEFAULT_VALUES.thumbnail,
-      nickname = DEFAULT_VALUES.nickname,
-   } = postData
+function BannerThumbnail({ postData }: { postData?: PostData }) {
+   const { id, title, summary, thumbnail, nickname } =
+      postData || DEFAULT_VALUES
 
    const imageAlt = useMemo(
       () => `${title} - ${nickname}의 게시물`,

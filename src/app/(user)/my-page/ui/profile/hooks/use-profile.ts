@@ -1,7 +1,5 @@
-import { getUser } from '@/entities/auth/api/get-user'
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+import { Profile } from '@/entities/profile/api/profile-api'
 import { useToast } from '@/shared/shadcn/hooks/use-toast'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -12,39 +10,21 @@ export const profileFormSchema = z.object({
       message: '닉네임은 2글자 이상이어야 합니다.',
    }),
    gender: z.string({
-      required_error: '성별을 선택해주세요.',
+      message: '성별을 선택해주세요.',
    }),
 })
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-export type Profile = {
-   id: string
-   email: string
-   nickname: string
-   gender: string
-   created_at: string
-}
-
 async function fetchProfile(): Promise<Profile> {
-   const supabase = SupabaseBrowserClient()
-   const user = await getUser()
+   const response = await fetch('/api/profile')
 
-   if (!user) {
-      throw new Error('사용자 정보를 불러올 수 없습니다.')
+   if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || '프로필 정보를 불러올 수 없습니다.')
    }
 
-   const { data, error } = await supabase
-      .from('profile')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-
-   if (error) {
-      throw new Error('프로필 정보를 불러올 수 없습니다.')
-   }
-
-   return data as Profile
+   return response.json()
 }
 
 async function updateProfile({
@@ -54,36 +34,25 @@ async function updateProfile({
    nickname: string
    gender: string
 }) {
-   const supabase = SupabaseBrowserClient()
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
+   const response = await fetch('/api/profile', {
+      method: 'PUT',
+      headers: {
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nickname, gender }),
+   })
 
-   if (!user) {
-      throw new Error('사용자 정보를 불러올 수 없습니다.')
+   if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || '프로필 업데이트에 실패했습니다.')
    }
 
-   const { error } = await supabase
-      .from('profile')
-      .update({ nickname, gender })
-      .eq('id', user.id)
-
-   if (error) {
-      throw new Error('프로필 업데이트에 실패했습니다.')
-   }
+   return response.json()
 }
 
 export function useProfile() {
    const queryClient = useQueryClient()
    const { toast } = useToast()
-
-   const form = useForm<ProfileFormValues>({
-      resolver: zodResolver(profileFormSchema),
-      defaultValues: {
-         nickname: '',
-         gender: '',
-      },
-   })
 
    const {
       data: profile,
@@ -94,11 +63,18 @@ export function useProfile() {
       queryFn: fetchProfile,
    })
 
+   const form = useForm<ProfileFormValues>({
+      defaultValues: {
+         nickname: '',
+         gender: '',
+      },
+   })
+
    useEffect(() => {
       if (profile) {
          form.reset({
-            nickname: profile.nickname,
-            gender: profile.gender,
+            nickname: profile.nickname || '',
+            gender: profile.gender || '',
          })
       }
    }, [profile, form])
@@ -123,14 +99,10 @@ export function useProfile() {
 
    function onSubmit(data: ProfileFormValues) {
       console.log('onSubmit', data)
-      toast({
-         title: '테스트용 토스트.',
-         description: '테스트용 토스트입니다.',
+      updateProfileMutation.mutate({
+         nickname: data.nickname,
+         gender: data.gender,
       })
-      // updateProfileMutation.mutate({
-      //    nickname: data.nickname,
-      //    gender: data.gender,
-      // })
    }
 
    return {
