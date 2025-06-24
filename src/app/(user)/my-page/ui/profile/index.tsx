@@ -137,8 +137,10 @@ export default function Profile() {
                                     </div>
                                     <FormControl>
                                        <Select
-                                          onValueChange={field.onChange}
-                                          value={field.value || profile.gender}
+                                          onValueChange={(v) =>
+                                             v != '' && field.onChange(v)
+                                          }
+                                          value={field.value}
                                           disabled={editingField !== 'gender'}
                                        >
                                           <SelectTrigger>
