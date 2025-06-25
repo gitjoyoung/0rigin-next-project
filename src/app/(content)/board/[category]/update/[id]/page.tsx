@@ -1,8 +1,12 @@
 import { Metadata } from 'next'
+import { notFound, redirect } from 'next/navigation'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
+import UpdatePostForm from '../ui'
 
 interface IParams {
    params: {
       id: string
+      category: string
    }
 }
 
@@ -12,7 +16,23 @@ export const metadata: Metadata = {
 }
 
 export default async function Update({ params }: IParams) {
-   const postId: string = params.id
+   const { id: postId, category } = params
 
-   return <></>
+   if (!category || !postId) {
+      redirect('/board/all')
+   }
+
+   const supabase = await SupabaseServerClient()
+
+   const { data: post, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', postId)
+      .single()
+
+   if (error || !post) {
+      return notFound()
+   }
+
+   return <UpdatePostForm category={category} post={post} postId={postId} />
 }

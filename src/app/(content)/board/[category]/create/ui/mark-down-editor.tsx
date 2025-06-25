@@ -49,6 +49,7 @@ interface MarkDownEditorProps {
    setValue: UseFormSetValue<any>
    register: UseFormRegister<any>
    onImageUpload?: (base64Images: { name: string; data: string }[]) => void
+   initialValue?: string
 }
 const supabase = SupabaseBrowserClient()
 
@@ -57,8 +58,9 @@ const MarkDownEditor = ({
    setValue,
    register,
    onImageUpload,
+   initialValue = '',
 }: MarkDownEditorProps) => {
-   const [editorValue, setEditorValue] = React.useState<string>('')
+   const [editorValue, setEditorValue] = React.useState<string>(initialValue)
    const [tempImages, setTempImages] = React.useState<
       { name: string; data: string }[]
    >([])
@@ -67,7 +69,9 @@ const MarkDownEditor = ({
    const [isOpen, setIsOpen] = React.useState(false)
    React.useEffect(() => {
       register(name)
-   }, [register, name])
+      setValue(name, initialValue)
+      setEditorValue(initialValue)
+   }, [register, name, initialValue, setValue])
 
    React.useEffect(() => {
       if (onImageUpload) {

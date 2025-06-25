@@ -9,9 +9,13 @@ import {
 
 interface UseBoardFormProps {
    userData: any
+   defaultValues?: Partial<BoardFormType>
 }
 
-export const useBoardForm = ({ userData }: UseBoardFormProps) => {
+export const useBoardForm = ({
+   userData,
+   defaultValues,
+}: UseBoardFormProps) => {
    const [showPassword, setShowPassword] = useState(false)
    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
@@ -27,6 +31,7 @@ export const useBoardForm = ({ userData }: UseBoardFormProps) => {
          content: '',
          summary: '',
          thumbnail: '',
+         ...defaultValues,
       },
    })
 
