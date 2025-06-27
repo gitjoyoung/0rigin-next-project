@@ -1,5 +1,5 @@
-import AuthCallbackUI from './ui/auth-callback-ui'
+import AuthCallback from './ui/auth-callback'
 
 export default function AuthCallbackPage() {
-   return <AuthCallbackUI />
+   return <AuthCallback />
 }

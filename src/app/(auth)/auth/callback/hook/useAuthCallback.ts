@@ -1,55 +1,46 @@
 'use client'
 
 import { ROUTE_LOGIN, ROUTE_SIGN } from '@/constants/pathname'
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-type CallbackStatus = 'loading' | 'redirecting'
+type CallbackStatus = 'loading' | 'redirecting' | 'error'
 
-export const useAuthCallback = () => {
+interface UseAuthCallbackReturn {
+   status: CallbackStatus
+   error: string | null
+}
+
+export const useAuthCallback = (): UseAuthCallbackReturn => {
    const [status, setStatus] = useState<CallbackStatus>('loading')
+   const [error, setError] = useState<string | null>(null)
+
    const router = useRouter()
    const searchParams = useSearchParams()
-   const supabase = SupabaseBrowserClient()
 
    useEffect(() => {
-      const handleCallback = async () => {
-         // OAuth 에러 확인
-         const error = searchParams.get('error')
-         if (error) {
-            const message =
-               error === 'access_denied'
-                  ? '로그인이 취소되었습니다.'
-                  : '로그인 중 오류가 발생했습니다.'
-            router.replace(ROUTE_LOGIN + `?message=${message}`)
-            return
-         }
+      // OAuth 에러 확인
+      const oauthError = searchParams.get('error')
+      if (oauthError) {
+         const message =
+            oauthError === 'access_denied'
+               ? '로그인이 취소되었습니다.'
+               : '로그인 중 오류가 발생했습니다.'
 
-         setStatus('redirecting')
-
-         // 회원가입 완료 상태 확인
-         const {
-            data: { user },
-         } = await supabase.auth.getUser()
-         if (!user) {
-            router.replace(ROUTE_LOGIN)
-            return
-         }
-
-         const { data: profile } = await supabase
-            .from('profile')
-            .select('signup_complete')
-            .eq('id', user.id)
-            .single()
-
-         const isSignupComplete = profile?.signup_complete || false
-
-         router.replace(isSignupComplete ? '/' : ROUTE_SIGN)
+         setError(message)
+         setStatus('error')
+         setTimeout(() => router.replace(ROUTE_LOGIN), 2000)
+         return
       }
 
-      handleCallback()
-   }, [router, searchParams, supabase])
+      // OAuth 성공 - 바로 프로필 확인 페이지로 이동
+      // (세션은 이미 Supabase에 의해 설정됨)
+      setStatus('redirecting')
+      setTimeout(() => {
+         // 프로필 존재 여부는 sign 페이지에서 확인
+         router.replace(ROUTE_SIGN)
+      }, 500)
+   }, [router, searchParams])
 
-   return { status }
+   return { status, error }
 }

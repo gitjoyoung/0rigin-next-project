@@ -1,11 +1,10 @@
 'use client'
 
 import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
-import { getUser } from '@/entities/auth/api/get-user'
+import { useUser } from '@/shared/hooks/auth/use-user'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
-import type { User } from '@supabase/supabase-js'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -37,25 +36,14 @@ interface AuthButtonsProps {
 }
 
 export default function AuthButtons({ onClick }: AuthButtonsProps) {
-   const [user, setUser] = useState<User | null>(null)
-   const [loading, setLoading] = useState(true)
+   const { data: userData, isLoading } = useUser()
    const [isLoggingOut, setIsLoggingOut] = useState(false)
+   const queryClient = useQueryClient()
    const supabase = SupabaseBrowserClient()
 
+   const user = userData?.user
+
    useEffect(() => {
-      const fetchUser = async () => {
-         try {
-            const userData = await getUser()
-            setUser(userData)
-         } catch (error) {
-            console.error('Failed to fetch user:', error)
-         } finally {
-            setLoading(false)
-         }
-      }
-
-      fetchUser()
-
       // 세션 상태 변경을 실시간으로 감지
       const {
          data: { subscription },
@@ -63,16 +51,18 @@ export default function AuthButtons({ onClick }: AuthButtonsProps) {
          console.log('Auth state changed:', event, session?.user?.email)
 
          if (event === 'SIGNED_IN') {
-            setUser(session?.user ?? null)
+            // 사용자 정보 쿼리 무효화하여 새로고침
+            queryClient.invalidateQueries({ queryKey: ['auth', 'user'] })
             setIsLoggingOut(false)
          } else if (event === 'SIGNED_OUT') {
-            setUser(null)
+            // 모든 auth 관련 쿼리 무효화
+            queryClient.invalidateQueries({ queryKey: ['auth'] })
             setIsLoggingOut(false)
          }
       })
 
       return () => subscription.unsubscribe()
-   }, [supabase.auth])
+   }, [supabase.auth, queryClient])
 
    const isAuthenticated = !!user
 
@@ -94,13 +84,43 @@ export default function AuthButtons({ onClick }: AuthButtonsProps) {
 
          return response.json()
       },
-      onSuccess: () => {
-         // 로그아웃 성공 시 즉시 사용자 상태를 null로 설정
-         setUser(null)
-         onClick?.()
+      onSuccess: async () => {
+         try {
+            // 1. 모든 React Query 캐시 완전 정리
+            queryClient.clear()
 
-         // 페이지 새로고침 없이 홈으로 이동만
-         window.location.href = '/'
+            // 2. 로컬 스토리지 정리 (Supabase 관련)
+            if (typeof window !== 'undefined') {
+               // Supabase 관련 로컬 스토리지 정리
+               const keys = Object.keys(localStorage)
+               keys.forEach((key) => {
+                  if (key.startsWith('sb-') || key.includes('supabase')) {
+                     localStorage.removeItem(key)
+                  }
+               })
+
+               // 세션 스토리지도 정리
+               const sessionKeys = Object.keys(sessionStorage)
+               sessionKeys.forEach((key) => {
+                  if (key.startsWith('sb-') || key.includes('supabase')) {
+                     sessionStorage.removeItem(key)
+                  }
+               })
+            }
+
+            // 3. 잠시 대기 후 페이지 이동 (캐시 정리 완료 보장)
+            setTimeout(() => {
+               onClick?.()
+               window.location.href = '/'
+            }, 100)
+         } catch (error) {
+            console.error('로그아웃 후처리 중 오류:', error)
+            // 오류가 발생해도 로그아웃은 완료되었으므로 페이지 이동
+            setTimeout(() => {
+               onClick?.()
+               window.location.href = '/'
+            }, 100)
+         }
       },
       onError: (error) => {
          console.error('클라이언트 로그아웃 에러:', error)
@@ -125,7 +145,7 @@ export default function AuthButtons({ onClick }: AuthButtonsProps) {
    const buttonsToRender = isAuthenticated ? authButtons : guestButtons
 
    // 로그아웃 중이거나 로딩 중일 때 처리
-   if (loading && !isLoggingOut) {
+   if (isLoading && !isLoggingOut) {
       return (
          <div className="flex gap-2">
             <div className="w-16 h-8 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
