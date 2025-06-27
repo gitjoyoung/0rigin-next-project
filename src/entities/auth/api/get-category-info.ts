@@ -1,5 +1,5 @@
 import type { ICategory } from '@/app/(content)/board/[category]/types/category-type'
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 
 /**
  * 특정 카테고리의 상세 정보를 조회합니다.
@@ -20,7 +20,7 @@ export async function getCategoryInfo(
    category: string,
 ): Promise<ICategory | null> {
    try {
-      const supabase = await SupabaseBrowserClient()
+      const supabase = await SupabaseServerClient()
       const { data: categoryData, error: categoryError } = await supabase
          .from('categories')
          .select('*')
@@ -52,7 +52,7 @@ export async function getCategoryInfo(
  */
 export async function getAllCategories(): Promise<ICategory[]> {
    try {
-      const supabase = await SupabaseBrowserClient()
+      const supabase = await SupabaseServerClient()
       const { data: categoriesData, error: categoriesError } = await supabase
          .from('categories')
          .select('*')

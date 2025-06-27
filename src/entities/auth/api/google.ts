@@ -1,112 +1,60 @@
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+/**
+ * @description 서버 사이드 전용 Google Auth API
+ * 이 파일의 함수들은 서버 컴포넌트에서만 사용 가능합니다.
+ * 클라이언트에서 사용하려면 API 라우트를 통해 접근해야 합니다.
+ */
+
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 
-const supabase = SupabaseBrowserClient()
+/**
+ * 현재 로그인된 사용자가 Google OAuth를 통해 로그인했는지 확인
+ * @returns {Promise<boolean>} Google 로그인 여부
+ */
+export async function checkIsGoogleUserServer(): Promise<boolean> {
+   try {
+      const supabase = await SupabaseServerClient()
+      const {
+         data: { user },
+         error,
+      } = await supabase.auth.getUser()
 
-export const googleLogin = async () => {
-   const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-         redirectTo: `${window.location.origin}/auth/callback`,
-         queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-         },
-      },
-   })
+      if (error || !user) {
+         return false
+      }
 
-   return { data, error }
-}
-
-// 구글 사용자인지 확인하는 서버 함수
-export const checkIsGoogleUserServer = async (): Promise<boolean> => {
-   const supabase = await SupabaseServerClient()
-
-   const {
-      data: { user },
-      error,
-   } = await supabase.auth.getUser()
-
-   if (error || !user) {
+      // OAuth 제공자 확인
+      return user.app_metadata?.provider === 'google' || false
+   } catch (error) {
+      console.error('Google 사용자 확인 중 오류:', error)
       return false
    }
-
-   // 구글 로그인 사용자는 app_metadata에 provider 정보가 있습니다
-   return user.app_metadata?.providers?.includes('google') || false
-}
-
-// 클라이언트용 구글 사용자 확인 함수
-export const checkIsGoogleUser = async (): Promise<boolean> => {
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
-
-   if (!user) {
-      return false
-   }
-
-   // 구글 로그인 사용자는 app_metadata에 provider 정보가 있습니다
-   return user.app_metadata?.providers?.includes('google') || false
 }
 
 // 사용자의 프로필 정보가 존재하는지 확인 (서버용)
-export const checkUserProfileExistsServer = async (): Promise<boolean> => {
-   const supabase = await SupabaseServerClient()
+export async function checkUserProfileExistsServer(): Promise<boolean> {
+   try {
+      const supabase = await SupabaseServerClient()
 
-   const {
-      data: { user },
-      error,
-   } = await supabase.auth.getUser()
+      const {
+         data: { user },
+         error,
+      } = await supabase.auth.getUser()
 
-   if (error || !user) {
+      if (error || !user) {
+         return false
+      }
+
+      const { data: profile } = await supabase
+         .from('profile')
+         .select('id')
+         .eq('id', user.id)
+         .single()
+
+      return !!profile
+   } catch (error) {
+      console.error('프로필 존재 확인 중 오류:', error)
       return false
    }
-
-   const { data: profile } = await supabase
-      .from('profile')
-      .select('id')
-      .eq('id', user.id)
-      .single()
-
-   return !!profile
-}
-
-// 사용자의 프로필 정보가 존재하는지 확인 (클라이언트용)
-export const checkUserProfileExists = async (): Promise<boolean> => {
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
-
-   if (!user) {
-      return false
-   }
-
-   const { data: profile } = await supabase
-      .from('profile')
-      .select('id')
-      .eq('id', user.id)
-      .single()
-
-   return !!profile
-}
-
-// 프로필의 signup_complete 상태 확인 (미들웨어 & 콜백용)
-export const checkSignupComplete = async () => {
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
-
-   if (!user) {
-      return false
-   }
-
-   const { data: profile } = await supabase
-      .from('profile')
-      .select('signup_complete')
-      .eq('id', user.id)
-      .single()
-
-   return profile?.signup_complete || false
 }
 
 // 서버 컴포넌트용 프로필의 signup_complete 상태 확인
@@ -156,45 +104,33 @@ export const checkSignupCompleteMiddleware = async (supabase: any) => {
    return !!profile
 }
 
-export const checkGoogleLoginStatus = async () => {
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
+export async function checkGoogleLoginStatusServer() {
+   try {
+      const supabase = await SupabaseServerClient()
+      const {
+         data: { user },
+      } = await supabase.auth.getUser()
 
-   if (!user) {
+      if (!user) {
+         return { isLoggedIn: false, isSignupComplete: false }
+      }
+
+      const { data: profile, error: profileError } = await supabase
+         .from('profile')
+         .select('*')
+         .eq('id', user.id)
+         .single()
+
+      // 프로필이 존재하면 회원가입이 완료된 것으로 간주
+      const isSignupComplete = !profileError && !!profile
+
+      const result = {
+         isLoggedIn: true,
+         isSignupComplete,
+      }
+
+      return result
+   } catch (error) {
       return { isLoggedIn: false, isSignupComplete: false }
-   }
-
-   const { data: profile } = await supabase
-      .from('profile')
-      .select('signup_complete')
-      .eq('id', user.id)
-      .single()
-
-   return {
-      isLoggedIn: true,
-      isSignupComplete: profile?.signup_complete ?? false,
-   }
-}
-
-export const checkGoogleLoginStatusServer = async () => {
-   const supabase = await SupabaseServerClient()
-   const {
-      data: { user },
-   } = await supabase.auth.getUser()
-
-   if (!user) {
-      return { isLoggedIn: false, isSignupComplete: false }
-   }
-
-   const { data: profile } = await supabase
-      .from('profile')
-      .select('signup_complete')
-      .eq('id', user.id)
-      .single()
-
-   return {
-      isLoggedIn: true,
-      isSignupComplete: profile?.signup_complete ?? false,
    }
 }

@@ -1,9 +1,9 @@
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import type { User } from '@supabase/supabase-js'
 
-// 클라이언트 컴포넌트용 getUser 함수
+// 클라이언트 사이드에서 사용자 정보를 가져오는 함수
 export async function getUser(): Promise<User | null> {
-   const supabase = SupabaseBrowserClient()
+   const supabase = await SupabaseServerClient()
    const {
       data: { user },
    } = await supabase.auth.getUser()
