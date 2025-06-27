@@ -7,15 +7,22 @@ const FOOTER_DATA = {
    create: '글쓰기',
 }
 
-export default function BoardFooter() {
+interface Props {
+   category: string
+}
+
+export default function BoardFooter({ category }: Props) {
+   const listHref = `${ROUTE_BOARD}/${category}`
+   const createHref = `${ROUTE_BOARD}/${category}/create`
+
    return (
       <div className="flex justify-between items-center">
-         <Link href={ROUTE_BOARD}>
+         <Link href={listHref}>
             <Button variant="secondary" className="p-4" size="default">
                {FOOTER_DATA.list}
             </Button>
          </Link>
-         <Link href="#">
+         <Link href={createHref}>
             <Button variant="default" className="p-4" size="default">
                {FOOTER_DATA.create}
             </Button>

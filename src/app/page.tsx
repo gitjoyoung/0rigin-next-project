@@ -1,18 +1,74 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import AdSenseBanner from '@/widgets/adsense-banner'
 import Banner from '@/widgets/banner'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Post from './(content)/board/[category]/ui/post'
 
+// app/layout.tsx
 export const metadata = {
+   /* ───────── 제목 ───────── */
    title: {
-      default: 'HOME | 0rigin project',
-      template: '%s | 0rigin project',
+      default: '제로리진 커뮤니티 플랫폼',
+      template: '%s | 제로리진 커뮤니티',
    },
-   description: '제로리진 프로젝트',
-   keywords: ['origin', '0rigin'],
-   icon: '/favicon.ico',
-}
+
+   /* ───────── 설명 ───────── */
+   description:
+      '제로리진(0rigin)은 관심사 기반 토론·지식 공유·협업이 한곳에서 이루어지는 차세대 커뮤니티 플랫폼입니다. 다양한 의견을 자유롭게 나누어 보세요.',
+
+   /* ───────── 키워드 ───────── */
+   keywords: [
+      '제로리진',
+      '0rigin',
+      'origin community',
+      '커뮤니티 플랫폼',
+      '온라인 포럼',
+      '지식 공유',
+      '토론',
+      '프로젝트 협업',
+   ],
+
+   /* ───────── 파비콘 ───────── */
+   icons: { icon: '/favicon.ico' },
+
+   /* ───────── 저작자 ───────── */
+   authors: [{ name: '제로리진 팀', url: 'https://0rigin.space' }],
+
+   /* ───────── 뷰포트 ───────── */
+   viewport: { width: 'device-width', initialScale: 1, maximumScale: 1 },
+
+   /* ───────── Open Graph ───────── */
+   openGraph: {
+      type: 'website',
+      url: 'https://0rigin.space',
+      siteName: '제로리진',
+      title: '제로리진 커뮤니티 플랫폼',
+      description:
+         '토론·지식 공유·프로젝트 협업까지 한 번에! 지금 제로리진에서 새로운 인사이트를 얻어 보세요.',
+      images: [
+         {
+            url: 'https://0rigin.space/og-cover.png',
+            width: 1200,
+            height: 630,
+            alt: '제로리진 커뮤니티 미리보기',
+         },
+      ],
+      locale: 'ko_KR',
+   },
+
+   /* ───────── Twitter Card ───────── */
+   twitter: {
+      card: 'summary_large_image',
+      title: '제로리진 커뮤니티 플랫폼',
+      description:
+         '관심사 기반 토론과 지식 공유가 가능한 제로리진(0rigin)에 참여해 보세요!',
+      images: ['https://0rigin.space/og-cover.png'],
+   },
+
+   /* ───────── Canonical ───────── */
+   alternates: { canonical: 'https://0rigin.space' },
+} satisfies Metadata
 
 export default async function Home() {
    const supabase = await SupabaseServerClient()

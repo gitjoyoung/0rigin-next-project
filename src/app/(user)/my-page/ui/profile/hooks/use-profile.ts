@@ -1,4 +1,4 @@
-import { Profile } from '@/entities/profile/api/profile-api'
+import { Profile } from '@/entities/profile/types'
 import { useToast } from '@/shared/shadcn/hooks/use-toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'

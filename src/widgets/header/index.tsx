@@ -5,7 +5,7 @@ import MobileSideMenu from './mobile-side-menu'
 import ThemeToggle from './theme-toggle'
 import Navigation from './ui/navigation'
 
-export default async function Header() {
+export default function Header() {
    return (
       <header className="flex items-center justify-between p-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">
          {/* 로고 + 네비게이션 */}

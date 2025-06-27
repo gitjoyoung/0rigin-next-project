@@ -1,4 +1,4 @@
-import type { Post } from '@/entities/post/api'
+import type { Post } from '@/entities/post/types'
 import {
    Card,
    CardContent,

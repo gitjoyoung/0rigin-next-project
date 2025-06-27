@@ -1,17 +1,15 @@
 import { ROUTE_BOARD } from '@/constants/pathname'
-import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 
-import { getCategoryInfo } from '@/entities/auth/api/get-category-info'
-import { getPostInfo } from '@/entities/auth/api/get-post-info'
+import { getCategoryByName, getPostById, getPosts } from '@/entities/post'
 import BreadcrumbWidget from '@/widgets/breadcrumb'
 import BoardFooter from '../ui/board-footer'
 import BoardHeader from '../ui/board-header'
 import Comment from '../ui/comment'
 import Post from '../ui/post'
-import PostLike from '../ui/post-like/post-like'
-import PostView from '../ui/post-view/index'
+import PostLike from '../ui/post-like'
+import PostView from '../ui/post-view'
 
 interface IParams {
    params: {
@@ -24,9 +22,19 @@ interface IParams {
 export async function generateMetadata({ params }: IParams): Promise<Metadata> {
    const { category, postId } = await params
 
+   // 게시글 정보 조회
+   const postData = await getPostById(postId)
+
+   if (!postData) {
+      return {
+         title: `0rigin ${category}게시판`,
+         description: `${category} 카테고리의 게시글입니다.`,
+      }
+   }
+
    return {
-      title: `${postId}번 게시글`,
-      description: `${category} 카테고리의 ${postId}번 게시글입니다.`,
+      title: `${postData.title} - 0rigin ${category}게시판`,
+      description: postData.summary,
    }
 }
 
@@ -40,25 +48,29 @@ export default async function Page({ params }: IParams) {
       redirect(`/board/${category}`)
    }
 
-   const supabase = await SupabaseServerClient()
+   // 카테고리 정보 조회 (DB에서 조회)
+   const categoryInfo = await getCategoryByName(category)
 
-   const { data: readData, error: readError } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('id', postId)
-      .single()
+   if (!categoryInfo) {
+      redirect('/board/latest')
+   }
 
-   if (readError || !readData) {
+   // 새로운 post API 사용
+   const readData = await getPostById(postId)
+
+   if (!readData) {
       return notFound()
    }
 
-   const categoryInfo = await getCategoryInfo(category)
-
    // 같은 카테고리의 다른 게시글들을 가져오기 (현재 게시글 제외)
-   // 더 많은 게시글을 가져와서 현재 게시글을 제외한 후 최대 20개만 표시
-   const { data: relatedPosts } = await getPostInfo(category, 1, 30)
-   const filteredPosts =
-      relatedPosts?.filter((post) => post.id !== readData.id).slice(0, 20) || []
+   const relatedPostsResponse = await getPosts({
+      category: category === 'latest' ? 'latest' : category,
+      page: 1,
+      limit: 30,
+   })
+   const filteredPosts = relatedPostsResponse.items
+      .filter((post) => post.id !== readData.id)
+      .slice(0, 20)
 
    return (
       <section className="flex flex-col gap-4 my-2">
@@ -70,7 +82,7 @@ export default async function Page({ params }: IParams) {
             <BoardHeader category={categoryInfo} />
             <Post postData={filteredPosts} />
          </div>
-         <BoardFooter />
+         <BoardFooter category={category} />
       </section>
    )
 }

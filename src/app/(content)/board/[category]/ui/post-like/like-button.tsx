@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/shared/shadcn/ui/button'
 import { cn } from '@/shared/utils/cn'
 import { AnimatePresence, motion } from 'framer-motion'

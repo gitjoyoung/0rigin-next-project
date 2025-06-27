@@ -1,6 +1,6 @@
 'use client'
 
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+import { useUserPosts } from '@/shared/hooks/user/use-user-posts'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Table,
@@ -10,41 +10,12 @@ import {
    TableHeader,
    TableRow,
 } from '@/shared/shadcn/ui/table'
-import { useQuery } from '@tanstack/react-query'
 import { Edit, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 
-interface Post {
-   id: string
-   title: string
-   content: string
-   createdAt: string
-   likes: number
-   comments: number
-   category: string
-}
-
 export default function MyPosts() {
-   const supabase = SupabaseBrowserClient()
-
-   const {
-      data: posts = [],
-      isLoading,
-      error,
-   } = useQuery({
-      queryKey: ['my-posts'],
-      queryFn: async () => {
-         const { data: user } = await supabase.auth.getUser()
-         if (!user.user?.id) return []
-
-         const { data } = await supabase
-            .from('posts')
-            .select('*')
-            .eq('user_id', user.user.id)
-
-         return data || []
-      },
-   })
+   const { data: userPostsData, isLoading, error } = useUserPosts()
+   const posts = userPostsData?.posts || []
 
    if (isLoading) return <div>로딩 중...</div>
    if (error) return <div>에러가 발생했습니다.</div>
@@ -72,16 +43,20 @@ export default function MyPosts() {
                   {posts.map((post) => (
                      <TableRow key={post.id} className="hover:bg-gray-50">
                         <TableCell>
-                           <Link href={`/board/${post.category}/${post.id}`}>
+                           <Link
+                              href={`/board/${post.category_id || 'latest'}/${post.id}`}
+                           >
                               {post.title}
                            </Link>
                         </TableCell>
-                        <TableCell>{post.createdAt}</TableCell>
-                        <TableCell className="text-center">
-                           {post.likes}
+                        <TableCell>
+                           {new Date(post.created_at).toLocaleDateString()}
                         </TableCell>
                         <TableCell className="text-center">
-                           {post.comments}
+                           {(post as any).likes_count?.[0]?.count || 0}
+                        </TableCell>
+                        <TableCell className="text-center">
+                           {(post as any).comments_count?.[0]?.count || 0}
                         </TableCell>
                         <TableCell>
                            <div className="flex gap-2">

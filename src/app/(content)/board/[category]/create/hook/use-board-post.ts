@@ -1,3 +1,6 @@
+'use client'
+
+import type { PostCreate } from '@/entities/post/types'
 import { useToast } from '@/shared/hooks/use-toast'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { compressImage } from '@/shared/utils/compress-image'
@@ -13,6 +16,19 @@ const supabase = SupabaseBrowserClient()
 interface UseBoardPostProps {
    category: string
    userProfile?: any
+}
+
+// 클라이언트에서 사용할 게시글 생성 함수
+async function createPostApi(data: PostCreate) {
+   const response = await fetch('/api/post', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+   })
+   if (!response.ok) {
+      throw new Error('게시글 생성에 실패했습니다.')
+   }
+   return response.json()
 }
 
 export const useBoardPost = ({ category, userProfile }: UseBoardPostProps) => {
@@ -67,34 +83,15 @@ export const useBoardPost = ({ category, userProfile }: UseBoardPostProps) => {
          const markdownContent = data.content
          const htmlContent = await markdownToSanitizedHTML(markdownContent)
 
-         // 로그인된 사용자와 비로그인 사용자에 따라 다른 데이터 처리
-         const postData: any = {
+         // 새로운 PostCreate 타입에 맞게 데이터 구성
+         const postData: PostCreate = {
             title: data.title,
-            summary: data.summary,
-            thumbnail: data.thumbnail,
-            content: {
-               markdown: markdownContent,
-               html: htmlContent,
-            },
-            category: category,
+            content: markdownContent, // 새로운 구조에서는 content를 문자열로 저장
+            category_id: category,
+            author_id: userProfile?.id || '', // 로그인된 사용자만 게시글 작성 가능
          }
 
-         if (userProfile?.id) {
-            // 로그인된 사용자: 프로필 정보 사용
-            postData.nickname = userProfile.nickname || '익명'
-            postData.password = userProfile.id.slice(0, 4) // 임시 비밀번호
-            postData.author_id = userProfile.id
-         } else {
-            // 비로그인 사용자: 폼에서 입력받은 정보 사용
-            postData.nickname = data.nickname
-            postData.password = data.password
-         }
-
-         const { data: result, error } = await supabase
-            .from('posts')
-            .insert(postData)
-
-         if (error) throw error
+         const result = await createPostApi(postData)
          return result
       },
       onSuccess: () => {

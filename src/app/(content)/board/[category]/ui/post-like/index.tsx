@@ -1,3 +1,5 @@
+'use client'
+
 import LikeButton from './like-button'
 import LikeUserList from './like-user-list'
 

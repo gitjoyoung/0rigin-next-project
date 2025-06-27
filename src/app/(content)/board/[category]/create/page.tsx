@@ -1,9 +1,12 @@
-import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
-
+import { getCategoryByName } from '@/entities/post'
+import { getProfile } from '@/entities/profile/api/profile-api'
+import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import BoardPostForm from './ui'
 
 export const metadata: Metadata = {
    title: '0rigin 글쓰기',
+   description: '0rigin 글쓰기 페이지입니다.',
 }
 
 interface IParams {
@@ -13,43 +16,22 @@ interface IParams {
 }
 
 export default async function Create({ params }: IParams) {
-   const { category } = await params
+   const { category } = params
 
-   // 'all'인 경우 바로 리다이렉트 (DB 조회 불필요)
-   if (category === 'all') {
-      redirect('/board/all')
+   // 'latest'인 경우 바로 리다이렉트 (글쓰기는 특정 카테고리에서만 가능)
+   if (category === 'latest') {
+      redirect('/board/latest')
    }
 
-   const supabase = await SupabaseServerClient()
-
-   // 실제 카테고리가 존재하는지 확인
-   const { data: categoryData, error } = await supabase
-      .from('categories')
-      .select('slug')
-      .eq('slug', category)
-      .eq('is_active', true)
-      .single()
-   if (error || !categoryData) {
-      redirect('/board/all')
-   }
-   const { data: userData } = await supabase.auth.getUser()
-   const { user } = userData
-
-   let userProfile = null
-   if (user?.id) {
-      const { data: profile } = await supabase
-         .from('profile')
-         .select('*')
-         .eq('id', user.id)
-         .single()
-      userProfile = profile
+   // 카테고리 존재 확인
+   const categoryData = await getCategoryByName(category)
+   if (!categoryData) {
+      redirect('/board/latest')
    }
 
-   return (
-      <BoardPostForm
-         category={category}
-         user={user}
-         userProfile={userProfile}
-      />
-   )
+   // 프로필 조회 (로그인된 경우)
+   const userProfile = await getProfile().catch(() => null)
+   const isLoggedIn = !!userProfile
+
+   return <BoardPostForm category={category} userProfile={isLoggedIn} />
 }

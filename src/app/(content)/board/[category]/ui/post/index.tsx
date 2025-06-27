@@ -1,5 +1,6 @@
 'use client'
 
+import type { Post } from '@/entities/post/types'
 import {
    Table,
    TableBody,
@@ -12,10 +13,9 @@ import formatDate from '@/shared/utils/validators/board/format-date'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import type { IPost, IPostListItem } from '../../types/post-type'
 
 interface Props {
-   postData: IPost[]
+   postData: Post[]
 }
 
 export default function Post({ postData }: Props) {
@@ -47,7 +47,7 @@ export default function Post({ postData }: Props) {
             </TableRow>
          </TableHeader>
          <TableBody>
-            {postData.map((item: IPostListItem) => {
+            {postData.map((item: Post) => {
                return (
                   <TableRow
                      key={item.id}
@@ -58,17 +58,12 @@ export default function Post({ postData }: Props) {
                      </TableCell>
                      <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
                         <Link
-                           href={`/board/${item.category || 'general'}/${item.id || 0}?page=${page}`}
+                           href={`/board/${item.category_id || 'latest'}/${item.id || 0}?page=${page}`}
                            className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden"
                         >
                            <h2 className="truncate font-medium w-full">
                               {item.title || '제목 없음'}
                            </h2>
-                           {item.comments && item.comments > 0 && (
-                              <span className="text-muted-foreground whitespace-nowrap flex-shrink-0">
-                                 [{item.comments}]
-                              </span>
-                           )}
                         </Link>
                      </TableCell>
 
@@ -79,10 +74,10 @@ export default function Post({ postData }: Props) {
                         {formatDate(item.created_at)}
                      </TableCell>
                      <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
-                        {formatValue(item.view_count || 0)}
+                        {formatValue(0)} {/* view_count는 아직 구현되지 않음 */}
                      </TableCell>
                      <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
-                        {formatValue(item.likes || 0)}
+                        {formatValue(0)} {/* likes는 아직 구현되지 않음 */}
                      </TableCell>
                   </TableRow>
                )

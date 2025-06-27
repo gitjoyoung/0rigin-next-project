@@ -1,88 +1,40 @@
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+'use client'
+
 import { useQuery } from '@tanstack/react-query'
-import { PostLike } from '../types'
 
-const supabase = SupabaseBrowserClient()
-
-interface SupabaseLikeResponse {
-   user_id: string | null
-   anon_key: string | null
-   users: {
-      id: string
-      nickname: string
-   } | null
+// 클라이언트에서 사용할 좋아요 수 조회 함수
+async function getPostLikeCountApi(postId: string): Promise<number> {
+   const response = await fetch(`/api/post/${postId}/likes?type=count`)
+   if (!response.ok) {
+      throw new Error('좋아요 수를 불러올 수 없습니다.')
+   }
+   const data = await response.json()
+   return data.count
 }
 
-// 게시물의 좋아요 수를 가져오는 함수
-const fetchPostLikes = async (postId: string): Promise<number> => {
-   const { count, error } = await supabase
-      .from('post_likes')
-      .select('*', { count: 'exact', head: true })
-      .eq('post_id', postId)
-      .is('deleted_at', null)
-
-   if (error) {
-      console.error('좋아요 정보를 가져오는 중 오류 발생:', error)
-      return 0
+// 클라이언트에서 사용할 좋아요한 사용자 목록 조회 함수
+async function getPostLikeUsersApi(postId: string): Promise<any[]> {
+   const response = await fetch(`/api/post/${postId}/likes?type=users`)
+   if (!response.ok) {
+      throw new Error('좋아요한 사용자 목록을 불러올 수 없습니다.')
    }
-
-   return count || 0
-}
-
-// 좋아요한 사용자들의 정보를 가져오는 함수
-const fetchLikedUsers = async (postId: string): Promise<PostLike[]> => {
-   const { data, error } = await supabase
-      .from('post_likes')
-      .select(
-         `
-         user_id,
-         anon_key,
-         users:user_id (
-            id,
-            nickname
-         )
-      `,
-      )
-      .eq('post_id', postId)
-      .is('deleted_at', null)
-      .order('created_at', { ascending: false })
-
-   if (error || !data) {
-      return []
-   }
-
-   if (data.length === 0) {
-      return []
-   }
-
-   return (data as unknown as SupabaseLikeResponse[]).map((like) => ({
-      user_id: like.user_id,
-      anon_key: like.anon_key,
-      nickname: like.user_id ? like.users?.nickname || '익명' : '익명',
-      users: like.users
-         ? {
-              id: like.users.id,
-              raw_user_meta_data: {
-                 name: like.users.nickname,
-              },
-           }
-         : undefined,
-   }))
+   const data = await response.json()
+   return data.users
 }
 
 export function usePostLikes(postId: string) {
-   const { data: reactionCounts = { likes: 0 } } = useQuery({
+   const { data: likesCount = 0 } = useQuery({
       queryKey: ['postLikes', postId],
-      queryFn: () => fetchPostLikes(postId).then((likes) => ({ likes })),
+      queryFn: () => getPostLikeCountApi(postId),
    })
 
    const { data: likedUsers = [] } = useQuery({
       queryKey: ['likedUsers', postId],
-      queryFn: () => fetchLikedUsers(postId),
+      queryFn: () => getPostLikeUsersApi(postId),
    })
 
    return {
-      likesCount: reactionCounts.likes,
+      likesCount,
       likedUsers,
    }
 }

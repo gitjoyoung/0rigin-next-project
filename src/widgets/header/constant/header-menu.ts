@@ -13,7 +13,7 @@ import {
    PlusSquare,
 } from 'lucide-react'
 
-import { ROUTE_BOARD, ROUTE_QUIZ, ROUTE_UTILS } from '@/constants/pathname'
+import { ROUTE_QUIZ, ROUTE_UTILS } from '@/constants/pathname'
 
 export interface SubMenuItem {
    id: string
@@ -76,9 +76,9 @@ export const HEADER_NAV_LIST: MenuItem[] = [
             title: '최신글 게시판',
             items: [
                {
-                  id: 'all',
+                  id: 'lasted',
                   title: '최신글 게시판',
-                  url: ROUTE_BOARD,
+                  url: '/board/lasted',
                   icon: Newspaper,
                },
             ],
