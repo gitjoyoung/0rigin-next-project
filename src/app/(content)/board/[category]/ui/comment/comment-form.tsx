@@ -1,6 +1,6 @@
 'use client'
 
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+import type { CommentCreate } from '@/entities/comment'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -12,20 +12,13 @@ import {
 import { Input } from '@/shared/shadcn/ui/input'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import type { IComment } from '../../types/comment-type'
 
 interface Props {
    postId: string
    refetch: () => void
-}
-
-type CommentFormData = {
-   content: string
-   nickname: string
-   password: string
 }
 
 // 폼용 간소화된 commentSchema 생성
@@ -41,10 +34,23 @@ const formCommentSchema = z.object({
          '비밀번호는 문자, 숫자만 가능합니다',
       ),
 })
-const supabase = SupabaseBrowserClient()
+
+type CommentFormData = z.infer<typeof formCommentSchema>
+
+// 클라이언트에서 사용할 댓글 생성 함수
+async function createCommentApi(data: CommentCreate) {
+   const response = await fetch('/api/comment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+   })
+   if (!response.ok) {
+      throw new Error('댓글 작성에 실패했습니다.')
+   }
+   return response.json()
+}
 
 export default function CommentForm({ postId, refetch }: Props) {
-   const [isSubmitting, setIsSubmitting] = useState(false)
    const form = useForm<CommentFormData>({
       resolver: zodResolver(formCommentSchema),
       defaultValues: {
@@ -54,42 +60,33 @@ export default function CommentForm({ postId, refetch }: Props) {
       },
    })
 
-   const onSubmit = async (data: CommentFormData) => {
-      if (isSubmitting) return
+   const mutation = useMutation({
+      mutationFn: createCommentApi,
+      onSuccess: () => {
+         form.reset()
+         refetch()
+      },
+      onError: (error) => {
+         console.error('댓글 작성 오류:', error)
+         alert('댓글 작성에 실패했습니다.')
+      },
+   })
 
-      setIsSubmitting(true)
-      const commentObject: Partial<IComment> = {
+   const onSubmit = (data: CommentFormData) => {
+      const commentData: CommentCreate = {
          post_id: Number(postId),
-         parent_id: null,
-         content: data.content,
-         author_id: null,
          nickname: data.nickname,
+         content: data.content,
          password: data.password,
-         is_approved: true,
-         is_edited: false,
          is_guest: true,
          depth: 0,
       }
 
-      try {
-         const { error } = await supabase.from('comments').insert(commentObject)
-         if (error) {
-            alert(`댓글 오류 500`)
-         } else {
-            form.reset({
-               content: '',
-               nickname: data.nickname,
-               password: data.password,
-            })
-            refetch()
-         }
-      } finally {
-         setIsSubmitting(false)
-      }
+      mutation.mutate(commentData)
    }
 
    const handleKeyDown = (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter' && !e.shiftKey && !isSubmitting) {
+      if (e.key === 'Enter' && !e.shiftKey && !mutation.isPending) {
          e.preventDefault()
          form.handleSubmit(onSubmit)()
       }
@@ -160,8 +157,8 @@ export default function CommentForm({ postId, refetch }: Props) {
                )}
             />
 
-            <Button type="submit" disabled={isSubmitting}>
-               {isSubmitting ? '제출 중...' : '댓글달기'}
+            <Button type="submit" disabled={mutation.isPending}>
+               {mutation.isPending ? '제출 중...' : '댓글달기'}
             </Button>
          </form>
       </Form>
