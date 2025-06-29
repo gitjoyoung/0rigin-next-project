@@ -8,7 +8,7 @@ export const metadata: Metadata = {
    title: '이미지 변환기',
    description: '이미지 형식을 변환하고 압축할 수 있는 도구입니다.',
    robots: {
-      index: false,
+      index: true,
       follow: true,
    },
 }
