@@ -9,6 +9,7 @@ export default function PostView({
    content,
    id,
 }: Post) {
+   console.log(content)
    return (
       <section className="flex flex-col gap-3 ">
          {/* 글제목 */}

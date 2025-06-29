@@ -2,7 +2,7 @@
 
 import { Skeleton } from '@/shared/shadcn/ui/skeleton'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import rehypeSanitize from 'rehype-sanitize'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
@@ -21,19 +21,7 @@ const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
 })
 
 export default function MarkDownViewer({ content }: { content: string }) {
-   const [markdownText, setMarkdownText] = useState<string>('')
-
-   // 디버깅용 코드
-   useEffect(() => {
-      const isString = typeof content === 'string'
-      let markdownContent = ''
-      if (isString) {
-         markdownContent = content as string
-      } else if (content && typeof content === 'object') {
-         markdownContent = content || ''
-      }
-      setMarkdownText(markdownContent)
-   }, [content])
+   const [markdownText, setMarkdownText] = useState<string>(content)
 
    return (
       <div style={{ width: '100%', overflowX: 'auto' }}>
