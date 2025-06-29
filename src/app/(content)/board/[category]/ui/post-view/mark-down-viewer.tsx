@@ -49,12 +49,10 @@ export default function MarkDownViewer({ content }: { content: string }) {
             remarkPlugins={[remarkBreaks, remarkGfm]}
             rehypePlugins={[rehypeSanitize]}
             className="prose dark:prose-invert max-w-none font-dos [&_*]:font-dos 
-                      [&_table]:w-full [&_table]:table-fixed [&_table]:border-collapse
                       [&_th]:border [&_th]:border-gray-300 [&_th]:dark:border-gray-600
                       [&_th]:px-2 [&_th]:py-2 [&_th]:bg-gray-100 [&_th]:dark:bg-gray-800
                       [&_th]:text-gray-900 [&_th]:dark:text-gray-100
                       [&_td]:border [&_td]:border-gray-300 [&_td]:dark:border-gray-600
-                      [&_td]:px-2 [&_td]:py-2 [&_td]:break-words [&_td]:max-w-0
                       [&_td]:bg-white [&_td]:dark:bg-gray-900
                       [&_td]:text-gray-900 [&_td]:dark:text-gray-100"
          />

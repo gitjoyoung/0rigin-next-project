@@ -87,8 +87,8 @@ export default function CommentItem({
    return (
       <div
          className={cn(
-            'group relative p-3 rounded-md transition-all duration-200 hover:bg-muted/30 cursor-pointer',
-            isSelected && 'shadow-[0_0_0_2px_hsl(var(--primary))]',
+            'group relative py-2 px-1  border border-transparent transition-all duration-200 hover:bg-muted/30 cursor-pointer',
+            isSelected && ' border-gray-700 dark:border-gray-200',
          )}
          onClick={onSelect}
       >
@@ -107,7 +107,7 @@ export default function CommentItem({
             </div>
 
             {/* 댓글 내용 */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 relative">
                {/* 헤더 */}
                <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
@@ -122,7 +122,7 @@ export default function CommentItem({
 
                   {/* 수정/삭제 버튼 (선택되었을 때만 표시) */}
                   {isSelected && (
-                     <div className="flex gap-1">
+                     <div className="flex gap-3 px-2 absolute right-0 top-0">
                         <Button
                            variant="ghost"
                            size="sm"
@@ -130,7 +130,7 @@ export default function CommentItem({
                               e.stopPropagation()
                               setIsEditing(isEditing ? null : commentData.id)
                            }}
-                           className="h-6 px-2 text-xs"
+                           className="h-4 w-4 px-2 text-xs"
                         >
                            <Edit3 className="w-3 h-3" />
                         </Button>
@@ -142,7 +142,7 @@ export default function CommentItem({
                               handleDelete()
                            }}
                            disabled={deleteMutation.isPending}
-                           className="h-6 px-2 text-xs text-destructive hover:text-destructive"
+                           className="h-4 w-4 px-2 text-xs"
                         >
                            <Trash2 className="w-3 h-3" />
                         </Button>
