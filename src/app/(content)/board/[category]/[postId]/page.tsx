@@ -74,7 +74,7 @@ export default async function Page({ params }: IParams) {
    })
 
    return (
-      <section className="flex flex-col gap-4 my-2">
+      <section className="flex flex-col gap-4 my-2 px-2">
          <BreadcrumbWidget />
          <PostView postData={postData} />
          <PostLike postId={postId} />
