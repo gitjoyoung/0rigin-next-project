@@ -1,4 +1,160 @@
-// Post API - 모든 API 함수들을 export
-export * from './like-api'
-export * from './post-api'
-export * from './search-api'
+import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
+import type {
+   Post,
+   PostCreate,
+   PostDetail,
+   PostListResponse,
+   PostQueryParams,
+   PostUpdate,
+} from '../types'
+
+// 게시글 목록 조회
+export async function getPosts(
+   params: PostQueryParams,
+): Promise<PostListResponse> {
+   const { category, page = 1, limit = 20, search, author_id } = params
+   const supabase = await SupabaseServerClient()
+   const offset = (page - 1) * limit
+
+   let query = supabase.from('posts').select('*', { count: 'exact' })
+
+   // 카테고리 필터링 - category가 있으면 직접 사용
+   if (category) {
+      query = query.eq('category', category)
+   }
+
+   if (search) {
+      query = query.or(`title.ilike.%${search}%,content.ilike.%${search}%`)
+   }
+
+   if (author_id) {
+      query = query.eq('author_id', author_id)
+   }
+
+   const { data, error, count } = await query
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+   if (error) throw error
+
+   const totalPages = Math.ceil((count || 0) / limit)
+
+   return {
+      items: data as Post[],
+      total: count || 0,
+      page,
+      limit,
+      totalPages,
+   }
+}
+
+// 카테고리별 베스트 게시글 조회 (조회수 기준)
+export async function getBestPosts(params: PostQueryParams): Promise<Post[]> {
+   const { category, limit = 5 } = params
+   const supabase = await SupabaseServerClient()
+
+   let query = supabase
+      .from('posts')
+      .select('*')
+      .order('view_count', { ascending: false })
+      .limit(limit)
+
+   if (category) {
+      query = query.eq('category', category)
+   }
+
+   const { data, error } = await query
+
+   if (error) throw error
+
+   return data as Post[]
+}
+
+// 게시글 상세 조회
+export async function getPostById(
+   id: number | string,
+): Promise<PostDetail | null> {
+   const supabase = await SupabaseServerClient()
+
+   const { data: post, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+   if (error || !post) return null
+
+   // 조회수 증가
+   await incrementPostView(id)
+
+   return post as PostDetail
+}
+
+// 게시글 생성
+export async function createPost(data: PostCreate): Promise<Post> {
+   const supabase = await SupabaseServerClient()
+
+   const { data: post, error } = await supabase
+      .from('posts')
+      .insert(data)
+      .select()
+      .single()
+
+   if (error) throw error
+   return post as Post
+}
+
+// 게시글 수정
+export async function updatePost(
+   id: number | string,
+   data: PostUpdate,
+): Promise<Post> {
+   const supabase = await SupabaseServerClient()
+
+   const { data: post, error } = await supabase
+      .from('posts')
+      .update(data)
+      .eq('id', id)
+      .select()
+      .single()
+
+   if (error) throw error
+   return post as Post
+}
+
+// 게시글 삭제
+export async function deletePost(id: number | string): Promise<void> {
+   const supabase = await SupabaseServerClient()
+
+   const { error } = await supabase.from('posts').delete().eq('id', id)
+   if (error) throw error
+}
+
+// 게시글 조회수 증가
+export async function incrementPostView(
+   postId: number | string,
+): Promise<void> {
+   const supabase = await SupabaseServerClient()
+
+   const { error } = await supabase.rpc('increment_view_count', {
+      post_id: Number(postId),
+   })
+
+   if (error) {
+      console.error('조회수 증가 실패:', error)
+   }
+}
+
+// 사용자별 게시글 조회
+export async function getPostsByUserId(userId: string): Promise<Post[]> {
+   const supabase = await SupabaseServerClient()
+
+   const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('author_id', userId)
+      .order('created_at', { ascending: false })
+
+   if (error) throw error
+   return (posts || []) as Post[]
+}
