@@ -1,7 +1,4 @@
-import {
-   deleteComment,
-   updateComment,
-} from '@/entities/comment/api/comment-api'
+import { deleteComment, updateComment } from '@/entities/comment'
 import { NextRequest, NextResponse } from 'next/server'
 
 // PUT /api/comment/[id]

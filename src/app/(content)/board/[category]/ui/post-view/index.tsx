@@ -10,7 +10,7 @@ export default function PostView({
    id,
 }: Post) {
    return (
-      <section>
+      <section className="flex flex-col gap-3 ">
          {/* 글제목 */}
          <PostHeader
             title={title}
@@ -20,10 +20,9 @@ export default function PostView({
             views={0}
             id={id}
          />
-
          {/* 글내용 마크다운 뷰어 */}
-         <div className="my-10 min-h-[200px] px-1">
-            <MarkDownViewer content={content} />
+         <div className="min-h-[200px]">
+            <MarkDownViewer content={content.markdown} />
          </div>
          {/* 싫어요,좋아요  버튼 */}
       </section>

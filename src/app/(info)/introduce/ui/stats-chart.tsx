@@ -7,6 +7,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
+import dayjs from 'dayjs'
 import * as React from 'react'
 import {
    Bar,
@@ -188,11 +189,7 @@ export default function StatsChart() {
                         tickMargin={8}
                         minTickGap={32}
                         tickFormatter={(value) => {
-                           const date = new Date(value)
-                           return date.toLocaleDateString('ko-KR', {
-                              month: 'short',
-                              day: 'numeric',
-                           })
+                           return dayjs(value).format('YYYY-MM-DD')
                         }}
                      />
                      <Tooltip
@@ -202,11 +199,7 @@ export default function StatsChart() {
                            borderRadius: '0.5rem',
                         }}
                         labelFormatter={(value) => {
-                           return new Date(value).toLocaleDateString('ko-KR', {
-                              month: 'long',
-                              day: 'numeric',
-                              year: 'numeric',
-                           })
+                           return dayjs(value).format('YYYY-MM-DD')
                         }}
                         formatter={(value) => [
                            value,

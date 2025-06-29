@@ -6,6 +6,7 @@ import { Button } from '@/shared/shadcn/ui/button'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
 import { cn } from '@/shared/utils/cn'
 import { useMutation } from '@tanstack/react-query'
+import dayjs from 'dayjs'
 import { Edit3, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -115,15 +116,7 @@ export default function CommentItem({
                      </span>
 
                      <span className="text-xs text-muted-foreground">
-                        {new Date(commentData.created_at).toLocaleDateString(
-                           'ko-KR',
-                           {
-                              month: 'short',
-                              day: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                           },
-                        )}
+                        {dayjs(commentData.created_at).format('YYYY-MM-DD')}
                      </span>
                   </div>
 

@@ -1,4 +1,4 @@
-import { createPost } from '@/entities/post/api/post-api'
+import { createPost } from '@/entities/post'
 import { NextRequest, NextResponse } from 'next/server'
 
 // POST /api/post

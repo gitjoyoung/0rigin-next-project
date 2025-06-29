@@ -1,8 +1,8 @@
-import type { IStats } from '../model/ticker-types'
+import type { DailyStats } from '@/entities/stats'
 import TickerItem from './ticker-item'
 
 interface TickerListProps {
-   statsData?: Partial<IStats>
+   statsData?: Partial<DailyStats>
 }
 
 export default function TickerList({ statsData }: TickerListProps) {

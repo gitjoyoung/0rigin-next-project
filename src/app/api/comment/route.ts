@@ -1,4 +1,4 @@
-import { createComment, getComments } from '@/entities/comment/api/comment-api'
+import { createComment, getComments } from '@/entities/comment'
 import { NextRequest, NextResponse } from 'next/server'
 
 // GET /api/comment?postId={postId}

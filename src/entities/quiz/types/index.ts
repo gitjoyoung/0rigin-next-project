@@ -1,4 +1,4 @@
-// 퀴즈 메인 테이블 타입
+// 퀴즈 메인 테이블 타입 (DB 스키마 기반)
 export interface Quiz {
    id: number
    created_at: string
@@ -9,10 +9,9 @@ export interface Quiz {
    is_public: boolean
    time_limit?: number
    pass_score: number
-   question_count?: number
 }
 
-// 퀴즈 문제 테이블 타입
+// 퀴즈 문제 테이블 타입 (DB 스키마 기반)
 export interface QuizQuestion {
    id: number
    quiz_id: number
@@ -31,7 +30,7 @@ export interface QuizQuestion {
    correct_answer: number
 }
 
-// 퀴즈 응시 결과 타입
+// 퀴즈 응시 결과 타입 (DB 스키마 기반)
 export interface QuizAttempt {
    id: number
    quiz_id: number
@@ -39,18 +38,18 @@ export interface QuizAttempt {
    started_at: string
    completed_at?: string
    score?: number
-   total_questions: number
+   total_questions?: number
    correct_answers?: number
    passed?: boolean
 }
 
-// 응시자의 문제별 답변 기록 타입
+// 응시자의 문제별 답변 기록 타입 (DB 스키마 기반)
 export interface QuizAnswer {
    id: number
    attempt_id: number
    question_id: number
    selected_option: number
-   is_correct: boolean
+   is_correct?: boolean
    time_spent?: number
 }
 
@@ -91,36 +90,6 @@ export interface SubmitQuizAnswerRequest {
    attempt_id: number
    question_id: number
    selected_option: number
+   is_correct?: boolean
    time_spent?: number
-}
-
-// 퀴즈 완료 요청 타입
-export interface CompleteQuizAttemptRequest {
-   attempt_id: number
-}
-
-// 퀴즈 검색 결과 타입
-export interface QuizSearchResult {
-   id: number
-   title: string
-   description?: string
-   created_at: string
-   author_id: string
-   is_public: boolean
-   time_limit?: number
-   pass_score: number
-   question_count?: number
-   thumbnail?: string
-}
-
-// 퀴즈 상세 정보 타입 (문제 포함)
-export interface QuizDetail extends Quiz {
-   questions: QuizQuestion[]
-   question_count: number
-}
-
-// 퀴즈 응시 상세 정보 타입
-export interface QuizAttemptDetail extends QuizAttempt {
-   answers: QuizAnswer[]
-   quiz: Quiz
 }

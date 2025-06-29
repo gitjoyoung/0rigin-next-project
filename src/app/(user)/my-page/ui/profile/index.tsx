@@ -28,6 +28,7 @@ import {
    SelectValue,
 } from '@/shared/shadcn/ui/select'
 import { LoadingSpinner } from '@/shared/ui/spinner/loading-spinner'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 import { ChangePasswordModal } from './change-password-modal'
 import { useProfile } from './hooks/use-profile'
@@ -38,9 +39,6 @@ export default function Profile() {
    const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
       useState(false)
    const [editingField, setEditingField] = useState<string | null>(null)
-
-   console.log(profile, 'profile')
-   console.log(form.getValues(), 'form')
 
    if (error) {
       return (
@@ -55,7 +53,6 @@ export default function Profile() {
       return (
          <div className="flex flex-col items-center justify-center mx-auto">
             <LoadingSpinner />
-            <h1 className="text-2xl font-bold">로딩중... </h1>
          </div>
       )
    }
@@ -184,9 +181,9 @@ export default function Profile() {
                               <FormLabel>가입일</FormLabel>
                               <FormControl>
                                  <Input
-                                    value={new Date(
-                                       profile.created_at,
-                                    ).toLocaleString()}
+                                    value={dayjs(profile.created_at).format(
+                                       'YYYY-MM-DD',
+                                    )}
                                     disabled
                                  />
                               </FormControl>

@@ -6,6 +6,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
+import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -57,9 +58,9 @@ export default function BoardSearchResult({
                                     <span>조회수: {data.view_count || 0}</span>
                                     <span>
                                        작성일:{' '}
-                                       {new Date(
-                                          data.created_at,
-                                       ).toLocaleDateString()}
+                                       {dayjs(data.created_at).format(
+                                          'YYYY-MM-DD',
+                                       )}
                                     </span>
                                  </div>
                               </div>

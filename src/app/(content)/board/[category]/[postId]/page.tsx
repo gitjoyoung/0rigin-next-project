@@ -2,14 +2,19 @@ import { ROUTE_BOARD } from '@/constants/pathname'
 import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 
-import { getCategoryByName, getPostById, getPosts } from '@/entities/post'
-import BreadcrumbWidget from '@/widgets/breadcrumb'
-import BoardFooter from '../ui/board-footer'
-import BoardHeader from '../ui/board-header'
+import { getCategoryBySlug } from '@/entities/category'
+import { getPostById, getPosts } from '@/entities/post'
+import BreadcrumbWidget from '@/widgets/bread-crumb'
+import BoardFooter from '../ui/board-common/board-footer'
+import BoardHeader from '../ui/board-common/board-header'
 import Comment from '../ui/comment'
 import Post from '../ui/post'
 import PostLike from '../ui/post-like'
 import PostView from '../ui/post-view'
+
+// 정적 생성을 위한 설정
+export const dynamic = 'force-static'
+export const revalidate = 300 // 5분마다 재검증
 
 interface IParams {
    params: {
@@ -49,7 +54,7 @@ export default async function Page({ params }: IParams) {
    }
 
    // 카테고리 정보 조회 (DB에서 조회)
-   const categoryInfo = await getCategoryByName(category)
+   const categoryInfo = await getCategoryBySlug(category)
 
    if (!categoryInfo) {
       redirect('/board/latest')
@@ -78,11 +83,11 @@ export default async function Page({ params }: IParams) {
          <PostView {...readData} />
          <PostLike postId={postId} />
          <Comment postId={postId} />
-         <div>
+         <div className="flex flex-col gap-2">
             <BoardHeader category={categoryInfo} />
             <Post postData={filteredPosts} />
          </div>
-         <BoardFooter category={category} />
+         <BoardFooter category={categoryInfo} />
       </section>
    )
 }

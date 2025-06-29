@@ -1,4 +1,3 @@
-import type { Comment } from '@/entities/comment'
 import type { User } from '@supabase/supabase-js'
 
 // 게시글 기본 타입 (DB 스키마 기반 - 모든 필드 명시)
@@ -22,6 +21,9 @@ export interface Post {
    category_id: string | null // uuid (외래키, nullable)
    status: 'published' | 'draft' | 'private' // text (default 'published')
    category: string // text (nullable)
+   // 집계 필드 (옵셔널)
+   likes_count?: number
+   comments_count?: number
 }
 
 // 게시글 생성 요청 타입
@@ -79,9 +81,8 @@ export interface PostListResponse {
    totalPages: number
 }
 
-// 게시글 상세 정보 타입 (댓글 포함)
+// 게시글 상세 정보 타입
 export interface PostDetail extends Post {
-   comments: Comment[]
    author?: {
       id: string
       username: string
@@ -111,28 +112,6 @@ export interface PostStats {
    total_likes: number
    total_views: number
    total_comments: number
-}
-
-// 게시글 카테고리 타입 (DB 스키마 기반 - 모든 필드 명시)
-export interface PostCategory {
-   id: string // uuid
-   name: string // text
-   slug: string // text
-   description: string // text
-   icon: string // text
-   order_index: number // integer
-   is_active: boolean // boolean
-   created_at: string // timestamp with time zone
-   updated_at: string // timestamp with time zone
-   post_count: number // 게시글 수 (집계용)
-}
-
-// 게시글 좋아요 타입
-export interface PostLike {
-   id: string
-   post_id: number // BIGINT (posts.id 참조)
-   user_id: string
-   created_at: string
 }
 
 // 게시글 조회수 타입 (DB 스키마 기반 - 모든 필드 명시)

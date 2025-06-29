@@ -9,14 +9,12 @@ interface UseUserResponse {
 
 export function useUser() {
    return useQuery<UseUserResponse>({
-      queryKey: ['auth', 'user'],
+      queryKey: ['user'],
       queryFn: async () => {
          const response = await fetch('/api/auth/user')
-
          if (!response.ok) {
             throw new Error('사용자 정보를 가져올 수 없습니다.')
          }
-
          return response.json()
       },
       staleTime: 5 * 60 * 1000, // 5분

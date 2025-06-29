@@ -1,9 +1,9 @@
 'use client'
 
+import type { DailyStats } from '@/entities/stats'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import { useRef } from 'react'
-import type { IIntroduceStats } from '../model/types'
 import StatsChart from './stats-chart'
 
 const INTRODUCE_TEXT = {
@@ -87,11 +87,7 @@ function Card({
    )
 }
 
-export default function Introduce({
-   stats,
-}: {
-   stats: Partial<IIntroduceStats>
-}) {
+export default function Introduce({ stats }: { stats: Partial<DailyStats> }) {
    const { scrollYProgress } = useScroll()
    const scaleX = useSpring(scrollYProgress, {
       ...springConfig,

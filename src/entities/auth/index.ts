@@ -1,6 +1,4 @@
 // Auth Entity - Feature-Sliced Design Pattern
-export * from './api/get-category-info'
-export * from './api/get-post-info'
 export * from './api/get-user'
 export * from './api/get-user-server'
 export * from './api/google'

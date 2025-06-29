@@ -1,5 +1,5 @@
-import { getUser } from '@/entities/auth/api/get-user'
-import { getPostsByUserId } from '@/entities/post/api/post-api'
+import { getUser } from '@/entities/auth'
+import { getPostsByUserId } from '@/entities/post'
 import { NextResponse } from 'next/server'
 
 export async function GET() {

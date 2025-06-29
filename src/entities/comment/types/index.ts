@@ -53,3 +53,13 @@ export interface CommentStats {
    comments_this_month: number
    avg_comments_per_post: number
 }
+
+// 사용자 댓글 조회용 타입 (게시글 정보 포함)
+export interface UserComment {
+   id: number
+   content: string
+   created_at: string
+   post_id: number
+   post_title: string
+   post_category: string | null
+}

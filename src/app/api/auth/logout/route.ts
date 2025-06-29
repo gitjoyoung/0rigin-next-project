@@ -1,5 +1,5 @@
 // src/app/api/logout/route.ts
-import { signOut } from '@/entities/auth/api/sign-out'
+import { signOut } from '@/entities/auth'
 import { NextResponse } from 'next/server'
 
 const getSupabaseProjectRef = () => {

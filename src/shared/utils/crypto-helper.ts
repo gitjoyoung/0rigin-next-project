@@ -1,11 +1,6 @@
 import CryptoJS from 'crypto-js'
 
-/**
- * 암호화와 복호화를 위한 비밀 키
- * 실제 프로젝트에서는 환경 변수로 관리하는 것이 좋습니다.
- * 예: process.env.CRYPTO_SECRET_KEY
- */
-const SECRET_KEY = process.env.CRYPTO_SECRET_KEY
+const SECRET_KEY = 'default-secret-key'
 
 /**
  * 문자열을 암호화합니다.

@@ -1,3 +1,5 @@
+const dayjs = require('dayjs')
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
    siteUrl: 'https://0rigin.space',
@@ -80,7 +82,7 @@ module.exports = {
          loc: page.path,
          changefreq: page.changefreq,
          priority: page.priority,
-         lastmod: new Date().toISOString(),
+         lastmod: dayjs().toISOString(),
       }))
    },
 
@@ -181,7 +183,7 @@ module.exports = {
             loc: path,
             changefreq: 'weekly',
             priority: 0.6,
-            lastmod: new Date().toISOString(),
+            lastmod: dayjs().toISOString(),
          }
       }
 
@@ -190,7 +192,7 @@ module.exports = {
          loc: path,
          changefreq: config.changefreq,
          priority: config.priority,
-         lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+         lastmod: config.autoLastmod ? dayjs().toISOString() : undefined,
       }
    },
 

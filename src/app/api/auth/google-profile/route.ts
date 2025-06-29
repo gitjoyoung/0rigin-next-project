@@ -1,7 +1,4 @@
-import {
-   createGoogleProfile,
-   type GoogleProfileParams,
-} from '@/entities/auth/api/google-profile'
+import { createGoogleProfile, type GoogleProfileParams } from '@/entities/auth'
 import { decryptObject } from '@/shared/utils/crypto-helper'
 import { NextRequest, NextResponse } from 'next/server'
 

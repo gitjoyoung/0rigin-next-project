@@ -1,3 +1,4 @@
+const dayjs = require('dayjs')
 const fs = require('fs')
 const path = require('path')
 
@@ -173,7 +174,7 @@ async function generatePathConstants() {
 
       const fileContent = [
          '// 자동 생성된 경로 상수 - 수정하지 마세요',
-         `// 생성 시간: ${new Date().toISOString()}`,
+         `// 생성 시간: ${dayjs().format('YYYY-MM-DD HH:mm:ss')}`,
          '// 동적 라우트([param])는 제외됨',
          '',
          ...constants,

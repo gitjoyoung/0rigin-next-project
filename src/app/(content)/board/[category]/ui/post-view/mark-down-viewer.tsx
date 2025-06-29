@@ -6,12 +6,11 @@ import { useEffect, useState } from 'react'
 import rehypeSanitize from 'rehype-sanitize'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
-import { IPostContent } from '../../types/post-type'
 
 const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
    ssr: false,
    loading: () => (
-      <div className="space-y-4">
+      <div className="flex flex-col gap-2">
          <Skeleton className="h-4 w-3/4" />
          <Skeleton className="h-4 w-full" />
          <Skeleton className="h-4 w-5/6" />
@@ -21,73 +20,43 @@ const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
    ),
 })
 
-// 테스트용 예시 마크다운
-const EXAMPLE_MARKDOWN = `
-# 마크다운 예시
-
-이것은 테스트용 마크다운 예시입니다.
-
-## 지원하는 기능
-- 목록 항목
-- **굵은 글씨**
-- *기울임체*
-
-> 인용구도 표시됩니다.
-
-\`\`\`javascript
-// 코드 블록도 지원합니다
-console.log('Hello, world!');
-\`\`\`
-`
-
-export default function MarkDownViewer({
-   content,
-}: {
-   content: IPostContent | string
-}) {
+export default function MarkDownViewer({ content }: { content: string }) {
    const [markdownText, setMarkdownText] = useState<string>('')
 
    // 디버깅용 코드
    useEffect(() => {
-      console.log('전체 content 객체:', content)
-
-      // content가 문자열인지 객체인지 확인
       const isString = typeof content === 'string'
-      console.log('content가 문자열입니까?', isString)
-
       let markdownContent = ''
-
       if (isString) {
-         // content가 문자열인 경우 직접 사용
          markdownContent = content as string
       } else if (content && typeof content === 'object') {
-         // content가 객체인 경우 markdown 속성 사용
-         markdownContent = (content as IPostContent)?.markdown || ''
+         markdownContent = content || ''
       }
-
-      console.log('사용할 마크다운 내용:', markdownContent)
-      console.log('내용 타입:', typeof markdownContent)
-      console.log('내용 길이:', markdownContent?.length || 0)
-
-      // 마크다운 텍스트 설정
       setMarkdownText(markdownContent)
    }, [content])
 
-   // 마크다운이 비어있는 경우 예시 텍스트 사용
-   const displayMarkdown = markdownText || EXAMPLE_MARKDOWN
-
    return (
-      <div className="my-5 px-3 min-h-[150px]">
+      <div style={{ width: '100%', overflowX: 'auto' }}>
          <MarkdownPreview
             style={{
                backgroundColor: 'transparent',
                color: 'var(--foreground)',
                fontFamily: 'inherit',
+               maxWidth: '100%',
+               width: '100%',
             }}
-            source={displayMarkdown}
+            source={markdownText}
             remarkPlugins={[remarkBreaks, remarkGfm]}
             rehypePlugins={[rehypeSanitize]}
-            className="prose dark:prose-invert max-w-none font-dos [&_*]:font-dos"
+            className="prose dark:prose-invert max-w-none font-dos [&_*]:font-dos 
+                      [&_table]:w-full [&_table]:table-fixed [&_table]:border-collapse
+                      [&_th]:border [&_th]:border-gray-300 [&_th]:dark:border-gray-600
+                      [&_th]:px-2 [&_th]:py-2 [&_th]:bg-gray-100 [&_th]:dark:bg-gray-800
+                      [&_th]:text-gray-900 [&_th]:dark:text-gray-100
+                      [&_td]:border [&_td]:border-gray-300 [&_td]:dark:border-gray-600
+                      [&_td]:px-2 [&_td]:py-2 [&_td]:break-words [&_td]:max-w-0
+                      [&_td]:bg-white [&_td]:dark:bg-gray-900
+                      [&_td]:text-gray-900 [&_td]:dark:text-gray-100"
          />
       </div>
    )

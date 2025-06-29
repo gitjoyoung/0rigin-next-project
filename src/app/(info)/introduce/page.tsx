@@ -1,4 +1,4 @@
-import { getDailyStats } from './api/getStats'
+import { getDailyStats } from '@/entities/stats'
 import Introduce from './ui'
 
 export const revalidate = 3600 // 1시간으로 변경

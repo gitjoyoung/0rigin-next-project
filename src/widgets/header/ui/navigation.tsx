@@ -24,9 +24,9 @@ export default function Navigation() {
                <MenubarMenu key={item.id}>
                   {item.submenuGroups ? (
                      <>
-                        <MenubarTrigger className="flex cursor-pointer items-center gap-1 hover:font-semibold data-[state=open]:font-semibold text-md transition-all duration-200">
+                        <MenubarTrigger className="group flex cursor-pointer items-center gap-1 hover:font-semibold data-[state=open]:font-semibold text-md transition-all duration-200">
                            {item.title}
-                           <ChevronDown className="relative top-[1px] h-4 w-4 transition duration-200 group-data-[state=open]:rotate-180" />
+                           <ChevronDown className="relative top-[1px] h-4 w-4 text-transparent group-hover:text-current group-data-[state=open]:text-current group-data-[state=open]:rotate-180 transition-all duration-200" />
                         </MenubarTrigger>
                         <MenubarContent className="min-w-[250px]">
                            {item.submenuGroups.map((group, groupIndex) => (

@@ -1,15 +1,14 @@
 'use client'
 
+import type { DailyStats } from '@/entities/stats'
 import { cn } from '@/shared/utils/cn'
-import type { IStats } from '@/widgets/ticker/model/ticker-types'
 import { useQuery } from '@tanstack/react-query'
-import { getDailyStats } from './api/get-daily-stats'
 import TickerList from './ui/ticker-list'
 
 export default function Ticker() {
-   const { data: statsData, isLoading } = useQuery<Partial<IStats>>({
+   const { data: statsData, isLoading } = useQuery<Partial<DailyStats> | null>({
       queryKey: ['tickerStats'],
-      queryFn: getDailyStats,
+      queryFn: () => fetch('/api/stats').then((res) => res.json()),
       refetchInterval: 5 * 60 * 1000, // 5분마다 자동 갱신
    })
 

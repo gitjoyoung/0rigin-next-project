@@ -4,7 +4,6 @@ import { Button } from '@/shared/shadcn/ui/button'
 import { cn } from '@/shared/utils/cn'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Heart } from 'lucide-react'
-import { useLikeToggle } from './hooks/use-like-toggle'
 import { usePostLikes } from './hooks/use-post-likes'
 
 interface Props {
@@ -12,8 +11,7 @@ interface Props {
 }
 
 export default function LikeButton({ postId }: Props) {
-   const { hasLiked, toggleLike, isLoading } = useLikeToggle(postId)
-   const { likesCount } = usePostLikes(postId)
+   const { likesCount, toggleLike, isLoading, hasLiked } = usePostLikes(postId)
 
    return (
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

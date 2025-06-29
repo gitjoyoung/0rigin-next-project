@@ -20,6 +20,8 @@ export default async function CustomPagination({
    currentPage,
    baseRoute,
 }: PaginationProps) {
+   if (count === 0) return null
+
    const totalPages = Math.ceil((count || 0) / POST_PER_PAGE)
 
    const itemsPerPage = 5 // 한 번에 보여줄 페이지 수

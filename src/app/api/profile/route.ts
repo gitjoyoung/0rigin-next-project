@@ -1,4 +1,4 @@
-import { getProfile, updateProfile } from '@/entities/profile/api/profile-api'
+import { getProfile, updateProfile } from '@/entities/profile'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {

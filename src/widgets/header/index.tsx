@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import SearchBox from '../search-box'
-import AuthButtons from './auth-buttons'
-import MobileSideMenu from './mobile-side-menu'
-import ThemeToggle from './theme-toggle'
+import AuthButtons from './ui/auth-buttons'
+import MobileSideMenu from './ui/mobile-side-menu'
 import Navigation from './ui/navigation'
+import ThemeToggle from './ui/theme-toggle'
 
 export default function Header() {
    return (

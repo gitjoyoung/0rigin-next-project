@@ -5,6 +5,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
+import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -55,9 +56,9 @@ export default function QuizSearchResult({
                                     </span>
                                     <span>
                                        생성일:{' '}
-                                       {new Date(
-                                          data.created_at,
-                                       ).toLocaleDateString()}
+                                       {dayjs(data.created_at).format(
+                                          'YYYY-MM-DD',
+                                       )}
                                     </span>
                                     {data.category && (
                                        <span>카테고리: {data.category}</span>

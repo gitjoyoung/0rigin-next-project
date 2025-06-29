@@ -1,5 +1,4 @@
 import {
-   Binary,
    Blocks,
    Calculator,
    Code,
@@ -76,9 +75,9 @@ export const HEADER_NAV_LIST: MenuItem[] = [
             title: '최신글 게시판',
             items: [
                {
-                  id: 'lasted',
+                  id: 'latest',
                   title: '최신글 게시판',
-                  url: '/board/lasted',
+                  url: '/board/latest',
                   icon: Newspaper,
                },
             ],
@@ -144,12 +143,6 @@ export const HEADER_NAV_LIST: MenuItem[] = [
                   title: '이미지 변환기',
                   url: '/utils/image-converter',
                   icon: ImageIcon,
-               },
-               {
-                  id: 'format-number',
-                  title: '숫자 포맷터',
-                  url: '/utils/format-number',
-                  icon: Binary,
                },
             ],
          },
