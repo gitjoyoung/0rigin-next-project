@@ -1,6 +1,6 @@
 'use client'
 
-import type { PostCreate } from '@/entities/post/types'
+import type { PostCreate, PostUpdate } from '@/entities/post/types'
 import { useToast } from '@/shared/hooks/use-toast'
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { compressImage } from '@/shared/utils/compress-image'
@@ -16,6 +16,7 @@ const supabase = SupabaseBrowserClient()
 interface UseBoardPostProps {
    category: string
    userProfile?: any
+   post?: any
 }
 
 // 클라이언트에서 사용할 게시글 생성 함수
@@ -31,7 +32,24 @@ async function createPostApi(data: PostCreate) {
    return response.json()
 }
 
-export const useBoardPost = ({ category, userProfile }: UseBoardPostProps) => {
+// 클라이언트에서 사용할 게시글 수정 함수
+async function updatePostApi(postId: string, data: PostUpdate) {
+   const response = await fetch(`/api/post/${postId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+   })
+   if (!response.ok) {
+      throw new Error('게시글 수정에 실패했습니다.')
+   }
+   return response.json()
+}
+
+export const useBoardPost = ({
+   category,
+   userProfile,
+   post,
+}: UseBoardPostProps) => {
    const router = useRouter()
    const queryClient = useQueryClient()
    const { toast } = useToast()
@@ -77,28 +95,44 @@ export const useBoardPost = ({ category, userProfile }: UseBoardPostProps) => {
       },
    })
 
-   // 게시글 작성 뮤테이션
+   // 게시글 작성/수정 뮤테이션
    const { mutate: submitPost, isPending: isSubmittingPost } = useMutation({
       mutationFn: async (data: BoardFormType) => {
          const markdownContent = data.content
          const htmlContent = await markdownToSanitizedHTML(markdownContent)
 
-         // 새로운 PostCreate 타입에 맞게 데이터 구성
-         const postData: PostCreate = {
-            title: data.title,
-            content: markdownContent, // 새로운 구조에서는 content를 문자열로 저장
-            category_id: category,
-            author_id: userProfile?.id || '', // 로그인된 사용자만 게시글 작성 가능
+         if (post) {
+            // 수정 모드
+            const updateData: PostUpdate = {
+               title: data.title,
+               content: markdownContent,
+               summary: data.summary,
+               thumbnail: data.thumbnail,
+               password: data.password,
+            }
+            return await updatePostApi(post.id, updateData)
+         } else {
+            // 생성 모드
+            const postData: PostCreate = {
+               title: data.title,
+               content: markdownContent,
+               summary: data.summary,
+               thumbnail: data.thumbnail,
+               category: category, // 카테고리 필드 추가
+               nickname: data.nickname,
+               password: data.password || undefined,
+               author_id: userProfile?.id || undefined,
+            }
+            return await createPostApi(postData)
          }
-
-         const result = await createPostApi(postData)
-         return result
       },
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: ['posts'] })
          toast({
             title: '성공',
-            description: '게시글이 성공적으로 작성되었습니다.',
+            description: post
+               ? '게시글이 성공적으로 수정되었습니다.'
+               : '게시글이 성공적으로 작성되었습니다.',
             duration: 3000,
          })
          router.push(`/board/${category}`)
@@ -107,7 +141,9 @@ export const useBoardPost = ({ category, userProfile }: UseBoardPostProps) => {
          toast({
             variant: 'destructive',
             title: '오류',
-            description: `글쓰기 오류: ${error.message}`,
+            description: post
+               ? `수정 오류: ${error.message}`
+               : `글쓰기 오류: ${error.message}`,
             duration: 3000,
          })
       },

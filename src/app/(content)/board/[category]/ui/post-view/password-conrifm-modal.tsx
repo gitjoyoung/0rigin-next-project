@@ -1,0 +1,62 @@
+'use client'
+
+import { Button } from '@/shared/shadcn/ui/button'
+import {
+   Dialog,
+   DialogContent,
+   DialogFooter,
+   DialogHeader,
+   DialogTitle,
+} from '@/shared/shadcn/ui/dialog'
+import { Input } from '@/shared/shadcn/ui/input'
+import { useState } from 'react'
+
+interface PasswordConfirmModalProps {
+   open: boolean
+   onClose: () => void
+   onConfirm: (password: string) => Promise<void>
+   loading?: boolean
+   error?: string
+}
+
+export default function PasswordConfirmModal({
+   open,
+   onClose,
+   onConfirm,
+   loading,
+   error,
+}: PasswordConfirmModalProps) {
+   const [password, setPassword] = useState('')
+
+   const handleConfirm = async () => {
+      await onConfirm(password)
+   }
+
+   return (
+      <Dialog open={open} onOpenChange={onClose}>
+         <DialogContent>
+            <DialogHeader>
+               <DialogTitle>비밀번호 확인</DialogTitle>
+            </DialogHeader>
+            <Input
+               type="password"
+               placeholder="비밀번호를 입력하세요"
+               value={password}
+               onChange={(e) => setPassword(e.target.value)}
+               disabled={loading}
+            />
+            {error && (
+               <div className="text-destructive text-sm mt-2">{error}</div>
+            )}
+            <DialogFooter>
+               <Button variant="outline" onClick={onClose} disabled={loading}>
+                  취소
+               </Button>
+               <Button onClick={handleConfirm} disabled={loading || !password}>
+                  확인
+               </Button>
+            </DialogFooter>
+         </DialogContent>
+      </Dialog>
+   )
+}

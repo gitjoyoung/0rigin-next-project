@@ -4,28 +4,35 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import BoardPostForm from './ui'
 
-export const metadata: Metadata = {
-   title: '0rigin 글쓰기',
-   description: '0rigin 글쓰기 페이지입니다.',
-}
-
 interface IParams {
    params: {
       category: string
    }
 }
 
+export async function generateMetadata({ params }: IParams): Promise<Metadata> {
+   const { category } = await params
+
+   return {
+      title: `${category} 게시글 작성 페이지 - 0rigin`,
+      description: `0rigin 커뮤니티 ${category} 게시글 작성 페이지입니다.`,
+   }
+}
+
 export default async function Create({ params }: IParams) {
-   const { category } = params
+   const { category } = await params
 
    // 카테고리 존재 확인
    const categoryData = await getCategoryBySlug(category)
    if (!categoryData || !categoryData.can_write) {
       redirect('/board/latest')
    }
-
    const userProfile = await getProfile().catch(() => null)
-   const isLoggedIn = !!userProfile
 
-   return <BoardPostForm category={category} userProfile={isLoggedIn} />
+   return (
+      <div className="flex flex-col gap-2 my-2">
+         <h1 className="text-2xl px-2 font-bold">{category} Write Page</h1>
+         <BoardPostForm category={category} userProfile={userProfile} />
+      </div>
+   )
 }

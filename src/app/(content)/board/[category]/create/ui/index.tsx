@@ -20,22 +20,23 @@ import ThumbnailUpload from './thumbnail-upload'
 interface Props {
    category: string
    userProfile?: any
+   editPostData?: any
 }
 
-export default function BoardPostForm({ category, userProfile }: Props) {
+export default function BoardPostForm({
+   category,
+   userProfile,
+   editPostData,
+}: Props) {
    // 게시글 작성 로직 훅
-   const {
-      userData,
-      uploading,
-      isSubmittingPost,
-      uploadImageMutation,
-      onSubmit,
-   } = useBoardPost({
-      category,
-      userProfile,
-   })
+   const { uploading, isSubmittingPost, uploadImageMutation, onSubmit } =
+      useBoardPost({
+         category,
+         userProfile,
+         post: editPostData,
+      })
 
-   // 폼 상태 관리 훅
+   // 폼 상태 관리 훅 (기존 데이터로 초기화)
    const {
       form,
       showPassword,
@@ -43,7 +44,17 @@ export default function BoardPostForm({ category, userProfile }: Props) {
       isAuthenticated,
       setThumbnail,
    } = useBoardForm({
-      userData: userProfile ? { user: userProfile } : null,
+      userData: userProfile,
+      initialData: editPostData
+         ? {
+              title: editPostData.title,
+              content: editPostData.content,
+              summary: editPostData.summary || '',
+              nickname: editPostData.nickname,
+              password: '',
+              thumbnail: editPostData.thumbnail || '',
+           }
+         : undefined,
    })
 
    // 이미지 업로드 처리
@@ -199,6 +210,7 @@ export default function BoardPostForm({ category, userProfile }: Props) {
                   name="content"
                   setValue={form.setValue}
                   register={form.register}
+                  initialValue={form.watch('content') || ''}
                />
                <div className="flex gap-6 justify-end my-2 item">
                   <Button
@@ -211,7 +223,7 @@ export default function BoardPostForm({ category, userProfile }: Props) {
                      취소
                   </Button>
                   <Button size="lg" type="submit" disabled={isSubmittingPost}>
-                     제출 하기
+                     {editPostData ? '수정 하기' : '제출 하기'}
                   </Button>
                </div>
             </form>

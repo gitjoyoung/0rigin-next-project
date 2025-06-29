@@ -8,6 +8,13 @@ import type {
    PostUpdate,
 } from '../types'
 
+// password 필드 제거 유틸
+function removePasswordFromPost(post: any) {
+   if (!post) return post
+   const { password, ...rest } = post
+   return rest
+}
+
 // 게시글 목록 조회
 export async function getPosts(
    params: PostQueryParams,
@@ -40,7 +47,7 @@ export async function getPosts(
    const totalPages = Math.ceil((count || 0) / limit)
 
    return {
-      items: data as Post[],
+      items: (data as Post[]).map(removePasswordFromPost),
       total: count || 0,
       page,
       limit,
@@ -67,7 +74,7 @@ export async function getBestPosts(params: PostQueryParams): Promise<Post[]> {
 
    if (error) throw error
 
-   return data as Post[]
+   return (data as Post[]).map(removePasswordFromPost)
 }
 
 // 게시글 상세 조회
@@ -87,7 +94,7 @@ export async function getPostById(
    // 조회수 증가
    await incrementPostView(id)
 
-   return post as PostDetail
+   return removePasswordFromPost(post as PostDetail)
 }
 
 // 게시글 생성
@@ -101,7 +108,7 @@ export async function createPost(data: PostCreate): Promise<Post> {
       .single()
 
    if (error) throw error
-   return post as Post
+   return removePasswordFromPost(post as Post)
 }
 
 // 게시글 수정
@@ -119,7 +126,7 @@ export async function updatePost(
       .single()
 
    if (error) throw error
-   return post as Post
+   return removePasswordFromPost(post as Post)
 }
 
 // 게시글 삭제
@@ -156,5 +163,25 @@ export async function getPostsByUserId(userId: string): Promise<Post[]> {
       .order('created_at', { ascending: false })
 
    if (error) throw error
-   return (posts || []) as Post[]
+   return (posts || []).map(removePasswordFromPost)
+}
+
+// 게시글 비밀번호 검증 (password 필드 포함)
+export async function verifyPostPassword(
+   id: number | string,
+   password: string,
+): Promise<boolean> {
+   const supabase = await SupabaseServerClient()
+
+   const { data: post, error } = await supabase
+      .from('posts')
+      .select('password')
+      .eq('id', id)
+      .single()
+
+   if (error || !post) {
+      return false
+   }
+
+   return post.password === password
 }

@@ -82,7 +82,7 @@ export default function Post({ postData, category }: Props) {
                         </TableCell>
                         <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
                            <Link
-                              href={`/board/${item.category_id || 'latest'}/${item.id || 0}?page=${page}`}
+                              href={`/board/${item.category || 'latest'}/${item.id || 0}?page=${page}`}
                               className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden"
                            >
                               <h2 className="truncate font-medium w-full">
@@ -91,7 +91,7 @@ export default function Post({ postData, category }: Props) {
                            </Link>
                         </TableCell>
 
-                        <TableCell className="max-w-[24px] min-w-[60px] text-left text-xs hidden sm:table-cell truncate">
+                        <TableCell className="min-w-[24px] max-w-[120px] text-left text-xs hidden sm:table-cell truncate">
                            {item.nickname || '익명'}
                         </TableCell>
                         <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">

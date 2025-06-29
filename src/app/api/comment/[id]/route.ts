@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // PUT /api/comment/[id]
 export async function PUT(
    request: NextRequest,
-   { params }: { params: { id: string } },
+   { params }: { params: Promise<{ id: string }> },
 ) {
    try {
       const { id } = await params
@@ -28,7 +28,7 @@ export async function PUT(
 // DELETE /api/comment/[id]
 export async function DELETE(
    request: NextRequest,
-   { params }: { params: { id: string } },
+   { params }: { params: Promise<{ id: string }> },
 ) {
    try {
       const { id } = await params

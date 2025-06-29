@@ -2,28 +2,18 @@ import type { Post } from '@/entities/post/types'
 import MarkDownViewer from './mark-down-viewer'
 import PostHeader from './post-header'
 
-export default function PostView({
-   title,
-   nickname,
-   created_at,
-   content,
-   id,
-}: Post) {
-   console.log(content)
+interface Props {
+   postData: Partial<Post>
+}
+
+export default function PostView({ postData }: Props) {
    return (
       <section className="flex flex-col gap-3 ">
          {/* 글제목 */}
-         <PostHeader
-            title={title}
-            author={nickname}
-            likes={0}
-            created_at={created_at}
-            views={0}
-            id={id}
-         />
+         <PostHeader post={postData} />
          {/* 글내용 마크다운 뷰어 */}
          <div className="min-h-[200px]">
-            <MarkDownViewer content={content.markdown} />
+            <MarkDownViewer content={postData.content} />
          </div>
          {/* 싫어요,좋아요  버튼 */}
       </section>

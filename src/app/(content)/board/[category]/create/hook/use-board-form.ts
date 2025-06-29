@@ -9,35 +9,38 @@ import {
 
 interface UseBoardFormProps {
    userData: any
+   initialData?: Partial<BoardFormType>
 }
 
-export const useBoardForm = ({ userData }: UseBoardFormProps) => {
+export const useBoardForm = ({ userData, initialData }: UseBoardFormProps) => {
    const [showPassword, setShowPassword] = useState(false)
    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
    // 사용자 상태에 따라 다른 스키마 사용
-   const schema = userData?.user ? authenticatedBoardSchema : boardSchema
+   const schema = userData ? authenticatedBoardSchema : boardSchema
 
    const form = useForm<BoardFormType>({
       resolver: zodResolver(schema),
       defaultValues: {
-         nickname: '',
-         password: '',
-         title: '',
-         content: '',
-         summary: '',
-         thumbnail: '',
+         nickname: initialData?.nickname || userData?.nickname || '',
+         password: initialData?.password || '',
+         title: initialData?.title || '',
+         content: initialData?.content || '',
+         summary: initialData?.summary || '',
+         thumbnail: initialData?.thumbnail || '',
       },
    })
 
    // 사용자 데이터가 있을 때 인증 상태 설정
    useEffect(() => {
-      if (userData?.user) {
+      if (userData) {
          setIsAuthenticated(true)
-         // 로그인된 사용자의 경우 닉네임과 비밀번호를 자동 설정하지 않음
-         // 실제 프로필 정보를 사용하거나 빈 값으로 유지
+         // 로그인된 사용자의 닉네임을 폼에 설정
+         if (!initialData?.nickname && userData.nickname) {
+            form.setValue('nickname', userData.nickname)
+         }
       }
-   }, [userData])
+   }, [userData, form, initialData?.nickname])
 
    // 이미지 업로드 성공 시 썸네일 설정
    const setThumbnail = (url: string) => {

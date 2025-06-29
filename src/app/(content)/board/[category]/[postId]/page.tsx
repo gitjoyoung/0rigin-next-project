@@ -60,32 +60,28 @@ export default async function Page({ params }: IParams) {
       redirect('/board/latest')
    }
 
-   // 새로운 post API 사용
-   const readData = await getPostById(postId)
+   const postData = await getPostById(postId)
 
-   if (!readData) {
+   if (!postData) {
       return notFound()
    }
 
    // 같은 카테고리의 다른 게시글들을 가져오기 (현재 게시글 제외)
-   const relatedPostsResponse = await getPosts({
-      category: category === 'latest' ? 'latest' : category,
+   const { items: relatedPosts } = await getPosts({
+      category: category === 'latest' ? undefined : category,
       page: 1,
       limit: 30,
    })
-   const filteredPosts = relatedPostsResponse.items
-      .filter((post) => post.id !== readData.id)
-      .slice(0, 20)
 
    return (
       <section className="flex flex-col gap-4 my-2">
          <BreadcrumbWidget />
-         <PostView {...readData} />
+         <PostView postData={postData} />
          <PostLike postId={postId} />
          <Comment postId={postId} />
          <div className="flex flex-col gap-2">
             <BoardHeader category={categoryInfo} />
-            <Post postData={filteredPosts} />
+            <Post postData={relatedPosts} />
          </div>
          <BoardFooter category={categoryInfo} />
       </section>

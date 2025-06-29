@@ -41,6 +41,7 @@ export interface PostCreate {
    tags?: string[]
    is_pinned?: boolean
    category_id?: string
+   category?: string
    status?: 'published' | 'draft' | 'private'
 }
 

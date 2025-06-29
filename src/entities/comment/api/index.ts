@@ -7,6 +7,13 @@ import type {
    UserComment,
 } from '../types'
 
+// password 필드 제거 유틸
+function removePasswordFromComment(comment: any) {
+   if (!comment) return comment
+   const { password, ...rest } = comment
+   return rest
+}
+
 // 댓글 목록 조회
 export async function getComments(postId: number | string): Promise<Comment[]> {
    const supabase = await SupabaseServerClient()
@@ -22,7 +29,7 @@ export async function getComments(postId: number | string): Promise<Comment[]> {
       throw new Error('댓글 목록을 불러올 수 없습니다.')
    }
 
-   return data as Comment[]
+   return (data as Comment[]).map(removePasswordFromComment)
 }
 
 // 댓글 목록 조회 (파라미터 기반)
@@ -47,7 +54,7 @@ export async function getCommentsByParams(
       throw new Error('댓글 목록을 불러올 수 없습니다.')
    }
 
-   return data as Comment[]
+   return (data as Comment[]).map(removePasswordFromComment)
 }
 
 // 댓글 생성
@@ -65,7 +72,7 @@ export async function createComment(data: CommentCreate): Promise<Comment> {
       throw new Error('댓글 생성에 실패했습니다.')
    }
 
-   return comment as Comment
+   return removePasswordFromComment(comment as Comment)
 }
 
 // 댓글 업데이트
@@ -87,7 +94,7 @@ export async function updateComment(
       throw new Error('댓글 업데이트에 실패했습니다.')
    }
 
-   return comment as Comment
+   return removePasswordFromComment(comment as Comment)
 }
 
 // 댓글 삭제
@@ -119,7 +126,7 @@ export async function getCommentById(
       return null
    }
 
-   return data as Comment
+   return removePasswordFromComment(data as Comment)
 }
 
 // 사용자별 댓글 목록 조회
@@ -142,7 +149,7 @@ export async function getUserComments(
       throw new Error('사용자 댓글 목록을 불러올 수 없습니다.')
    }
 
-   return data as Comment[]
+   return (data as Comment[]).map(removePasswordFromComment)
 }
 
 // 댓글 수 조회
@@ -187,6 +194,7 @@ export async function getCommentsByUserId(
       throw new Error('댓글을 불러올 수 없습니다.')
    }
 
+   // UserComment 타입에는 password가 포함되지 않으므로 별도 처리 불필요
    return comments.map((comment) => ({
       id: comment.id,
       content: comment.content,
