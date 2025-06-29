@@ -15,7 +15,7 @@ const DEFAULT_VALUES = {
    title: '제목',
    summary: '요약',
    nickname: '닉네임',
-   thumbnail: '/images/banner/windsaurus.webp',
+   thumbnail: '/images/mascot/new_logo.webp',
 } as const
 
 function BannerThumbnail({ postData }: { postData?: PostData }) {
@@ -62,7 +62,7 @@ function BannerThumbnail({ postData }: { postData?: PostData }) {
                <img
                   alt={imageAlt}
                   src={thumbnail || DEFAULT_VALUES.thumbnail}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain object-center"
                   onError={handleImageError}
                />
                <div
