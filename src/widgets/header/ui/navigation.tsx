@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDown } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -26,7 +26,15 @@ export default function Navigation() {
                      <>
                         <MenubarTrigger className="group flex cursor-pointer items-center gap-1 hover:font-semibold data-[state=open]:font-semibold text-md transition-all duration-200">
                            {item.title}
-                           <ChevronDown className="relative top-[1px] h-4 w-4 text-transparent group-hover:text-current group-data-[state=open]:text-current group-data-[state=open]:rotate-180 transition-all duration-200" />
+                           <ChevronRight
+                              className="
+                                 relative top-[1px] h-4 w-4 text-transparent
+                                 group-hover:text-current
+                                 group-data-[state=open]:text-current
+                                 transition-all duration-200
+                                 group-data-[state=open]:rotate-90
+                              "
+                           />
                         </MenubarTrigger>
                         <MenubarContent className="min-w-[250px]">
                            {item.submenuGroups.map((group, groupIndex) => (

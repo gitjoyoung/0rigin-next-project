@@ -1,4 +1,5 @@
 import InquiryForm from './ui/InquiryForm'
+export const dynamic = 'force-static'
 
 export default function page() {
    return (
