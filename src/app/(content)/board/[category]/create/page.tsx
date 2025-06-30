@@ -14,8 +14,8 @@ export async function generateMetadata({ params }: IParams): Promise<Metadata> {
    const { category } = await params
 
    return {
-      title: `${category} 게시글 작성 페이지 - 0rigin`,
-      description: `0rigin 커뮤니티 ${category} 게시글 작성 페이지입니다.`,
+      title: `${category} 게시글 작성`,
+      description: `0RIGIN(제로리진) 커뮤니티 ${category} 게시글 작성 페이지입니다.`,
    }
 }
 

@@ -1,4 +1,4 @@
-import { ROUTE_LOGIN, ROUTE_SIGN_TERM } from '@/constants/pathname'
+import { ROUTE_LOGIN, ROUTE_SIGN_FORM } from '@/constants/pathname'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 const SIGN_UP_TERMS = {
@@ -12,7 +12,7 @@ const SIGN_UP_TERMS = {
       buttonText: '이미 회원입니다.',
    },
    signup: {
-      href: ROUTE_SIGN_TERM,
+      href: ROUTE_SIGN_FORM,
       buttonText: '네 회원가입할래요!',
    },
 }

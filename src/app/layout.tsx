@@ -17,12 +17,15 @@ const notoSansKR = Noto_Sans_KR({
 
 export const metadata: Metadata = {
    title: {
-      template: '%s | 0rigin',
-      default: '0rigin - 무, 공, 허무 그리고 아포리아',
+      template: '%s | 0RIGIN(제로리진)',
+      default: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
    },
    description:
-      '0rigin은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
+      '0RIGIN(제로리진)은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
    keywords: [
+      '제로리진',
+      '0RIGIN',
+      '0rigin',
       '철학',
       '기술',
       '과학',
@@ -30,11 +33,11 @@ export const metadata: Metadata = {
       '커뮤니티',
       '토론',
       '퀴즈',
-      '0rigin',
+      '지식 공유',
    ],
-   authors: [{ name: '0rigin Team' }],
-   creator: '0rigin',
-   publisher: '0rigin',
+   authors: [{ name: '0RIGIN(제로리진) 팀' }],
+   creator: '0RIGIN(제로리진)',
+   publisher: '0RIGIN(제로리진)',
    formatDetection: {
       email: false,
       address: false,
@@ -48,24 +51,24 @@ export const metadata: Metadata = {
       type: 'website',
       locale: 'ko_KR',
       url: 'https://0rigin.space',
-      title: '0rigin - 무, 공, 허무 그리고 아포리아',
+      title: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
       description:
-         '0rigin은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
-      siteName: '0rigin',
+         '0RIGIN(제로리진)은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
+      siteName: '0RIGIN(제로리진)',
       images: [
          {
             url: '/images/introduce/logo.png',
             width: 1200,
             height: 630,
-            alt: '0rigin 로고',
+            alt: '0RIGIN(제로리진) 로고',
          },
       ],
    },
    twitter: {
       card: 'summary_large_image',
-      title: '0rigin - 무, 공, 허무 그리고 아포리아',
+      title: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
       description:
-         '0rigin은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
+         '0RIGIN(제로리진)은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
       images: ['/images/introduce/logo.png'],
    },
    robots: {

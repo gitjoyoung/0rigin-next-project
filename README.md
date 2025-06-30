@@ -2,6 +2,10 @@
 
 철학 기반 커뮤니티 게시판
 
+## 프로젝트 소개
+
+0rigin project는 AI가 대체할 수 없는 인간의 고유한 가치를 토론하는 커뮤니티 입니다.
+
 ## 개발 인원
 
 [@gitjoyoung](https://github.com/gitjoyoung) - 1인 개발
@@ -9,10 +13,6 @@
 ## 배포 주소
 
 [https://0rigin.space](https://0rigin.space)
-
-## 프로젝트 소개
-
-0rigin project는 AI가 대체할 수 없는 인간의 고유한 가치를 토론하는 커뮤니티 입니다.
 
 ## 기술 스택
 

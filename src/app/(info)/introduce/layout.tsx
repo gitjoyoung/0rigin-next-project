@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-   title: '0rigin',
-   description: '0rigin은 이렇게 탄생 하였습니다',
+   title: '소개',
+   description: '0RIGIN(제로리진) 소개 페이지입니다.',
 }
 type Props = {
    children: React.ReactNode

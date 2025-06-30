@@ -2,7 +2,14 @@
 export const dynamic = 'force-static'
 
 import { SITEMAP } from '@/constants/site-map'
+import type { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+   title: '사이트맵',
+   description:
+      '0RIGIN(제로리진) 사이트 전체 페이지 구조와 링크를 확인할 수 있습니다.',
+}
 
 export default function Page() {
    return (

@@ -18,7 +18,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
          return {
             title: `${quiz.title} 퀴즈`,
             description:
-               quiz.description || `${quiz.title} 퀴즈를 풀어 더 똑똑해지세요.`,
+               quiz.description ||
+               `0RIGIN(제로리진)에서 ${quiz.title} 퀴즈를 풀어 더 똑똑해지세요.`,
          }
       }
    } catch (error) {
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
    return {
       title: '퀴즈 페이지',
-      description: '퀴즈를 풀어 더 똑똑해지세요.',
+      description: '0RIGIN(제로리진)에서 퀴즈를 풀어 더 똑똑해지세요.',
    }
 }
 

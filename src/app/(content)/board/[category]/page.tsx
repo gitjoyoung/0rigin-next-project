@@ -27,7 +27,7 @@ export async function generateMetadata({
    if (page === undefined) return { title: `${categoryName} 게시판` }
    return {
       title: `${categoryName} 게시판 ${page} 페이지`,
-      description: `${categoryName} 게시판의 ${page} 페이지입니다.`,
+      description: `0RIGIN(제로리진) ${categoryName} 게시판의 ${page} 페이지입니다.`,
    }
 }
 

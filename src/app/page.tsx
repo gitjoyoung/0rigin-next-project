@@ -9,17 +9,18 @@ import Post from './(content)/board/[category]/ui/post'
 export const metadata = {
    /* ───────── 제목 ───────── */
    title: {
-      default: '0rigin 제로리진 커뮤니티 플랫폼',
-      template: '%s | 0rigin 제로리진 커뮤니티',
+      default: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
+      template: '%s | 0RIGIN(제로리진)',
    },
 
    /* ───────── 설명 ───────── */
    description:
-      '0rigin(제로리진)은 관심사 기반 토론·지식 공유·협업이 한곳에서 이루어지는 차세대 커뮤니티 플랫폼입니다. 다양한 의견을 자유롭게 나누어 보세요.',
+      '0RIGIN(제로리진)은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론·지식 공유·협업이 한곳에서 이루어지는 차세대 커뮤니티 플랫폼입니다. 다양한 의견을 자유롭게 나누어 보세요.',
 
    /* ───────── 키워드 ───────── */
    keywords: [
       '제로리진',
+      '0RIGIN',
       '0rigin',
       'origin community',
       '커뮤니티 플랫폼',
@@ -27,13 +28,17 @@ export const metadata = {
       '지식 공유',
       '토론',
       '프로젝트 협업',
+      '철학',
+      '기술',
+      '과학',
+      '수학',
    ],
 
    /* ───────── 파비콘 ───────── */
    icons: { icon: '/favicon.ico' },
 
    /* ───────── 저작자 ───────── */
-   authors: [{ name: '제로리진 팀', url: 'https://0rigin.space' }],
+   authors: [{ name: '0RIGIN(제로리진) 팀', url: 'https://0rigin.space' }],
 
    /* ───────── 뷰포트 ───────── */
    viewport: { width: 'device-width', initialScale: 1, maximumScale: 1 },
@@ -42,16 +47,16 @@ export const metadata = {
    openGraph: {
       type: 'website',
       url: 'https://0rigin.space',
-      siteName: '제로리진',
-      title: '제로리진 커뮤니티 플랫폼',
+      siteName: '0RIGIN(제로리진)',
+      title: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
       description:
-         '토론·지식 공유·프로젝트 협업까지 한 번에! 지금 제로리진에서 새로운 인사이트를 얻어 보세요.',
+         '철학, 기술, 과학, 수학에 대한 깊이 있는 토론·지식 공유·프로젝트 협업까지 한 번에! 지금 0RIGIN(제로리진)에서 새로운 인사이트를 얻어 보세요.',
       images: [
          {
-            url: '/public/images/mascot/logo.webp',
+            url: '/images/introduce/logo.png',
             width: 1200,
             height: 630,
-            alt: '제로리진 커뮤니티 미리보기',
+            alt: '0RIGIN(제로리진) 커뮤니티 미리보기',
          },
       ],
       locale: 'ko_KR',
@@ -60,10 +65,10 @@ export const metadata = {
    /* ───────── Twitter Card ───────── */
    twitter: {
       card: 'summary_large_image',
-      title: '제로리진 커뮤니티 플랫폼',
+      title: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
       description:
-         '관심사 기반 토론과 지식 공유가 가능한 제로리진(0rigin)에 참여해 보세요!',
-      images: ['/public/images/mascot/logo.webp'],
+         '철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 지식 공유가 가능한 0RIGIN(제로리진)에 참여해 보세요!',
+      images: ['/images/introduce/logo.png'],
    },
 
    /* ───────── Canonical ───────── */

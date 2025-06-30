@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import ForgetForm from './ui/\bforget-form'
+import ForgetForm from './ui/forget-form'
 
 export const metadata: Metadata = {
-   title: '0rigin 비밀번호 찾기 페이지',
-   description: '0rigin 비밀번호 찾기 페이지입니다.',
+   title: '비밀번호 찾기',
+   description: '0RIGIN(제로리진) 비밀번호 찾기 페이지입니다.',
 }
 
 export default function page() {

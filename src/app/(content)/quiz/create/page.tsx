@@ -5,7 +5,7 @@ import QuizCreateAuthCheck from './ui/quiz-create-auth-check'
 
 export const metadata: Metadata = {
    title: '퀴즈 제작',
-   description: '퀴즈를 제작해 보세요',
+   description: '0RIGIN(제로리진)에서 퀴즈를 제작해 보세요',
 }
 
 export default async function QuizCreatePage() {

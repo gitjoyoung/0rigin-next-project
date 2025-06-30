@@ -32,13 +32,13 @@ export async function generateMetadata({ params }: IParams): Promise<Metadata> {
 
    if (!postData) {
       return {
-         title: `0rigin ${category}게시판`,
-         description: `${category} 카테고리의 게시글입니다.`,
+         title: `0RIGIN(제로리진) ${category} 게시판`,
+         description: `0RIGIN(제로리진) ${category} 카테고리의 게시글입니다.`,
       }
    }
 
    return {
-      title: `${postData.title} - 0rigin ${category}게시판`,
+      title: `${postData.title}`,
       description: postData.summary,
    }
 }

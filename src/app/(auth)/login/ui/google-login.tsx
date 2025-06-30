@@ -21,7 +21,7 @@ export default function GoogleLogin({
             options: {
                redirectTo:
                   redirectTo ||
-                  `${process.env.NEXT_PUBLIC_URL || window.location.origin}/auth/callback`,
+                  `${process.env.NEXT_PUBLIC_URL || window.location.origin}/api/auth/callback`,
                queryParams: {
                   prompt: 'select_account',
                },
