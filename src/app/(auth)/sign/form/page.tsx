@@ -1,15 +1,14 @@
 import { getUserServer } from '@/entities/auth/api/get-user-server'
-import GoogleProfileForm from './ui/google-profile-form'
-import NormalSignUpForm from './ui/normal-signup-form'
+import type { Metadata } from 'next'
+import SignUpFlow from './ui/signup-flow'
+
+export const metadata: Metadata = {
+   title: '회원가입 양식',
+   description: '0RIGIN(제로리진) 회원가입을 위한 정보를 입력해 주세요.',
+}
 
 export default async function SignFormPage() {
    const user = await getUserServer()
 
-   if (user) {
-      // 프로필이 없다면 구글 폼 표시
-      return <GoogleProfileForm email={user.email} />
-   }
-
-   // 일반 사용자는 일반 회원가입 폼 표시
-   return <NormalSignUpForm />
+   return <SignUpFlow user={user} />
 }
