@@ -4,7 +4,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
-import { ImageIcon } from 'lucide-react'
+import { ImageIcon, Video } from 'lucide-react'
 import Link from 'next/link'
 
 export const utilList = [
@@ -14,6 +14,13 @@ export const utilList = [
       description:
          '이미지 포멧과 압축을 지원합니다. jpg, png, webp 등 다양한 포멧을 지원합니다. 최대 10MB까지 업로드 가능합니다.',
       icon: <ImageIcon className="h-6 w-6" />,
+   },
+   {
+      name: '동영상 편집기',
+      href: '/utils/video-editor',
+      description:
+         '동영상 길이 조절과 압축을 지원합니다. MP4, WebM 형식으로 변환할 수 있습니다.',
+      icon: <Video className="h-6 w-6" />,
    },
    // {
    //    name: '맞춤법 검사기',

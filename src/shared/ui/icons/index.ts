@@ -21,6 +21,7 @@ import {
    Menu,
    MessageCircle,
    MessageSquare,
+   Video,
    Moon,
    MoreHorizontal,
    Pencil,
@@ -83,6 +84,7 @@ export const Icons = {
 
    // 이미지
    imageUpload: ImageUp,
+   video: Video,
 
    // 페이지네이션
    prevPage: ChevronLeft,
