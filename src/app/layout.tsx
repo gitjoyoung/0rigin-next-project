@@ -1,3 +1,4 @@
+import { baseMetadata } from '@/shared/metadata'
 import AppProviders from '@/shared/providers'
 import { Toaster } from '@/shared/shadcn/ui/toaster'
 import Footer from '@/widgets/footer'
@@ -5,37 +6,54 @@ import Header from '@/widgets/header'
 import Ticker from '@/widgets/ticker'
 import type { Metadata } from 'next'
 import { Noto_Sans_KR } from 'next/font/google'
+import localFont from 'next/font/local'
 import { Suspense } from 'react'
 import './globals.css'
 import Loading from './loading'
 
+// 한글 폰트 설정
 const notoSansKR = Noto_Sans_KR({
    weight: ['400', '500', '700'],
    subsets: ['latin'],
    display: 'swap',
+   variable: '--font-noto-sans-kr',
 })
 
-export const metadata: Metadata = {
-   title: {
-      template: '%s | 0RIGIN(제로리진)',
-      default: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
-   },
-   description:
-      '0RIGIN(제로리진)은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
-   keywords: [
-      '제로리진',
-      '0RIGIN',
-      '0rigin',
-      '철학',
-      '기술',
-      '과학',
-      '수학',
-      '커뮤니티',
-      '토론',
-      '퀴즈',
-      '지식 공유',
+// DOS 폰트 설정 (숫자 전용)
+const modernDOS = localFont({
+   src: [
+      {
+         path: '../../public/fonts/modern_dos/ModernDOS8x8.ttf',
+         weight: '400',
+         style: 'normal',
+      },
+      {
+         path: '../../public/fonts/modern_dos/ModernDOS8x14.ttf',
+         weight: '500',
+         style: 'normal',
+      },
+      {
+         path: '../../public/fonts/modern_dos/ModernDOS8x16.ttf',
+         weight: '700',
+         style: 'normal',
+      },
    ],
-   authors: [{ name: '0RIGIN(제로리진) 팀' }],
+   variable: '--font-dos',
+   display: 'swap',
+   preload: true,
+   // 숫자와 관련 기호만 DOS 폰트 적용
+   declarations: [
+      {
+         prop: 'unicode-range',
+         value: 'U+0030-0039, U+002B, U+002D, U+002E, U+002C, U+0025, U+0024',
+      },
+   ],
+})
+
+// 글로벌 메타데이터 (분리된 모듈 사용)
+export const metadata: Metadata = {
+   ...baseMetadata,
+   // 추가 설정들
    creator: '0RIGIN(제로리진)',
    publisher: '0RIGIN(제로리진)',
    formatDetection: {
@@ -44,33 +62,6 @@ export const metadata: Metadata = {
       telephone: false,
    },
    metadataBase: new URL('https://0rigin.space'),
-   alternates: {
-      canonical: '/',
-   },
-   openGraph: {
-      type: 'website',
-      locale: 'ko_KR',
-      url: 'https://0rigin.space',
-      title: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
-      description:
-         '0RIGIN(제로리진)은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
-      siteName: '0RIGIN(제로리진)',
-      images: [
-         {
-            url: '/images/introduce/logo.png',
-            width: 1200,
-            height: 630,
-            alt: '0RIGIN(제로리진) 로고',
-         },
-      ],
-   },
-   twitter: {
-      card: 'summary_large_image',
-      title: '0RIGIN(제로리진) - 무, 공, 허무 그리고 아포리아',
-      description:
-         '0RIGIN(제로리진)은 철학, 기술, 과학, 수학에 대한 깊이 있는 토론과 퀴즈를 제공하는 커뮤니티 플랫폼입니다.',
-      images: ['/images/introduce/logo.png'],
-   },
    robots: {
       index: true,
       follow: true,
@@ -96,7 +87,7 @@ export default function RootLayout({
       <html
          lang="ko"
          suppressHydrationWarning
-         className={`${notoSansKR.className}`}
+         className={`${notoSansKR.variable} ${modernDOS.variable}`}
       >
          <head>
             <link rel="icon" href="/favicon.ico" />

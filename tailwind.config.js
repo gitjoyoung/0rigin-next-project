@@ -21,10 +21,16 @@ module.exports = {
       },
       extend: {
          fontFamily: {
-            sans: ['Noto Sans KR', 'sans-serif'],
+            sans: ['var(--font-noto-sans-kr)', 'Noto Sans KR', 'sans-serif'],
             mono: ['Fira Code', 'monospace'],
-            dos: ['DOS', 'monospace'],
-            noto: ['Noto Sans KR', 'sans-serif'],
+            // 숫자는 DOS 폰트, 나머지는 Noto Sans KR
+            dos: [
+               'var(--font-dos)',
+               'var(--font-noto-sans-kr)',
+               'Noto Sans KR',
+               'sans-serif',
+            ],
+            noto: ['var(--font-noto-sans-kr)', 'Noto Sans KR', 'sans-serif'],
          },
          colors: {
             border: 'hsl(var(--border))',

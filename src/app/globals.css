@@ -116,12 +116,19 @@
       padding-bottom: 0;
    }
 }
-@font-face {
-   font-family: 'dos';
-   src: url('/fonts/modern_dos/ModernDOS8x16.ttf') format('truetype');
-   font-weight: normal;
-   font-style: normal;
-   font-display: swap; /* 폰트가 로드될 때까지 시스템 폰트로 먼저 표시  */
+
+/* 숫자 전용 DOS 폰트 클래스 */
+.font-dos-numbers {
+   font-family:
+      var(--font-dos), var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif;
+}
+
+/* 통계, 숫자 강조용 */
+.font-numbers {
+   font-family:
+      var(--font-dos), var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif;
+   font-weight: 600;
+   font-variant-numeric: tabular-nums;
 }
 
 /* Select 컴포넌트 스크롤바 문제 */
