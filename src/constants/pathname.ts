@@ -1,5 +1,5 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-06-30 05:06:30
+// 생성 시간: 2025-06-30 03:58:52
 // 동적 라우트([param])는 제외됨
 
 export const ROUTE_AUTH_CALLBACK = '/auth/callback'
@@ -16,6 +16,7 @@ export const ROUTE_QUIZ_CREATE = '/quiz/create'
 export const ROUTE_QUIZ = '/quiz'
 export const ROUTE_UTILS_IMAGE_CONVERTER = '/utils/image-converter'
 export const ROUTE_UTILS = '/utils'
+export const ROUTE_UTILS_VIDEO_EDITOR = '/utils/video-editor'
 export const ROUTE_HELP = '/help'
 export const ROUTE_INQUIRY = '/inquiry'
 export const ROUTE_INTRODUCE = '/introduce'
