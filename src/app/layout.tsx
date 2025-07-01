@@ -42,12 +42,6 @@ const modernDOS = localFont({
    display: 'swap',
    preload: true,
    // 숫자와 관련 기호만 DOS 폰트 적용
-   declarations: [
-      {
-         prop: 'unicode-range',
-         value: 'U+0030-0039, U+002B, U+002D, U+002E, U+002C, U+0025, U+0024',
-      },
-   ],
 })
 
 // 글로벌 메타데이터 (분리된 모듈 사용)
@@ -105,7 +99,7 @@ export default function RootLayout({
                   <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
                      <Ticker />
                      <Header />
-                     <main className="flex-1 w-full min-h-screen font-dos">
+                     <main className="flex-1 w-full min-h-screen font-mono">
                         <Suspense fallback={<Loading />}>{children}</Suspense>
                      </main>
                      <Footer />

@@ -36,7 +36,7 @@ export default function MarkDownViewer({ content }: { content: string }) {
             source={markdownText}
             remarkPlugins={[remarkBreaks, remarkGfm]}
             rehypePlugins={[rehypeSanitize]}
-            className="prose dark:prose-invert max-w-none font-dos [&_*]:font-dos 
+            className="prose dark:prose-invert max-w-none
                       [&_th]:border [&_th]:border-gray-300 [&_th]:dark:border-gray-600
                       [&_th]:px-2 [&_th]:py-2 [&_th]:bg-gray-100 [&_th]:dark:bg-gray-800
                       [&_th]:text-gray-900 [&_th]:dark:text-gray-100

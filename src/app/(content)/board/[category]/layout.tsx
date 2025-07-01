@@ -11,5 +11,5 @@ export default async function layout({
 }: {
    children: React.ReactNode
 }) {
-   return <section className="w-full font-dos ">{children}</section>
+   return <section className="w-full">{children}</section>
 }

@@ -22,7 +22,7 @@ module.exports = {
       extend: {
          fontFamily: {
             sans: ['var(--font-noto-sans-kr)', 'Noto Sans KR', 'sans-serif'],
-            mono: ['Fira Code', 'monospace'],
+            mono: ['Menlo', 'Monaco', 'Courier New', 'monospace'],
             // 숫자는 DOS 폰트, 나머지는 Noto Sans KR
             dos: [
                'var(--font-dos)',

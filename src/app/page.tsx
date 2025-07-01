@@ -4,8 +4,6 @@ import Banner from '@/widgets/banner'
 import Link from 'next/link'
 import Post from './(content)/board/[category]/ui/post'
 
-// 홈페이지는 layout.tsx의 기본 메타데이터를 사용합니다
-
 export default async function Home() {
    const POST_PER_PAGE = 20
    const BEST_POSTS_LIMIT = 5
@@ -23,7 +21,7 @@ export default async function Home() {
       <div className="flex flex-col gap-1 min-h-screen">
          <AdSenseBanner />
          <Banner data={bestPosts} />
-         <div className="flex flex-col gap-1 px-2 flex-grow">
+         <div className="flex flex-col gap-1 flex-grow">
             <div className="flex justify-between py-1 ">
                <h1 className="text-xl font-bold ">최신 게시물</h1>
                <Link

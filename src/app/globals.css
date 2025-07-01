@@ -125,8 +125,7 @@
 
 /* 통계, 숫자 강조용 */
 .font-numbers {
-   font-family:
-      var(--font-dos), var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif;
+   font-family: var(--font-dos), 'Menlo', 'Monaco', 'Courier New', monospace;
    font-weight: 600;
    font-variant-numeric: tabular-nums;
 }

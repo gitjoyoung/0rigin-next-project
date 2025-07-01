@@ -19,7 +19,7 @@ export default function BoardHeader({ category }: Props) {
    const createHref = `${ROUTE_BOARD}/${slug}/create`
 
    return (
-      <article className="my-2 px-1 flex justify-between items-center font-mono">
+      <article className="my-2 px-1 flex justify-between items-center ">
          <div className="space-y-1">
             <Link href={listHref}>
                <h1 className="text-2xl font-bold tracking-tight hover:text-slate-700 transition-colors">

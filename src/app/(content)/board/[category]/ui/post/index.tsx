@@ -26,7 +26,7 @@ export default function Post({ postData, category }: Props) {
       !postData || !Array.isArray(postData) || postData.length === 0
 
    return (
-      <Table className="w-full font-dos">
+      <Table className="w-full px-0">
          <TableHeader className="border-y">
             <TableRow className="text-xs [&_th]:!h-[24px] [&_th]:max-sm:!h-[24px]">
                <TableHead className="text-center w-[5%] min-w-[40px]">
@@ -75,7 +75,7 @@ export default function Post({ postData, category }: Props) {
                   return (
                      <TableRow
                         key={item.id}
-                        className="hover:bg-gray-200 dark:hover:bg-gray-800 text-sm max-sm:text-xs h-[32px] max-sm:h-[24px]"
+                        className="hover:bg-gray-200 dark:hover:bg-gray-800 text-xs h-[32px] max-sm:h-[24px]"
                      >
                         <TableCell className="w-[5%] min-w-[40px] text-center ">
                            {item.id || '-'}
@@ -83,9 +83,9 @@ export default function Post({ postData, category }: Props) {
                         <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
                            <Link
                               href={`/board/${item.category || 'latest'}/${item.id || 0}?page=${page}`}
-                              className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden"
+                              className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden text-sm font-medium"
                            >
-                              <h2 className="truncate font-medium w-full">
+                              <h2 className="truncate  w-full">
                                  {item.title || '제목 없음'}
                               </h2>
                            </Link>
