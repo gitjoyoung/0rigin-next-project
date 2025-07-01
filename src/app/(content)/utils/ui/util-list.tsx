@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 export const utilList = [
    {
-      name: '이미지 변환기',
+      name: '이미지 압축 도구',
       href: '/utils/image-converter',
       description:
          '이미지 포멧과 압축을 지원합니다. jpg, png, webp 등 다양한 포멧을 지원합니다. 최대 10MB까지 업로드 가능합니다.',
