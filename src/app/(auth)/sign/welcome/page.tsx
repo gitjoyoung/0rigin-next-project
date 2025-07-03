@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import type { Metadata } from 'next'
 import WelcomePage from './ui'
 
