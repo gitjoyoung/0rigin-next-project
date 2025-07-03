@@ -1,5 +1,5 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-07-03 09:25:04
+// 생성 시간: 2025-07-03 09:53:35
 // 동적 라우트([param])는 제외됨
 
 export const ROUTE_FORGET_PASSWORD = '/forget/password'

@@ -8,10 +8,15 @@ export default function GoogleLogin() {
    const handleGoogleLogin = async () => {
       try {
          const supabase = SupabaseBrowserClient()
+         const redirectUrl = `${window.location.origin}/api/auth/callback`
+
+         console.log('클라이언트 환경 변수:', process.env.NEXT_PUBLIC_URL)
+         console.log('실제 리다이렉트 URL:', redirectUrl)
+
          const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-               redirectTo: `${window.location.origin}/api/auth/callback`,
+               redirectTo: redirectUrl,
                queryParams: {
                   prompt: 'select_account',
                },

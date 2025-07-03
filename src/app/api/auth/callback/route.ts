@@ -6,7 +6,8 @@ export async function GET(request: NextRequest) {
    const code = requestUrl.searchParams.get('code')
    const error = requestUrl.searchParams.get('error')
 
-   const origin = `${process.env.NEXT_PUBLIC_URL}`
+   // 환경 변수 또는 헤더에서 origin 가져오기
+   const origin = `${request.headers.get('x-forwarded-proto') || 'https'}://${request.headers.get('x-forwarded-host') || request.headers.get('host')}`
 
    // OAuth 에러 처리
    if (error) {

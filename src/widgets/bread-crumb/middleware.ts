@@ -3,7 +3,6 @@ import {
    ROUTE_MY_PAGE,
    ROUTE_RESET_PASSWORD,
    ROUTE_SIGN,
-   ROUTE_SIGN_TERM,
 } from '@/constants/pathname'
 import { checkSignupCompleteServer } from '@/entities/auth/api/google'
 import { updateSession } from '@/shared/lib/supabase/supabase-session'
@@ -17,7 +16,6 @@ export const AUTH_FORBIDDEN_ROUTES = [
    // 인증 필요 없는 경로
    ROUTE_LOGIN,
    ROUTE_SIGN,
-   ROUTE_SIGN_TERM,
    ROUTE_RESET_PASSWORD,
 ]
 
