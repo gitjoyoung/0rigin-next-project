@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import { deletePost, getPostById, updatePost } from '@/entities/post/api'
 import { NextRequest, NextResponse } from 'next/server'
 

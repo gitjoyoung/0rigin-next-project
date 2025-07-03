@@ -58,6 +58,7 @@ export const createGoogleProfileAddServer = async ({
          nickname: validatedData.nickname,
          gender: validatedData.gender,
          signup_complete: true,
+         is_active: true,
       }
 
       // profiles 테이블에 레코드 생성

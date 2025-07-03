@@ -10,6 +10,7 @@ export default function WelcomePage({ userEmail }: { userEmail: string }) {
       height: 0,
    })
    const [showConfetti, setShowConfetti] = useState(true)
+   const [confettiPieces, setConfettiPieces] = useState(300)
 
    useEffect(() => {
       // 윈도우 크기 설정
@@ -23,14 +24,24 @@ export default function WelcomePage({ userEmail }: { userEmail: string }) {
       updateWindowDimensions()
       window.addEventListener('resize', updateWindowDimensions)
 
-      // 5초 후 confetti 효과 중지
-      const timer = setTimeout(() => {
-         setShowConfetti(false)
-      }, 5000)
+      // 3초 후부터 점진적으로 콘페티 개수 감소
+      const reduceTimer = setTimeout(() => {
+         const interval = setInterval(() => {
+            setConfettiPieces((prev) => {
+               const newCount = prev - 20
+               if (newCount <= 0) {
+                  clearInterval(interval)
+                  setShowConfetti(false)
+                  return 0
+               }
+               return newCount
+            })
+         }, 200) // 200ms마다 20개씩 감소
+      }, 3000)
 
       return () => {
          window.removeEventListener('resize', updateWindowDimensions)
-         clearTimeout(timer)
+         clearTimeout(reduceTimer)
       }
    }, [])
 
@@ -41,8 +52,9 @@ export default function WelcomePage({ userEmail }: { userEmail: string }) {
                width={windowDimension.width}
                height={windowDimension.height}
                recycle={false}
-               numberOfPieces={300}
+               numberOfPieces={confettiPieces}
                gravity={0.3}
+               wind={0.01}
             />
          )}
          <div className="max-w-md w-full space-y-8 p-8 rounded-lg">

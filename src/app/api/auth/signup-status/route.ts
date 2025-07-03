@@ -1,4 +1,4 @@
-import { checkSignupCompleteServer } from '@/entities/auth'
+import { checkSignupCompleteServer } from '@/entities/auth/api/get-user'
 import { NextResponse } from 'next/server'
 
 export async function GET() {

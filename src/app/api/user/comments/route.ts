@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import { getCommentsByUserId } from '@/entities/comment'
 import { NextResponse } from 'next/server'
 

@@ -1,4 +1,4 @@
-import { signUp } from '@/entities/auth'
+import { signUp } from '@/entities/auth/api/sign-up'
 import { decryptObject } from '@/shared/utils/crypto-helper'
 import { NextRequest, NextResponse } from 'next/server'
 
