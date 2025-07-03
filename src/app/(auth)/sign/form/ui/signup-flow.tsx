@@ -1,6 +1,5 @@
 'use client'
 
-import type { User } from '@supabase/supabase-js'
 import { useState } from 'react'
 import GoogleProfileForm from './google-profile-form'
 import NormalSignUpForm from './normal-signup-form'
@@ -8,12 +7,12 @@ import SignUpProgressHeader from './signup-progress-header'
 import StepTermsOfService from './step-terms-of-service'
 
 interface SignUpFlowProps {
-   user?: User
+   email?: string
 }
 
-export default function SignUpFlow({ user }: SignUpFlowProps) {
+export default function SignUpFlow({ email }: SignUpFlowProps) {
    const [isTermsAccepted, setIsTermsAccepted] = useState(false)
-   const secondStepLabel = user && user.email ? '프로필 생성' : '회원가입'
+   const secondStepLabel = email ? '프로필 생성' : '회원가입'
 
    // 1. 약관 동의가 안 된 경우
    if (!isTermsAccepted) {
@@ -35,11 +34,7 @@ export default function SignUpFlow({ user }: SignUpFlowProps) {
             isTermsAccepted={true}
             secondStepLabel={secondStepLabel}
          />
-         {user && user.email ? (
-            <GoogleProfileForm email={user.email} />
-         ) : (
-            <NormalSignUpForm />
-         )}
+         {email ? <GoogleProfileForm email={email} /> : <NormalSignUpForm />}
       </div>
    )
 }

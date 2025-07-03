@@ -1,10 +1,10 @@
-import { getUserServer } from '@/entities/auth'
+import { getUser } from '@/entities/auth'
 import { createQuiz } from '@/entities/quiz'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
    try {
-      const user = await getUserServer()
+      const user = await getUser()
       if (!user) {
          return NextResponse.json(
             { error: '로그인이 필요합니다.' },

@@ -1,6 +1,6 @@
 import { baseMetadata } from '@/shared/metadata'
 import AppProviders from '@/shared/providers'
-import { Toaster } from '@/shared/shadcn/ui/toaster'
+import AuthServerProvider from '@/shared/providers/auth-server-provider'
 import Footer from '@/widgets/footer'
 import Header from '@/widgets/header'
 import Ticker from '@/widgets/ticker'
@@ -93,20 +93,23 @@ export default function RootLayout({
             />
          </head>
          <body>
-            <AppProviders>
-               <div id="modal-root" />
-               <div className="flex min-h-screen flex-col items-center w-full bg-background">
-                  <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
-                     <Ticker />
-                     <Header />
-                     <main className="flex-1 w-full min-h-screen font-mono">
-                        <Suspense fallback={<Loading />}>{children}</Suspense>
-                     </main>
-                     <Footer />
+            <AuthServerProvider>
+               <AppProviders>
+                  <div id="modal-root" />
+                  <div className="flex min-h-screen flex-col items-center w-full bg-background">
+                     <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
+                        <Ticker />
+                        <Header />
+                        <main className="flex-1 w-full min-h-screen font-mono">
+                           <Suspense fallback={<Loading />}>
+                              {children}
+                           </Suspense>
+                        </main>
+                        <Footer />
+                     </div>
                   </div>
-               </div>
-               <Toaster />
-            </AppProviders>
+               </AppProviders>
+            </AuthServerProvider>
          </body>
       </html>
    )

@@ -1,4 +1,3 @@
-import { getUserServer } from '@/entities/auth/api/get-user-server'
 import type { Metadata } from 'next'
 import SignUpFlow from './ui/signup-flow'
 
@@ -7,8 +6,14 @@ export const metadata: Metadata = {
    description: '0RIGIN(제로리진) 회원가입을 위한 정보를 입력해 주세요.',
 }
 
-export default async function SignFormPage() {
-   const user = await getUserServer()
+export default async function SignFormPage({
+   searchParams,
+}: {
+   searchParams: Promise<{
+      email?: string
+   }>
+}) {
+   const { email } = await searchParams
 
-   return <SignUpFlow user={user} />
+   return <SignUpFlow email={email} />
 }

@@ -1,44 +1,19 @@
 'use client'
 
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
+import { signInWithGoogle } from '@/entities/auth/api/google'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Icons } from '@/shared/ui/icons'
 
 export default function GoogleLogin() {
-   const handleGoogleLogin = async () => {
-      try {
-         const supabase = SupabaseBrowserClient()
-         const redirectUrl = `${window.location.origin}/api/auth/callback`
-
-         console.log('클라이언트 환경 변수:', process.env.NEXT_PUBLIC_URL)
-         console.log('실제 리다이렉트 URL:', redirectUrl)
-
-         const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-               redirectTo: redirectUrl,
-               queryParams: {
-                  prompt: 'select_account',
-               },
-            },
-         })
-
-         if (error) {
-            throw error
-         }
-      } catch (error) {
-         console.error('구글 로그인 에러:', error)
-      }
-   }
-
    return (
-      <Button
-         variant="outline"
-         className="w-full flex items-center justify-center gap-2"
-         onClick={handleGoogleLogin}
-      >
-         <Icons.google className="w-5 h-5" />
-         <span>Google로 계속하기</span>
-      </Button>
+      <form action={async () => signInWithGoogle({ next: '/' })}>
+         <Button
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2"
+         >
+            <Icons.google className="w-5 h-5" />
+            <span>Google로 계속하기</span>
+         </Button>
+      </form>
    )
 }

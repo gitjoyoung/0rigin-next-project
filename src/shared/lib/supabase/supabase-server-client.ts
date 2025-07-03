@@ -1,30 +1,26 @@
+import { Database } from '@/shared/types'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import 'server-only'
 
-// 서버 컴포넌트에서 사용하는 함수
 export async function SupabaseServerClient() {
+   // Next 15: 반드시 await
    const cookieStore = await cookies()
 
-   return createServerClient(
+   return createServerClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
          cookies: {
-            getAll() {
-               return cookieStore.getAll()
-            },
-            setAll(cookiesToSet) {
-               try {
-                  cookiesToSet.forEach(({ name, value, options }) =>
-                     cookieStore.set(name, value, options),
-                  )
-               } catch {
-                  // The `setAll` method was called from a Server Component.
-                  // This can be ignored if you have middleware refreshing
-                  // user sessions.
-               }
+            getAll: () => cookieStore.getAll(),
+            setAll: (cookiesToSet) => {
+               // 옵션까지 펼쳐서 전달
+               cookiesToSet.forEach(({ name, value, options }) =>
+                  cookieStore.set({ name, value, ...options }),
+               )
             },
          },
+         // cookieEncoding: 'none', // 필요 시 명시 (기본 none)
       },
    )
 }

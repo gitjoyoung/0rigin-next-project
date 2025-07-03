@@ -9,3 +9,29 @@ export async function getUser(): Promise<User | null> {
    } = await supabase.auth.getUser()
    return user
 }
+
+export async function checkSignupCompleteServer(): Promise<{
+   status: 'unauth' | 'authed' | 'needsProfile'
+   user: User | null
+}> {
+   const supabase = await SupabaseServerClient()
+
+   const {
+      data: { session },
+   } = await supabase.auth.getSession()
+   const { data: profile } = session
+      ? await supabase
+           .from('profile')
+           .select('is_active')
+           .eq('id', session.user.id)
+           .maybeSingle()
+      : { data: null }
+
+   const initial = !session
+      ? { status: 'unauth' as const, user: null }
+      : profile?.is_active
+        ? { status: 'authed' as const, user: session.user }
+        : { status: 'needsProfile' as const, user: session.user }
+
+   return initial
+}

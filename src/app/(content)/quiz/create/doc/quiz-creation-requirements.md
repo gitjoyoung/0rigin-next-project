@@ -12,32 +12,6 @@
 - **API 레벨 검증**: 각 API 엔드포인트에서 사용자 인증 재확인
 - **리다이렉트**: 로그인하지 않은 사용자는 `/quiz?error=login_required`로 리다이렉트
 
-### 2. 권한 구조
-
-```typescript
-// 페이지 레벨 (서버 컴포넌트)
-export default async function QuizCreatePage() {
-   const user = await getUserServer()
-
-   if (!user) {
-      redirect('/quiz?error=login_required')
-   }
-   // ...
-}
-
-// API 레벨 (각 엔드포인트)
-export async function POST(request: NextRequest) {
-   const user = await getUserServer()
-   if (!user) {
-      return NextResponse.json(
-         { error: '로그인이 필요합니다.' },
-         { status: 401 },
-      )
-   }
-   // ...
-}
-```
-
 ## 🎯 필수 입력 항목
 
 ### 1. 퀴즈 기본 정보

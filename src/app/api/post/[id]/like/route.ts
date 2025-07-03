@@ -1,4 +1,4 @@
-import { getUserServer } from '@/entities/auth/api/get-user-server'
+import { getUser } from '@/entities/auth'
 import {
    createPostLike,
    deletePostLike,
@@ -17,7 +17,7 @@ export async function GET(
       const postId = parseInt(id)
 
       // Supabase 세션에서 사용자 정보 가져오기
-      const user = await getUserServer()
+      const user = await getUser()
       const userId = user?.id
 
       // 좋아요 상태와 수를 병렬로 조회
@@ -51,7 +51,7 @@ export async function POST(
       const postId = parseInt(id)
 
       // Supabase 세션에서 사용자 정보 가져오기
-      const user = await getUserServer()
+      const user = await getUser()
       const userId = user?.id
 
       if (!userId) {

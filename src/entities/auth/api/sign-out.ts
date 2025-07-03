@@ -1,18 +1,24 @@
+// app/actions/auth.ts
+'use server'
+
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
-import { handleTryCatch } from './try-catch'
+import { redirect } from 'next/navigation'
 
-export const signOut = async (): Promise<any> => {
-   return handleTryCatch(async () => {
-      const supabase = await SupabaseServerClient()
+export async function signOut() {
+   const supabase = await SupabaseServerClient()
+
+   // 먼저 현재 세션 확인
+   const {
+      data: { user },
+   } = await supabase.auth.getUser()
+
+   // 세션이 있는 경우에만 로그아웃 처리
+   if (user) {
       const { error } = await supabase.auth.signOut()
-
       if (error) {
-         throw error
+         console.error('로그아웃 에러:', error)
       }
+   }
 
-      return {
-         success: true,
-         message: '로그아웃이 완료되었습니다.',
-      }
-   }, '로그아웃 처리 중 오류가 발생했습니다.')
+   redirect('/')
 }

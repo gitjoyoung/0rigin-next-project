@@ -1,4 +1,4 @@
-import { getUserServer } from '@/entities/auth/api/get-user-server'
+import { getUser } from '@/entities/auth'
 import type { Metadata } from 'next'
 import QuizCreateForm from './ui/quiz-ceate-form'
 import QuizCreateAuthCheck from './ui/quiz-create-auth-check'
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function QuizCreatePage() {
    // 로그인 상태 확인
-   const user = await getUserServer()
+   const user = await getUser()
 
    if (!user) {
       return <QuizCreateAuthCheck />

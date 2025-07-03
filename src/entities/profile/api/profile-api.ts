@@ -1,9 +1,8 @@
-import { getUserServer } from '@/entities/auth/api/get-user-server'
+import { getUser } from '@/entities/auth/api/get-user'
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import {
    CreateProfileRequest,
    Profile,
-   ProfileChangeHistory,
    ProfileDetail,
    ProfileSearchResult,
    ProfileStats,
@@ -12,9 +11,9 @@ import {
 
 // 프로필 조회
 export async function getProfile(): Promise<Profile> {
-   const user = await getUserServer()
+   const { email, id } = await getUser()
 
-   if (!user) {
+   if (!email) {
       throw new Error('사용자 정보를 불러올 수 없습니다.')
    }
 
@@ -22,19 +21,19 @@ export async function getProfile(): Promise<Profile> {
    const { data, error } = await supabase
       .from('profile')
       .select('*')
-      .eq('id', user.id)
+      .eq('id', id)
       .single()
 
    if (error) {
       throw new Error('프로필 정보를 불러올 수 없습니다.')
    }
 
-   return data as Profile
+   return { ...data, email } as Profile
 }
 
 // 프로필 상세 조회 (통계 포함)
 export async function getProfileDetail(): Promise<ProfileDetail | null> {
-   const user = await getUserServer()
+   const user = await getUser()
 
    if (!user) {
       throw new Error('사용자 정보를 불러올 수 없습니다.')
@@ -84,7 +83,7 @@ export async function getProfileStats(userId: string): Promise<ProfileStats> {
    const { count: totalComments } = await supabase
       .from('comments')
       .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId)
+      .eq('author_id', userId)
 
    // 마지막 활동 시간 조회
    const { data: lastActivity } = await supabase
@@ -106,7 +105,7 @@ export async function getProfileStats(userId: string): Promise<ProfileStats> {
 export async function updateProfile(
    updateData: UpdateProfileRequest,
 ): Promise<void> {
-   const user = await getUserServer()
+   const user = await getUser()
 
    if (!user) {
       throw new Error('사용자 정보를 불러올 수 없습니다.')
@@ -176,31 +175,9 @@ export async function searchProfiles(
    }
 }
 
-// 프로필 변경 이력 조회
-export async function getProfileChangeHistory(
-   userId: string,
-   limit = 20,
-   offset = 0,
-): Promise<ProfileChangeHistory[]> {
-   const supabase = await SupabaseServerClient()
-
-   const { data, error } = await supabase
-      .from('profile_change_history')
-      .select('*')
-      .eq('profile_id', userId)
-      .order('changed_at', { ascending: false })
-      .range(offset, offset + limit - 1)
-
-   if (error) {
-      throw new Error('프로필 변경 이력을 불러올 수 없습니다.')
-   }
-
-   return data as ProfileChangeHistory[]
-}
-
 // 프로필 삭제 (필요시)
 export async function deleteProfile(): Promise<void> {
-   const user = await getUserServer()
+   const user = await getUser()
 
    if (!user) {
       throw new Error('사용자 정보를 불러올 수 없습니다.')

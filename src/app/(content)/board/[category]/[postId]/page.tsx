@@ -45,17 +45,12 @@ export async function generateMetadata({ params }: IParams): Promise<Metadata> {
 
 export default async function Page({ params }: IParams) {
    const { category, postId } = await params
-
    if (!category || !postId) redirect(ROUTE_BOARD)
 
-   // postId가 숫자가 아닌 경우 처리
    if (isNaN(Number(postId))) {
       redirect(`/board/${category}`)
    }
-
-   // 카테고리 정보 조회 (DB에서 조회)
    const categoryInfo = await getCategoryBySlug(category)
-
    if (!categoryInfo) {
       redirect('/board/latest')
    }

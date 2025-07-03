@@ -1,4 +1,4 @@
-import { getUserServer } from '@/entities/auth/api/get-user-server'
+import { getUser } from '@/entities/auth'
 import { deletePost, getPostById, updatePost } from '@/entities/post/api'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -37,7 +37,7 @@ export async function PUT(
       const { id: postId } = await params
 
       // 현재 로그인한 사용자 정보 가져오기
-      const user = await getUserServer()
+      const user = await getUser()
 
       // 게시글 정보 조회
       const post = await getPostById(postId)
@@ -100,7 +100,7 @@ export async function DELETE(
       const { id: postId } = await params
 
       // 현재 로그인한 사용자 정보 가져오기
-      const user = await getUserServer()
+      const user = await getUser()
 
       // 게시글 정보 조회
       const post = await getPostById(postId)

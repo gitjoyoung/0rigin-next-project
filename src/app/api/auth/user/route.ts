@@ -1,4 +1,4 @@
-import { getUser } from '@/entities/auth'
+import { getUser } from '@/entities/auth/api/get-user'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
