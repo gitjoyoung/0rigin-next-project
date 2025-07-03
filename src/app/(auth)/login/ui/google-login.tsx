@@ -4,24 +4,14 @@ import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-cl
 import { Button } from '@/shared/shadcn/ui/button'
 import { Icons } from '@/shared/ui/icons'
 
-interface GoogleLoginButtonProps {
-   className?: string
-   redirectTo?: string
-}
-
-export default function GoogleLogin({
-   className,
-   redirectTo,
-}: GoogleLoginButtonProps) {
+export default function GoogleLogin() {
    const handleGoogleLogin = async () => {
       try {
          const supabase = SupabaseBrowserClient()
          const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-               redirectTo:
-                  redirectTo ||
-                  `${process.env.NEXT_PUBLIC_URL || window.location.origin}/api/auth/callback`,
+               redirectTo: `${window.location.origin}/api/auth/callback`,
                queryParams: {
                   prompt: 'select_account',
                },
@@ -39,7 +29,7 @@ export default function GoogleLogin({
    return (
       <Button
          variant="outline"
-         className={`w-full flex items-center justify-center gap-2 ${className}`}
+         className="w-full flex items-center justify-center gap-2"
          onClick={handleGoogleLogin}
       >
          <Icons.google className="w-5 h-5" />

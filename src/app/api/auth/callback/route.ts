@@ -12,13 +12,13 @@ export async function GET(request: NextRequest) {
    // OAuth 에러 처리
    if (error) {
       return NextResponse.redirect(
-         new URL('/login?error=' + encodeURIComponent(error), origin),
+         `${origin}/login?error=${encodeURIComponent(error)}`,
       )
    }
 
    // 코드 없으면 로그인으로
    if (!code) {
-      return NextResponse.redirect(new URL('/login', origin))
+      return NextResponse.redirect(`${origin}/login`)
    }
 
    const supabase = await SupabaseServerClient()
@@ -29,38 +29,30 @@ export async function GET(request: NextRequest) {
 
    if (exchangeError || !data.user) {
       return NextResponse.redirect(
-         new URL(
-            '/login?error=' + encodeURIComponent('로그인 처리에 실패했습니다.'),
-            origin,
-         ),
+         `${origin}/login?error=${encodeURIComponent('로그인 처리에 실패했습니다.')}`,
       )
    }
 
    // 프로필 직접 확인 (API 호출 대신)
-   try {
-      const { data: profile, error: profileError } = await supabase
-         .from('profile')
-         .select('id')
-         .eq('id', data.user.id)
-         .single()
+   const { data: profile, error: profileError } = await supabase
+      .from('profile')
+      .select('id')
+      .eq('id', data.user.id)
+      .single()
 
-      // 프로필 있음 - 홈으로
-      if (profile && !profileError) {
-         return NextResponse.redirect(new URL('/', origin))
-      }
-
-      // 프로필 없음 - 신규 회원이므로 회원가입 페이지로
-      return NextResponse.redirect(new URL('/sign/form', origin))
-   } catch (error) {
-      // 프로필 확인 실패 - 로그아웃 후 로그인 페이지로
-      console.error('프로필 확인 중 오류:', error)
+   // 프로필 확인 실패 - 로그아웃 후 로그인 페이지로
+   if (profileError) {
       await supabase.auth.signOut()
       return NextResponse.redirect(
-         new URL(
-            '/login?error=' +
-               encodeURIComponent('프로필 확인 중 오류가 발생했습니다.'),
-            origin,
-         ),
+         `${origin}/login?error=${encodeURIComponent('프로필 확인 중 오류가 발생했습니다.')}`,
       )
    }
+
+   // 프로필 있음 - 홈으로
+   if (profile) {
+      return NextResponse.redirect(`${origin}/`)
+   }
+
+   // 프로필 없음 - 신규 회원이므로 회원가입 페이지로
+   return NextResponse.redirect(`${origin}/sign/form`)
 }

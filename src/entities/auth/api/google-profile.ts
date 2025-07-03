@@ -18,7 +18,7 @@ export interface GoogleProfileParams {
 }
 
 // 구글 로그인 사용자의 프로필 생성
-export const createGoogleProfile = async ({
+export const createGoogleProfileAddServer = async ({
    nickname,
    gender,
 }: GoogleProfileParams): Promise<AuthResponse> => {
