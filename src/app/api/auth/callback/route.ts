@@ -6,16 +6,19 @@ export async function GET(request: NextRequest) {
    const code = requestUrl.searchParams.get('code')
    const error = requestUrl.searchParams.get('error')
 
+   // 요청의 오리진 사용
+   const origin = requestUrl.origin
+
    // OAuth 에러 처리
    if (error) {
       return NextResponse.redirect(
-         new URL('/login?error=' + encodeURIComponent(error), request.url),
+         new URL('/login?error=' + encodeURIComponent(error), origin),
       )
    }
 
    // 코드 없으면 로그인으로
    if (!code) {
-      return NextResponse.redirect(new URL('/login', request.url))
+      return NextResponse.redirect(new URL('/login', origin))
    }
 
    const supabase = await SupabaseServerClient()
@@ -28,7 +31,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(
          new URL(
             '/login?error=' + encodeURIComponent('로그인 처리에 실패했습니다.'),
-            request.url,
+            origin,
          ),
       )
    }
@@ -43,11 +46,11 @@ export async function GET(request: NextRequest) {
 
       // 프로필 있음 - 홈으로
       if (profile && !profileError) {
-         return NextResponse.redirect(new URL('/', request.url))
+         return NextResponse.redirect(new URL('/', origin))
       }
 
       // 프로필 없음 - 신규 회원이므로 회원가입 페이지로
-      return NextResponse.redirect(new URL('/sign/form', request.url))
+      return NextResponse.redirect(new URL('/sign/form', origin))
    } catch (error) {
       // 프로필 확인 실패 - 로그아웃 후 로그인 페이지로
       console.error('프로필 확인 중 오류:', error)
@@ -56,7 +59,7 @@ export async function GET(request: NextRequest) {
          new URL(
             '/login?error=' +
                encodeURIComponent('프로필 확인 중 오류가 발생했습니다.'),
-            request.url,
+            origin,
          ),
       )
    }
