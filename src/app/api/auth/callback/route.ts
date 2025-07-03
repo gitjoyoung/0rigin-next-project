@@ -6,8 +6,7 @@ export async function GET(request: NextRequest) {
    const code = requestUrl.searchParams.get('code')
    const error = requestUrl.searchParams.get('error')
 
-   // 요청의 오리진 사용
-   const origin = requestUrl.origin
+   const origin = `${process.env.NEXT_PUBLIC_URL}`
 
    // OAuth 에러 처리
    if (error) {
