@@ -1,8 +1,8 @@
 'use client'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Label } from '@/shared/shadcn/ui/label'
-import { Icons } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
+import { Search } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 
@@ -63,7 +63,7 @@ export default function SearchBox({ className }: { className?: string }) {
             }}
             className="absolute right-1 bg-background px-1 py-0.5 rounded"
          >
-            <Icons.search size={16} />
+            <Search size={16} />
          </Label>
       </article>
    )

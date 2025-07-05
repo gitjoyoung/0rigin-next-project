@@ -1,6 +1,6 @@
 'use client'
 
-import { Icons } from '@/shared/ui/icons'
+import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
@@ -24,9 +24,9 @@ export default function ThemeToggle() {
             className="cursor-pointer transition-all duration-300"
          >
             {theme === 'dark' ? (
-               <Icons.moon size={18} className="animate-rotate-fade-in" />
+               <Moon size={18} className="animate-rotate-fade-in" />
             ) : (
-               <Icons.sun size={18} className="animate-rotate-fade-in" />
+               <Sun size={18} className="animate-rotate-fade-in" />
             )}
          </button>
       </div>

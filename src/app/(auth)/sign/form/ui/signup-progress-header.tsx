@@ -1,5 +1,5 @@
-import { Icons } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
+import { Check } from 'lucide-react'
 
 interface SignUpProgressHeaderProps {
    isTermsAccepted: boolean
@@ -22,7 +22,7 @@ export default function SignUpProgressHeader({
                      : 'bg-primary text-primary-foreground',
                )}
             >
-               {isTermsAccepted ? <Icons.check className="w-4 h-4" /> : 1}
+               {isTermsAccepted ? <Check className="w-4 h-4" /> : 1}
             </div>
             <span className={cn('mt-1 text-xs', 'text-foreground')}>
                약관동의

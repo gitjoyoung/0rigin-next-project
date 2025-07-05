@@ -1,11 +1,12 @@
 'use client'
 
 import { QuizQuestion } from '@/entities/quiz/types'
+import { ANIMATION_DURATION } from '@/shared/constants/validation-rules'
 import { Badge } from '@/shared/shadcn/ui/badge'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Card, CardContent, CardHeader } from '@/shared/shadcn/ui/card'
 import { Progress } from '@/shared/shadcn/ui/progress'
-import { Icons } from '@/shared/ui/icons'
+import { ArrowLeft, Check, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -36,8 +37,8 @@ export default function QuizResult({
 
    // 점수 카운트업 애니메이션
    useEffect(() => {
-      const duration = 2000 // 2초
-      const steps = 60 // 60 프레임
+      const duration = ANIMATION_DURATION.SCORE_COUNT_MS
+      const steps = ANIMATION_DURATION.STEPS
       const increment = percentage / steps
       let currentStep = 0
 
@@ -108,13 +109,13 @@ export default function QuizResult({
                   {/* 작은 정답/오답 통계 - 상단 */}
                   <div className="flex justify-center gap-4 mb-4 animate-in fade-in-0 slide-in-from-bottom-4 duration-500 delay-200">
                      <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950 px-3 py-2 rounded-full">
-                        <Icons.check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                         <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                            정답 {correctAnswers}
                         </span>
                      </div>
                      <div className="flex items-center gap-2 bg-rose-50 dark:bg-rose-950 px-3 py-2 rounded-full">
-                        <Icons.x className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                        <X className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                         <span className="text-sm font-medium text-rose-600 dark:text-rose-400">
                            오답 {incorrectAnswers}
                         </span>
@@ -162,7 +163,7 @@ export default function QuizResult({
                         className="h-12 text-base font-semibold hover:scale-105 transition-transform"
                         onClick={() => window.history.back()}
                      >
-                        <Icons.arrowLeft className="w-5 h-5 mr-2" />
+                        <ArrowLeft className="w-5 h-5 mr-2" />
                         목록으로
                      </Button>
                   </div>

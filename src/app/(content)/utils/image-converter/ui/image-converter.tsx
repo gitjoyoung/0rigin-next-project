@@ -25,8 +25,8 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@/shared/shadcn/ui/select'
-import { Icons } from '@/shared/ui/icons'
 import { ImageFileType } from '@/shared/utils/compress-image'
+import { ImageUp, RefreshCcw, X } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import useImageConverter from '../hook/use-image-converter'
@@ -221,7 +221,7 @@ export default function ImageConverter() {
                         download={`compressed_${image?.name.split('.')[0]}.${getFileExtension(selectedFormat)}`}
                         className="flex items-center gap-2"
                      >
-                        <Icons.imageUpload className="h-4 w-4" />
+                        <ImageUp className="h-4 w-4" />
                         다운로드
                      </a>
                   </Button>
@@ -233,7 +233,7 @@ export default function ImageConverter() {
          {isLoading && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                <div className="flex flex-col items-center gap-4">
-                  <Icons.refreshCcw className="h-8 w-8 animate-spin text-white" />
+                  <RefreshCcw className="h-8 w-8 animate-spin text-white" />
                   <p className="text-white">이미지 변환 중...</p>
                </div>
             </div>
@@ -247,7 +247,7 @@ export default function ImageConverter() {
             <AlertDialogContent>
                <AlertDialogHeader>
                   <AlertDialogTitle className="flex items-center gap-2 text-red-600">
-                     <Icons.x className="h-5 w-5" />
+                     <X className="h-5 w-5" />
                      오류 발생
                   </AlertDialogTitle>
                   <AlertDialogDescription>{error}</AlertDialogDescription>

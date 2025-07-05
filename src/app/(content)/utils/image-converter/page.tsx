@@ -1,4 +1,4 @@
-import { Icons } from '@/shared/ui/icons'
+import { ArrowLeft, ImageUp } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { utilList } from '../ui/util-list'
@@ -23,10 +23,10 @@ export default function Page() {
                   href="/utils"
                   className="absolute left-2 flex items-center gap-2 hover:opacity-80 transition-opacity"
                >
-                  <Icons.arrowLeft className="w-8 h-8" />
+                  <ArrowLeft className="w-8 h-8" />
                </Link>
                <div className="flex items-center gap-2 ">
-                  <Icons.imageUpload className="w-6 h-6" />
+                  <ImageUp className="w-6 h-6" />
                   <h1 className="text-xl font-bold">{utilList[0].name}</h1>
                </div>
                <p className="text-sm text-muted-foreground">

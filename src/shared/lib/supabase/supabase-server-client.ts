@@ -14,10 +14,19 @@ export async function SupabaseServerClient() {
          cookies: {
             getAll: () => cookieStore.getAll(),
             setAll: (cookiesToSet) => {
-               // 옵션까지 펼쳐서 전달
-               cookiesToSet.forEach(({ name, value, options }) =>
-                  cookieStore.set({ name, value, ...options }),
-               )
+               // Next.js 15에서는 쿠키 설정이 제한적
+               // Server Action이나 Route Handler에서만 쿠키 설정 가능
+               try {
+                  cookiesToSet.forEach(({ name, value, options }) =>
+                     cookieStore.set({ name, value, ...options }),
+                  )
+               } catch (error) {
+                  // 읽기 전용 컨텍스트에서는 쿠키 설정 무시
+                  console.warn(
+                     'Cookie setting attempted in read-only context:',
+                     error,
+                  )
+               }
             },
          },
          // cookieEncoding: 'none', // 필요 시 명시 (기본 none)

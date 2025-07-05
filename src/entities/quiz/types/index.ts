@@ -9,6 +9,13 @@ export interface Quiz {
    is_public: boolean
    time_limit?: number
    pass_score: number
+   question_count?: number // 문제 수 (조인된 필드)
+}
+
+// 퀴즈 상세 정보 타입 (문제 포함)
+export interface QuizDetail extends Quiz {
+   questions: QuizQuestion[]
+   total_questions: number
 }
 
 // 퀴즈 문제 테이블 타입 (DB 스키마 기반)
@@ -38,7 +45,7 @@ export interface QuizAttempt {
    started_at: string
    completed_at?: string
    score?: number
-   total_questions?: number
+   total_questions: number // 필수 필드로 변경
    correct_answers?: number
    passed?: boolean
 }

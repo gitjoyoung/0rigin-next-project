@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/shared/shadcn/ui/button'
-import { Icons } from '@/shared/ui/icons'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import React from 'react'
 
 interface Props {
@@ -44,11 +44,11 @@ export default function QuizNavButton({
             disabled={isFirstDisabled}
          >
             이전
-            <Icons.arrowLeft size={20} />
+            <ArrowLeft size={20} />
          </Button>
          <Button type="button" size="lg" onClick={handleNext}>
             {isLastQuestion ? '결과 보기' : '다음'}
-            <Icons.arrowRight size={20} />
+            <ArrowRight size={20} />
          </Button>
       </div>
    )

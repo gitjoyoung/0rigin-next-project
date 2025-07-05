@@ -1,29 +1,41 @@
+import {
+   NICKNAME_RULES,
+   POST_PASSWORD_RULES,
+   POST_RULES,
+} from '@/shared/constants/validation-rules'
 import { z } from 'zod'
 
 // 기본 스키마 (비로그인 사용자용)
 export const boardSchema = z.object({
    nickname: z
       .string()
-      .min(2, '닉네임은 2자 이상이어야 합니다.')
-      .max(20, '닉네임은 20자 이하이어야 합니다.')
-      .regex(
-         /^[A-Za-z\d가-힣ㄱ-ㅎㅏ-ㅣ\-_\.@]+$/,
-         '문자, 숫자, 특수문자(-, _, ., @)만 허용됩니다.',
-      ),
+      .min(NICKNAME_RULES.MIN_LENGTH, NICKNAME_RULES.ERROR_MESSAGES.MIN_LENGTH)
+      .max(NICKNAME_RULES.MAX_LENGTH, NICKNAME_RULES.ERROR_MESSAGES.MAX_LENGTH)
+      .regex(NICKNAME_RULES.PATTERN, NICKNAME_RULES.ERROR_MESSAGES.PATTERN),
    password: z
       .string()
-      .min(4, '비밀번호는 4자 이상이어야 합니다.')
-      .max(20, '비밀번호는 20자 이하이어야 합니다.')
+      .min(
+         POST_PASSWORD_RULES.MIN_LENGTH,
+         POST_PASSWORD_RULES.ERROR_MESSAGES.MIN_LENGTH,
+      )
+      .max(
+         POST_PASSWORD_RULES.MAX_LENGTH,
+         POST_PASSWORD_RULES.ERROR_MESSAGES.MAX_LENGTH,
+      )
       .regex(
-         /^[A-Za-z\d가-힣ㄱ-ㅎㅏ-ㅣ\-_\.@]+$/,
-         '비밀번호는 문자, 숫자, 특수문자(-, _, ., @)만 가능합니다',
+         POST_PASSWORD_RULES.PATTERN,
+         POST_PASSWORD_RULES.ERROR_MESSAGES.PATTERN,
       ),
-   title: z.string().min(2, '제목을 입력해주세요.'),
-   content: z.string().min(2, '내용을 입력해주세요.'),
+   title: z
+      .string()
+      .min(POST_RULES.TITLE_MIN_LENGTH, POST_RULES.ERROR_MESSAGES.TITLE),
+   content: z
+      .string()
+      .min(POST_RULES.CONTENT_MIN_LENGTH, POST_RULES.ERROR_MESSAGES.CONTENT),
    thumbnail: z.string().optional(),
    summary: z
       .string()
-      .max(160, '요약은 최대 160자 이하로 작성해주세요.')
+      .max(POST_RULES.SUMMARY_MAX_LENGTH, POST_RULES.ERROR_MESSAGES.SUMMARY)
       .optional(),
 })
 

@@ -4,7 +4,7 @@ import {
    AccordionItem,
    AccordionTrigger,
 } from '@/shared/shadcn/ui/accordion'
-import { Icons } from '@/shared/ui/icons'
+import { FileQuestion } from 'lucide-react'
 
 const ACCORDION_DATA = {
    title: 'MarkDown 문법 요약',
@@ -21,7 +21,7 @@ export default function MarkDownTip() {
          <AccordionItem value="item-1" className="border-none px-2">
             <AccordionTrigger className="h-5 hover:no-underline ">
                <div className="flex gap-2 items-center text-slate-700  ">
-                  <Icons.fileQuestion
+                  <FileQuestion
                      size={20}
                      className="text-slate-700 dark:text-white"
                   />

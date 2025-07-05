@@ -17,9 +17,9 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
-import { Icons } from '@/shared/ui/icons'
 import { LoadingSpinner } from '@/shared/ui/spinner/loading-spinner'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Frown, RefreshCcw } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useUserSignUp } from '../hook/useUserSignUp'
@@ -49,7 +49,7 @@ export default function NormalSignUpForm() {
          {isPending && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                <div className="flex flex-col items-center gap-4">
-                  <Icons.refreshCcw className="h-8 w-8 animate-spin text-white" />
+                  <RefreshCcw className="h-8 w-8 animate-spin text-white" />
                   <p className="text-white">회원가입 처리중...</p>
                </div>
             </div>
@@ -167,7 +167,7 @@ export default function NormalSignUpForm() {
                      {/* 에러 메시지 */}
                      {error && (
                         <div className="flex justify-center items-center gap-1 text-red-500">
-                           <Icons.frown className="w-4 h-4" />
+                           <Frown className="w-4 h-4" />
                            <p className="text-xs text-center whitespace-pre-line font-medium">
                               {error}
                            </p>

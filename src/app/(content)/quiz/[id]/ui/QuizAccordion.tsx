@@ -4,7 +4,7 @@ import {
    AccordionItem,
    AccordionTrigger,
 } from '@/shared/shadcn/ui/accordion'
-import { Icons } from '@/shared/ui/icons'
+import { FileQuestion } from 'lucide-react'
 
 interface Props {
    content: string
@@ -19,7 +19,7 @@ export default function QuizAccordion({ content }: Props) {
          <AccordionItem value="item-1" className="border-none">
             <AccordionTrigger>
                <div className="flex gap-2 items-center">
-                  <Icons.fileQuestion size={20} />
+                  <FileQuestion size={20} />
                   <h1>{ACCORDION_DATA.title}</h1>
                </div>
             </AccordionTrigger>

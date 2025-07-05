@@ -5,6 +5,7 @@ import {
    Quiz,
    QuizAnswer,
    QuizAttempt,
+   QuizDetail,
    QuizQuestion,
    StartQuizAttemptRequest,
    SubmitQuizAnswerRequest,
@@ -25,19 +26,43 @@ export async function getQuizzes(limit = 10, offset = 0): Promise<Quiz[]> {
    return data || []
 }
 
-// 퀴즈 상세 조회
-export async function getQuizById(id: number): Promise<Quiz | null> {
+// 퀴즈 상세 조회 (문제 포함)
+export async function getQuizById(id: number): Promise<QuizDetail | null> {
    const supabase = await SupabaseServerClient()
 
-   const { data, error } = await supabase
+   // 퀴즈 기본 정보 조회
+   const { data: quiz, error: quizError } = await supabase
       .from('quizzes')
       .select('*')
       .eq('id', id)
       .eq('is_public', true)
       .single()
 
-   if (error) throw error
-   return data
+   if (quizError) throw quizError
+   if (!quiz) return null
+
+   // 퀴즈 문제들 조회
+   const { data: questions, error: questionsError } = await supabase
+      .from('quiz_questions')
+      .select('*')
+      .eq('quiz_id', id)
+      .order('question_number', { ascending: true })
+
+   if (questionsError) throw questionsError
+
+   const quizQuestions = (questions || []).map((q) => ({
+      ...q,
+      question_type: q.question_type as any as
+         | 'multiple_choice'
+         | 'true_false'
+         | 'essay',
+   })) as QuizQuestion[]
+
+   return {
+      ...quiz,
+      questions: quizQuestions,
+      total_questions: quizQuestions.length,
+   }
 }
 
 // 퀴즈 문제 목록 조회

@@ -1,3 +1,7 @@
+import {
+   NICKNAME_RULES,
+   POST_PASSWORD_RULES,
+} from '@/shared/constants/validation-rules'
 import { z } from 'zod'
 
 export const commentSchema = z.object({
@@ -5,14 +9,22 @@ export const commentSchema = z.object({
    parent_id: z.number(),
    content: z.string().min(1, '댓글 내용을 입력해주세요.'),
    author_id: z.string(),
-   nickname: z.string().min(2, '닉네임은 2자 이상이어야 합니다.'),
+   nickname: z
+      .string()
+      .min(NICKNAME_RULES.MIN_LENGTH, NICKNAME_RULES.ERROR_MESSAGES.MIN_LENGTH),
    password: z
       .string()
-      .min(4, '비밀번호는 4자 이상이어야 합니다.')
-      .max(10, '비밀번호는 10자 이하이어야 합니다.')
+      .min(
+         POST_PASSWORD_RULES.MIN_LENGTH,
+         POST_PASSWORD_RULES.ERROR_MESSAGES.MIN_LENGTH,
+      )
+      .max(
+         POST_PASSWORD_RULES.MAX_LENGTH,
+         POST_PASSWORD_RULES.ERROR_MESSAGES.MAX_LENGTH,
+      )
       .regex(
-         /^[A-Za-z\d가-힣ㄱ-ㅎㅏ-ㅣ]+$/,
-         '비밀번호는 문자, 숫자만 가능합니다',
+         POST_PASSWORD_RULES.PATTERN,
+         POST_PASSWORD_RULES.ERROR_MESSAGES.PATTERN,
       ),
    is_approved: z.boolean(),
    is_edited: z.boolean(),

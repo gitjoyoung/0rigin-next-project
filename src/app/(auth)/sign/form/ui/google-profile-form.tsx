@@ -15,9 +15,9 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
-import { Icons } from '@/shared/ui/icons'
 import { LoadingSpinner } from '@/shared/ui/spinner/loading-spinner'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Chrome, Frown, RefreshCcw } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useGoogleProfile } from '../hook/useGoogleProfile'
@@ -61,7 +61,7 @@ export default function GoogleProfileForm({ email }: GoogleProfileFormProps) {
          {isPending && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                <div className="flex flex-col items-center gap-4">
-                  <Icons.refreshCcw className="h-8 w-8 animate-spin text-white" />
+                  <RefreshCcw className="h-8 w-8 animate-spin text-white" />
                   <p className="text-white">프로필 생성 중...</p>
                </div>
             </div>
@@ -82,7 +82,7 @@ export default function GoogleProfileForm({ email }: GoogleProfileFormProps) {
                      <div>
                         <Input value={email} disabled placeholder="이메일" />
                         <div className="flex px-2 items-center gap-1 text-xs text-muted-foreground mt-1">
-                           <Icons.google className="h-4 w-4" />
+                           <Chrome className="h-4 w-4" />
                            <span className="text-green-500">
                               Google 계정으로 로그인되었습니다.
                            </span>
@@ -122,7 +122,7 @@ export default function GoogleProfileForm({ email }: GoogleProfileFormProps) {
                      {/* 에러 메시지 */}
                      {error && (
                         <div className="flex justify-center items-center gap-1 text-red-500">
-                           <Icons.frown className="w-4 h-4" />
+                           <Frown className="w-4 h-4" />
                            <p className="text-xs text-center">{error}</p>
                         </div>
                      )}

@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/shared/shadcn/ui/button'
-import { Icons } from '@/shared/ui/icons'
+import { RefreshCcw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface Props {
@@ -28,7 +28,7 @@ export default function CommentHeader({ commentCount: commentLength }: Props) {
             items-center h-5"
             onClick={() => router.refresh()}
          >
-            <Icons.refreshCcw className="h-4 w-4" />
+            <RefreshCcw className="h-4 w-4" />
             <p>{COMMENT_HEADER_DATA.refresh}</p>
          </Button>
       </div>

@@ -9,7 +9,7 @@ import {
    TableHeader,
    TableRow,
 } from '@/shared/shadcn/ui/table'
-import formatDate from '@/shared/utils/validators/board/format-date'
+import { formatSmartDate } from '@/shared/utils/dayjs-config'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -95,7 +95,7 @@ export default function Post({ postData, category }: Props) {
                            {item.nickname || '익명'}
                         </TableCell>
                         <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">
-                           {formatDate(item.created_at)}
+                           {formatSmartDate(item.created_at)}
                         </TableCell>
                         <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
                            {formatValue(item.view_count)}

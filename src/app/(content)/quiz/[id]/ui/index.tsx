@@ -14,7 +14,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
-import { Icons } from '@/shared/ui/icons'
+import { FileQuestion } from 'lucide-react'
 import { useQuiz } from '../hooks/use-quiz'
 import QuizNavButton from './QuizNavButton'
 import QuizRadioButtonGroup from './QuizRadioButtonGroup'
@@ -87,7 +87,7 @@ export default function Quiz({ quizData }: { quizData: QuizDetail }) {
                         <AccordionItem value="item-1">
                            <AccordionTrigger>
                               <div className="flex items-center gap-2">
-                                 <Icons.fileQuestion size={20} />
+                                 <FileQuestion size={20} />
                                  <p>힌트 보기</p>
                               </div>
                            </AccordionTrigger>

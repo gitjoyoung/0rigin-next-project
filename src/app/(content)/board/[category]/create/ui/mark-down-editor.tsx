@@ -10,12 +10,12 @@ import {
    AlertDialogTitle,
 } from '@/shared/shadcn/ui/alert-dialog'
 import { Button } from '@/shared/shadcn/ui/button'
-import { Icons } from '@/shared/ui/icons'
 import { compressImage } from '@/shared/utils/compress-image'
 import '@uiw/react-markdown-preview/markdown.css'
 import { commands } from '@uiw/react-md-editor'
 import '@uiw/react-md-editor/markdown-editor.css'
 import dayjs from 'dayjs'
+import { ImageUp } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import React from 'react'
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
@@ -135,7 +135,7 @@ const MarkDownEditor = ({
          name: 'upload-image',
          keyCommand: 'upload-image',
          buttonProps: { 'aria-label': 'Upload image' },
-         icon: <Icons.imageUpload size={16} />,
+         icon: <ImageUp size={16} />,
          execute: () => fileInputRef.current?.click(),
       }),
       [],
@@ -178,7 +178,7 @@ const MarkDownEditor = ({
             <AlertDialogContent>
                <AlertDialogHeader>
                   <AlertDialogTitle className="flex flex-row items-center gap-2 text-red-600 dark:text-red-400">
-                     <Icons.imageUpload />
+                     <ImageUp />
                      <p>이미지 업로드 오류</p>
                   </AlertDialogTitle>
                   <AlertDialogDescription className="whitespace-pre-line">

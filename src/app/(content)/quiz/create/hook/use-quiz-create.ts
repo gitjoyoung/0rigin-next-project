@@ -1,4 +1,7 @@
+import { QUIZ_RULES } from '@/shared/constants/validation-rules'
+import { useUser } from '@/shared/hooks/auth'
 import { useToast } from '@/shared/hooks/use-toast'
+import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -23,6 +26,7 @@ interface IQuizForm {
 export function useQuizCreate() {
    const router = useRouter()
    const { toast } = useToast()
+   const queryClient = useQueryClient()
    const [isSubmitting, setIsSubmitting] = useState(false)
    const [errors, setErrors] = useState<string[]>([])
 
@@ -40,13 +44,17 @@ export function useQuizCreate() {
             option_3: '',
             option_4: '',
             option_5: '',
-            option_count: 2,
-            correct_answer: 1,
+            option_count: QUIZ_RULES.MIN_OPTIONS,
+            correct_answer: QUIZ_RULES.MIN_CORRECT_ANSWER,
          },
       ],
    })
 
-   // 폼 유효성 검사
+   const { data: userData } = useUser()
+
+   /**
+    * 폼 검증 로직
+    */
    const validateForm = (): { isValid: boolean; errors: string[] } => {
       const errors: string[] = []
 
@@ -69,19 +77,21 @@ export function useQuizCreate() {
             question.option_5,
          ].filter((option) => option.trim() !== '')
 
-         if (validOptions.length < 2) {
-            errors.push(`문제 ${i + 1}: 최소 2개의 선택지를 입력해주세요.`)
+         if (validOptions.length < QUIZ_RULES.MIN_OPTIONS) {
+            errors.push(
+               `문제 ${i + 1}: 최소 ${QUIZ_RULES.MIN_OPTIONS}개의 선택지를 입력해주세요.`,
+            )
          }
 
-         if (validOptions.length > 5) {
+         if (validOptions.length > QUIZ_RULES.MAX_OPTIONS) {
             errors.push(
-               `문제 ${i + 1}: 최대 5개의 선택지만 입력할 수 있습니다.`,
+               `문제 ${i + 1}: 최대 ${QUIZ_RULES.MAX_OPTIONS}개의 선택지만 입력할 수 있습니다.`,
             )
          }
 
          // 정답이 유효한 선택지 범위 내에 있는지 확인
          if (
-            question.correct_answer < 1 ||
+            question.correct_answer < QUIZ_RULES.MIN_CORRECT_ANSWER ||
             question.correct_answer > validOptions.length
          ) {
             errors.push(`문제 ${i + 1}: 정답 번호가 유효하지 않습니다.`)
@@ -96,15 +106,11 @@ export function useQuizCreate() {
 
    // 퀴즈 제출
    const submitQuiz = async () => {
-      setErrors([])
       const validation = validateForm()
 
       if (!validation.isValid) {
-         setErrors(validation.errors)
          return
       }
-
-      setIsSubmitting(true)
 
       try {
          // 퀴즈 생성 API 호출
@@ -190,13 +196,6 @@ export function useQuizCreate() {
          router.push(`/quiz/${quiz.id}`)
       } catch (error) {
          console.error('퀴즈 생성 오류:', error)
-         setErrors([
-            error instanceof Error
-               ? error.message
-               : '퀴즈 생성 중 오류가 발생했습니다.',
-         ])
-      } finally {
-         setIsSubmitting(false)
       }
    }
 
@@ -223,8 +222,8 @@ export function useQuizCreate() {
                option_3: '',
                option_4: '',
                option_5: '',
-               option_count: 2,
-               correct_answer: 1,
+               option_count: QUIZ_RULES.MIN_OPTIONS,
+               correct_answer: QUIZ_RULES.MIN_CORRECT_ANSWER,
             },
          ],
       }))

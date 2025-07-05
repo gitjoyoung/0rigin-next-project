@@ -78,9 +78,7 @@ export async function getBestPosts(params: PostQueryParams): Promise<Post[]> {
 }
 
 // 게시글 상세 조회
-export async function getPostById(
-   id: number | string,
-): Promise<PostDetail | null> {
+export async function getPostById(id: number): Promise<PostDetail | null> {
    const supabase = await SupabaseServerClient()
 
    const { data: post, error } = await supabase
@@ -112,10 +110,7 @@ export async function createPost(data: PostCreate): Promise<Post> {
 }
 
 // 게시글 수정
-export async function updatePost(
-   id: number | string,
-   data: PostUpdate,
-): Promise<Post> {
+export async function updatePost(id: number, data: PostUpdate): Promise<Post> {
    const supabase = await SupabaseServerClient()
 
    const { data: post, error } = await supabase
@@ -130,7 +125,7 @@ export async function updatePost(
 }
 
 // 게시글 삭제
-export async function deletePost(id: number | string): Promise<void> {
+export async function deletePost(id: number): Promise<void> {
    const supabase = await SupabaseServerClient()
 
    const { error } = await supabase.from('posts').delete().eq('id', id)
@@ -168,7 +163,7 @@ export async function getPostsByUserId(userId: string): Promise<Post[]> {
 
 // 게시글 비밀번호 검증 (password 필드 포함)
 export async function verifyPostPassword(
-   id: number | string,
+   id: number,
    password: string,
 ): Promise<boolean> {
    const supabase = await SupabaseServerClient()
