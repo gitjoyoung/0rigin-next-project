@@ -1,6 +1,6 @@
 'use client'
 
-import { QuizDetail } from '@/entities/quiz/types'
+import { QuizDetail } from '@/entities/quiz/api/quiz-api'
 import {
    Accordion,
    AccordionContent,
@@ -28,7 +28,6 @@ export default function Quiz({ quizData }: { quizData: QuizDetail }) {
       showResult,
       progress,
       currentQuestion,
-      formattedOptions,
       handleIndexChange,
       handleOptionSelect,
       handleShowResult,
@@ -52,6 +51,20 @@ export default function Quiz({ quizData }: { quizData: QuizDetail }) {
                <div className="text-center">
                   <p className="text-muted-foreground">
                      이 퀴즈에는 문제가 없습니다.
+                  </p>
+               </div>
+            </CardContent>
+         </Card>
+      )
+   }
+
+   if (!currentQuestion) {
+      return (
+         <Card>
+            <CardContent className="pt-6">
+               <div className="text-center">
+                  <p className="text-muted-foreground">
+                     문제를 불러올 수 없습니다.
                   </p>
                </div>
             </CardContent>
@@ -101,7 +114,7 @@ export default function Quiz({ quizData }: { quizData: QuizDetail }) {
             </CardHeader>
             <CardContent>
                <QuizRadioButtonGroup
-                  questions={formattedOptions}
+                  question={currentQuestion}
                   selectedOption={selectedOption}
                   onSelect={handleOptionSelect}
                />

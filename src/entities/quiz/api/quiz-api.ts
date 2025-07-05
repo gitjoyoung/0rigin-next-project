@@ -1,15 +1,44 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
-import {
-   CreateQuizQuestionRequest,
-   CreateQuizRequest,
-   Quiz,
-   QuizAnswer,
-   QuizAttempt,
-   QuizDetail,
-   QuizQuestion,
-   StartQuizAttemptRequest,
-   SubmitQuizAnswerRequest,
-} from '../types'
+import { Tables } from '@/shared/types/database.types'
+
+// 데이터베이스 스키마 기반 타입 사용
+export type Quiz = Tables<'quizzes'>
+export type QuizQuestion = Tables<'quiz_questions'>
+export type QuizAttempt = Tables<'quiz_attempts'>
+export type QuizAnswer = Tables<'quiz_answers'>
+
+// 퀴즈 상세 정보 타입 (문제 포함)
+export interface QuizDetail extends Quiz {
+   questions: QuizQuestion[]
+   total_questions: number
+}
+
+// 퀴즈 생성 요청 타입
+export interface CreateQuizRequest {
+   title: string
+   description?: string | null
+   is_public?: boolean
+   time_limit?: number | null
+   pass_score?: number | null
+}
+
+// 퀴즈 문제 생성 요청 타입
+export interface CreateQuizQuestionRequest {
+   quiz_id: number
+   question_number: number
+   question_text: string
+   question_type?: string
+   points?: number
+   explanation?: string | null
+   media_url?: string | null
+   option_count: number
+   option_1: string
+   option_2: string
+   option_3?: string | null
+   option_4?: string | null
+   option_5?: string | null
+   correct_answer: number
+}
 
 // 퀴즈 목록 조회
 export async function getQuizzes(limit = 10, offset = 0): Promise<Quiz[]> {
@@ -45,18 +74,12 @@ export async function getQuizById(id: number): Promise<QuizDetail | null> {
    const { data: questions, error: questionsError } = await supabase
       .from('quiz_questions')
       .select('*')
-      .eq('quiz_id', id)
+      .eq('quiz_id', quiz.id)
       .order('question_number', { ascending: true })
 
    if (questionsError) throw questionsError
 
-   const quizQuestions = (questions || []).map((q) => ({
-      ...q,
-      question_type: q.question_type as any as
-         | 'multiple_choice'
-         | 'true_false'
-         | 'essay',
-   })) as QuizQuestion[]
+   const quizQuestions = (questions || []) as QuizQuestion[]
 
    return {
       ...quiz,
@@ -147,108 +170,4 @@ export async function createQuizQuestion(
 
    if (error) throw error
    return data
-}
-
-// 퀴즈 응시 시작
-export async function startQuizAttempt(
-   attemptData: StartQuizAttemptRequest,
-   userId: string,
-): Promise<QuizAttempt> {
-   const supabase = await SupabaseServerClient()
-
-   const { data, error } = await supabase
-      .from('quiz_attempts')
-      .insert({
-         quiz_id: attemptData.quiz_id,
-         user_id: userId,
-      })
-      .select()
-      .single()
-
-   if (error) throw error
-   return data
-}
-
-// 퀴즈 답변 제출
-export async function submitQuizAnswer(
-   answerData: SubmitQuizAnswerRequest,
-): Promise<QuizAnswer> {
-   const supabase = await SupabaseServerClient()
-
-   const { data, error } = await supabase
-      .from('quiz_answers')
-      .insert(answerData)
-      .select()
-      .single()
-
-   if (error) throw error
-   return data
-}
-
-// 퀴즈 응시 완료
-export async function completeQuizAttempt(
-   attemptId: number,
-   updateData: Partial<QuizAttempt>,
-): Promise<QuizAttempt> {
-   const supabase = await SupabaseServerClient()
-
-   const { data, error } = await supabase
-      .from('quiz_attempts')
-      .update(updateData)
-      .eq('id', attemptId)
-      .select()
-      .single()
-
-   if (error) throw error
-   return data
-}
-
-// 사용자의 퀴즈 응시 기록 조회
-export async function getUserQuizAttempts(
-   userId: string,
-   limit = 10,
-   offset = 0,
-): Promise<QuizAttempt[]> {
-   const supabase = await SupabaseServerClient()
-
-   const { data, error } = await supabase
-      .from('quiz_attempts')
-      .select('*')
-      .eq('user_id', userId)
-      .order('started_at', { ascending: false })
-      .range(offset, offset + limit - 1)
-
-   if (error) throw error
-   return data || []
-}
-
-// 퀴즈 응시 상세 정보 조회
-export async function getQuizAttemptById(
-   attemptId: number,
-): Promise<QuizAttempt | null> {
-   const supabase = await SupabaseServerClient()
-
-   const { data, error } = await supabase
-      .from('quiz_attempts')
-      .select('*')
-      .eq('id', attemptId)
-      .single()
-
-   if (error) throw error
-   return data
-}
-
-// 퀴즈 응시 답변 조회
-export async function getQuizAnswersByAttemptId(
-   attemptId: number,
-): Promise<QuizAnswer[]> {
-   const supabase = await SupabaseServerClient()
-
-   const { data, error } = await supabase
-      .from('quiz_answers')
-      .select('*')
-      .eq('attempt_id', attemptId)
-
-   if (error) throw error
-   return data || []
 }

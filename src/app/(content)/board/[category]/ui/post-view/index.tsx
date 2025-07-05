@@ -15,7 +15,6 @@ export default function PostView({ postData }: Props) {
          <div className="min-h-[200px]">
             <MarkDownViewer content={postData.content} />
          </div>
-         {/* 싫어요,좋아요  버튼 */}
       </section>
    )
 }

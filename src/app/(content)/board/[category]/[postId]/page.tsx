@@ -12,10 +12,6 @@ import Post from '../ui/post'
 import PostLike from '../ui/post-like'
 import PostView from '../ui/post-view'
 
-// 정적 생성을 위한 설정
-export const dynamic = 'force-static'
-export const revalidate = 300 // 5분마다 재검증
-
 interface IParams {
    params: {
       category: string
@@ -28,7 +24,7 @@ export async function generateMetadata({ params }: IParams): Promise<Metadata> {
    const { category, postId } = await params
 
    // 게시글 정보 조회
-   const postData = await getPostById(postId)
+   const postData = await getPostById(Number(postId))
 
    if (!postData) {
       return {
@@ -55,7 +51,7 @@ export default async function Page({ params }: IParams) {
       redirect('/board/latest')
    }
 
-   const postData = await getPostById(postId)
+   const postData = await getPostById(Number(postId))
 
    if (!postData) {
       return notFound()

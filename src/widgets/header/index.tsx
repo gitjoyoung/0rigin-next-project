@@ -1,10 +1,15 @@
+'use client'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import SearchBox from '../search-box'
 import AuthButtons from './ui/auth-buttons'
 import MobileSideMenu from './ui/mobile-side-menu'
 import Navigation from './ui/navigation'
-import ThemeToggle from './ui/theme-toggle'
 
+const ThemeToggle = dynamic(() => import('./ui/theme-toggle'), {
+   ssr: false,
+   loading: () => null, // 초기 페인트 때 빈 자리
+})
 export default function Header() {
    return (
       <header className="flex items-center justify-between p-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white font-dos">

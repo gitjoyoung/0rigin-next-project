@@ -1,7 +1,9 @@
 import { ROUTE_QUIZ } from '@/constants/pathname'
-import { Quiz } from '@/entities/quiz/types'
+import { Quiz } from '@/entities/quiz/api/quiz-api'
 import { Button } from '@/shared/shadcn/ui/button'
+import { Input } from '@/shared/shadcn/ui/input'
 import { Separator } from '@/shared/shadcn/ui/separator'
+import { Plus, Search } from 'lucide-react'
 import Link from 'next/link'
 import QuizBoardList from './QuizBoardList'
 
@@ -11,19 +13,62 @@ interface Props {
 
 export default function QuizBoard({ quizList }: Props) {
    return (
-      <div className="p-2">
-         <div className="flex justify-between items-center my-4">
-            <Link href={ROUTE_QUIZ} className="text-2xl font-bold">
-               퀴즈 페이지
-            </Link>
-            <Button variant={'outline'} asChild>
-               <Link href={'/quiz/create'}>퀴즈 제작</Link>
-            </Button>
-         </div>
+      <main className="space-y-6" role="main" aria-label="퀴즈 페이지">
+         {/* 헤더 섹션 */}
+         <header className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+               <div>
+                  <Link
+                     href={ROUTE_QUIZ}
+                     className="text-2xl font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+                     aria-label="퀴즈 페이지 메인으로 이동"
+                  >
+                     퀴즈
+                  </Link>
+                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                     다양한 주제의 퀴즈를 풀어보세요
+                  </p>
+               </div>
+               <Button
+                  asChild
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700"
+               >
+                  <Link
+                     href={'/quiz/create'}
+                     className="flex items-center gap-2"
+                     aria-label="새로운 퀴즈 만들기"
+                  >
+                     <Plus className="w-4 h-4" aria-hidden="true" />
+                     퀴즈 만들기
+                  </Link>
+               </Button>
+            </div>
 
-         <Separator className="my-4" />
+            {/* 검색 섹션 */}
+            <div className="max-w-xs" role="search" aria-label="퀴즈 검색">
+               <div className="relative">
+                  <Search
+                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"
+                     aria-hidden="true"
+                  />
+                  <Input
+                     placeholder="퀴즈 검색..."
+                     className="pl-10 h-9 text-sm border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500"
+                     aria-label="퀴즈 검색"
+                     type="search"
+                  />
+               </div>
+            </div>
+         </header>
+
+         <Separator
+            className="border-gray-200 dark:border-gray-700"
+            role="separator"
+            aria-orientation="horizontal"
+         />
 
          <QuizBoardList quizList={quizList} />
-      </div>
+      </main>
    )
 }

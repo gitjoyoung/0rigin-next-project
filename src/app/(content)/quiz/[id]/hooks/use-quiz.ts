@@ -1,81 +1,48 @@
-import { QuizDetail } from '@/entities/quiz/types'
+import { QuizDetail } from '@/entities/quiz/api/quiz-api'
 import { useState } from 'react'
 
 interface UseQuizProps {
-   quizData: QuizDetail
+   quizData: QuizDetail | null
 }
 
-interface UseQuizReturn {
-   quizDataLength: number
-   curIndex: number
-   selectedOption: string | null
-   showResult: boolean
-   progress: number
-   currentQuestion: any
-   formattedOptions: Array<{ id: string; value: string }>
-   handleIndexChange: (newIndex: number) => void
-   handleOptionSelect: (option: string) => void
-   handleShowResult: () => void
-   userAnswers: Record<number, string>
-}
-
-export function useQuiz({ quizData }: UseQuizProps): UseQuizReturn {
-   const questions = quizData.questions || []
+export function useQuiz({ quizData }: UseQuizProps) {
+   // null 체크 및 기본값 설정
+   const questions = quizData?.questions || []
    const quizDataLength = questions.length
+
    const [curIndex, setCurIndex] = useState(0)
-   const [selectedOption, setSelectedOption] = useState<string | null>(null)
    const [userAnswers, setUserAnswers] = useState<Record<number, string>>({})
    const [showResult, setShowResult] = useState(false)
 
+   // 현재 문제
+   const currentQuestion = questions[curIndex] || null
+
+   // 현재 선택된 옵션
+   const selectedOption = userAnswers[curIndex] || ''
+
+   // 진행률 계산
    const progress =
-      quizDataLength > 1 ? (curIndex / (quizDataLength - 1)) * 100 : 100
+      quizDataLength > 0 ? ((curIndex + 1) / quizDataLength) * 100 : 0
 
+   // 인덱스 변경 핸들러
    const handleIndexChange = (newIndex: number) => {
-      // 현재 선택된 답안 저장
-      if (selectedOption !== null) {
-         setUserAnswers((prev) => ({
-            ...prev,
-            [curIndex]: selectedOption,
-         }))
+      if (newIndex >= 0 && newIndex < quizDataLength) {
+         setCurIndex(newIndex)
       }
-
-      // 새 인덱스로 이동하고 해당 인덱스의 답안 불러오기
-      setSelectedOption(userAnswers[newIndex] || null)
-      setCurIndex(newIndex)
    }
 
-   const handleOptionSelect = (option: string) => {
-      setSelectedOption(option)
+   // 옵션 선택 핸들러
+   const handleOptionSelect = (optionValue: string) => {
       setUserAnswers((prev) => ({
          ...prev,
-         [curIndex]: option,
+         [curIndex]: optionValue,
       }))
    }
 
+   // 결과 표시 핸들러
    const handleShowResult = () => {
-      // 마지막 답안 저장
-      if (selectedOption !== null) {
-         setUserAnswers((prev) => ({
-            ...prev,
-            [curIndex]: selectedOption,
-         }))
-      }
       setShowResult(true)
    }
-
-   const currentQuestion = questions[curIndex]
-   const options = [
-      currentQuestion?.option_1,
-      currentQuestion?.option_2,
-      currentQuestion?.option_3,
-      currentQuestion?.option_4,
-      currentQuestion?.option_5,
-   ].filter((option) => option && option.trim() !== '')
-
-   const formattedOptions = options.map((option, index) => ({
-      id: (index + 1).toString(),
-      value: option,
-   }))
 
    return {
       quizDataLength,
@@ -84,7 +51,6 @@ export function useQuiz({ quizData }: UseQuizProps): UseQuizReturn {
       showResult,
       progress,
       currentQuestion,
-      formattedOptions,
       handleIndexChange,
       handleOptionSelect,
       handleShowResult,
