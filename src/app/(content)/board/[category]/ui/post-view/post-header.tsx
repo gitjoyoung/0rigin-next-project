@@ -1,6 +1,6 @@
 import type { Post } from '@/entities/post'
 import { Separator } from '@/shared/shadcn/ui/separator'
-import { formatSmartDate } from '@/shared/utils/dayjs-config'
+import { createDate } from '@/shared/utils/dayjs-config'
 import { formatNumberWithUnit } from '@/shared/utils/validators/board/formatNumberWithUnit'
 import PostUpdateButtons from './post-update-buttons'
 
@@ -58,7 +58,7 @@ export default function PostHeader({ post }: Props) {
                </li>
                <li className="flex gap-1 min-w-0 flex-shrink">
                   <p className="flex-shrink-0">{POST_HEADER_DATA.date}</p>
-                  <p className="truncate">{formatSmartDate(created_at)}</p>
+                  <p className="truncate">{createDate(created_at)}</p>
                </li>
             </ul>
             <PostUpdateButtons postId={id.toString()} category={category} />

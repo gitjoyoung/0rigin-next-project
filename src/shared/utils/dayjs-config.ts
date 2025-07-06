@@ -17,6 +17,10 @@ dayjs.locale('ko')
  */
 export const configuredDayjs = dayjs
 
+export const createDate = (date: string) => {
+   return dayjs.utc(date).tz('Asia/Seoul').format('YY.MM.DD HH:mm:ss')
+}
+
 /**
  * 스마트 날짜 포맷터
  * 7일 이내: 상대시간 ("5분 전", "2시간 전")

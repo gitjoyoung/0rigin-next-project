@@ -23,14 +23,7 @@ module.exports = {
          fontFamily: {
             sans: ['var(--font-noto-sans-kr)', 'Noto Sans KR', 'sans-serif'],
             mono: ['Menlo', 'Monaco', 'Courier New', 'monospace'],
-            // 숫자는 DOS 폰트, 나머지는 Noto Sans KR
-            dos: [
-               'var(--font-dos)',
-               'var(--font-noto-sans-kr)',
-               'Noto Sans KR',
-               'sans-serif',
-            ],
-            noto: ['var(--font-noto-sans-kr)', 'Noto Sans KR', 'sans-serif'],
+            dos: ['var(--font-dos)', 'var(--font-noto-sans-kr)'],
          },
          colors: {
             border: 'hsl(var(--border))',
