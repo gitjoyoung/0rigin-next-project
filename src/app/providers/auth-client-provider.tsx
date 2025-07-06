@@ -3,7 +3,7 @@
 
 import type { User } from '@supabase/supabase-js'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { SupabaseBrowserClient } from '../lib/supabase/supabase-browser-client'
+import { SupabaseBrowserClient } from '../../shared/lib/supabase/supabase-browser-client'
 
 type Status = 'loading' | 'unauth' | 'needsProfile' | 'authed'
 interface Snapshot {

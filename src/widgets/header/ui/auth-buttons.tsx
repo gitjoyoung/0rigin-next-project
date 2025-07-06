@@ -1,8 +1,8 @@
 'use client'
 
+import { useUser } from '@/app/providers/auth-client-provider'
 import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
 import { signOut } from '@/entities/auth/api/sign-out'
-import { useUser } from '@/shared/providers/auth-client-provider'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 

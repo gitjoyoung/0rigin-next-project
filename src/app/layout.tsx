@@ -1,6 +1,5 @@
+import AppProviders from '@/app/providers'
 import { baseMetadata } from '@/shared/metadata'
-import AppProviders from '@/shared/providers'
-import AuthServerProvider from '@/shared/providers/auth-server-provider'
 import Footer from '@/widgets/footer'
 import Header from '@/widgets/header'
 import Ticker from '@/widgets/ticker'
@@ -10,6 +9,7 @@ import localFont from 'next/font/local'
 import { Suspense } from 'react'
 import './globals.css'
 import Loading from './loading'
+import AuthServerProvider from './providers/auth-server-provider'
 
 // 한글 폰트 설정
 const notoSansKR = Noto_Sans_KR({
