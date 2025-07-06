@@ -6,39 +6,34 @@ import BannerList from './banner-list'
 import Thumbnail from './banner-thumbnail'
 
 const SLIDE_DURATION = 5000 // 전체 진행 시간
-const PAUSE_DURATION = 500 // 0%에서 멈추는 시간(ms)
+const UPDATE_INTERVAL = 50 // Progress 업데이트 주기 (ms)
 
 export default function Banner({ data }: any) {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [progress, setProgress] = useState(0)
 
    useEffect(() => {
-      let intervalId: NodeJS.Timeout
-      let pauseId: NodeJS.Timeout
+      // Progress를 더 부드럽게 업데이트
+      const progressStep = (UPDATE_INTERVAL / SLIDE_DURATION) * 100
 
-      setProgress(0) // 슬라이드가 바뀌면 progress 초기화
+      const intervalId = setInterval(() => {
+         setProgress((prevProgress) => {
+            const newProgress = prevProgress + progressStep
 
-      pauseId = setTimeout(() => {
-         let current = 0
-         intervalId = setInterval(
-            () => {
-               current += 1
-               if (current >= 100) {
-                  setCurrentIndex((prev) => (prev + 1) % data.length)
-                  clearInterval(intervalId)
-               } else {
-                  setProgress(current)
-               }
-            },
-            (SLIDE_DURATION - PAUSE_DURATION) / 100,
-         )
-      }, PAUSE_DURATION)
+            if (newProgress >= 100) {
+               // 다음 슬라이드로 이동
+               setCurrentIndex((prev) => (prev + 1) % data.length)
+               return 0 // Progress 초기화
+            }
+
+            return newProgress
+         })
+      }, UPDATE_INTERVAL)
 
       return () => {
-         clearTimeout(pauseId)
          clearInterval(intervalId)
       }
-   }, [currentIndex, data.length])
+   }, [data.length])
 
    return (
       <div className="w-full">

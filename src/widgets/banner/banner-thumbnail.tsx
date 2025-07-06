@@ -1,6 +1,6 @@
 import { cn } from '@/shared/utils/cn'
 import Link from 'next/link'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 
 interface PostData {
    id: string
@@ -19,19 +19,9 @@ const DEFAULT_VALUES = {
 } as const
 
 function BannerThumbnail({ postData }: { postData?: PostData }) {
-   const { id, title, summary, thumbnail, nickname } =
-      postData || DEFAULT_VALUES
+   const { id, title, summary, thumbnail, nickname } = postData
 
-   const imageAlt = useMemo(
-      () => `${title} - ${nickname}의 게시물`,
-      [title, nickname],
-   )
-
-   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-      console.log('이미지 로드 오류:', e)
-      const target = e.target as HTMLImageElement
-      target.src = DEFAULT_VALUES.thumbnail
-   }
+   const DEFAULT_IMAGE = thumbnail || DEFAULT_VALUES.thumbnail
 
    return (
       <div
@@ -59,10 +49,9 @@ function BannerThumbnail({ postData }: { postData?: PostData }) {
                aria-label={`${title} 게시물로 이동`}
             >
                <img
-                  alt={imageAlt}
-                  src={thumbnail || DEFAULT_VALUES.thumbnail}
+                  alt={title}
+                  src={DEFAULT_IMAGE}
                   className="w-full h-full object-contain object-center"
-                  onError={handleImageError}
                />
                <div
                   className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-5 p-4 text-white z-20"

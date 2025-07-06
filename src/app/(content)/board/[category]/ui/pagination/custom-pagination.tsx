@@ -30,7 +30,7 @@ export default async function CustomPagination({
       const halfItemsPerPage = Math.floor(itemsPerPage / 2)
 
       let startPage = Math.max(1, currentPage - halfItemsPerPage)
-      let endPage = Math.min(totalPages, startPage + itemsPerPage - 1)
+      const endPage = Math.min(totalPages, startPage + itemsPerPage - 1)
 
       if (endPage - startPage + 1 < itemsPerPage) {
          startPage = Math.max(1, endPage - itemsPerPage + 1)

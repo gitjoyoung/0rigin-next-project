@@ -36,7 +36,7 @@ export default async function SearchPagination({
       const halfItemsPerPage = Math.floor(itemsPerPage / 2)
 
       let startPage = Math.max(1, activePage - halfItemsPerPage)
-      let endPage = Math.min(totalPages, startPage + itemsPerPage - 1)
+      const endPage = Math.min(totalPages, startPage + itemsPerPage - 1)
 
       if (endPage - startPage + 1 < itemsPerPage) {
          startPage = Math.max(1, endPage - itemsPerPage + 1)

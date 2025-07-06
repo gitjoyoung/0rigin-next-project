@@ -1,5 +1,6 @@
 import { Badge } from '@/shared/shadcn/ui/badge'
 import { Card, CardContent } from '@/shared/shadcn/ui/card'
+import Image from 'next/image'
 
 interface QuizData {
    id?: number
@@ -15,17 +16,19 @@ interface Props {
 }
 
 export default function QuizHeader({ quizData }: Props) {
-   const DEFAULT_IMAGE = '/images/mascot/logo.webp'
+   const { imageSrc, name, title, description } = quizData
+   const DEFAULT_IMAGE = imageSrc || '/images/mascot/logo.webp'
 
    return (
       <Card className="shadow-sm border rounded-none">
          <CardContent className="flex flex-col sm:flex-row items-center gap-4 p-4">
             {/* 퀴즈 이미지 */}
             <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden">
-               <img
-                  src={quizData?.imageSrc || DEFAULT_IMAGE}
-                  alt={quizData?.name || quizData?.title || '퀴즈'}
+               <Image
+                  src={DEFAULT_IMAGE}
+                  alt={title}
                   className="w-full h-full object-cover"
+                  width={80}
                />
             </div>
 

@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/shared/shadcn/ui/card'
 import { Skeleton } from '@/shared/shadcn/ui/skeleton'
 import { ArrowRight, Plus } from 'lucide-react'
 import { nanoid } from 'nanoid'
+import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
@@ -101,10 +102,12 @@ export default function QuizBoardList({ quizList, isLoading = false }: Props) {
                >
                   {/* 퀴즈 아이콘 */}
                   <div className="flex-shrink-0 flex p-1 items-center justify-center shadow-sm dark:bg-blue-900/20 rounded-md overflow-hidden">
-                     <img
+                     <Image
                         src={DEFAULT_IMAGE}
-                        alt=""
+                        alt={quiz.title}
                         className="w-16 h-16 object-cover"
+                        width={64}
+                        height={64}
                      />
                   </div>
 
