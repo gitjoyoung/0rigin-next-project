@@ -22,7 +22,6 @@ export async function generateMetadata({ params }: IParams): Promise<Metadata> {
 export default async function Create({ params }: IParams) {
    const { category } = await params
 
-   // 카테고리 존재 확인
    const categoryData = await getCategoryBySlug(category)
    if (!categoryData || !categoryData.can_write) {
       redirect('/board/latest')
@@ -31,7 +30,7 @@ export default async function Create({ params }: IParams) {
 
    return (
       <div className="flex flex-col gap-2 my-2">
-         <h1 className="text-2xl px-2 font-bold">{category} Write Page</h1>
+         <h1 className="text-2xl px-2 font-bold">{category} 글쓰기</h1>
          <BoardPostForm category={category} userProfile={userProfile} />
       </div>
    )

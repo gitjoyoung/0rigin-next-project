@@ -9,10 +9,10 @@ import ThemeToggle from './ui/theme-toggle'
 export default function Header() {
    return (
       <header className="flex items-center justify-between p-1 sm:h-12 h-10 w-full border-b border-gray-400 dark:border-white ">
-         <div className="flex gap-4 items-center">
+         <nav className="flex gap-4 items-center">
             <Logo />
             <Navigation />
-         </div>
+         </nav>
          <div className="flex items-center gap-4">
             <SearchBox />
             <ThemeToggle />

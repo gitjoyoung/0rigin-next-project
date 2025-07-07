@@ -26,7 +26,7 @@ export default function ConfirmActionModal({
 }: Props) {
    return (
       <AlertDialog open={open} onOpenChange={onOpenChange}>
-         <AlertDialogContent>
+         <AlertDialogContent className="max-h-[80vh] overflow-y-auto pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
             <AlertDialogHeader>
                <AlertDialogTitle>
                   {mode === 'delete' ? '게시글 삭제' : '게시글 수정'}
@@ -37,7 +37,7 @@ export default function ConfirmActionModal({
                      : '정말로 이 게시글을 수정하시겠습니까?'}
                </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter>
+            <AlertDialogFooter className="sticky bottom-0 bg-inherit z-10 pb-[env(safe-area-inset-bottom,0px)]">
                <AlertDialogCancel disabled={loading}>취소</AlertDialogCancel>
                <AlertDialogAction onClick={onConfirm} disabled={loading}>
                   {mode === 'delete' ? '삭제' : '수정'}

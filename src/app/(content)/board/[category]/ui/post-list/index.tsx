@@ -1,6 +1,5 @@
 'use client'
 
-import type { Post } from '@/entities/post/types'
 import {
    Table,
    TableBody,
@@ -9,21 +8,31 @@ import {
    TableHeader,
    TableRow,
 } from '@/shared/shadcn/ui/table'
+import type { Database } from '@/shared/types'
 import { formatSmartDate } from '@/shared/utils/dayjs-config'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+type PostData = Database['public']['Tables']['posts']['Row']
 
 interface Props {
-   postData: Post[]
+   data: PostData[]
    category?: string
 }
 
-export default function Post({ postData, category }: Props) {
+function ClientSmartDate({ date }: { date: string }) {
+   const [mounted, setMounted] = useState(false)
+   useEffect(() => setMounted(true), [])
+   if (!mounted) return <span>{date.slice(0, 10)}</span>
+   return <span>{formatSmartDate(date)}</span>
+}
+
+export default function Post({ data, category }: Props) {
    const page = useSearchParams().get('page') || 1
 
-   const isEmpty =
-      !postData || !Array.isArray(postData) || postData.length === 0
+   const isEmpty = !data || !Array.isArray(data) || data.length === 0
 
    return (
       <Table className="w-full px-0">
@@ -71,7 +80,7 @@ export default function Post({ postData, category }: Props) {
                   </TableCell>
                </TableRow>
             ) : (
-               postData.map((item: Post) => {
+               data.map((item: PostData) => {
                   return (
                      <TableRow
                         key={item.id}
@@ -95,13 +104,13 @@ export default function Post({ postData, category }: Props) {
                            {item.nickname || '익명'}
                         </TableCell>
                         <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">
-                           {formatSmartDate(item.created_at)}
+                           <ClientSmartDate date={item.created_at} />
                         </TableCell>
                         <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
                            {formatValue(item.view_count)}
                         </TableCell>
                         <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
-                           {formatValue(0)} {/* likes는 아직 구현되지 않음 */}
+                           {formatValue(0)}
                         </TableCell>
                      </TableRow>
                   )

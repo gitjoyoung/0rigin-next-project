@@ -7,7 +7,7 @@ import { getPosts } from '@/entities/post'
 import BoardFooter from './ui/board-common/board-footer'
 import BoardHeader from './ui/board-common/board-header'
 import CustomPagination from './ui/pagination/custom-pagination'
-import Post from './ui/post'
+import Post from './ui/post-list'
 
 interface IParams {
    params: {
@@ -44,7 +44,7 @@ export default async function Page({ params, searchParams }: IParams) {
       redirect('/board/latest')
    }
 
-   const postResponse = await getPosts({
+   const { items, total } = await getPosts({
       category: category === 'latest' ? undefined : categoryInfo.slug,
       page: currentPage,
       limit: POST_PER_PAGE,
@@ -53,11 +53,11 @@ export default async function Page({ params, searchParams }: IParams) {
    return (
       <section className="flex flex-col gap-2 px-1">
          <BoardHeader category={categoryInfo} />
-         <Post postData={postResponse.items} category={category} />
+         <Post data={items} category={category} />
          <BoardFooter category={categoryInfo} />
          <div className=" my-4">
             <CustomPagination
-               count={postResponse.total}
+               count={total}
                currentPage={currentPage}
                baseRoute={`/board/${category}`}
             />

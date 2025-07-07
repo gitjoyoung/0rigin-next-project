@@ -1,79 +1,89 @@
 'use client'
 
-import { useUser } from '@/shared/hooks/auth'
+import { useUser } from '@/app/providers/auth-client-provider'
+import { useAnonSession } from '@/shared/hooks/use-anon-session'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-// 좋아요 상태 및 수 조회 API (통합)
-async function getPostLikeDataApi(
+type PostLikeData = {
+   isLiked: boolean
+   count: number
+}
+
+// API 함수 분리
+const fetchPostLikeData = async (
    postId: string,
-): Promise<{ isLiked: boolean; count: number }> {
-   const response = await fetch(`/api/post/${postId}/like`)
-   if (!response.ok) {
-      throw new Error('좋아요 정보를 불러올 수 없습니다.')
-   }
-   const data = await response.json()
-   return { isLiked: data.isLiked, count: data.count }
+   userId?: string,
+   anonKey?: string,
+): Promise<PostLikeData> => {
+   const params = new URLSearchParams()
+   if (userId) params.append('userId', userId)
+   if (anonKey) params.append('anonKey', anonKey)
+   const res = await fetch(`/api/post/${postId}/like?${params}`)
+   if (!res.ok) throw new Error('좋아요 정보를 불러올 수 없습니다.')
+   return res.json()
 }
 
-// 좋아요 토글 API
-async function togglePostLikeApi(postId: string) {
-   const response = await fetch(`/api/post/${postId}/like`, {
+const togglePostLike = async (
+   postId: string,
+   userId?: string,
+   anonKey?: string,
+): Promise<PostLikeData> => {
+   const body = JSON.stringify({ userId, anonKey })
+   const res = await fetch(`/api/post/${postId}/like`, {
       method: 'POST',
+      body,
+      headers: { 'Content-Type': 'application/json' },
    })
-   if (!response.ok) {
-      throw new Error('좋아요 처리에 실패했습니다.')
-   }
-   return response.json()
+   if (!res.ok) throw new Error('좋아요 처리에 실패했습니다.')
+   return res.json()
 }
 
-export function usePostLikes(postId: string) {
-   const { data: userData } = useUser()
-   const queryClient = useQueryClient()
+type UsePostLikesResult = {
+   likesCount: number
+   hasLiked: boolean
+   isLoading: boolean
+   isPending: boolean
+   error: unknown
+   toggleLike: () => void
+}
 
-   const user = userData?.user
+export function usePostLikes(postId: string): UsePostLikesResult {
+   const { user } = useUser()
+   const { anonKey } = useAnonSession()
+   const queryClient = useQueryClient()
    const userId = user?.id
 
-   // 좋아요 상태 및 수 조회 (통합)
-   const { data: likeData, isLoading } = useQuery({
-      queryKey: ['postLikeData', postId, userId],
-      queryFn: () => getPostLikeDataApi(postId),
-      enabled: !!userId, // 로그인된 사용자만 실행
-      staleTime: 1000 * 60 * 5, // 5분간 fresh 상태 유지
+   const { data, isLoading, error } = useQuery<PostLikeData>({
+      queryKey: ['postLikeData', postId, userId || anonKey],
+      queryFn: () => fetchPostLikeData(postId, userId, anonKey),
+      staleTime: 1000 * 60 * 5,
+      enabled: !!(userId || anonKey),
    })
 
-   const likesCount = likeData?.count ?? 0
-   const hasLiked = likeData?.isLiked ?? false
-
-   // 좋아요 토글 뮤테이션
-   const toggleMutation = useMutation({
-      mutationFn: () => togglePostLikeApi(postId),
-      onSuccess: (data) => {
-         // 좋아요 데이터 업데이트
-         queryClient.setQueryData(['postLikeData', postId, userId], {
-            isLiked: data.isLiked,
-            count: data.count,
-         })
-
-         // 관련 쿼리 무효화 (정확한 데이터 동기화)
+   const { mutate, isPending } = useMutation({
+      mutationFn: () => togglePostLike(postId, userId, anonKey),
+      onSuccess: (newData) => {
+         queryClient.setQueryData(
+            ['postLikeData', postId, userId || anonKey],
+            newData,
+         )
          queryClient.invalidateQueries({ queryKey: ['postLikeData', postId] })
       },
-      onError: (error) => {
-         console.error('좋아요 토글 실패:', error)
+      onError: (err) => {
+         console.error('좋아요 토글 실패:', err)
       },
    })
 
    const toggleLike = () => {
-      if (!toggleMutation.isPending && userId) {
-         toggleMutation.mutate()
-      }
+      if (!isPending && (userId || anonKey)) mutate()
    }
 
    return {
-      likesCount,
-      hasLiked,
+      likesCount: data?.count ?? 0,
+      hasLiked: data?.isLiked ?? false,
       isLoading,
+      isPending,
+      error,
       toggleLike,
-      isPending: toggleMutation.isPending,
-      error: toggleMutation.error,
    }
 }

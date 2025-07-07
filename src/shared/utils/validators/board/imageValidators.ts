@@ -41,7 +41,9 @@ export const generateErrorMessage = () => {
  */
 export const validateFile = (file: File): boolean => {
    const isValidSize = checkFileSize(file)
-   const isValidType = IMAGE_PICKER_CONFIG.IMAGES_TYPES.includes(file.type)
+   const isValidType = IMAGE_PICKER_CONFIG.IMAGES_TYPES.includes(
+      file.type as (typeof IMAGE_PICKER_CONFIG.IMAGES_TYPES)[number],
+   )
 
    return isValidSize && isValidType
 }

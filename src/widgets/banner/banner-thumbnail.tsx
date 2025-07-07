@@ -1,15 +1,7 @@
+import type { Post } from '@/entities/post'
 import { Badge } from '@/shared/shadcn/ui/badge'
-import { cn } from '@/shared/utils/cn'
 import Link from 'next/link'
 import { memo } from 'react'
-
-interface PostData {
-   id: string
-   title: string
-   summary: string
-   thumbnail?: string
-   nickname: string
-}
 
 const DEFAULT_VALUES = {
    id: '/',
@@ -19,38 +11,44 @@ const DEFAULT_VALUES = {
    thumbnail: '/images/mascot/new_logo.webp',
 } as const
 
-function BannerThumbnail({ postData }: { postData?: PostData }) {
-   const { id, title, summary, thumbnail, nickname } = postData
+function BannerThumbnail({ postData }: { postData?: Post }) {
+   const { id, title, summary, thumbnail, nickname, category } = postData
    const DEFAULT_IMAGE = thumbnail || DEFAULT_VALUES.thumbnail
 
    return (
       <article
-         className={cn(
-            'w-full md:w-7/12 md:border-r border-black',
-            'transition-all duration-300',
-            'relative h-56 md:h-64',
-         )}
+         className="w-full md:w-7/12 transition-all duration-300 relative h-56 md:h-64"
          aria-label={title}
       >
-         <Link href={`/board/${id}`} className="block h-full relative group">
-            <img
-               alt={title}
-               src={DEFAULT_IMAGE}
-               className="w-full h-full object-contain object-center"
-            />
-            <div className="absolute top-1 right-1">
-               <Badge className="text-xs align-middle bg-black/80 px-1 py-1 rounded">
+         <Link
+            href={`/board/${category}/${id}`}
+            className="block h-full relative group"
+         >
+            {nickname && (
+               <Badge className="text-xs align-middle bg-black/80 px-1 py-1 rounded absolute top-1 right-1">
                   {nickname}
                </Badge>
-            </div>
-            <div className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-5 p-4 text-white z-20">
-               <h2 className="text-2xl font-bold line-clamp-1 max-w-prose">
-                  {title}
-               </h2>
-               <p className="break-words text-sm line-clamp-2 max-w-prose mt-1">
-                  {summary}
-               </p>
-            </div>
+            )}
+            <figure className="w-full h-full m-0">
+               <img
+                  alt={title}
+                  src={DEFAULT_IMAGE}
+                  className="w-full h-full object-contain object-center"
+               />
+               <figcaption
+                  className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/80 
+               via-black/40 to-black/0 pt-5 p-4 text-white z-20"
+               >
+                  <header>
+                     <h2 className="text-2xl font-bold line-clamp-1 max-w-prose drop-shadow">
+                        {title}
+                     </h2>
+                  </header>
+                  <p className="break-words text-sm line-clamp-2 max-w-prose mt-1 drop-shadow">
+                     {summary}
+                  </p>
+               </figcaption>
+            </figure>
          </Link>
       </article>
    )

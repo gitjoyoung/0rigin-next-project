@@ -1,5 +1,7 @@
 'use client'
 
+import { useUser } from '@/app/providers/auth-client-provider'
+import { useAnonSession } from '@/shared/hooks/use-anon-session'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -19,8 +21,33 @@ import ThumbnailUpload from './thumbnail-upload'
 
 interface Props {
    category: string
-   userProfile?: any
+   userProfile?: any // 회원 정보 (없으면 비회원)
+   editPostData?: any // 수정 모드일 때 게시글 데이터
+}
+
+// 폼 초기값 생성 함수: editPostData, userProfile, 비회원 세션 정보 고려
+function getInitialFormData({
+   editPostData,
+   memberNickname,
+   guestSessionInfo,
+}: {
    editPostData?: any
+   memberNickname?: string
+   guestSessionInfo: { nickname?: string; password?: string }
+}) {
+   if (editPostData) {
+      // 수정 모드: 게시글 데이터 전체를 그대로 사용
+      return { ...editPostData }
+   }
+   if (memberNickname) {
+      // 회원 작성 모드: 닉네임만 채움
+      return { nickname: memberNickname }
+   }
+   // 비회원 작성 모드: 세션 정보 있으면 채움, 없으면 빈 값
+   return {
+      nickname: guestSessionInfo.nickname || '',
+      password: guestSessionInfo.password || '',
+   }
 }
 
 export default function BoardPostForm({
@@ -28,7 +55,16 @@ export default function BoardPostForm({
    userProfile,
    editPostData,
 }: Props) {
-   // 게시글 작성 로직 훅
+   const { status } = useUser()
+   const memberNickname = userProfile?.nickname
+   const {
+      anonKey: guestSessionKey,
+      anonNickname: guestSessionNickname,
+      anonPassword: guestSessionPassword,
+      setAnonSession: setGuestSession,
+   } = useAnonSession()
+
+   // 게시글 작성/수정 로직
    const { uploading, isSubmittingPost, uploadImageMutation, onSubmit } =
       useBoardPost({
          category,
@@ -36,25 +72,19 @@ export default function BoardPostForm({
          post: editPostData,
       })
 
-   // 폼 상태 관리 훅 (기존 데이터로 초기화)
-   const {
-      form,
-      showPassword,
-      setShowPassword,
-      isAuthenticated,
-      setThumbnail,
-   } = useBoardForm({
+   // 폼 초기값: editPostData, 회원, 비회원 분기
+   const initialData = getInitialFormData({
+      editPostData,
+      memberNickname,
+      guestSessionInfo: {
+         nickname: guestSessionNickname,
+         password: guestSessionPassword,
+      },
+   })
+
+   const { form, showPassword, setShowPassword, setThumbnail } = useBoardForm({
       userData: userProfile,
-      initialData: editPostData
-         ? {
-              title: editPostData.title,
-              content: editPostData.content,
-              summary: editPostData.summary || '',
-              nickname: editPostData.nickname,
-              password: '',
-              thumbnail: editPostData.thumbnail || '',
-           }
-         : undefined,
+      initialData,
    })
 
    // 이미지 업로드 처리
@@ -62,7 +92,6 @@ export default function BoardPostForm({
       e.preventDefault()
       const file = e.target.files?.[0]
       if (!file) return
-
       uploadImageMutation.mutate(file, {
          onSuccess: (publicUrl) => {
             setThumbnail(publicUrl)
@@ -72,15 +101,26 @@ export default function BoardPostForm({
 
    const thumbnailUrl = form.watch('thumbnail')
 
+   // 폼 제출(onSubmit) 래핑
+   const handleSubmit = async (...args: any[]) => {
+      const result = await form.handleSubmit(onSubmit)(...args)
+      // 비회원 작성 모드일 때만 세션에 닉네임/비밀번호 저장
+      if (!userProfile && status === 'unauth' && guestSessionKey) {
+         const values = form.getValues()
+         setGuestSession(values.nickname, values.password)
+      }
+      return result
+   }
+
    return (
       <section className="w-full py-2">
          <LoadingModal isOpen={isSubmittingPost} />
          <Form {...form}>
             <form
                className="w-full flex flex-col gap-2"
-               onSubmit={form.handleSubmit(onSubmit)}
+               onSubmit={handleSubmit}
             >
-               {/* 닉네임과 비밀번호 입력 필드 */}
+               {/* 닉네임/비밀번호 입력 필드: 회원/비회원/수정 모드 분기 */}
                <div className="flex flex-col gap-2 ">
                   <div className="flex gap-2 sm:w-[50%] w-full ">
                      <FormField
@@ -92,20 +132,17 @@ export default function BoardPostForm({
                                  <Input
                                     className="text-sm sm:text-base"
                                     placeholder="닉네임"
-                                    disabled={isAuthenticated}
+                                    disabled={!!memberNickname}
                                     {...field}
-                                    value={
-                                       isAuthenticated
-                                          ? userProfile?.nickname || '익명'
-                                          : field.value
-                                    }
+                                    value={memberNickname || field.value}
                                  />
                               </FormControl>
                               <FormMessage />
                            </FormItem>
                         )}
                      />
-                     {!isAuthenticated && (
+                     {/* 비회원 작성 모드일 때만 비밀번호 입력 */}
+                     {!memberNickname && (
                         <FormField
                            control={form.control}
                            name="password"
@@ -146,6 +183,7 @@ export default function BoardPostForm({
                   </div>
                </div>
 
+               {/* 제목 입력 필드 */}
                <FormField
                   control={form.control}
                   name="title"
@@ -164,7 +202,7 @@ export default function BoardPostForm({
                   )}
                />
 
-               {/* 요약 입력 필드 */}
+               {/* 요약 입력 필드 및 썸네일 */}
                <div className="flex justify-between gap-2 flex-wrap flex-1 w-full min-h-[80px]">
                   <FormField
                      control={form.control}

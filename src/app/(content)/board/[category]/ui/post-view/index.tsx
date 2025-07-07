@@ -9,12 +9,8 @@ interface Props {
 export default function PostView({ postData }: Props) {
    return (
       <section className="flex flex-col gap-3 ">
-         {/* 글제목 */}
          <PostHeader post={postData} />
-         {/* 글내용 마크다운 뷰어 */}
-         <div className="min-h-[200px]">
-            <MarkDownViewer content={postData.content} />
-         </div>
+         <MarkDownViewer content={postData.content} />
       </section>
    )
 }

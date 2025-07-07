@@ -34,7 +34,7 @@ export default function PasswordConfirmModal({
 
    return (
       <Dialog open={open} onOpenChange={onClose}>
-         <DialogContent>
+         <DialogContent className="max-h-[80vh] overflow-y-auto pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
             <DialogHeader>
                <DialogTitle>비밀번호 확인</DialogTitle>
             </DialogHeader>
@@ -48,7 +48,7 @@ export default function PasswordConfirmModal({
             {error && (
                <div className="text-destructive text-sm mt-2">{error}</div>
             )}
-            <DialogFooter>
+            <DialogFooter className="sticky bottom-0 bg-inherit z-10 pb-[env(safe-area-inset-bottom,0px)]">
                <Button variant="outline" onClick={onClose} disabled={loading}>
                   취소
                </Button>

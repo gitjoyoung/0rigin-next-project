@@ -8,8 +8,8 @@ import BreadcrumbWidget from '@/widgets/bread-crumb'
 import BoardFooter from '../ui/board-common/board-footer'
 import BoardHeader from '../ui/board-common/board-header'
 import Comment from '../ui/comment'
-import Post from '../ui/post'
 import PostLike from '../ui/post-like'
+import Post from '../ui/post-list'
 import PostView from '../ui/post-view'
 
 interface IParams {
@@ -50,15 +50,13 @@ export default async function Page({ params }: IParams) {
    if (!categoryInfo) {
       redirect('/board/latest')
    }
-
    const postData = await getPostById(Number(postId))
 
    if (!postData) {
       return notFound()
    }
 
-   // 같은 카테고리의 다른 게시글들을 가져오기 (현재 게시글 제외)
-   const { items: relatedPosts } = await getPosts({
+   const { items } = await getPosts({
       category: category === 'latest' ? undefined : category,
       page: 1,
       limit: 30,
@@ -72,7 +70,7 @@ export default async function Page({ params }: IParams) {
          <Comment postId={postId} />
          <div className="flex flex-col gap-2">
             <BoardHeader category={categoryInfo} />
-            <Post postData={relatedPosts} />
+            <Post data={items} />
          </div>
          <BoardFooter category={categoryInfo} />
       </section>

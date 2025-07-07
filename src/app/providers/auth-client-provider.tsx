@@ -5,13 +5,17 @@ import type { User } from '@supabase/supabase-js'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { SupabaseBrowserClient } from '../../shared/lib/supabase/supabase-browser-client'
 
-type Status = 'loading' | 'unauth' | 'needsProfile' | 'authed'
-interface Snapshot {
+// 인증 상태 타입
+export type Status = 'loading' | 'unauth' | 'needsProfile' | 'authed'
+export interface Snapshot {
    status: Status
    user: User | null
 }
 
-const AuthContext = createContext<Snapshot>({ status: 'loading', user: null })
+const AuthContext = createContext<Snapshot>({
+   status: 'loading',
+   user: null,
+})
 export const useUser = () => useContext(AuthContext)
 
 export function AuthClientProvider({
@@ -22,14 +26,19 @@ export function AuthClientProvider({
    children: React.ReactNode
 }) {
    const supabase = SupabaseBrowserClient()
-   const [snap, setSnap] = useState<Snapshot>(initial)
+   const [snap, setSnap] = useState<Snapshot>({
+      ...initial,
+   })
 
    useEffect(() => {
       const sync = async () => {
          const {
             data: { session },
          } = await supabase.auth.getSession()
-         if (!session) return setSnap({ status: 'unauth', user: null })
+         if (!session) {
+            setSnap({ status: 'unauth', user: null })
+            return
+         }
 
          const { data: profile } = await supabase
             .from('profile')

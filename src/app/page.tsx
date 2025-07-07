@@ -2,7 +2,7 @@ import { getBestPosts, getPosts } from '@/entities/post'
 import AdSenseBanner from '@/widgets/adsense-banner'
 import Banner from '@/widgets/banner'
 import Link from 'next/link'
-import Post from './(content)/board/[category]/ui/post'
+import Post from './(content)/board/[category]/ui/post-list'
 
 export default async function Home() {
    const POST_PER_PAGE = 20
@@ -12,7 +12,7 @@ export default async function Home() {
       limit: BEST_POSTS_LIMIT,
    })
 
-   const posts = await getPosts({
+   const { items } = await getPosts({
       page: 1,
       limit: POST_PER_PAGE,
    })
@@ -31,7 +31,7 @@ export default async function Home() {
                   더보기
                </Link>
             </div>
-            <Post postData={posts.items} />
+            <Post data={items} />
          </div>
       </div>
    )

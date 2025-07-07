@@ -48,6 +48,10 @@ export const useLogin = () => {
          if (!result.success) {
             throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.')
          }
+         // 로그인 성공 시 비회원 anon_key(visitor_id) 쿠키 삭제
+         if (typeof document !== 'undefined') {
+            document.cookie = 'visitor_id=; Max-Age=0; path=/;'
+         }
          window.location.href = '/'
       },
       onError: (error) => {

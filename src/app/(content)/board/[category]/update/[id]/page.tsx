@@ -30,7 +30,7 @@ export default async function Update({ params }: IParams) {
    }
 
    // 게시글 존재 확인
-   const post = await getPostById(postId)
+   const post = await getPostById(Number(postId))
    if (!post) {
       redirect(`/board/${category}`)
    }

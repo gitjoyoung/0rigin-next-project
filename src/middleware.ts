@@ -65,12 +65,19 @@ async function logVisit(
       os: device.type ?? 'unknown',
    }
 
-   // non‑blocking – Edge Function fire‑and‑forget
    try {
       await supabase.from('visitors').insert(data).select('id').single()
-   } catch (error) {
-      // Ignore visitor logging errors
-   }
+   } catch (error) {}
+
+   // 로그 추가
+   console.log(
+      '[MIDDLEWARE] visitorId:',
+      visitorId,
+      'isFirst:',
+      !cookies.get('visitor_id'),
+      'cookies:',
+      cookies.getAll(),
+   )
 
    return { visitorId, isFirst: !cookies.get('visitor_id') }
 }
@@ -82,7 +89,7 @@ async function authGate(req: NextRequest) {
    // 3‑1 Sync cookies ↔ session
    const { supabaseResponse, user, supabase } = await updateSession(req)
 
-   // 3‑2 Visit log (do not await)
+   // 3‑2 Visit log (do not await)
    const { visitorId, isFirst } = await logVisit(req, supabase)
    if (isFirst) {
       supabaseResponse.cookies.set('visitor_id', visitorId, {

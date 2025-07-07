@@ -17,7 +17,10 @@ export default function LikeButton({ postId }: Props) {
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
          <Button
             variant="ghost"
-            onClick={() => toggleLike()}
+            onClick={() => {
+               console.log('toggleLike')
+               toggleLike()
+            }}
             disabled={isLoading}
             className={cn(
                'flex items-center h-auto py-2 transition-all duration-300 rounded-full',

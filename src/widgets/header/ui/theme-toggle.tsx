@@ -2,21 +2,28 @@
 
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 export default function ThemeToggle() {
    const { resolvedTheme, setTheme } = useTheme()
+   const [mounted, setMounted] = useState(false)
+
+   useEffect(() => {
+      setMounted(true)
+   }, [])
 
    return (
       <button
          aria-label="다크모드 토글"
          onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-         className="cursor-pointer transition-all duration-300"
+         className="flex items-center justify-center w-8 h-8 rounded transition-all duration-300 cursor-pointer"
       >
-         {resolvedTheme === 'dark' ? (
-            <Moon size={18} className="animate-rotate-fade-in" />
-         ) : (
-            <Sun size={18} className="animate-rotate-fade-in" />
-         )}
+         {mounted &&
+            (resolvedTheme === 'dark' ? (
+               <Moon size={20} className="animate-rotate-fade-in" />
+            ) : (
+               <Sun size={20} className="animate-rotate-fade-in" />
+            ))}
       </button>
    )
 }

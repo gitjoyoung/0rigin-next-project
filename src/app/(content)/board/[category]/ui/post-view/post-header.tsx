@@ -1,7 +1,7 @@
 import type { Post } from '@/entities/post'
 import { Separator } from '@/shared/shadcn/ui/separator'
 import { createDate } from '@/shared/utils/dayjs-config'
-import { formatNumberWithUnit } from '@/shared/utils/validators/board/formatNumberWithUnit'
+import { formatNumberToString } from '@/shared/utils/format-number'
 import PostUpdateButtons from './post-update-buttons'
 
 const POST_HEADER_DATA = {
@@ -18,9 +18,9 @@ export default function PostHeader({ post }: Props) {
    const {
       title,
       nickname,
-      likes_count = 0,
+      likes_count,
       created_at,
-      view_count = 0,
+      view_count,
       id,
       category,
    } = post
@@ -43,7 +43,7 @@ export default function PostHeader({ post }: Props) {
                <li className="flex gap-1 min-w-0 flex-shrink">
                   <p className="flex-shrink-0">{POST_HEADER_DATA.like}</p>
                   <p className="truncate">
-                     {formatNumberWithUnit(likes_count)}
+                     {formatNumberToString(likes_count)}
                   </p>
                </li>
                <li className="flex-shrink-0">
@@ -51,7 +51,7 @@ export default function PostHeader({ post }: Props) {
                </li>
                <li className="flex gap-1 min-w-0 flex-shrink">
                   <p className="flex-shrink-0">{POST_HEADER_DATA.views}</p>
-                  <p className="truncate">{formatNumberWithUnit(view_count)}</p>
+                  <p className="truncate">{formatNumberToString(view_count)}</p>
                </li>
                <li className="flex-shrink-0">
                   <Separator orientation="vertical" />
