@@ -17,8 +17,13 @@ function MenuButton(props: React.ComponentProps<typeof Button>) {
    )
 }
 
-export default function AuthButtons() {
+export default function AuthButtons({ onClick }: { onClick?: () => void }) {
    const { status } = useUser()
+
+   const handleSignOut = () => {
+      onClick?.()
+      signOut()
+   }
 
    if (status === 'loading') {
       return (
@@ -46,7 +51,7 @@ export default function AuthButtons() {
    /* ③ 로그인 상태 버튼 */
    return (
       <nav className="flex gap-2 text-xs">
-         <MenuButton onClick={signOut}>로그아웃</MenuButton>
+         <MenuButton onClick={handleSignOut}>로그아웃</MenuButton>
          <MenuButton asChild>
             <Link href={ROUTE_MY_PAGE}>마이페이지</Link>
          </MenuButton>

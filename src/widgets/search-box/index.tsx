@@ -7,13 +7,13 @@ import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 
 export default function SearchBox({ className }: { className?: string }) {
-   const router = useRouter()
-   const searchInputRef = useRef<HTMLInputElement | null>()
+   const searchInputRef = useRef<HTMLInputElement | null>(null)
    const [isFocus, setIsFocus] = useState(false)
+   const router = useRouter()
+
    const handleSearch = async () => {
       const searchTrim = searchInputRef.current?.value.trim()
       if (!searchTrim) return
-
       const processedSearchTerm = searchTrim.replace(/\s+/g, '+')
       await router.push(`/search/${processedSearchTerm}`)
    }

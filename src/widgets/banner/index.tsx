@@ -1,34 +1,40 @@
 'use client'
 
 import { Progress } from '@/shared/shadcn/ui/progress'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BannerList from './banner-list'
 import Thumbnail from './banner-thumbnail'
 
-const SLIDE_DURATION = 5000 // 전체 진행 시간
-const UPDATE_INTERVAL = 50 // Progress 업데이트 주기 (ms)
+const INITIAL_DATA = {
+   SLIDE_DURATION: 3000,
+   UPDATE_INTERVAL: 50,
+}
 
 export default function Banner({ data }: any) {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [progress, setProgress] = useState(0)
+   const currentIndexRef = useRef(0)
+
+   // currentIndex가 변경될 때 ref도 업데이트
+   useEffect(() => {
+      currentIndexRef.current = currentIndex
+   }, [currentIndex])
 
    useEffect(() => {
-      // Progress를 더 부드럽게 업데이트
-      const progressStep = (UPDATE_INTERVAL / SLIDE_DURATION) * 100
-
+      const progressStep =
+         (INITIAL_DATA.UPDATE_INTERVAL / INITIAL_DATA.SLIDE_DURATION) * 100
       const intervalId = setInterval(() => {
-         setProgress((prevProgress) => {
-            const newProgress = prevProgress + progressStep
+         setProgress((prev) => {
+            const newProgress = prev + progressStep
 
             if (newProgress >= 100) {
-               // 다음 슬라이드로 이동
-               setCurrentIndex((prev) => (prev + 1) % data.length)
-               return 0 // Progress 초기화
+               const nextIndex = (currentIndexRef.current + 1) % data.length
+               setCurrentIndex(nextIndex)
+               return 0
             }
-
             return newProgress
          })
-      }, UPDATE_INTERVAL)
+      }, INITIAL_DATA.UPDATE_INTERVAL)
 
       return () => {
          clearInterval(intervalId)

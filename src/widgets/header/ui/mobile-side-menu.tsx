@@ -32,7 +32,7 @@ export default function MobileSideMenu() {
    return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
          <SheetTrigger asChild>
-            <button className="md:hidden" aria-label="Open Mobile Menu">
+            <button aria-label="Open Mobile Menu">
                <Menu />
             </button>
          </SheetTrigger>
