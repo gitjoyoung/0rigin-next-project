@@ -20,9 +20,9 @@ export default function ThemeToggle() {
       >
          {mounted &&
             (resolvedTheme === 'dark' ? (
-               <Moon size={20} className="animate-rotate-fade-in" />
+               <Moon size={18} className="animate-rotate-fade-in" />
             ) : (
-               <Sun size={20} className="animate-rotate-fade-in" />
+               <Sun size={18} className="animate-rotate-fade-in" />
             ))}
       </button>
    )

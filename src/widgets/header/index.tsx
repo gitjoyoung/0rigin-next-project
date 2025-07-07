@@ -13,12 +13,10 @@ export default function Header() {
             <Logo />
             <Navigation />
          </nav>
-         <div className="flex items-center gap-4">
+         <div className="flex items-center gap-2 sm:gap-4">
             <SearchBox />
             <ThemeToggle />
-            <div className="sm:hidden">
-               <MobileSideMenu />
-            </div>
+            <MobileSideMenu className="sm:hidden" />
             <div className="hidden sm:block">
                <AuthButtons />
             </div>

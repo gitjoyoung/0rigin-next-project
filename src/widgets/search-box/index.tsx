@@ -40,7 +40,6 @@ export default function SearchBox({ className }: { className?: string }) {
             spellCheck={true}
             onKeyDown={handleKeyDown}
             maxLength={25}
-            placeholder="검색"
             className={cn(
                'h-full w-full text-sm font-bold ring-0 border-0 focus:outline-none focus:ring-0 focus:border-none border-none placeholder:text-xs shadow-none ',
             )}
@@ -48,7 +47,9 @@ export default function SearchBox({ className }: { className?: string }) {
                setIsFocus(true)
             }}
             onBlur={() => {
-               setIsFocus(false)
+               if (!searchInputRef.current?.value.trim()) {
+                  setIsFocus(false)
+               }
             }}
          />
          <Label

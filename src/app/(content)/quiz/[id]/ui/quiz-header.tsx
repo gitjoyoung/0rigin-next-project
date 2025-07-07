@@ -28,7 +28,8 @@ export default function QuizHeader({ quizData }: Props) {
                   src={DEFAULT_IMAGE}
                   alt={title}
                   className="w-full h-full object-cover"
-                  width={80}
+                  width={100}
+                  height={100}
                />
             </div>
 
