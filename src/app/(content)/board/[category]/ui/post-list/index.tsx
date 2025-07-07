@@ -9,24 +9,16 @@ import {
    TableRow,
 } from '@/shared/shadcn/ui/table'
 import type { Database } from '@/shared/types'
-import { formatSmartDate } from '@/shared/utils/dayjs-config'
+import ClientDayHydration from '@/shared/ui/client-day-hydration'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
 
 type PostData = Database['public']['Tables']['posts']['Row']
 
 interface Props {
    data: PostData[]
    category?: string
-}
-
-function ClientSmartDate({ date }: { date: string }) {
-   const [mounted, setMounted] = useState(false)
-   useEffect(() => setMounted(true), [])
-   if (!mounted) return <span>{date.slice(0, 10)}</span>
-   return <span>{formatSmartDate(date)}</span>
 }
 
 export default function Post({ data, category }: Props) {
@@ -104,7 +96,7 @@ export default function Post({ data, category }: Props) {
                            {item.nickname || '익명'}
                         </TableCell>
                         <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">
-                           <ClientSmartDate date={item.created_at} />
+                           <ClientDayHydration date={item.created_at} />
                         </TableCell>
                         <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
                            {formatValue(item.view_count)}
