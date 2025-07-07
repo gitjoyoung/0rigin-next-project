@@ -121,6 +121,10 @@ module.exports = {
                '0%': { transform: 'translateY(0)' },
                '100%': { transform: 'translateY(-50%)' },
             },
+            'progress-bar': {
+               from: { width: '0%' },
+               to: { width: '100%' },
+            },
          },
          animation: {
             'accordion-down': 'accordion-down 0.2s ease-out',
@@ -129,6 +133,8 @@ module.exports = {
                'rotate-fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
             'fade-in': 'fade-in 0.3s ease-out forwards',
             'marquee-y': 'marquee-y 10s linear infinite',
+            'progress-bar':
+               'progress-bar var(--progress-duration, 5000ms) linear forwards',
          },
       },
    },

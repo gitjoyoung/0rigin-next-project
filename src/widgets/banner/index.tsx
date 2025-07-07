@@ -1,57 +1,75 @@
 'use client'
 
-import { Progress } from '@/shared/shadcn/ui/progress'
+import { Button } from '@/shared/shadcn/ui/button'
+import { Pause, Play } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import BannerList from './banner-list'
 import Thumbnail from './banner-thumbnail'
 
-const INITIAL_DATA = {
-   SLIDE_DURATION: 3000,
-   UPDATE_INTERVAL: 50,
-}
+const SLIDE_DURATION = 5000
 
 export default function Banner({ data }: any) {
    const [currentIndex, setCurrentIndex] = useState(0)
-   const [progress, setProgress] = useState(0)
+   const [isPaused, setIsPaused] = useState(false)
    const currentIndexRef = useRef(0)
+   const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-   // currentIndex가 변경될 때 ref도 업데이트
    useEffect(() => {
       currentIndexRef.current = currentIndex
    }, [currentIndex])
 
    useEffect(() => {
-      const progressStep =
-         (INITIAL_DATA.UPDATE_INTERVAL / INITIAL_DATA.SLIDE_DURATION) * 100
-      const intervalId = setInterval(() => {
-         setProgress((prev) => {
-            const newProgress = prev + progressStep
-
-            if (newProgress >= 100) {
-               const nextIndex = (currentIndexRef.current + 1) % data.length
-               setCurrentIndex(nextIndex)
-               return 0
-            }
-            return newProgress
-         })
-      }, INITIAL_DATA.UPDATE_INTERVAL)
+      if (!isPaused && data.length > 1) {
+         timerRef.current = setTimeout(() => {
+            setCurrentIndex((prev) => (prev + 1) % data.length)
+         }, SLIDE_DURATION)
+      }
 
       return () => {
-         clearInterval(intervalId)
+         if (timerRef.current) {
+            clearTimeout(timerRef.current)
+         }
       }
-   }, [data.length])
+   }, [currentIndex, data.length, isPaused])
+
+   const togglePlayPause = () => {
+      setIsPaused((prev) => !prev)
+   }
 
    return (
       <div className="w-full">
-         <div className="flex flex-wrap border">
-            <Thumbnail postData={data[currentIndex]} />
-            <div className="flex flex-1 flex-col justify-between">
+         <div className="flex flex-wrap h-full md:h-64">
+            <div className="sm:w-[50%] w-full h-64">
+               <Thumbnail postData={data[currentIndex]} />
+            </div>
+            <div className="flex flex-col justify-between sm:w-[50%] w-full  h-64 ">
                <BannerList postData={data} selectedPost={currentIndex} />
-               <Progress
-                  aria-label="게시물 슬라이드 프로그레스바"
-                  className="rounded-none"
-                  value={progress}
-               />
+               <div className=" items-center gap-2 px-2 hidden sm:flex ">
+                  <Button
+                     variant="ghost"
+                     size="icon"
+                     onClick={togglePlayPause}
+                     aria-label={
+                        isPaused ? '슬라이드 재생' : '슬라이드 일시정지'
+                     }
+                     className="flex items-center gap-1"
+                  >
+                     {isPaused ? (
+                        <Play className="w-2 h-2" />
+                     ) : (
+                        <Pause className="w-2 h-2" />
+                     )}
+                  </Button>
+                  <div
+                     key={`${currentIndex}-${isPaused}`}
+                     aria-label="게시물 슬라이드 프로그레스바"
+                     className="relative flex-1 h-2 bg-gray-200 overflow-hidden"
+                  >
+                     {!isPaused && (
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-2 rounded-full z-10 shadow-lg bg-gradient-to-r from-black to-neutral-700 animate-progress-bar" />
+                     )}
+                  </div>
+               </div>
             </div>
          </div>
       </div>

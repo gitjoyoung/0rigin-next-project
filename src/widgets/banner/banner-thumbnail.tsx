@@ -17,7 +17,7 @@ function BannerThumbnail({ postData }: { postData?: Post }) {
 
    return (
       <article
-         className="w-full md:w-7/12 transition-all duration-300 relative h-56 md:h-64"
+         className="w-full h-full transition-all duration-300 relative "
          aria-label={title}
       >
          <Link
@@ -37,7 +37,7 @@ function BannerThumbnail({ postData }: { postData?: Post }) {
                />
                <figcaption
                   className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/80 
-               via-black/40 to-black/0 pt-5 p-4 text-white z-20"
+               via-black/40 to-black/0 pt-5 p-4  z-20  text-white "
                >
                   <header>
                      <h2 className="text-2xl font-bold line-clamp-1 max-w-prose drop-shadow">

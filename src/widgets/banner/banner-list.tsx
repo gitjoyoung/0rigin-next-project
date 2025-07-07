@@ -17,12 +17,12 @@ interface Props {
 
 function BannerList({ postData, selectedPost }: Props) {
    return (
-      <Card className="w-full h-full flex flex-col justify-center p-0 rounded-none">
+      <Card className="w-full h-full flex flex-col justify-center p-0 rounded-none border-none">
          <CardHeader className="p-2">
             <CardTitle>👍 베스트 게시글</CardTitle>
          </CardHeader>
          <CardContent className="p-2 ">
-            <div className="flex flex-col gap-1 border">
+            <div className="flex flex-col gap-1 ">
                {postData.map(({ title, id, category, view_count }, index) => (
                   <Link
                      key={`post-${id}`}
