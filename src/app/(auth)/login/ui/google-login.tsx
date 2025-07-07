@@ -6,7 +6,11 @@ import { Chrome } from 'lucide-react'
 
 export default function GoogleLogin() {
    return (
-      <form action={async () => signInWithGoogle({ next: '/' })}>
+      <form
+         action={async () => {
+            await signInWithGoogle({ next: '/' })
+         }}
+      >
          <Button
             variant="outline"
             className="w-full flex items-center justify-center gap-2"

@@ -5,6 +5,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
+import { cn } from '@/shared/utils/cn'
 import { formatNumberToString } from '@/shared/utils/format-number'
 import Link from 'next/link'
 import React from 'react'
@@ -25,12 +26,11 @@ function BannerList({ postData, selectedPost }: Props) {
                {postData.map(({ title, id, category, view_count }, index) => (
                   <Link
                      key={`post-${id}`}
-                     className={`flex justify-between p-1.5 text-sm hover:bg-muted transition-colors border-b last:border-b-0
-                     ${
-                        selectedPost === index
-                           ? 'bg-muted dark:bg-muted font-medium'
-                           : ''
-                     }`}
+                     className={cn(
+                        'flex justify-between p-1.5 text-sm hover:bg-muted transition-colors border-b last:border-b-0',
+                        selectedPost === index &&
+                           'bg-muted dark:bg-muted font-medium',
+                     )}
                      href={`/board/${category}/${id}`}
                   >
                      <div className="flex justify-between items-center gap-1 w-full">

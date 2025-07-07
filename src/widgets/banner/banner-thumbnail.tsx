@@ -25,7 +25,7 @@ function BannerThumbnail({ postData }: { postData?: Post }) {
             className="block h-full relative group"
          >
             {nickname && (
-               <Badge className="text-xs align-middle bg-black/80 px-1 py-1 rounded absolute top-1 right-1">
+               <Badge className="text-xs align-middle px-1 py-1 rounded absolute top-1 right-1">
                   {nickname}
                </Badge>
             )}

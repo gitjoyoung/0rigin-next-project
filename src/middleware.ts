@@ -65,19 +65,12 @@ async function logVisit(
       os: device.type ?? 'unknown',
    }
 
+   // non‑blocking – Edge Function fire‑and‑forget
    try {
       await supabase.from('visitors').insert(data).select('id').single()
-   } catch (error) {}
-
-   // 로그 추가
-   console.log(
-      '[MIDDLEWARE] visitorId:',
-      visitorId,
-      'isFirst:',
-      !cookies.get('visitor_id'),
-      'cookies:',
-      cookies.getAll(),
-   )
+   } catch (error) {
+      // Ignore visitor logging errors
+   }
 
    return { visitorId, isFirst: !cookies.get('visitor_id') }
 }
@@ -89,7 +82,7 @@ async function authGate(req: NextRequest) {
    // 3‑1 Sync cookies ↔ session
    const { supabaseResponse, user, supabase } = await updateSession(req)
 
-   // 3‑2 Visit log (do not await)
+   // 3‑2 Visit log (do not await)
    const { visitorId, isFirst } = await logVisit(req, supabase)
    if (isFirst) {
       supabaseResponse.cookies.set('visitor_id', visitorId, {
@@ -117,11 +110,11 @@ async function authGate(req: NextRequest) {
  * 4. Middleware entry
  * ----------------------------------------------------------------*/
 export async function middleware(req: NextRequest) {
-   return NextResponse.next()
+   return authGate(req)
 }
 
 export const config = {
    matcher: [
-      '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+      '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
    ],
 }

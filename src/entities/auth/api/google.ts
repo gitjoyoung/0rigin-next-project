@@ -12,7 +12,7 @@ export async function signInWithGoogle({ next }: { next: string }) {
       provider: 'google',
       options: {
          redirectTo: `${process.env.NEXT_PUBLIC_API_URL}/callback`,
-         // scopes: 'email profile',        // 필요 시 커스텀 스코프
+         queryParams: { prompt: 'select_account' },
       },
    })
 

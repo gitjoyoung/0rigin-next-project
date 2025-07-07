@@ -1,3 +1,5 @@
+'use client'
+
 import { formatSmartDate } from '@/shared/utils/dayjs-config'
 import { useEffect, useState } from 'react'
 
