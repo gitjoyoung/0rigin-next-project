@@ -1,6 +1,6 @@
 import Particles from './particles'
 
-export default function LogoParticle() {
+export default function AnimatedBanner() {
    return (
       <div className="relative w-full sm:h-[300px] h-[200px]">
          <Particles />

@@ -1,6 +1,6 @@
 'use client'
 
-import { QuizQuestion } from '@/entities/quiz/types'
+import { QuizQuestion } from '@/entities/quiz/api/quiz-api'
 import { ANIMATION_DURATION } from '@/shared/constants/validation-rules'
 import { Badge } from '@/shared/shadcn/ui/badge'
 import { Button } from '@/shared/shadcn/ui/button'

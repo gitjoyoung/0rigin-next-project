@@ -14,11 +14,11 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
+import QuizNavButton from '@/widgets/quiz/ui/quiz-nav-button'
+import QuizRadioButtonGroup from '@/widgets/quiz/ui/quiz-radio-button-group'
+import QuizResult from '@/widgets/quiz/ui/quiz-result'
 import { FileQuestion } from 'lucide-react'
 import { useQuiz } from '../hooks/use-quiz'
-import QuizNavButton from './QuizNavButton'
-import QuizRadioButtonGroup from './QuizRadioButtonGroup'
-import QuizResult from './QuizResult'
 
 export default function Quiz({ quizData }: { quizData: QuizDetail }) {
    const {

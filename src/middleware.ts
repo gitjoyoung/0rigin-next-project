@@ -1,18 +1,16 @@
-/*
- * Next.js 15 · App Router
- * Global Middleware (Edge) – Visitor tracking + Auth gate
- * -------------------------------------------------------
- * 1. 세션(Cookie) ↔ Supabase `updateSession()` 동기화
- * 2. 로그인 단계 판정
- *    - unauth         : 비회원 – 보호 페이지 차단
- *    - needsProfile   : 프로필 미완 – 계속 차단 (원한다면 /signup redirect)
- *    - authed         : 완전 로그인 – 모든 경로 허용
- * 3. 활동 로그 저장 (visitors 테이블)
- *    - 비회원 : nanoid() 로 임시 visitor_id 생성 후 쿠키 저장(24h)
- *    - 회원   : user.id 그대로 visitor_id 사용
- * 4. viewport(mobile/tablet/desktop) → query 파라미터로 주입 (클라 참고용)
- * -------------------------------------------------------
+/**
+ * middleware.ts
+ * ---------------------------------------------------------------
+ * Next.js 15 · App Router · Edge Middleware
+ * 1) Supabase 세션 ↔ 쿠키 동기화
+ * 2) 로그인 상태 판정·보호 페이지 가드
+ * 3) 방문자(Log) 기록  — visitors 테이블
+ *    · 비회원 : nanoid() 로 임시 visitor_id 생성 → 24 h 쿠키
+ *    · 회원   : user.id 를 visitor_id 로 사용
+ * 4) viewport(mobile / tablet / desktop) 파라미터 주입
+ * ---------------------------------------------------------------
  */
+
 import {
    ROUTE_LOGIN,
    ROUTE_MY_PAGE,
@@ -25,17 +23,17 @@ import { nanoid } from 'nanoid'
 import { NextRequest, NextResponse, userAgent } from 'next/server'
 import { match } from 'path-to-regexp'
 
-/* ──────────────────────────────────────────────────────────
- * 0. Config
- * ----------------------------------------------------------------*/
+/* ──────────────────────────────
+ * 0. 보호·차단 경로 매처
+ * ──────────────────────────────*/
 const PROTECTED = [ROUTE_MY_PAGE]
 const AUTH_FORBIDDEN = [ROUTE_LOGIN, ROUTE_SIGN, ROUTE_RESET_PASSWORD]
 const matchProtected = (pathname: string) =>
    PROTECTED.some((p) => match(p)(pathname))
 
-/* ──────────────────────────────────────────────────────────
- * 1. Viewport helper
- * ----------------------------------------------------------------*/
+/* ──────────────────────────────
+ * 1. Viewport Helper
+ * ──────────────────────────────*/
 function getViewport(req: NextRequest): 'mobile' | 'tablet' | 'desktop' {
    const { device } = userAgent(req)
    if (device.type === 'mobile') return 'mobile'
@@ -43,73 +41,89 @@ function getViewport(req: NextRequest): 'mobile' | 'tablet' | 'desktop' {
    return 'desktop'
 }
 
-/* ──────────────────────────────────────────────────────────
- * 2. Visitor logging
- * ----------------------------------------------------------------*/
+/* ──────────────────────────────
+ * 2. 방문자 로그 기록
+ * ──────────────────────────────*/
 async function logVisit(
    req: NextRequest,
    supabase: Awaited<ReturnType<typeof SupabaseServerClient>>,
 ) {
-   const cookies = req.cookies
-   const visitorId = cookies.get('visitor_id')?.value ?? nanoid()
+   // 1. 응답에 이미 쿠키가 있는지 확인 (최우선)
+   let visitorId = req.cookies.get('visitor_id')?.value
+   let isFirst = false
 
-   const { browser, device } = userAgent(req)
-   const data = {
-      visitor_id: visitorId,
-      ip_address: req.headers.get('x-forwarded-for') ?? 'unknown',
-      device_type: getViewport(req),
-      browser: browser.name,
-      language: req.headers.get('accept-language')?.split(',')[0] ?? 'unknown',
-      referrer: req.headers.get('referer') ?? 'direct',
-      page_url: req.nextUrl.pathname,
-      os: device.type ?? 'unknown',
+   if (!visitorId) {
+      visitorId = nanoid()
+      isFirst = true
    }
 
-   // non‑blocking – Edge Function fire‑and‑forget
+   const { browser, device, os } = userAgent(req)
 
-   await supabase.from('visitors').insert(data).select('id').single()
+   const { data, error } = await supabase.from('visitors').insert({
+      visitor_id: visitorId,
+      page_url: req.nextUrl.pathname,
+      ip_address: req.headers.get('x-forwarded-for') ?? null,
+      device_type: device.type ?? null,
+      browser: browser.name ?? null,
+      os: os.name ?? null,
+      language: req.headers.get('accept-language')?.split(',')[0] ?? null,
+      referrer: req.headers.get('referer') ?? null,
+   })
 
-   return { visitorId, isFirst: !cookies.get('visitor_id') }
+   return { visitorId, isFirst }
 }
 
-/* ──────────────────────────────────────────────────────────
- * 3. Auth gate logic
- * ----------------------------------------------------------------*/
+/* ──────────────────────────────
+ * 3. Auth Gate
+ * ──────────────────────────────*/
 async function authGate(req: NextRequest) {
-   // 3‑1 Sync cookies ↔ session
-   const { supabaseResponse, user, supabase } = await updateSession(req)
+   // 3-1  Supabase 세션 ↔ 쿠키 동기화
+   const { supabase, supabaseResponse, user } = await updateSession(req)
 
-   // 3‑2 Visit log (do not await)
+   // 3-2  방문자 로그 (비동기)
    const { visitorId, isFirst } = await logVisit(req, supabase)
+
+   // 3-3  visitor_id 쿠키가 없다면 심어 주기
    if (isFirst) {
-      supabaseResponse.cookies.set('visitor_id', visitorId, {
+      supabaseResponse.cookies.set({
+         name: 'visitor_id',
+         value: visitorId,
          httpOnly: true,
-         maxAge: 60 * 60 * 24,
-         path: '/',
+         maxAge: 60 * 60 * 24, // 24h
          sameSite: 'lax',
+         path: '/',
       })
    }
 
-   // /* ─── 회원 X ─────────────────────── */
-   // if (!user) {
-   //    if (matchProtected(req.nextUrl.pathname)) {
-   //       return NextResponse.redirect(new URL(ROUTE_LOGIN, req.url))
-   //    }
-   //    const url = new URL(req.url)
-   //    url.searchParams.set('viewport', getViewport(req))
-   //    return NextResponse.rewrite(url)
-   // }
+   /* ─── 회원이 아니고 보호 페이지면 → 로그인으로 리다이렉트 ───*/
+   if (!user && matchProtected(req.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL(ROUTE_LOGIN, req.url))
+   }
 
-   return NextResponse.next()
+   /* ─── 로그인 상태인데 인증 페이지 접근 → 메인으로 보내기 ───*/
+   if (user && AUTH_FORBIDDEN.includes(req.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL('/', req.url))
+   }
+
+   /* ─── viewport 쿼리 주입 (선택) ───*/
+   const rewriteUrl = new URL(req.url)
+   rewriteUrl.searchParams.set('viewport', getViewport(req))
+   supabaseResponse.headers.set('x-middleware-rewrite', rewriteUrl.toString())
+
+   // *** 반드시 supabaseResponse 그대로 반환해야 Set-Cookie 헤더가 유지됩니다! ***
+   return supabaseResponse
 }
 
-/* ──────────────────────────────────────────────────────────
- * 4. Middleware entry
- * ----------------------------------------------------------------*/
+/* ──────────────────────────────
+ * 4. Middleware Entry
+ * ──────────────────────────────*/
 export async function middleware(req: NextRequest) {
    return authGate(req)
 }
 
+/* ──────────────────────────────
+ * 5. Config (정적·이미지·API 제외)
+ * ──────────────────────────────*/
 export const config = {
    matcher: [
       '/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',

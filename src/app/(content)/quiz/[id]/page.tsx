@@ -1,7 +1,7 @@
 import { getQuizById } from '@/entities/quiz/api/quiz-api'
+import Quiz from '@/widgets/quiz/ui/quiz'
+import QuizHeader from '@/widgets/quiz/ui/quiz-header'
 import { Metadata } from 'next'
-import Quiz from './ui'
-import QuizHeader from './ui/quiz-header'
 
 interface Params {
    params: {

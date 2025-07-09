@@ -5,18 +5,12 @@ import type { Tables } from '@/shared/types'
 export async function getDailyStats(): Promise<Tables<'daily_stats'>> {
    const supabase = await SupabaseServerClient()
 
-   const { data: dailyStats, error } = await supabase
+   const { data: dailyStats } = await supabase
       .from('daily_stats')
       .select('*')
       .order('id', { ascending: false })
       .limit(1)
       .single()
-
-   if (error) {
-      console.error('일일 통계 조회 에러:', error)
-      return null
-   }
-
    return dailyStats
 }
 

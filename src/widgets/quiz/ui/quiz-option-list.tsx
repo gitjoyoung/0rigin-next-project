@@ -1,5 +1,4 @@
-import React from 'react'
-import QuizAnswerIcon from './QuizAnswerIcon'
+import QuizAnswerIcon from '@/widgets/quiz/ui/quiz-answer-icon'
 
 interface Props {
    id: string

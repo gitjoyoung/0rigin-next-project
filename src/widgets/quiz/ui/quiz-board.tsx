@@ -1,17 +1,31 @@
+'use client'
+
 import { ROUTE_QUIZ } from '@/constants/pathname'
 import { Quiz } from '@/entities/quiz/api/quiz-api'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Separator } from '@/shared/shadcn/ui/separator'
+import QuizBoardList from '@/widgets/quiz/ui/quiz-board-list'
 import { Plus, Search } from 'lucide-react'
 import Link from 'next/link'
-import QuizBoardList from './QuizBoardList'
+import { useMemo, useState } from 'react'
 
 interface Props {
    quizList: Quiz[]
 }
 
 export default function QuizBoard({ quizList }: Props) {
+   const [search, setSearch] = useState('')
+   const filteredList = useMemo(() => {
+      if (!search.trim()) return quizList
+      const keyword = search.trim().toLowerCase()
+      return quizList.filter(
+         (q) =>
+            q.title.toLowerCase().includes(keyword) ||
+            (q.description?.toLowerCase().includes(keyword) ?? false),
+      )
+   }, [search, quizList])
+
    return (
       <main className="space-y-6" role="main" aria-label="퀴즈 페이지">
          {/* 헤더 섹션 */}
@@ -57,6 +71,8 @@ export default function QuizBoard({ quizList }: Props) {
                      className="pl-10 h-9 text-sm border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500"
                      aria-label="퀴즈 검색"
                      type="search"
+                     value={search}
+                     onChange={(e) => setSearch(e.target.value)}
                   />
                </div>
             </div>
@@ -68,7 +84,7 @@ export default function QuizBoard({ quizList }: Props) {
             aria-orientation="horizontal"
          />
 
-         <QuizBoardList quizList={quizList} />
+         <QuizBoardList quizList={filteredList} />
       </main>
    )
 }
