@@ -4,7 +4,8 @@
    "private": true,
    "scripts": {
       "dev": "node updatePath.js && NODE_OPTIONS='--inspect' next dev",
-      "build": "node updatePath.js && next build && next-sitemap",
+      "build": "node updatePath.js && next build",
+      "postbuild": "next-sitemap && tsx scripts/generate-manifest.ts",
       "start": "next start",
       "lint-staged": "lint-staged",
       "prepare": "husky",
@@ -12,7 +13,6 @@
       "lint": "next lint",
       "typecheck": "tsc --noEmit",
       "test": "jest",
-      "postbuild": "next-sitemap",
       "upload-quiz": "tsx scripts/uploaders/quiz-uploader.ts",
       "upload-post": "tsx scripts/uploaders/post-uploader.ts",
       "manifest": "tsx scripts/generate-manifest.ts",
