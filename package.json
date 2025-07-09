@@ -5,7 +5,7 @@
    "scripts": {
       "dev": "node updatePath.js && NODE_OPTIONS='--inspect' next dev",
       "build": "node updatePath.js && next build",
-      "postbuild": "next-sitemap && tsx scripts/generate-manifest.ts",
+      "postbuild": "next-sitemap && tsx generate-manifest.ts",
       "start": "next start",
       "lint-staged": "lint-staged",
       "prepare": "husky",
@@ -15,7 +15,7 @@
       "test": "jest",
       "upload-quiz": "tsx scripts/uploaders/quiz-uploader.ts",
       "upload-post": "tsx scripts/uploaders/post-uploader.ts",
-      "manifest": "tsx scripts/generate-manifest.ts",
+      "manifest": "tsx generate-manifest.ts",
       "db:types": "supabase gen types typescript --project-id wqgbhahmhmeuzjvrszjj --schema public > src/shared/types/database.types.ts"
    },
    "dependencies": {
