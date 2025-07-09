@@ -27,7 +27,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@/shared/shadcn/ui/select'
-import { LoadingSpinner } from '@/shared/ui/spinner/loading-spinner'
+import { LoadingSpinner } from '@/shared/ui/loading-spinner'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { ChangePasswordModal } from './change-password-modal'

@@ -1,8 +1,8 @@
 import { getBestPosts, getPosts } from '@/entities/post'
-import AdSenseBanner from '@/widgets/adsense-banner'
+import LogoParticle from '@/widgets/animated-banner.tsx'
 import Banner from '@/widgets/banner'
+import PostList from '@/widgets/board/post-list'
 import Link from 'next/link'
-import Post from './(content)/board/[category]/ui/post-list'
 
 export default async function Home() {
    const POST_PER_PAGE = 20
@@ -19,7 +19,7 @@ export default async function Home() {
 
    return (
       <div className="flex flex-col gap-1 min-h-screen">
-         <AdSenseBanner />
+         <LogoParticle />
          <Banner data={bestPosts} />
          <div className="flex flex-col gap-1 flex-grow">
             <div className="flex justify-between py-1 ">
@@ -31,7 +31,7 @@ export default async function Home() {
                   더보기
                </Link>
             </div>
-            <Post data={items} />
+            <PostList data={items} />
          </div>
       </div>
    )

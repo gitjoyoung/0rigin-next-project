@@ -1,7 +1,5 @@
 import { QUIZ_RULES } from '@/shared/constants/validation-rules'
-import { useUser } from '@/shared/hooks/auth'
 import { useToast } from '@/shared/hooks/use-toast'
-import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -26,7 +24,6 @@ interface IQuizForm {
 export function useQuizCreate() {
    const router = useRouter()
    const { toast } = useToast()
-   const queryClient = useQueryClient()
    const [isSubmitting, setIsSubmitting] = useState(false)
    const [errors, setErrors] = useState<string[]>([])
 
@@ -49,8 +46,6 @@ export function useQuizCreate() {
          },
       ],
    })
-
-   const { data: userData } = useUser()
 
    /**
     * 폼 검증 로직

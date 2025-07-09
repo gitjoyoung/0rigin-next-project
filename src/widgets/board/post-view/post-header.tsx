@@ -1,6 +1,6 @@
 import type { Post } from '@/entities/post'
 import { Separator } from '@/shared/shadcn/ui/separator'
-import ClientDayHydration from '@/shared/ui/client-day-hydration'
+import ClientDayHydration from '@/shared/ui/hydrated-date'
 import { formatNumberToString } from '@/shared/utils/format-number'
 import PostUpdateButtons from './post-update-buttons'
 

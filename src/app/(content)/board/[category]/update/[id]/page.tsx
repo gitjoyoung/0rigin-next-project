@@ -1,9 +1,9 @@
 import { getCategoryBySlug } from '@/entities/category'
 import { getPostById } from '@/entities/post/api'
 import { getProfile } from '@/entities/profile/api/profile-api'
+import { BoardPostForm } from '@/widgets/board/create'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import BoardPostForm from '../../create/ui'
 
 interface IParams {
    params: {

@@ -15,6 +15,7 @@
       "postbuild": "next-sitemap",
       "upload-quiz": "tsx scripts/uploaders/quiz-uploader.ts",
       "upload-post": "tsx scripts/uploaders/post-uploader.ts",
+      "manifest": "tsx scripts/generate-manifest.ts",
       "db:types": "supabase gen types typescript --project-id wqgbhahmhmeuzjvrszjj --schema public > src/shared/types/database.types.ts"
    },
    "dependencies": {
@@ -137,6 +138,7 @@
       "prettier": "^3.6.2",
       "tailwindcss": "^3.4.0",
       "tailwindcss-animate": "^1.0.0",
+      "ts-node": "^10.9.2",
       "tsx": "^4.20.3",
       "typescript": "^5.8.3"
    },

@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from '@/app/providers/auth-client-provider'
+import { useAuthState } from '@/app/providers/auth-client-provider'
 import { useAnonSession } from '@/shared/hooks/use-anon-session'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -48,7 +48,7 @@ type UsePostLikesResult = {
 }
 
 export function usePostLikes(postId: string): UsePostLikesResult {
-   const { user } = useUser()
+   const { user } = useAuthState()
    const { anonKey } = useAnonSession()
    const queryClient = useQueryClient()
    const userId = user?.id

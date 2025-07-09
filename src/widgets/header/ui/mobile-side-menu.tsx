@@ -19,8 +19,6 @@ export default function MobileSideMenu({ className }: { className?: string }) {
    const [isOpen, setIsOpen] = useState(false)
    const [expandedMenus, setExpandedMenus] = useState<string[]>([])
 
-   const handleClose = () => setIsOpen(false)
-
    const toggleMenu = (menuId: string) => {
       setExpandedMenus((prev) =>
          prev.includes(menuId)
@@ -43,11 +41,7 @@ export default function MobileSideMenu({ className }: { className?: string }) {
                </SheetHeader>
 
                <div className="flex flex-col">
-                  <div className="flex justify-center border-b gap-2 py-4">
-                     <SheetClose asChild>
-                        <AuthButtons onClick={handleClose} />
-                     </SheetClose>
-                  </div>
+                  <AuthButtons />
 
                   <nav className="flex flex-col">
                      {HEADER_NAV_LIST.map((item) => (

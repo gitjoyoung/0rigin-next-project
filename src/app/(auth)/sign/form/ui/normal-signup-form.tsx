@@ -17,7 +17,7 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
-import { LoadingSpinner } from '@/shared/ui/spinner/loading-spinner'
+import { LoadingSpinner } from '@/shared/ui/loading-spinner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Frown, RefreshCcw } from 'lucide-react'
 import { useForm } from 'react-hook-form'

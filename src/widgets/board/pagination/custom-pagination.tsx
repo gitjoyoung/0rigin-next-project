@@ -12,19 +12,23 @@ interface PaginationProps {
    currentPage: number
    baseRoute: string
    count: number
+   postPerPage?: number
+   itemsPerPage?: number
 }
 
 const POST_PER_PAGE = 20
+const ITEMS_PER_PAGE = 5 // 한 번에 보여줄 페이지 수
 export default async function CustomPagination({
    count,
    currentPage,
    baseRoute,
+   postPerPage = POST_PER_PAGE,
+   itemsPerPage = ITEMS_PER_PAGE,
 }: PaginationProps) {
    if (count === 0) return null
 
-   const totalPages = Math.ceil((count || 0) / POST_PER_PAGE)
+   const totalPages = Math.ceil((count || 0) / postPerPage)
 
-   const itemsPerPage = 5 // 한 번에 보여줄 페이지 수
    const getPageNumbers = () => {
       const pages = []
       const halfItemsPerPage = Math.floor(itemsPerPage / 2)

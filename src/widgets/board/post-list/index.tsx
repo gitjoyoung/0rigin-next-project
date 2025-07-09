@@ -9,7 +9,7 @@ import {
    TableRow,
 } from '@/shared/shadcn/ui/table'
 import type { Database } from '@/shared/types'
-import ClientDayHydration from '@/shared/ui/client-day-hydration'
+import ClientDayHydration from '@/shared/ui/hydrated-date'
 import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -21,7 +21,7 @@ interface Props {
    category?: string
 }
 
-export default function Post({ data, category }: Props) {
+export default function PostList({ data, category }: Props) {
    const page = useSearchParams().get('page') || 1
 
    const isEmpty = !data || !Array.isArray(data) || data.length === 0

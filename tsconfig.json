@@ -28,7 +28,7 @@
       "**/*.tsx",
       "next-env.d.ts",
       ".next/types/**/*.ts",
-      "src/widgets/adsense-banner"
+      "src/widgets/animated-banner.tsx"
    ],
    "exclude": ["node_modules"]
 }

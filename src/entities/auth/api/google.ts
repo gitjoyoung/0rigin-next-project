@@ -6,17 +6,21 @@ import { redirect } from 'next/navigation'
 export async function signInWithGoogle({ next }: { next: string }) {
    const supabase = await SupabaseServerClient()
 
-   // 현재 환경에 맞는 베이스 URL 설정
-
    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-         redirectTo: `${process.env.NEXT_PUBLIC_API_URL}/callback`,
+         redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/callback`,
          queryParams: { prompt: 'select_account' },
       },
    })
 
+   if (error) {
+      console.error(error)
+      return
+   }
+   console.log('콜백 호출 성공', data)
+
    if (data.url) {
-      redirect(data.url) // Google → Supabase → callback
+      redirect(data.url)
    }
 }

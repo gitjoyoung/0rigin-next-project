@@ -12,11 +12,18 @@ export interface Snapshot {
    user: User | null
 }
 
-const AuthContext = createContext<Snapshot>({
+// 상태 Context
+const AuthStateContext = createContext<Snapshot>({
    status: 'loading',
    user: null,
 })
-export const useUser = () => useContext(AuthContext)
+export const useAuthState = () => useContext(AuthStateContext)
+
+// 액션 Context
+const AuthActionContext = createContext<{ logout: () => Promise<void> }>({
+   logout: async () => {},
+})
+export const useAuthActions = () => useContext(AuthActionContext)
 
 export function AuthClientProvider({
    initial,
@@ -30,6 +37,12 @@ export function AuthClientProvider({
       ...initial,
    })
 
+   // 로그아웃 함수
+   const logout = async () => {
+      await supabase.auth.signOut()
+      // 상태 동기화는 onAuthStateChange에서 자동 처리
+   }
+
    useEffect(() => {
       const sync = async () => {
          const {
@@ -39,23 +52,29 @@ export function AuthClientProvider({
             setSnap({ status: 'unauth', user: null })
             return
          }
-
          const { data: profile } = await supabase
             .from('profile')
             .select('is_active')
             .eq('id', session.user.id)
             .maybeSingle()
-
          setSnap({
             status: profile?.is_active ? 'authed' : 'needsProfile',
             user: session.user,
          })
       }
 
-      sync() // 첫 확인
-      const { data: sub } = supabase.auth.onAuthStateChange(() => sync()) // 토큰 이벤트마다
+      sync()
+      const { data: sub } = supabase.auth.onAuthStateChange(() => {
+         sync()
+      })
       return () => sub.subscription.unsubscribe()
    }, [supabase])
 
-   return <AuthContext.Provider value={snap}>{children}</AuthContext.Provider>
+   return (
+      <AuthStateContext.Provider value={snap}>
+         <AuthActionContext.Provider value={{ logout }}>
+            {children}
+         </AuthActionContext.Provider>
+      </AuthStateContext.Provider>
+   )
 }

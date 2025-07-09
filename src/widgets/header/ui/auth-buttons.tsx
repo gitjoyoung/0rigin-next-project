@@ -1,8 +1,10 @@
 'use client'
 
-import { useUser } from '@/app/providers/auth-client-provider'
+import {
+   useAuthActions,
+   useAuthState,
+} from '@/app/providers/auth-client-provider'
 import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
-import { signOut } from '@/entities/auth/api/sign-out'
 import { Button } from '@/shared/shadcn/ui/button'
 import Link from 'next/link'
 
@@ -17,13 +19,9 @@ function MenuButton(props: React.ComponentProps<typeof Button>) {
    )
 }
 
-export default function AuthButtons({ onClick }: { onClick?: () => void }) {
-   const { status } = useUser()
-
-   const handleSignOut = () => {
-      onClick?.()
-      signOut()
-   }
+export default function AuthButtons() {
+   const { status, user } = useAuthState()
+   const { logout } = useAuthActions()
 
    if (status === 'loading') {
       return (
@@ -34,8 +32,7 @@ export default function AuthButtons({ onClick }: { onClick?: () => void }) {
       )
    }
 
-   /* ② 비회원 버튼 */
-   if (status === 'unauth' || status === 'needsProfile') {
+   if (status === 'unauth') {
       return (
          <nav className="flex gap-2 text-xs">
             <MenuButton asChild>
@@ -48,10 +45,9 @@ export default function AuthButtons({ onClick }: { onClick?: () => void }) {
       )
    }
 
-   /* ③ 로그인 상태 버튼 */
    return (
       <nav className="flex gap-2 text-xs">
-         <MenuButton onClick={handleSignOut}>로그아웃</MenuButton>
+         <MenuButton onClick={logout}>로그아웃</MenuButton>
          <MenuButton asChild>
             <Link href={ROUTE_MY_PAGE}>마이페이지</Link>
          </MenuButton>

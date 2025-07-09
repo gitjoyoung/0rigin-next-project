@@ -12,12 +12,12 @@ import {
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
-import { useBoardPost } from '@/widgets/board/create'
-import LoadingModal from '@/widgets/board/create/ui/loading-modal'
-import MarkDownEditor from '@/widgets/board/create/ui/mark-down-editor'
-import MarkDownTip from '@/widgets/board/create/ui/markdown-tip'
-import ThumbnailUpload from '@/widgets/board/create/ui/thumbnail-upload'
 import { Eye, EyeOff } from 'lucide-react'
+import { useBoardForm, useBoardPost } from '../hook'
+import LoadingModal from './loading-modal'
+import MarkDownEditor from './mark-down-editor'
+import MarkDownTip from './markdown-tip'
+import ThumbnailUpload from './thumbnail-upload'
 
 interface Props {
    category: string
