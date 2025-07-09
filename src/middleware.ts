@@ -66,11 +66,8 @@ async function logVisit(
    }
 
    // non‑blocking – Edge Function fire‑and‑forget
-   try {
-      await supabase.from('visitors').insert(data).select('id').single()
-   } catch (error) {
-      // Ignore visitor logging errors
-   }
+
+   await supabase.from('visitors').insert(data).select('id').single()
 
    return { visitorId, isFirst: !cookies.get('visitor_id') }
 }
