@@ -61,7 +61,6 @@ export default function PostList({ data, category }: Props) {
                               첫 번째 글을 작성해보세요
                            </p>
                         </div>
-
                         <Link
                            href={`/board/${category}/create`}
                            className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm"
@@ -76,7 +75,7 @@ export default function PostList({ data, category }: Props) {
                   return (
                      <TableRow
                         key={item.id}
-                        className="hover:bg-gray-200 dark:hover:bg-gray-800 text-xs h-[32px] max-sm:h-[24px]"
+                        className="hover:bg-gray-200 dark:hover:bg-gray-800 text-xs h-[32px] max-sm:h-[24px] "
                      >
                         <TableCell className="w-[5%] min-w-[40px] text-center ">
                            {item.id || '-'}
@@ -84,24 +83,23 @@ export default function PostList({ data, category }: Props) {
                         <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
                            <Link
                               href={`/board/${item.category || 'latest'}/${item.id || 0}?page=${page}`}
-                              className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden text-sm font-medium"
+                              className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden text-xs sm:text-sm font-medium"
                            >
                               <h2 className="truncate  w-full">
                                  {item.title || '제목 없음'}
                               </h2>
                            </Link>
                         </TableCell>
-
-                        <TableCell className="min-w-[24px] max-w-[120px] text-left text-xs hidden sm:table-cell truncate">
+                        <TableCell className="min-w-[24px] max-w-[120px] text-left  hidden sm:table-cell truncate">
                            {item.nickname || '익명'}
                         </TableCell>
-                        <TableCell className="w-[5%] min-w-[100px] text-center text-xs hidden sm:table-cell">
+                        <TableCell className="w-[5%] min-w-[100px] text-center  hidden sm:table-cell">
                            <ClientDayHydration date={item.created_at} />
                         </TableCell>
-                        <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
+                        <TableCell className="w-[4%] min-w-[50px] text-center  hidden sm:table-cell">
                            {formatValue(item.view_count)}
                         </TableCell>
-                        <TableCell className="w-[4%] min-w-[50px] text-center text-xs hidden sm:table-cell">
+                        <TableCell className="w-[4%] min-w-[50px] text-center  hidden sm:table-cell">
                            {formatValue(0)}
                         </TableCell>
                      </TableRow>

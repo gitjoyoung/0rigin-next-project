@@ -1,5 +1,6 @@
-import type { Post } from '@/entities/post'
 import { Badge } from '@/shared/shadcn/ui/badge'
+import type { Tables } from '@/shared/types'
+import { cn } from '@/shared/utils/cn'
 import Link from 'next/link'
 import { memo } from 'react'
 
@@ -11,13 +12,21 @@ const DEFAULT_VALUES = {
    thumbnail: '/images/mascot/new_logo.webp',
 } as const
 
-function BannerThumbnail({ postData }: { postData?: Post }) {
+function BannerThumbnail({
+   postData,
+   className,
+}: {
+   postData: Tables<'posts'>
+   className?: string
+}) {
    const { id, title, summary, thumbnail, nickname, category } = postData
-   const DEFAULT_IMAGE = thumbnail || DEFAULT_VALUES.thumbnail
 
    return (
       <article
-         className="w-full h-full transition-all duration-300 relative "
+         className={cn(
+            'w-full h-full transition-all duration-300 relative',
+            className,
+         )}
          aria-label={title}
       >
          <Link
@@ -29,21 +38,19 @@ function BannerThumbnail({ postData }: { postData?: Post }) {
                   {nickname}
                </Badge>
             )}
-            <figure className="w-full h-full m-0">
+            <figure className="w-full h-full ">
                <img
                   alt={title}
-                  src={DEFAULT_IMAGE}
+                  src={thumbnail || DEFAULT_VALUES.thumbnail}
                   className="w-full h-full object-contain object-center"
                />
                <figcaption
-                  className="absolute h-28 bottom-0 w-full bg-gradient-to-t from-black/80 
-               via-black/40 to-black/0 pt-5 p-4  z-20  text-white "
+                  className="absolute  bottom-0 w-full bg-gradient-to-t from-black/80 
+               via-black/40 to-black/0 sm:p-4 p-2 z-20  text-white "
                >
-                  <header>
-                     <h2 className="text-2xl font-bold line-clamp-1 max-w-prose drop-shadow">
-                        {title}
-                     </h2>
-                  </header>
+                  <h2 className="sm:text-2xl text-xl font-bold line-clamp-1 max-w-prose drop-shadow">
+                     {title}
+                  </h2>
                   <p className="break-words text-sm line-clamp-2 max-w-prose mt-1 drop-shadow">
                      {summary}
                   </p>
