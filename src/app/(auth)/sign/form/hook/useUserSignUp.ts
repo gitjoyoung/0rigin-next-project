@@ -3,6 +3,7 @@
 import type { SignUpParams } from '@/entities/auth/types/sign-up'
 import { encryptObject } from '@/shared/utils/crypto-helper'
 import { useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
 
 interface SignUpResponse {
    success: boolean
@@ -26,6 +27,8 @@ const fetchSignUp = async (values: SignUpParams): Promise<SignUpResponse> => {
 
 // 회원가입 훅
 export const useUserSignUp = () => {
+   const [serverMessage, setServerMessage] = useState('')
+
    const {
       mutate,
       error,
@@ -35,10 +38,10 @@ export const useUserSignUp = () => {
       mutationFn: fetchSignUp,
       onSuccess: (data) => {
          if (data.success) {
-            alert(data.message)
-            // window.location.href = '/sign/welcome'
+            window.location.href = '/sign/welcome'
          } else {
-            alert(data.message)
+            // 이미 가입된 유저 등 서버 메시지 처리
+            setServerMessage(data.message || '회원가입에 실패했습니다.')
          }
       },
    })
@@ -47,5 +50,6 @@ export const useUserSignUp = () => {
       error: error?.message || '',
       isPending,
       mutate,
+      serverMessage, // 추가: 서버 메시지 반환
    }
 }

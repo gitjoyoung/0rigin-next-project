@@ -26,7 +26,7 @@ import { useUserSignUp } from '../hook/useUserSignUp'
 import GenderRadioButton from './gender-radio-button'
 
 export default function NormalSignUpForm() {
-   const { error, mutate, isPending } = useUserSignUp()
+   const { mutate, isPending, error, serverMessage } = useUserSignUp()
 
    const form = useForm<z.infer<typeof SignUpParamsSchema>>({
       resolver: zodResolver(SignUpParamsSchema),
@@ -173,6 +173,7 @@ export default function NormalSignUpForm() {
                            </p>
                         </div>
                      )}
+                     {serverMessage && <p>{serverMessage}</p>}
 
                      {/* 제출 버튼 */}
                      <Button
