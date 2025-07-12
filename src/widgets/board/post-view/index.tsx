@@ -9,7 +9,7 @@ interface Props {
 export default function PostView({ postData }: Props) {
    return (
       <section className="flex flex-col gap-3 ">
-         <PostHeader post={postData} />
+         <PostHeader {...postData} />
          <MarkDownViewer content={postData.content} />
       </section>
    )

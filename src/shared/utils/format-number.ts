@@ -7,7 +7,7 @@ const formatter = new Intl.NumberFormat('en-US', {
    useGrouping: false,
 })
 
-export const formatNumberToString = (value: any): string => {
+export const formatNumberCompact = (value: any): string => {
    const num = Number(value)
    if (isNaN(num) || num === 0) return '0'
 

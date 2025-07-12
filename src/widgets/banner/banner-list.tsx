@@ -1,7 +1,7 @@
 import { Badge } from '@/shared/shadcn/ui/badge'
 import type { Tables } from '@/shared/types'
 import { cn } from '@/shared/utils/cn'
-import { formatNumberToString } from '@/shared/utils/format-number'
+import { formatNumberCompact } from '@/shared/utils/format-number'
 import Link from 'next/link'
 import React from 'react'
 
@@ -27,7 +27,7 @@ function BannerList({ postData, selectedPost }: Props) {
                      {title}
                   </h2>
                   <Badge variant="outline" className="text-xs font-thin">
-                     {formatNumberToString(view_count)}
+                     {formatNumberCompact(view_count)}
                   </Badge>
                </div>
             </Link>

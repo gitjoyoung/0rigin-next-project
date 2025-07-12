@@ -23,20 +23,18 @@ export async function getPosts(
    const supabase = await SupabaseServerClient()
    const offset = (page - 1) * limit
 
-   let query = supabase.from('posts').select('*', { count: 'exact' })
+   // 필요한 컬럼만 select (password, content 등 제외)
+   let query = supabase
+      .from('posts')
+      .select(
+         'id, title, created_at, author_id, nickname, view_count, category, status, thumbnail',
+         { count: 'exact' },
+      )
 
-   // 카테고리 필터링 - category가 있으면 직접 사용
-   if (category) {
-      query = query.eq('category', category)
-   }
-
-   if (search) {
+   if (category) query = query.eq('category', category)
+   if (search)
       query = query.or(`title.ilike.%${search}%,content.ilike.%${search}%`)
-   }
-
-   if (author_id) {
-      query = query.eq('author_id', author_id)
-   }
+   if (author_id) query = query.eq('author_id', author_id)
 
    const { data, error, count } = await query
       .order('created_at', { ascending: false })
@@ -47,7 +45,7 @@ export async function getPosts(
    const totalPages = Math.ceil((count || 0) / limit)
 
    return {
-      items: (data as Post[]).map(removePasswordFromPost),
+      items: data as Post[], // removePasswordFromPost 불필요
       total: count || 0,
       page,
       limit,
@@ -60,21 +58,22 @@ export async function getBestPosts(params: PostQueryParams): Promise<Post[]> {
    const { category, limit = 5 } = params
    const supabase = await SupabaseServerClient()
 
+   // 필요한 컬럼만 select
    let query = supabase
       .from('posts')
-      .select('*')
+      .select(
+         'id, title, created_at, author_id, nickname, view_count, category, status, thumbnail',
+      )
       .order('view_count', { ascending: false })
       .limit(limit)
 
-   if (category) {
-      query = query.eq('category', category)
-   }
+   if (category) query = query.eq('category', category)
 
    const { data, error } = await query
 
    if (error) throw error
 
-   return (data as Post[]).map(removePasswordFromPost)
+   return data as Post[] // removePasswordFromPost 불필요
 }
 
 // 게시글 상세 조회

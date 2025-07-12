@@ -1,29 +1,18 @@
 import type { Post } from '@/entities/post'
 import { Separator } from '@/shared/shadcn/ui/separator'
 import ClientDayHydration from '@/shared/ui/hydrated-date'
-import { formatNumberToString } from '@/shared/utils/format-number'
-import PostUpdateButtons from './post-update-buttons'
+import { formatNumberCompact } from '@/shared/utils/format-number'
+import PostActionButtons from '../post-action-button/post-action-buttons'
 
-const POST_HEADER_DATA = {
-   like: '추천',
-   date: '작성시간',
-   views: '조회',
-}
-
-interface Props {
-   post: Partial<Post>
-}
-
-export default function PostHeader({ post }: Props) {
-   const {
-      title,
-      nickname,
-      likes_count,
-      created_at,
-      view_count,
-      id,
-      category,
-   } = post
+export default function PostHeader({
+   title,
+   nickname,
+   likes_count,
+   created_at,
+   view_count,
+   id,
+   category,
+}: Partial<Post>) {
    return (
       <div className="border-b grid px-1">
          <div className="flex justify-between items-center">
@@ -41,29 +30,27 @@ export default function PostHeader({ post }: Props) {
                   <Separator orientation="vertical" />
                </li>
                <li className="flex gap-1 min-w-0 flex-shrink">
-                  <p className="flex-shrink-0">{POST_HEADER_DATA.like}</p>
-                  <p className="truncate">
-                     {formatNumberToString(likes_count)}
-                  </p>
+                  <p className="flex-shrink-0">추천</p>
+                  <p className="truncate">{formatNumberCompact(likes_count)}</p>
                </li>
                <li className="flex-shrink-0">
                   <Separator orientation="vertical" />
                </li>
                <li className="flex gap-1 min-w-0 flex-shrink">
-                  <p className="flex-shrink-0">{POST_HEADER_DATA.views}</p>
-                  <p className="truncate">{formatNumberToString(view_count)}</p>
+                  <p className="flex-shrink-0">조회</p>
+                  <p className="truncate">{formatNumberCompact(view_count)}</p>
                </li>
                <li className="flex-shrink-0">
                   <Separator orientation="vertical" />
                </li>
                <li className="flex gap-1 min-w-0 flex-shrink">
-                  <p className="flex-shrink-0">{POST_HEADER_DATA.date}</p>
+                  <p className="flex-shrink-0">작성시간</p>
                   <p className="truncate">
                      <ClientDayHydration date={created_at} />
                   </p>
                </li>
             </ul>
-            <PostUpdateButtons postId={id.toString()} category={category} />
+            <PostActionButtons postId={id?.toString()} category={category} />
          </div>
       </div>
    )

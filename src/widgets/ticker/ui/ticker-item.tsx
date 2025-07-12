@@ -1,5 +1,5 @@
 'use client'
-import { formatNumberToString } from '@/shared/utils/format-number'
+import { formatNumberCompact } from '@/shared/utils/format-number'
 import { motion } from 'framer-motion'
 
 type Props = {
@@ -19,7 +19,7 @@ export default function TickerItem({ label, value, ariaLabel }: Props) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
          >
-            <strong>{formatNumberToString(value || 0)}</strong>
+            <strong>{formatNumberCompact(value || 0)}</strong>
          </motion.span>
       </div>
    )

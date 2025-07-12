@@ -10,7 +10,7 @@ import {
 } from '@/shared/shadcn/ui/table'
 import type { Database } from '@/shared/types'
 import ClientDayHydration from '@/shared/ui/hydrated-date'
-import { formatValue } from '@/shared/utils/validators/statsValidators/formatNumber'
+import { formatNumberCompact } from '@/shared/utils/format-number'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
@@ -97,10 +97,10 @@ export default function PostList({ data, category }: Props) {
                            <ClientDayHydration date={item.created_at} />
                         </TableCell>
                         <TableCell className="w-[4%] min-w-[50px] text-center  hidden sm:table-cell">
-                           {formatValue(item.view_count)}
+                           {formatNumberCompact(item.view_count)}
                         </TableCell>
                         <TableCell className="w-[4%] min-w-[50px] text-center  hidden sm:table-cell">
-                           {formatValue(0)}
+                           {formatNumberCompact(0)}
                         </TableCell>
                      </TableRow>
                   )
