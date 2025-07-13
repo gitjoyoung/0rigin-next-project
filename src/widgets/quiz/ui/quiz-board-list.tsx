@@ -56,16 +56,12 @@ export default function QuizBoardList({ quizList, isLoading = false }: Props) {
          >
             <div className="space-y-4">
                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                  아직 퀴즈가 없습니다
+                  검색 결과가 없습니다
                </h3>
                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  첫 번째 퀴즈를 만들어보세요
+                  첫 번째 퀴즈를 만들어보세요!
                </p>
-               <Button
-                  asChild
-                  size="sm"
-                  className="bg-blue-600 hover:bg-blue-700"
-               >
+               <Button asChild size="sm">
                   <Link
                      href="/quiz/create"
                      className="flex items-center gap-2"
@@ -95,7 +91,7 @@ export default function QuizBoardList({ quizList, isLoading = false }: Props) {
             >
                <Link
                   href={`/quiz/${quiz.id}`}
-                  className="flex p-3 gap-3 h-full items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+                  className="flex p-3 gap-3 h-full items-center "
                   aria-describedby={
                      quiz.description ? `quiz-description-${index}` : undefined
                   }
@@ -117,7 +113,7 @@ export default function QuizBoardList({ quizList, isLoading = false }: Props) {
                         <div className="flex items-center gap-2 mb-1">
                            <h3
                               id={`quiz-title-${index}`}
-                              className="text-sm font-medium line-clamp-1 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                              className="text-sm font-medium line-clamp-1 text-gray-900 dark:text-white "
                            >
                               {quiz.title}
                            </h3>
@@ -153,7 +149,7 @@ export default function QuizBoardList({ quizList, isLoading = false }: Props) {
                            )}
                         </time>
                         <ArrowRight
-                           className="w-3 h-3 text-gray-400 group-hover:text-blue-500 transition-colors"
+                           className="w-3 h-3 text-gray-400 "
                            aria-hidden="true"
                         />
                      </div>

@@ -34,7 +34,7 @@ export default function QuizBoard({ quizList }: Props) {
                <div>
                   <Link
                      href={ROUTE_QUIZ}
-                     className="text-2xl font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+                     className="text-2xl font-semibold text-gray-900 dark:text-white "
                      aria-label="퀴즈 페이지 메인으로 이동"
                   >
                      퀴즈
@@ -43,11 +43,7 @@ export default function QuizBoard({ quizList }: Props) {
                      다양한 주제의 퀴즈를 풀어보세요
                   </p>
                </div>
-               <Button
-                  asChild
-                  size="sm"
-                  className="bg-blue-600 hover:bg-blue-700"
-               >
+               <Button asChild size="sm">
                   <Link
                      href={'/quiz/create'}
                      className="flex items-center gap-2"
@@ -68,7 +64,7 @@ export default function QuizBoard({ quizList }: Props) {
                   />
                   <Input
                      placeholder="퀴즈 검색..."
-                     className="pl-10 h-9 text-sm border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500"
+                     className="pl-10 h-9 text-sm border-gray-200 dark:border-gray-700"
                      aria-label="퀴즈 검색"
                      type="search"
                      value={search}
