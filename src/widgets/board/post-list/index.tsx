@@ -34,7 +34,7 @@ export default function PostList({ data, category }: Props) {
                   번호
                </TableHead>
                <TableHead className="w-auto min-w-[150px]">제목</TableHead>
-               <TableHead className="text-center w-[10%] min-w-[60px] hidden sm:table-cell">
+               <TableHead className=" w-[10%] min-w-[60px] hidden sm:table-cell">
                   작성자
                </TableHead>
                <TableHead className="text-center w-[5%] min-w-[100px] hidden sm:table-cell">

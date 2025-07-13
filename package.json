@@ -5,7 +5,7 @@
    "scripts": {
       "dev": "node updatePath.js && NODE_OPTIONS='--inspect' next dev",
       "build": "node updatePath.js && next build",
-      "postbuild": "next-sitemap && tsx generate-manifest.ts",
+      "postbuild": "next-sitemap",
       "start": "next start",
       "lint-staged": "lint-staged",
       "prepare": "husky",

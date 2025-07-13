@@ -11,6 +11,7 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
+import { compressImage } from '@/shared/utils/compress-image'
 import { Eye, EyeOff } from 'lucide-react'
 import removeMd from 'remove-markdown'
 import { useBoardForm, useBoardPost } from '../hook'
@@ -89,16 +90,30 @@ export default function BoardPostForm({
       initialData,
    })
 
-   // 이미지 업로드 처리
    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault()
       const file = e.target.files?.[0]
       if (!file) return
-      uploadImageMutation.mutate(file, {
-         onSuccess: (publicUrl) => {
-            setThumbnail(publicUrl)
-         },
-      })
+
+      try {
+         const result = await compressImage(file, {
+            maxHeight: 500,
+            maxSizeMB: 0.1,
+         })
+
+         if (result.status === 'error') {
+            console.error('이미지 압축 실패:', result.errorMessage)
+            return
+         }
+
+         uploadImageMutation.mutate(result.file, {
+            onSuccess: (publicUrl) => {
+               setThumbnail(publicUrl)
+            },
+         })
+      } catch (error) {
+         console.error('이미지 업로드 중 오류:', error)
+      }
    }
 
    const thumbnailUrl = form.watch('thumbnail')

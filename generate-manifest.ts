@@ -23,7 +23,6 @@ const manifest = {
          sizes: '64x64 32x32 24x24 16x16',
          type: 'image/x-icon',
       },
-      // 필요시 추가 아이콘 경로 및 사이즈를 여기에 추가
    ],
    shortcuts: [
       {
@@ -44,4 +43,3 @@ const manifest = {
 
 const outPath = resolve(__dirname, '../public/manifest.json')
 writeFileSync(outPath, JSON.stringify(manifest, null, 2), 'utf-8')
-console.log('manifest.json 생성 완료:', outPath)

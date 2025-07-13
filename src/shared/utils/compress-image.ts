@@ -10,6 +10,7 @@ export type ImageFileType =
 export interface CompressImageOptions {
    maxSizeMB?: number // 최대 파일 크기 (MB)
    maxWidthOrHeight?: number // 최대 너비/높이
+   maxHeight?: number // 최대 높이만 제한
    useWebWorker?: boolean // 웹 워커 사용 브라우저에서 별도의 스레드를 만들어 별도의 작업을 처리하는 기능
    fileType?: ImageFileType // 파일 타입
 }
@@ -66,7 +67,45 @@ export const compressImage = async (
    }
 
    try {
-      const compressedFile = await imageCompression(file, finalOptions)
+      let processedFile = file
+
+      // 높이 제한이 있으면 먼저 리사이즈
+      if (options?.maxHeight) {
+         processedFile = await new Promise<File>((resolve) => {
+            const img = new Image()
+            img.onload = () => {
+               const canvas = document.createElement('canvas')
+               const ctx = canvas.getContext('2d')!
+
+               let { width, height } = img
+
+               if (height > options.maxHeight!) {
+                  const ratio = options.maxHeight! / height
+                  width = Math.floor(width * ratio)
+                  height = options.maxHeight!
+               }
+
+               canvas.width = width
+               canvas.height = height
+               ctx.drawImage(img, 0, 0, width, height)
+
+               canvas.toBlob(
+                  (blob) => {
+                     const resizedFile = new File([blob!], file.name, {
+                        type: file.type,
+                        lastModified: Date.now(),
+                     })
+                     resolve(resizedFile)
+                  },
+                  file.type,
+                  0.9,
+               )
+            }
+            img.src = URL.createObjectURL(file)
+         })
+      }
+
+      const compressedFile = await imageCompression(processedFile, finalOptions)
       return {
          status: 'success',
          file: compressedFile,

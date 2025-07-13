@@ -80,7 +80,7 @@ const MarkDownEditor = ({
             const result = await compressImage(file, {
                fileType: 'image/jpeg',
                maxSizeMB: 0.1,
-               maxWidthOrHeight: 1920,
+               maxHeight: 500,
             })
 
             if (result.status === 'error') {

@@ -1,4 +1,3 @@
-import { Separator } from '@/shared/shadcn/ui/separator'
 import type { Database } from '@/shared/types'
 import ClientDayHydration from '@/shared/ui/hydrated-date'
 import { formatNumberCompact } from '@/shared/utils/format-number'
@@ -13,7 +12,7 @@ export default function PostHeader({
    category,
 }: Partial<Database['public']['Tables']['posts']['Row']>) {
    return (
-      <div>
+      <div className="grid gap-2 pb-2 border-b ">
          <h1 className="text-2xl">{title}</h1>
          <ul className="flex gap-1 text-xs items-center text-gray-700 dark:text-gray-400 min-w-0 justify-between">
             <li className="flex items-center gap-1 min-w-0 flex-shrink font-bold truncate max-w-[80px]">
@@ -21,9 +20,7 @@ export default function PostHeader({
             </li>
             <ClientDayHydration date={created_at} />
          </ul>
-         <Separator orientation="horizontal" />
-
-         <div className="flex text-xs items-center justify-between text-gray-700 dark:text-gray-400 min-w-0 ">
+         <div className="flex text-xs items-center justify-between text-gray-700 dark:text-gray-400 min-w-0">
             <ul className="flex gap-2 items-center">
                <li className="flex min-w-0 flex-shrink ">
                   추천 {formatNumberCompact(0)}
@@ -32,7 +29,6 @@ export default function PostHeader({
             </ul>
             <PostActionButtons postId={id?.toString()} category={category} />
          </div>
-         <Separator orientation="horizontal" />
       </div>
    )
 }

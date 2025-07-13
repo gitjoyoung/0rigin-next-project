@@ -90,9 +90,9 @@ export default function PostActionButtons({
 
    return (
       <>
-         <div className="flex gap-1 items-center">
+         <div className="flex gap-2 items-center">
             <p
-               className="text-xs px-1 cursor-pointer"
+               className="text-xs cursor-pointer"
                onClick={() => {
                   setAction('edit')
                   setPasswordModalOpen(true)
@@ -101,7 +101,7 @@ export default function PostActionButtons({
                수정
             </p>
             <p
-               className="text-xs px-1 cursor-pointer"
+               className="text-xs cursor-pointer"
                onClick={() => {
                   setAction('delete')
                   setPasswordModalOpen(true)

@@ -1,6 +1,5 @@
 'use client'
 
-import { Separator } from '@/shared/shadcn/ui/separator'
 import CommentForm from './comment-form'
 import CommentHeader from './comment-header'
 import CommentItem from './comment-item'
@@ -23,20 +22,24 @@ export default function Comment({ postId }: Props) {
    return (
       <div className="my-2">
          <CommentHeader commentCount={commentsData.length} />
-         <div className="my-2 space-y-1">
+         <div className="flex flex-col ">
             {commentsData.map((data) => (
-               <CommentItem
+               <div
                   key={data.id}
-                  commentData={data}
-                  isEditing={editingCommentId === data.id}
-                  setIsEditing={setEditingComment}
-                  isSelected={selectedCommentId === data.id}
-                  onSelect={() => handleCommentSelect(data.id)}
-                  refetch={refetch}
-               />
+                  className="border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+               >
+                  <CommentItem
+                     key={data.id}
+                     commentData={data}
+                     isEditing={editingCommentId === data.id}
+                     setIsEditing={setEditingComment}
+                     isSelected={selectedCommentId === data.id}
+                     onSelect={() => handleCommentSelect(data.id)}
+                     refetch={refetch}
+                  />
+               </div>
             ))}
          </div>
-         <Separator className="my-4" />
          <CommentForm postId={postId} refetch={refetch} />
       </div>
    )
