@@ -1,7 +1,7 @@
 'use client'
 
 import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
-import { useToast } from '@/shared/shadcn/hooks/use-toast'
+import { useToast } from '@/shared/hooks/use-toast'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Dialog,

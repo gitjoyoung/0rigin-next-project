@@ -11,8 +11,8 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
-import { Textarea } from '@/shared/shadcn/ui/textarea'
 import { Eye, EyeOff } from 'lucide-react'
+import removeMd from 'remove-markdown'
 import { useBoardForm, useBoardPost } from '../hook'
 import LoadingModal from './loading-modal'
 import MarkDownEditor from './mark-down-editor'
@@ -49,6 +49,8 @@ function getInitialFormData({
       password: guestSessionInfo.password || '',
    }
 }
+
+// 마크다운 → HTML → 태그 제거 → 텍스트
 
 export default function BoardPostForm({
    category,
@@ -133,8 +135,8 @@ export default function BoardPostForm({
                                     className="text-sm sm:text-base"
                                     placeholder="닉네임"
                                     disabled={!!memberNickname}
-                                    {...field}
                                     value={memberNickname || field.value}
+                                    {...field}
                                  />
                               </FormControl>
                               <FormMessage />
@@ -193,8 +195,8 @@ export default function BoardPostForm({
                            <Input
                               className="text-sm sm:text-base"
                               placeholder="제목을 입력해주세요"
-                              {...field}
                               disabled={isSubmittingPost}
+                              {...field}
                            />
                         </FormControl>
                         <FormMessage />
@@ -204,33 +206,16 @@ export default function BoardPostForm({
 
                {/* 요약 입력 필드 및 썸네일 */}
                <div className="flex justify-between gap-2 flex-wrap flex-1 w-full min-h-[80px]">
-                  <FormField
-                     control={form.control}
-                     name="summary"
-                     render={({ field }) => (
-                        <FormItem className="w-full max-w-[650px] min-w-[300px]">
-                           <FormControl>
-                              <Textarea
-                                 id="summary"
-                                 maxLength={155}
-                                 className="text-sm font-sans "
-                                 placeholder="요약"
-                                 {...field}
-                              />
-                           </FormControl>
-                        </FormItem>
-                     )}
-                  />
-                  <div className="flex flex-1 font-sans gap-2 items-center border w-full min-w-[300px] max-w-[650px] p-2 rounded-md">
+                  <div className="flex flex-1 font-sans gap-2 items-center border w-full min-w-[300px] max-w-[650px] p-2 rounded-md max-h-[100px]">
                      <div className="text-sm sm:text-base flex flex-col gap-1 w-full min-h-[80px] overflow-hidden">
                         <h1
-                           className="font-bold text-xl overflow-hidden text-ellipsis line-clamp-2 
+                           className="font-bold text-xl overflow-hidden text-ellipsis line-clamp-1 
                            whitespace-pre-wrap text-[##3d00b3] dark:text-[#7EAAFF] min-h-[20px] break-words"
                         >
                            {form.watch('title') || '제목 미리보기'}
                         </h1>
-                        <p className="text-sm overflow-hidden text-ellipsis line-clamp-3 whitespace-pre-wrap text-[#767676] dark:text-[#CDCDCD] break-words">
-                           {form.watch('summary') || '요약내용 미리보기'}
+                        <p className="text-sm overflow-hidden text-ellipsis line-clamp-2 whitespace-pre-wrap text-[#767676] dark:text-[#CDCDCD] break-words">
+                           {removeMd(form.watch('content'))}
                         </p>
                      </div>
                      <ThumbnailUpload
@@ -250,7 +235,7 @@ export default function BoardPostForm({
                   register={form.register}
                   initialValue={form.watch('content') || ''}
                />
-               <div className="flex gap-6 justify-end my-2 item">
+               <div className="flex gap-6 justify-end my-2 items-center">
                   <Button
                      type="button"
                      size="lg"

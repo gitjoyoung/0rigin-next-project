@@ -1,5 +1,5 @@
 import { getBestPosts, getPosts } from '@/entities/post'
-import LogoParticle from '@/widgets/animated-banner.tsx'
+import AnimatedBanner from '@/widgets/animated-banner'
 import Banner from '@/widgets/banner'
 import PostList from '@/widgets/board/post-list'
 import Link from 'next/link'
@@ -19,7 +19,7 @@ export default async function Home() {
 
    return (
       <div className="flex flex-col gap-1 h-full">
-         <LogoParticle />
+         <AnimatedBanner />
          <div className="flex flex-col gap-1">
             <div className="flex justify-between py-1  mb-1 ">
                <h1 className="sm:text-base text-sm font-bold ">BEST POSTS</h1>

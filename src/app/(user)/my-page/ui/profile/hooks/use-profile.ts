@@ -1,5 +1,5 @@
 import { Profile } from '@/entities/profile/types'
-import { useToast } from '@/shared/shadcn/hooks/use-toast'
+import { useToast } from '@/shared/hooks/use-toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'

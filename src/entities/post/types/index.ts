@@ -9,7 +9,7 @@ export interface Post {
    slug: string // text (unique, nullable)
    excerpt: string // text (nullable)
    summary: string // text (nullable)
-   content: any // jsonb (예: { markdown: string, html?: string })
+   content: { markdown: string; html?: string } | string // jsonb (예: { markdown: string, html?: string })
    thumbnail: string // text (nullable)
    author_id: string // uuid (nullable, 외래키 없음)
    nickname: string // text (탈퇴해도 이름 보존)
@@ -21,7 +21,6 @@ export interface Post {
    category_id: string | null // uuid (외래키, nullable)
    status: 'published' | 'draft' | 'private' // text (default 'published')
    category: string // text (nullable)
-   // 집계 필드 (옵셔널)
    likes_count?: number
    comments_count?: number
 }
@@ -29,7 +28,7 @@ export interface Post {
 // 게시글 생성 요청 타입
 export interface PostCreate {
    title: string
-   content: any
+   content: { markdown: string; html?: string } | string
    slug?: string
    excerpt?: string
    summary?: string
@@ -48,7 +47,7 @@ export interface PostCreate {
 // 게시글 업데이트 요청 타입
 export interface PostUpdate {
    title?: string
-   content?: any
+   content?: { markdown: string; html?: string } | string
    slug?: string
    excerpt?: string
    summary?: string
@@ -95,7 +94,7 @@ export interface PostDetail extends Post {
 export interface PostSearchResult {
    id: number
    title: string
-   content: any
+   content: { markdown: string; html?: string } | string
    category_id: string
    author_id: string
    created_at: string

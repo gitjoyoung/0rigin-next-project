@@ -4,6 +4,7 @@ import { Button } from '@/shared/shadcn/ui/button'
 import {
    Dialog,
    DialogContent,
+   DialogDescription,
    DialogFooter,
    DialogHeader,
    DialogTitle,
@@ -17,6 +18,7 @@ interface PasswordConfirmModalProps {
    onConfirm: (password: string) => Promise<void>
    loading?: boolean
    error?: string
+   title?: string
 }
 
 export default function PasswordConfirmModal({
@@ -25,6 +27,7 @@ export default function PasswordConfirmModal({
    onConfirm,
    loading,
    error,
+   title,
 }: PasswordConfirmModalProps) {
    const [password, setPassword] = useState('')
 
@@ -36,7 +39,8 @@ export default function PasswordConfirmModal({
       <Dialog open={open} onOpenChange={onClose}>
          <DialogContent className="max-h-[80vh] overflow-y-auto pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
             <DialogHeader>
-               <DialogTitle>비밀번호 확인</DialogTitle>
+               <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
+               <DialogDescription>비밀번호를 입력하세요</DialogDescription>
             </DialogHeader>
             <Input
                type="password"

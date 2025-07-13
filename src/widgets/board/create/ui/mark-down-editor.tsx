@@ -22,76 +22,9 @@ import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeSanitize from 'rehype-sanitize'
 import remarkBreaks from 'remark-breaks'
+import remarkGfm from 'remark-gfm'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: true })
-
-// 제목 밑줄 제거 및 코드 스타일링을 위한 CSS
-const customStyles = `
-  .w-md-editor-preview h1,
-  .w-md-editor-preview h2,
-  .w-md-editor-preview h3,
-  .w-md-editor-preview h4,
-  .w-md-editor-preview h5,
-  .w-md-editor-preview h6 {
-    border-bottom: none !important;
-    padding-bottom: 0 !important;
-  }
-
-  /* 코드 블록 스타일링 */
-  .w-md-editor-preview pre {
-    background-color: #f6f8fa !important;
-    border: 1px solid #e1e4e8 !important;
-    border-radius: 6px !important;
-    padding: 16px !important;
-    overflow: auto !important;
-  }
-
-  .w-md-editor-preview code {
-    background-color: #f6f8fa !important;
-    color: #24292e !important;
-    padding: 2px 4px !important;
-    border-radius: 3px !important;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
-  }
-
-  .w-md-editor-preview pre code {
-    background-color: transparent !important;
-    padding: 0 !important;
-    color: inherit !important;
-  }
-
-  /* 다크 모드 코드 스타일링 */
-  .dark .w-md-editor-preview pre {
-    background-color: #161b22 !important;
-    border-color: #30363d !important;
-  }
-
-  .dark .w-md-editor-preview code {
-    background-color: #161b22 !important;
-    color: #e6edf3 !important;
-  }
-
-  .dark .w-md-editor-preview pre code {
-    background-color: transparent !important;
-    color: inherit !important;
-  }
-
-  /* 하이라이트된 코드 토큰 스타일 */
-  .hljs-keyword { color: #d73a49; }
-  .hljs-string { color: #032f62; }
-  .hljs-comment { color: #6a737d; }
-  .hljs-number { color: #005cc5; }
-  .hljs-function { color: #6f42c1; }
-  .hljs-variable { color: #e36209; }
-
-  /* 다크 모드 하이라이트 토큰 */
-  .dark .hljs-keyword { color: #ff7b72; }
-  .dark .hljs-string { color: #a5d6ff; }
-  .dark .hljs-comment { color: #8b949e; }
-  .dark .hljs-number { color: #79c0ff; }
-  .dark .hljs-function { color: #d2a8ff; }
-  .dark .hljs-variable { color: #ffa657; }
-`
 
 interface MarkDownEditorProps {
    name: string
@@ -214,8 +147,6 @@ const MarkDownEditor = ({
 
    return (
       <>
-         <style>{customStyles}</style>
-
          <input
             type="file"
             accept="image/*"
@@ -262,15 +193,14 @@ const MarkDownEditor = ({
             height={500}
             commands={editorCommands}
             previewOptions={{
-               remarkPlugins: [remarkBreaks],
+               remarkPlugins: [remarkGfm, remarkBreaks],
                rehypePlugins: [[rehypeSanitize], [rehypeHighlight]],
+               className: 'markdown-preview',
                style: {
                   backgroundColor: 'transparent',
                   color: 'inherit',
-                  fontSize: '14px',
                },
             }}
-            className="markdown-preview"
          />
       </>
    )

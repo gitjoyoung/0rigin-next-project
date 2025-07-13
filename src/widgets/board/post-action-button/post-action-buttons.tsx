@@ -1,7 +1,6 @@
 'use client'
 
 import { useToast } from '@/shared/hooks/use-toast'
-import { Button } from '@/shared/shadcn/ui/button'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import PasswordConfirmModal from '../post-view/password-conrifm-modal'
@@ -91,29 +90,25 @@ export default function PostActionButtons({
 
    return (
       <>
-         <div className="flex gap-3">
-            <Button
-               size="sm"
-               className="text-xs"
+         <div className="flex gap-1 items-center">
+            <p
+               className="text-xs px-1 cursor-pointer"
                onClick={() => {
                   setAction('edit')
                   setPasswordModalOpen(true)
                }}
-               variant="outline"
             >
                수정
-            </Button>
-            <Button
-               size="sm"
-               className="text-xs"
+            </p>
+            <p
+               className="text-xs px-1 cursor-pointer"
                onClick={() => {
                   setAction('delete')
                   setPasswordModalOpen(true)
                }}
-               variant="outline"
             >
                삭제
-            </Button>
+            </p>
          </div>
          <PasswordConfirmModal
             open={passwordModalOpen}
@@ -121,6 +116,7 @@ export default function PostActionButtons({
             onConfirm={handlePasswordConfirm}
             loading={isVerifyingPassword}
             error={passwordError || ''}
+            title={action === 'edit' ? '수정 하기' : '삭제 하기'}
          />
          <ConfirmActionModal
             open={confirmModalOpen}

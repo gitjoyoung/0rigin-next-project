@@ -1,16 +1,16 @@
-import type { Post } from '@/entities/post/types'
+import type { Database } from '@/shared/types'
 import MarkDownViewer from './mark-down-viewer'
 import PostHeader from './post-header'
 
 interface Props {
-   postData: Partial<Post>
+   postData: Database['public']['Tables']['posts']['Row']
 }
 
 export default function PostView({ postData }: Props) {
    return (
       <section className="flex flex-col gap-3 ">
          <PostHeader {...postData} />
-         <MarkDownViewer content={postData.content} />
+         <MarkDownViewer content={postData.content as string} />
       </section>
    )
 }
