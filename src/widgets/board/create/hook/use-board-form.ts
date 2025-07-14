@@ -7,7 +7,7 @@ import {
    authenticatedBoardSchema,
    boardSchema,
    type BoardFormType,
-} from '../schema/board-schema'
+} from '../../common/schema/board-schema'
 
 interface UseBoardFormProps {
    userData: any
@@ -18,7 +18,6 @@ export const useBoardForm = ({ userData, initialData }: UseBoardFormProps) => {
    const [showPassword, setShowPassword] = useState(false)
    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-   // 사용자 상태에 따라 다른 스키마 사용
    const schema = userData ? authenticatedBoardSchema : boardSchema
 
    const form = useForm<BoardFormType>({

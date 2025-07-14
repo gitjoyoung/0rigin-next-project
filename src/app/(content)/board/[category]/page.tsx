@@ -4,8 +4,8 @@ import { redirect } from 'next/navigation'
 
 import { getCategoryBySlug } from '@/entities/category'
 import { getPosts } from '@/entities/post'
-import BoardFooter from '@/widgets/board/common/board-footer'
-import BoardHeader from '@/widgets/board/common/board-header'
+import BoardFooter from '@/widgets/board/footer/board-footer'
+import BoardHeader from '@/widgets/board/header/board-header'
 import { CustomPagination } from '@/widgets/board/pagination'
 import PostList from '@/widgets/board/post-list'
 

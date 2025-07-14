@@ -1,4 +1,5 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
+import type { Tables } from '@/shared/types'
 import type {
    Post,
    PostCreate,
@@ -77,7 +78,7 @@ export async function getBestPosts(params: PostQueryParams): Promise<Post[]> {
 }
 
 // 게시글 상세 조회
-export async function getPostById(id: number): Promise<PostDetail | null> {
+export async function getPostById(id: number): Promise<Tables<'posts'> | null> {
    const supabase = await SupabaseServerClient()
 
    const { data: post, error } = await supabase
