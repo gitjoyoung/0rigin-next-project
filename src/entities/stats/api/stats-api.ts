@@ -15,7 +15,7 @@ export async function getDailyStats(): Promise<Tables<'daily_stats'>> {
 }
 
 // 기간별 일일 통계 조회 (차트용)
-export async function getDailyStatsRange<T = any>(
+export async function getDailyStatsRange(
    days: number = 90,
 ): Promise<Tables<'daily_stats'>[]> {
    const supabase = await SupabaseServerClient()

@@ -1,6 +1,5 @@
 'use client'
 
-import type { DailyStats } from '@/entities/stats'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -10,6 +9,7 @@ import {
    CardTitle,
 } from '@/shared/shadcn/ui/card'
 import { Separator } from '@/shared/shadcn/ui/separator'
+import type { Tables } from '@/shared/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import StatsChart from './stats-chart'
@@ -34,7 +34,7 @@ const INTRODUCE_DATA = {
 }
 
 interface IntroduceProps {
-   chartStats: DailyStats[]
+   chartStats: Tables<'daily_stats'>[]
 }
 
 export default function Introduce({ chartStats }: IntroduceProps) {
@@ -128,7 +128,7 @@ export default function Introduce({ chartStats }: IntroduceProps) {
                      {INTRODUCE_DATA.stats.title}
                   </h2>
                </div>
-               <StatsChart chartStats={chartStats} />
+               <StatsChart {...chartStats} />
             </div>
 
             <Separator className="my-16" />

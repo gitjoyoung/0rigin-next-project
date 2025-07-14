@@ -1,5 +1,8 @@
 'use client'
 
+import { useAuthState } from '@/app/providers/auth-client-provider'
+import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from '@/constants/pathname'
+import { Button } from '@/shared/shadcn/ui/button'
 import {
    Sheet,
    SheetClose,
@@ -13,12 +16,11 @@ import { ChevronDown, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { HEADER_NAV_LIST } from '../constant/header-menu'
-import AuthButtons from './auth-buttons'
 
 export default function MobileSideMenu({ className }: { className?: string }) {
    const [isOpen, setIsOpen] = useState(false)
    const [expandedMenus, setExpandedMenus] = useState<string[]>([])
-
+   const { status } = useAuthState()
    const toggleMenu = (menuId: string) => {
       setExpandedMenus((prev) =>
          prev.includes(menuId)
@@ -39,9 +41,37 @@ export default function MobileSideMenu({ className }: { className?: string }) {
                <SheetHeader className="border-b p-4">
                   <SheetTitle>메뉴</SheetTitle>
                </SheetHeader>
-
-               <div className="flex flex-col">
-                  <AuthButtons />
+               <div className="flex flex-col my-2 border-b">
+                  <div className="flex items-center justify-center">
+                     {status === 'loading' && (
+                        <div className="w-16 h-8 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
+                     )}
+                     {status === 'authed' && (
+                        <div className="flex items-center justify-center gap-2">
+                           <SheetClose asChild>
+                              <Link href={ROUTE_MY_PAGE}>
+                                 <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                    마이페이지
+                                 </h4>
+                              </Link>
+                           </SheetClose>
+                        </div>
+                     )}
+                     {status === 'unauth' && (
+                        <div className="flex items-center justify-center gap-2">
+                           <SheetClose asChild>
+                              <Link href={ROUTE_LOGIN}>
+                                 <Button variant="outline">로그인</Button>
+                              </Link>
+                           </SheetClose>
+                           <SheetClose asChild>
+                              <Link href={ROUTE_SIGN}>
+                                 <Button variant="outline">회원가입</Button>
+                              </Link>
+                           </SheetClose>
+                        </div>
+                     )}
+                  </div>
 
                   <nav className="flex flex-col">
                      {HEADER_NAV_LIST.map((item) => (

@@ -8,6 +8,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/shadcn/ui/card'
+import type { Tables } from '@/shared/types'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import {
@@ -45,7 +46,7 @@ const chartConfig = {
 
 type ChartKey = keyof typeof chartConfig
 
-export default function StatsChart({ chartStats }: StatsChartProps) {
+export default function StatsChart(chartStats: Tables<'daily_stats'>[]) {
    const [activeChart, setActiveChart] = useState<ChartKey>('user_count')
 
    const getTotal = (key: ChartKey) =>
@@ -84,15 +85,7 @@ export default function StatsChart({ chartStats }: StatsChartProps) {
          <CardContent className="p-2 sm:p-6">
             <div className="h-[200px] sm:h-[300px] w-full">
                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                     data={chartStats}
-                     margin={{
-                        top: 20,
-                        right: 20,
-                        bottom: 5,
-                        left: 20,
-                     }}
-                  >
+                  <BarChart data={chartStats}>
                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
                      <XAxis
                         dataKey="date"

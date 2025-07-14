@@ -20,7 +20,7 @@ function MenuButton(props: React.ComponentProps<typeof Button>) {
 }
 
 export default function AuthButtons() {
-   const { status, user } = useAuthState()
+   const { status } = useAuthState()
    const { logout } = useAuthActions()
 
    if (status === 'loading') {
