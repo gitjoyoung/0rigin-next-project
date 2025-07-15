@@ -1,5 +1,5 @@
+import UtilList from '@/widgets/util-widget/util-list'
 import { Metadata } from 'next'
-import UtilList from './ui/util-list'
 
 export const metadata: Metadata = {
    title: '유틸리티 메뉴',
@@ -7,9 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function page() {
-   return (
-      <section className="flex flex-col gap-4 mb-10">
-         <UtilList />
-      </section>
-   )
+   return <UtilList />
 }

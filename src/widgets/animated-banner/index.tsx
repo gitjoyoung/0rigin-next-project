@@ -2,7 +2,7 @@ import Particles from './particles'
 
 export default function AnimatedBanner() {
    return (
-      <div className="relative w-full sm:h-[300px] h-[200px]">
+      <div className="relative w-full sm:h-[400px] h-[300px]">
          <Particles />
          <h1 className="font-dos sm:text-2xl text-xl font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-black dark:text-white">
             0RIGIN

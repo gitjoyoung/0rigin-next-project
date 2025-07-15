@@ -4,7 +4,6 @@ import { cookies } from 'next/headers'
 import 'server-only'
 
 export async function SupabaseServerClient() {
-   // Next 15: 반드시 await
    const cookieStore = await cookies()
 
    return createServerClient<Database>(
@@ -29,7 +28,6 @@ export async function SupabaseServerClient() {
                }
             },
          },
-         // cookieEncoding: 'none', // 필요 시 명시 (기본 none)
       },
    )
 }

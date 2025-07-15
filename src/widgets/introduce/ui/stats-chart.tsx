@@ -108,6 +108,7 @@ export default function StatsChart({
                         domain={[0, 'dataMax']} // 최소 0, 최대값에 딱 맞춤
                         tickLine={false}
                         axisLine={false}
+                        width={60}
                         tick={{ fontSize: 10 }}
                         tickFormatter={(value) => value.toLocaleString()}
                      />

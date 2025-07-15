@@ -34,7 +34,7 @@ export function useAnonSession() {
       const { nickname, password } = getAnonUserInfo(key)
       setNickname(nickname)
       setPassword(password)
-   }, [typeof window !== 'undefined' ? window.location.pathname : ''])
+   }, [])
 
    const setAnonSession = useCallback(
       (nickname: string, password: string) => {

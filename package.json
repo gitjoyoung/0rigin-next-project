@@ -82,6 +82,7 @@
       "react-dropzone": "^14.3.8",
       "react-hook-form": "^7.60.0",
       "react-markdown": "^10.1.0",
+      "react-rnd": "^10.5.2",
       "react-use": "^17.6.0",
       "recharts": "^3.0.2",
       "rehype-highlight": "^7.0.2",

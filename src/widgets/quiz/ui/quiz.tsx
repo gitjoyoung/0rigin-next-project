@@ -1,6 +1,6 @@
 'use client'
 
-import { QuizDetail } from '@/entities/quiz/api/quiz-api'
+import { QuizDetail } from '@/entities/quiz'
 import {
    Accordion,
    AccordionContent,
