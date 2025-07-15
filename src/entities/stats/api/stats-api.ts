@@ -27,9 +27,8 @@ export async function getDailyStatsRange(
       .limit(days)
 
    if (error) {
-      console.error('기간별 일일 통계 조회 에러:', error)
-      return null
+      return []
    }
 
-   return dailyStats
+   return Object.values(dailyStats ?? {})
 }

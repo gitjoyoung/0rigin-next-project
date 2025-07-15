@@ -46,9 +46,14 @@ const chartConfig = {
 
 type ChartKey = keyof typeof chartConfig
 
-export default function StatsChart(chartStats: Tables<'daily_stats'>[]) {
+export default function StatsChart({
+   chartStats,
+}: {
+   chartStats: Tables<'daily_stats'>[]
+}) {
    const [activeChart, setActiveChart] = useState<ChartKey>('user_count')
 
+   console.log('chartStats', chartStats)
    const getTotal = (key: ChartKey) =>
       chartStats.reduce((sum, stat) => sum + (stat[key] || 0), 0)
 
@@ -85,7 +90,10 @@ export default function StatsChart(chartStats: Tables<'daily_stats'>[]) {
          <CardContent className="p-2 sm:p-6">
             <div className="h-[200px] sm:h-[300px] w-full">
                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartStats}>
+                  <BarChart
+                     data={chartStats}
+                     margin={{ top: 0, right: 0, left: -10, bottom: 0 }}
+                  >
                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
                      <XAxis
                         dataKey="date"
@@ -97,9 +105,10 @@ export default function StatsChart(chartStats: Tables<'daily_stats'>[]) {
                         tickFormatter={(value) => dayjs(value).format('MM/DD')}
                      />
                      <YAxis
+                        domain={[0, 'dataMax']} // 최소 0, 최대값에 딱 맞춤
                         tickLine={false}
                         axisLine={false}
-                        tick={{ fontSize: 12 }}
+                        tick={{ fontSize: 10 }}
                         tickFormatter={(value) => value.toLocaleString()}
                      />
                      <Tooltip

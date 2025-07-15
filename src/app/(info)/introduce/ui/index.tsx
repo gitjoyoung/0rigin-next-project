@@ -128,7 +128,7 @@ export default function Introduce({ chartStats }: IntroduceProps) {
                      {INTRODUCE_DATA.stats.title}
                   </h2>
                </div>
-               <StatsChart {...chartStats} />
+               <StatsChart chartStats={chartStats} />
             </div>
 
             <Separator className="my-16" />
@@ -144,7 +144,7 @@ export default function Introduce({ chartStats }: IntroduceProps) {
                </p>
                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button asChild variant="outline" size="lg">
-                     <Link href="/board/latest">자유 토론 게시판</Link>
+                     <Link href="/board/latest">최신글 보기</Link>
                   </Button>
                   <Button asChild size="lg">
                      <Link href="/quiz">퀴즈 풀기</Link>
