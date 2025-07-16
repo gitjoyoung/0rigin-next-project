@@ -5,82 +5,33 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/shared/shadcn/ui/avatar'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
 import { cn } from '@/shared/utils/cn'
-import { useMutation } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { Edit3, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { useCommentItem } from './hooks/use-comment-item'
 
 interface Props {
    commentData: Comment
-   isEditing: boolean
-   setIsEditing: (id: number | null) => void
    refetch: () => void
    isSelected?: boolean
    onSelect?: () => void
 }
 
-// 클라이언트에서 사용할 댓글 수정 함수
-async function updateCommentApi(id: number, content: string) {
-   const response = await fetch(`/api/comment/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content }),
-   })
-   if (!response.ok) {
-      throw new Error('댓글 수정에 실패했습니다.')
-   }
-   return response.json()
-}
-
-// 클라이언트에서 사용할 댓글 삭제 함수
-async function deleteCommentApi(id: number) {
-   const response = await fetch(`/api/comment/${id}`, {
-      method: 'DELETE',
-   })
-   if (!response.ok) {
-      throw new Error('댓글 삭제에 실패했습니다.')
-   }
-   return response.json()
-}
-
 export default function CommentItem({
    commentData,
-   isEditing,
-   setIsEditing,
    refetch,
-   isSelected = false,
    onSelect,
+   isSelected,
 }: Props) {
-   const [editContent, setEditContent] = useState(commentData.content)
-
-   const updateMutation = useMutation({
-      mutationFn: ({ id, content }: { id: number; content: string }) =>
-         updateCommentApi(id, content),
-      onSuccess: () => {
-         setIsEditing(null)
-         refetch()
-      },
-   })
-
-   const deleteMutation = useMutation({
-      mutationFn: deleteCommentApi,
-      onSuccess: () => {
-         refetch()
-      },
-   })
-
-   const handleUpdate = () => {
-      updateMutation.mutate({
-         id: commentData.id,
-         content: editContent,
-      })
-   }
-
-   const handleDelete = () => {
-      if (confirm('댓글을 삭제하시겠습니까?')) {
-         deleteMutation.mutate(commentData.id)
-      }
-   }
+   const {
+      isEditing,
+      setIsEditing,
+      editContent,
+      setEditContent,
+      handleUpdate,
+      handleDelete,
+      updateMutation,
+      deleteMutation,
+   } = useCommentItem({ commentData, refetch })
 
    const avatarUrl = `/images/mascot/logo.webp`
 
@@ -128,7 +79,7 @@ export default function CommentItem({
                            size="sm"
                            onClick={(e) => {
                               e.stopPropagation()
-                              setIsEditing(isEditing ? null : commentData.id)
+                              setIsEditing(!isEditing)
                            }}
                            className="h-4 w-4 px-2 text-xs"
                         >

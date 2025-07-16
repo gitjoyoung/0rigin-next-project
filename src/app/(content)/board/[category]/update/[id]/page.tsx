@@ -1,7 +1,7 @@
 import { getCategoryBySlug } from '@/entities/category'
 import { getPostById } from '@/entities/post/api'
 import { getProfile } from '@/entities/profile/api/profile-api'
-import { PostUpdateForm } from '@/widgets/board/update'
+import { PostUpdateForm } from '@/widgets/board/post/post-update'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 

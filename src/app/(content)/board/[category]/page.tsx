@@ -7,7 +7,7 @@ import { getPosts } from '@/entities/post'
 import BoardFooter from '@/widgets/board/footer/board-footer'
 import BoardHeader from '@/widgets/board/header/board-header'
 import { CustomPagination } from '@/widgets/board/pagination'
-import PostList from '@/widgets/board/post-list'
+import PostList from '@/widgets/board/post/post-list'
 
 interface IParams {
    params: {

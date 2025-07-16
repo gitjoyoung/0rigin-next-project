@@ -91,7 +91,6 @@ export default function ForgetForm() {
                      {emailStatus === 'success' &&
                         '이메일을 보냈습니다 이메일을 확인 해 주세요'}
                      {emailStatus === 'error' && '이메일을 다시 확인 해 주세요'}
-                     {emailStatus === 'idle' && '이메일을 입력 해 주세요'}
                   </h1>
                ) : null}
             </CardFooter>

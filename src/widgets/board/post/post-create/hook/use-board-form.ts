@@ -7,7 +7,7 @@ import {
    authenticatedBoardSchema,
    boardSchema,
    type BoardFormType,
-} from '../../common/schema/board-schema'
+} from '../../../common/schema/board-schema'
 
 interface UseBoardFormProps {
    userData: any

@@ -11,14 +11,14 @@ import {
 import { Input } from '@/shared/shadcn/ui/input'
 import type { Tables } from '@/shared/types'
 import { useForm } from 'react-hook-form'
-import LoadingModal from '../../common/loading-modal'
-import MarkDownEditor from '../../common/mark-down-editor'
-import MarkDownTip from '../../common/markdown-tip'
-import { type BoardFormType } from '../../common/schema/board-schema'
+import LoadingModal from '../../../common/loading-modal'
+import MarkDownEditor from '../../../common/mark-down-editor'
+import MarkDownTip from '../../../common/markdown-tip'
+import { type BoardFormType } from '../../../common/schema/board-schema'
 import {
    extractFirstImageUrl,
    removeImagesAndMarkdown,
-} from '../../common/utils/markdown-util'
+} from '../../../common/utils/markdown-util'
 import { useUpdateBoardPost } from '../hook/use-update-post'
 
 interface Props {

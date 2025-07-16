@@ -1,8 +1,8 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import PostForm from '../../common/post-form'
-import type { BoardFormType } from '../../common/schema/board-schema'
+import type { BoardFormType } from '../../../common/schema/board-schema'
+import PostForm from '../../post-form'
 import { useCreateBoardPost } from '../hook/use-create-post'
 
 export default function PostCreateWidget({
@@ -14,7 +14,11 @@ export default function PostCreateWidget({
 }) {
    const form = useForm<BoardFormType>({
       defaultValues: {
-         nickname: userProfile?.nickname || '',
+         title: '',
+         content: '',
+         thumbnail: '',
+         password: '',
+         nickname: userProfile?.user_metadata.nickname || '',
       },
    })
    const { isSubmitting, onSubmit } = useCreateBoardPost({

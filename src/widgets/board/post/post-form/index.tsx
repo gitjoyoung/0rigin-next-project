@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -7,21 +9,24 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
+import type { User } from '@supabase/supabase-js'
+import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import LoadingModal from './loading-modal'
-import MarkDownEditor from './mark-down-editor'
-import MarkDownTip from './markdown-tip'
-import type { BoardFormType } from './schema/board-schema'
+import LoadingModal from '../../common/loading-modal'
+import MarkDownEditor from '../../common/mark-down-editor'
+import MarkDownTip from '../../common/markdown-tip'
+import type { BoardFormType } from '../../common/schema/board-schema'
 import {
    extractFirstImageUrl,
    removeImagesAndMarkdown,
-} from './utils/markdown-util'
+} from '../../common/utils/markdown-util'
 
 interface BoardFormProps {
    form: UseFormReturn<BoardFormType>
    isSubmitting: boolean
    onSubmit: (data: BoardFormType) => void
-   userProfile?: any
+   userProfile?: User
    submitLabel: string
 }
 
@@ -32,6 +37,7 @@ export default function PostForm({
    userProfile,
    submitLabel,
 }: BoardFormProps) {
+   const [passwordVisible, setPasswordVisible] = useState(false)
    return (
       <section className="w-full py-2">
          <LoadingModal isOpen={isSubmitting} />
@@ -41,25 +47,69 @@ export default function PostForm({
                onSubmit={form.handleSubmit(onSubmit)}
             >
                {/* 닉네임 입력 필드 */}
-               <FormField
-                  control={form.control}
-                  name="nickname"
-                  render={({ field }) => (
-                     <FormItem className="w-full max-w-[180px]">
-                        <FormControl>
-                           <Input
-                              className="text-sm sm:text-base"
-                              placeholder="닉네임"
-                              disabled={!!userProfile?.nickname}
-                              value={userProfile?.nickname || field.value}
-                              {...field}
-                           />
-                        </FormControl>
-                        <FormMessage />
-                     </FormItem>
+               <div className="flex gap-2">
+                  <FormField
+                     control={form.control}
+                     name="nickname"
+                     render={({ field }) => (
+                        <FormItem className="w-full max-w-[180px]">
+                           <FormControl>
+                              <Input
+                                 className="text-sm sm:text-base"
+                                 placeholder="닉네임"
+                                 disabled={!!userProfile}
+                                 {...field}
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  {!userProfile && (
+                     <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => {
+                           return (
+                              <FormItem className="w-full max-w-[180px]">
+                                 <FormControl>
+                                    <div className="relative">
+                                       <Input
+                                          className="text-sm sm:text-base pr-10"
+                                          placeholder="비밀번호"
+                                          minLength={4}
+                                          maxLength={8}
+                                          type={
+                                             passwordVisible
+                                                ? 'text'
+                                                : 'password'
+                                          }
+                                          {...field}
+                                       />
+                                       <Button
+                                          type="button"
+                                          size="icon"
+                                          variant="ghost"
+                                          className="absolute right-0 top-1/2 -translate-y-1/2"
+                                          onClick={() =>
+                                             setPasswordVisible((v) => !v)
+                                          }
+                                       >
+                                          {passwordVisible ? (
+                                             <EyeIcon className="w-4 h-4" />
+                                          ) : (
+                                             <EyeOffIcon className="w-4 h-4" />
+                                          )}
+                                       </Button>
+                                    </div>
+                                 </FormControl>
+                                 <FormMessage />
+                              </FormItem>
+                           )
+                        }}
+                     />
                   )}
-               />
-
+               </div>
                {/* 제목 입력 필드 */}
                <FormField
                   control={form.control}

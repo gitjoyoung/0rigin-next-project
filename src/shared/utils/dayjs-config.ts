@@ -1,32 +1,22 @@
 import { DATE_RULES } from '@/shared/constants/validation-rules'
 import dayjs from 'dayjs'
+import 'dayjs/locale/en'
 import 'dayjs/locale/ko'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 
-// dayjs 플러그인 및 로케일 설정
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(relativeTime)
 dayjs.locale('ko')
 
-/**
- * 설정된 dayjs 인스턴스를 반환
- * 모든 필요한 플러그인과 한국어 로케일이 적용됨
- */
 export const configuredDayjs = dayjs
 
 export const createDate = (date: string) => {
    return dayjs.utc(date).tz('Asia/Seoul').format('YY.MM.DD HH:mm:ss')
 }
 
-/**
- * 스마트 날짜 포맷터
- * 7일 이내: 상대시간 ("5분 전", "2시간 전")
- * 올해 내: MM.DD 형식
- * 작년 이전: YY.MM.DD 형식
- */
 export const formatSmartDate = (date: string): string => {
    if (!date) return '날짜 없음'
 

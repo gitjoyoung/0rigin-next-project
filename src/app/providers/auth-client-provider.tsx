@@ -40,7 +40,7 @@ export function AuthClientProvider({
    // 로그아웃 함수
    const logout = async () => {
       await supabase.auth.signOut()
-      // 상태 동기화는 onAuthStateChange에서 자동 처리
+      window.location.reload()
    }
 
    useEffect(() => {

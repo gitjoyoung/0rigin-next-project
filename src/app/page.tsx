@@ -2,7 +2,7 @@ import { ROUTE_BOARD } from '@/constants/pathname'
 import { getBestPosts, getPosts } from '@/entities/post'
 import AnimatedBanner from '@/widgets/animated-banner'
 import Banner from '@/widgets/banner'
-import PostList from '@/widgets/board/post-list'
+import PostList from '@/widgets/board/post/post-list'
 import Link from 'next/link'
 
 const Title = ({ title, href }: { title: string; href: string }) => (

@@ -1,5 +1,6 @@
 'use client'
 
+import { useAuthState } from '@/app/providers/auth-client-provider'
 import type { CommentCreate } from '@/entities/comment'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
@@ -14,30 +15,16 @@ import { Textarea } from '@/shared/shadcn/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import {
+   formCommentSchema,
+   type CommentFormData,
+} from './types/comment-form-schema'
 
 interface Props {
    postId: string
    refetch: () => void
 }
 
-// 폼용 간소화된 commentSchema 생성
-const formCommentSchema = z.object({
-   content: z.string().min(1, '댓글 내용을 입력해주세요.'),
-   nickname: z.string().min(2, '닉네임은 2자 이상이어야 합니다.'),
-   password: z
-      .string()
-      .min(4, '비밀번호는 4자 이상이어야 합니다.')
-      .max(10, '비밀번호는 10자 이하이어야 합니다.')
-      .regex(
-         /^[A-Za-z\d가-힣ㄱ-ㅎㅏ-ㅣ]+$/,
-         '비밀번호는 문자, 숫자만 가능합니다',
-      ),
-})
-
-type CommentFormData = z.infer<typeof formCommentSchema>
-
-// 클라이언트에서 사용할 댓글 생성 함수
 async function createCommentApi(data: CommentCreate) {
    const response = await fetch('/api/comment', {
       method: 'POST',
@@ -51,11 +38,13 @@ async function createCommentApi(data: CommentCreate) {
 }
 
 export default function CommentForm({ postId, refetch }: Props) {
+   const { status, user } = useAuthState()
+
    const form = useForm<CommentFormData>({
       resolver: zodResolver(formCommentSchema),
       defaultValues: {
          content: '',
-         nickname: '',
+         nickname: user?.user_metadata.nickname ?? '',
          password: '',
       },
    })
@@ -111,6 +100,7 @@ export default function CommentForm({ postId, refetch }: Props) {
                               autoComplete="off"
                               placeholder="닉네임"
                               className="max-w-40 rounded-none"
+                              disabled={status === 'authed'}
                            />
                         </FormControl>
                         <FormMessage className="text-xs" />
@@ -131,6 +121,7 @@ export default function CommentForm({ postId, refetch }: Props) {
                               autoComplete="off"
                               placeholder="비밀번호"
                               className="max-w-40 rounded-none"
+                              disabled={status === 'authed'}
                            />
                         </FormControl>
                         <FormMessage className="text-xs" />

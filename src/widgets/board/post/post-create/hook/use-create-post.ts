@@ -2,12 +2,13 @@
 
 import type { PostCreate } from '@/entities/post/types'
 import { useToast } from '@/shared/hooks/use-toast'
+import type { User } from '@supabase/supabase-js'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { type BoardFormType } from '../../common/schema/board-schema'
-import { removeImagesAndMarkdown } from '../../common/utils/markdown-util'
+import { type BoardFormType } from '../../../common/schema/board-schema'
+import { removeImagesAndMarkdown } from '../../../common/utils/markdown-util'
 
-async function createPostApi(data: PostCreate) {
+async function createPostApi(data: PostCreate): Promise<Post> {
    const response = await fetch('/api/post', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -24,7 +25,7 @@ export function useCreateBoardPost({
    userProfile,
 }: {
    category: string
-   userProfile?: any
+   userProfile?: User
 }) {
    const router = useRouter()
    const queryClient = useQueryClient()
@@ -40,19 +41,19 @@ export function useCreateBoardPost({
             thumbnail: data.thumbnail,
             category,
             nickname: data.nickname,
-            password: data.password || undefined,
-            author_id: userProfile?.id || undefined,
+            password: data.password ?? undefined,
+            author_id: userProfile?.id ?? undefined,
          }
          return await createPostApi(postData)
       },
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: ['posts'] })
+      onSuccess: (data) => {
+         queryClient.invalidateQueries({ queryKey: ['posts-create'] })
          toast({
             title: '성공',
             description: '게시글이 성공적으로 작성되었습니다.',
             duration: 3000,
          })
-         router.push(`/board/${category}`)
+         router.push(`/board/${category}/${data.id}`)
       },
       onError: (error: any) => {
          toast({

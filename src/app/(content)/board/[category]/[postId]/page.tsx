@@ -7,9 +7,9 @@ import { getPostById, getPosts } from '@/entities/post'
 import Comment from '@/widgets/board/comment'
 import BoardFooter from '@/widgets/board/footer/board-footer'
 import BoardHeader from '@/widgets/board/header/board-header'
-import PostLike from '@/widgets/board/post-like'
-import PostList from '@/widgets/board/post-list'
-import PostView from '@/widgets/board/post-view'
+import PostLike from '@/widgets/board/post/post-like'
+import PostList from '@/widgets/board/post/post-list'
+import PostView from '@/widgets/board/post/post-view'
 import BreadcrumbWidget from '@/widgets/bread-crumb'
 
 interface IParams {

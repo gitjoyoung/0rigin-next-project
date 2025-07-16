@@ -44,7 +44,7 @@ export const HEADER_NAV_LIST: MenuItem[] = [
             items: [
                {
                   id: 'philosophy',
-                  title: '철학 게시판',
+                  title: '실용 철학 게시판',
                   url: '/board/philosophy',
                   icon: Code,
                },
@@ -129,6 +129,12 @@ export const HEADER_NAV_LIST: MenuItem[] = [
                   id: 'image-converter',
                   title: '이미지 변환기',
                   url: '/utils/image-converter',
+                  icon: ImageIcon,
+               },
+               {
+                  id: 'memo',
+                  title: '메모장',
+                  url: '/utils/memo',
                   icon: ImageIcon,
                },
             ],
