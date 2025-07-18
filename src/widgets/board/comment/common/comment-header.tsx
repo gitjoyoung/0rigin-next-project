@@ -1,10 +1,10 @@
 'use client'
 import { Button } from '@/shared/shadcn/ui/button'
 import { RefreshCcw } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 interface Props {
    commentCount: number
+   refetch: () => void
 }
 
 const COMMENT_HEADER_DATA = {
@@ -13,8 +13,10 @@ const COMMENT_HEADER_DATA = {
    refresh: '새로고침',
 }
 
-export default function CommentHeader({ commentCount: commentLength }: Props) {
-   const router = useRouter()
+export default function CommentHeader({
+   commentCount: commentLength,
+   refetch,
+}: Props) {
    return (
       <div className="border-b border-t border-gray-200 dark:border-gray-700 flex justify-between text-xs  p-1">
          <div className="flex text-gray-700 dark:text-gray-300 items-center gap-2">
@@ -26,10 +28,10 @@ export default function CommentHeader({ commentCount: commentLength }: Props) {
             variant="link"
             className="p-1 py-0 text-xs flex gap-1  text-black dark:text-white 
             items-center h-5"
-            onClick={() => router.refresh()}
+            onClick={() => refetch()}
          >
             <RefreshCcw className="h-4 w-4" />
-            <p>{COMMENT_HEADER_DATA.refresh}</p>
+            <p className="text-xs">{COMMENT_HEADER_DATA.refresh}</p>
          </Button>
       </div>
    )

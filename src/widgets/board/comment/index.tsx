@@ -16,7 +16,9 @@ export default function Comment({ postId }: Props) {
       <div className="my-2">
          <CommentHeader commentCount={commentsData.length} />
          <CommentList commentsData={commentsData} refetch={refetch} />
-         <CommentForm postId={postId} refetch={refetch} />
+         <div className="my-2">
+            <CommentForm postId={postId} refetch={refetch} />
+         </div>
       </div>
    )
 }
