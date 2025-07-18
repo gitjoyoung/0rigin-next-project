@@ -34,24 +34,21 @@ function BannerThumbnail({
             className="block h-full relative group"
          >
             {nickname && (
-               <Badge className="text-xs align-middle px-1 py-1 rounded absolute top-1 right-1">
+               <Badge className="text-xs align-middle px-2 py-1 rounded absolute top-0 right-0 z-20 ">
                   {nickname}
                </Badge>
             )}
-            <figure className="w-full h-full ">
+            <figure className="w-full h-full">
                <img
                   alt={title}
                   src={thumbnail || DEFAULT_VALUES.thumbnail}
                   className="w-full h-full object-contain object-center"
                />
-               <figcaption
-                  className="absolute  bottom-0 w-full bg-gradient-to-t from-black/80 
-               via-black/40 to-black/0 sm:p-4 p-2 z-20  text-white "
-               >
-                  <h2 className="sm:text-2xl text-xl font-bold line-clamp-1 max-w-prose drop-shadow">
+               <figcaption className="w-full p-2 z-20 text-white pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/40 to-transparent">
+                  <h2 className="sm:text-lg text-base font-bold line-clamp-1 max-w-prose drop-shadow">
                      {title}
                   </h2>
-                  <p className="break-words text-sm line-clamp-2 max-w-prose mt-1 drop-shadow">
+                  <p className="break-words text-xs sm:text-sm line-clamp-2 max-w-prose mt-1 drop-shadow">
                      {summary}
                   </p>
                </figcaption>

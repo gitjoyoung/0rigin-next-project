@@ -23,10 +23,11 @@ function BannerList({ postData, selectedPost }: Props) {
                href={`/board/${category}/${id}`}
             >
                <div className="flex justify-between items-center gap-1 w-full">
-                  <h2 className="line-clamp-1 flex-1 max-w-prose font-medium ">
-                     {title}
-                  </h2>
-                  <Badge variant="outline" className="text-xs font-thin">
+                  <h2 className="line-clamp-1 flex-1 max-w-prose">{title}</h2>
+                  <Badge
+                     variant="secondary"
+                     className="text-xs font-thin text-black dark:text-white"
+                  >
                      {formatNumberCompact(view_count)}
                   </Badge>
                </div>

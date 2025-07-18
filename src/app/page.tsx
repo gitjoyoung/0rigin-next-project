@@ -6,9 +6,9 @@ import PostList from '@/widgets/board/post/post-list'
 import Link from 'next/link'
 
 const Title = ({ title, href }: { title: string; href: string }) => (
-   <div className="flex justify-between py-1  mb-1 ">
+   <div className="flex justify-between m-1">
       <h1 className="sm:text-base text-sm font-bold ">{title}</h1>
-      <Link href={href} className="text-xs text-end self-end text-gray-500">
+      <Link href={href} className="text-xs text-end self-end text-gray-500 ">
          더보기
       </Link>
    </div>

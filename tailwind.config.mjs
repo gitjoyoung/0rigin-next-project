@@ -122,8 +122,8 @@ module.exports = {
                '100%': { transform: 'translateY(-50%)' },
             },
             'progress-bar': {
-               from: { width: '0%' },
-               to: { width: '100%' },
+               '0%': { width: '0%' },
+               '100%': { width: '100%' },
             },
          },
          animation: {
@@ -134,7 +134,7 @@ module.exports = {
             'fade-in': 'fade-in 0.3s ease-out forwards',
             'marquee-y': 'marquee-y 10s linear infinite',
             'progress-bar':
-               'progress-bar var(--progress-duration, 5000ms) linear forwards',
+               'progress-bar var(--progress-duration, 5000ms) ease-in-out forwards',
          },
       },
    },
