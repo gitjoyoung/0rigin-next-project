@@ -1,4 +1,5 @@
 import { ROUTE_BOARD } from '@/constants/pathname'
+import { DEFAULT_BOARD_IMAGE_URL } from '@/shared/constants/default-image'
 import { Badge } from '@/shared/shadcn/ui/badge'
 import {
    Card,
@@ -34,13 +35,16 @@ export default function BoardSearchResult({
                <div className="space-y-4">
                   {searchResult.map((data) => (
                      <Card key={data.id} className="overflow-hidden">
-                        <Link href={`${ROUTE_BOARD}/${data.id}`}>
+                        <Link
+                           href={`${ROUTE_BOARD}/${data.category}/${data.id}`}
+                        >
                            <div className="flex gap-4 p-4 group hover:bg-slate-50 transition-colors">
                               <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border">
                                  <Image
                                     src={
-                                       data?.thumbnail ||
-                                       '/mascot/winksaurus3.png'
+                                       data?.thumbnail
+                                          ? data.thumbnail
+                                          : DEFAULT_BOARD_IMAGE_URL
                                     }
                                     fill
                                     alt={data.title}

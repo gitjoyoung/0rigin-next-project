@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/shared/shadcn/ui/avatar'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
 import { cn } from '@/shared/utils/cn'
-import dayjs from 'dayjs'
+import { formatSmartDate } from '@/shared/utils/dayjs-config'
 import { Edit3, Trash2 } from 'lucide-react'
 import PasswordConfirmModal from '../../post/post-view/password-conrifm-modal'
 import { useCommentItem } from '../hooks/use-comment-item'
@@ -64,13 +64,13 @@ export default function CommentItem({
                <div className="flex-1 min-w-0 relative">
                   {/* 헤더 */}
                   <div className="flex items-center justify-between mb-1">
-                     <div className="flex items-center gap-2">
+                     <div className="flex gap-2 items-end">
                         <span className="text-sm font-medium text-foreground">
                            {commentData.nickname || '익명'}
                         </span>
 
-                        <span className="text-xs text-muted-foreground">
-                           {dayjs(commentData.created_at).format('YYYY-MM-DD')}
+                        <span className="text-[10px] flex text-muted-foreground ">
+                           {formatSmartDate(commentData.created_at)}
                         </span>
                      </div>
 
