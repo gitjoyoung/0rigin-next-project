@@ -1,6 +1,7 @@
 // shared/auth/AuthClientProvider.tsx
 'use client'
 
+import type { Tables } from '@/shared/types'
 import type { User } from '@supabase/supabase-js'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { SupabaseBrowserClient } from '../../shared/lib/supabase/supabase-browser-client'
@@ -10,12 +11,13 @@ export type Status = 'loading' | 'unauth' | 'needsProfile' | 'authed'
 export interface Snapshot {
    status: Status
    user: User | null
+   profile?: Tables<'profile'>
 }
-
 // 상태 Context
 const AuthStateContext = createContext<Snapshot>({
    status: 'loading',
    user: null,
+   profile: undefined,
 })
 export const useAuthState = () => useContext(AuthStateContext)
 
@@ -48,18 +50,16 @@ export function AuthClientProvider({
          const {
             data: { session },
          } = await supabase.auth.getSession()
+
          if (!session) {
-            setSnap({ status: 'unauth', user: null })
+            setSnap({ status: 'unauth', user: null, profile: undefined })
             return
          }
-         const { data: profile } = await supabase
-            .from('profile')
-            .select('is_active')
-            .eq('id', session.user.id)
-            .maybeSingle()
+         // 세션만 확인하고 profile은 서버에서 받은 것 사용
          setSnap({
-            status: profile?.is_active ? 'authed' : 'needsProfile',
+            status: snap.profile ? 'authed' : 'needsProfile',
             user: session.user,
+            profile: snap.profile, // 기존 profile 유지
          })
       }
 
@@ -69,7 +69,6 @@ export function AuthClientProvider({
       })
       return () => sub.subscription.unsubscribe()
    }, [supabase])
-
    return (
       <AuthStateContext.Provider value={snap}>
          <AuthActionContext.Provider value={{ logout }}>

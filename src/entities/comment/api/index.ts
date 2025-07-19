@@ -21,7 +21,7 @@ export async function getComments(postId: number | string): Promise<Comment[]> {
    const { data, error } = await supabase
       .from('comments')
       .select('*')
-      .eq('post_id', postId)
+      .eq('post_id', Number(postId))
       .order('created_at', { ascending: true })
 
    if (error) {
@@ -85,7 +85,7 @@ export async function updateComment(
    const { data: comment, error } = await supabase
       .from('comments')
       .update(data)
-      .eq('id', id)
+      .eq('id', Number(id))
       .select('*')
       .single()
 
@@ -101,7 +101,10 @@ export async function updateComment(
 export async function deleteComment(id: string | number): Promise<void> {
    const supabase = await SupabaseServerClient()
 
-   const { error } = await supabase.from('comments').delete().eq('id', id)
+   const { error } = await supabase
+      .from('comments')
+      .delete()
+      .eq('id', Number(id))
 
    if (error) {
       console.error('댓글 삭제 에러:', error)
@@ -112,18 +115,24 @@ export async function deleteComment(id: string | number): Promise<void> {
 // 특정 댓글 조회
 export async function getCommentById(
    id: string | number,
+   includePassword = false,
 ): Promise<Comment | null> {
    const supabase = await SupabaseServerClient()
 
    const { data, error } = await supabase
       .from('comments')
       .select('*')
-      .eq('id', id)
+      .eq('id', Number(id))
       .single()
 
    if (error) {
       console.error('댓글 조회 에러:', error)
       return null
+   }
+
+   // 권한 검증을 위해 password가 필요한 경우 password 포함하여 반환
+   if (includePassword) {
+      return data as Comment
    }
 
    return removePasswordFromComment(data as Comment)
@@ -161,7 +170,7 @@ export async function getCommentCount(
    const { count } = await supabase
       .from('comments')
       .select('*', { count: 'exact', head: true })
-      .eq('post_id', postId)
+      .eq('post_id', Number(postId))
 
    return count || 0
 }

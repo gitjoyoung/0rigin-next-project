@@ -1,7 +1,6 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
 import type { User } from '@supabase/supabase-js'
 
-// 클라이언트 사이드에서 사용자 정보를 가져오는 함수
 export async function getUser(): Promise<User | null> {
    const supabase = await SupabaseServerClient()
    const {
@@ -13,6 +12,7 @@ export async function getUser(): Promise<User | null> {
 export async function checkSignupCompleteServer(): Promise<{
    status: 'unauth' | 'authed' | 'needsProfile'
    user: User | null
+   profile?: any
 }> {
    const supabase = await SupabaseServerClient()
 
@@ -22,7 +22,7 @@ export async function checkSignupCompleteServer(): Promise<{
    const { data: profile } = session
       ? await supabase
            .from('profile')
-           .select('is_active')
+           .select('*')
            .eq('id', session.user.id)
            .maybeSingle()
       : { data: null }
@@ -30,8 +30,8 @@ export async function checkSignupCompleteServer(): Promise<{
    const initial = !session
       ? { status: 'unauth' as const, user: null }
       : profile?.is_active
-        ? { status: 'authed' as const, user: session.user }
-        : { status: 'needsProfile' as const, user: session.user }
+        ? { status: 'authed' as const, user: session.user, profile }
+        : { status: 'needsProfile' as const, user: session.user, profile }
 
    return initial
 }

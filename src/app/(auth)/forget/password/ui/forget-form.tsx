@@ -28,7 +28,7 @@ export default function ForgetForm() {
       <div className="flex w-full items-center justify-center mx-1">
          <Card className="w-full max-w-md">
             <CardHeader>
-               <CardTitle>이메일 입력</CardTitle>
+               <CardTitle>이메일 인증</CardTitle>
             </CardHeader>
             <CardContent>
                <Form {...form}>

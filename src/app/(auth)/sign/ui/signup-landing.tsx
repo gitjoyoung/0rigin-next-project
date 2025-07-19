@@ -13,7 +13,7 @@ const SIGN_UP_TERMS = {
    },
    signup: {
       href: ROUTE_SIGN_FORM,
-      buttonText: '회원가입',
+      buttonText: '회원가입 하기',
    },
 }
 export default function SignUpLanding() {

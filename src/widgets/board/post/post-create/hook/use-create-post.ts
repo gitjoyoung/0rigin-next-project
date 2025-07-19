@@ -1,6 +1,6 @@
 'use client'
 
-import type { PostCreate } from '@/entities/post/types'
+import type { Post, PostCreate } from '@/entities/post/types'
 import { useToast } from '@/shared/hooks/use-toast'
 import type { User } from '@supabase/supabase-js'
 import { useMutation, useQueryClient } from '@tanstack/react-query'

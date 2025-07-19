@@ -7,7 +7,12 @@ interface Props {
 }
 
 export default function CommentList({ commentsData, refetch }: Props) {
-   const [isSelected, setIsSelected] = useState()
+   const [isSelected, setIsSelected] = useState<number | null>(null)
+
+   const handleSelect = (id: number) => {
+      setIsSelected(id)
+   }
+
    return (
       <div className="flex flex-col ">
          {commentsData.map((data) => (
@@ -19,7 +24,7 @@ export default function CommentList({ commentsData, refetch }: Props) {
                   commentData={data}
                   refetch={refetch}
                   isSelected={isSelected}
-                  onSelect={() => setIsSelected(data.id)}
+                  onSelect={handleSelect}
                />
             </div>
          ))}
