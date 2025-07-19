@@ -68,8 +68,9 @@ export const metadata: Metadata = {
       },
    },
    verification: {
-      google: 'your-google-verification-code',
+      google: '9N9lYYZS6l2HaeOTiw2oBwDSd3rln6z8zuWBI0rTesw',
    },
+   manifest: '/manifest.json',
 }
 
 export default function RootLayout({

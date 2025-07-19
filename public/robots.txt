@@ -4,35 +4,14 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /_next/
-Disallow: /login
-Disallow: /sign/
 Disallow: /reset/
 Disallow: /forget/
 Disallow: /callback/
 Disallow: /my-page/
-Disallow: /search/
-Disallow: *?search=*
-Disallow: *?q=*
-Disallow: *?query=*
-Disallow: *?category=*
-Disallow: *?page=*
-Disallow: *?sort=*
-Disallow: *?filter=*
-Disallow: *?tag=*
-Disallow: *?author=*
-Disallow: *?session=*
-Disallow: *?token=*
-Disallow: *?auth=*
-Disallow: *?code=*
-Disallow: *?preview=*
-Disallow: *?draft=*
 Disallow: /preview/
 Disallow: /dev/
 Disallow: /test/
 Disallow: /staging/
-Disallow: /404
-Disallow: /500
-Disallow: /error
 Disallow: /*.json$
 Disallow: /*.xml$
 Disallow: /*.txt$
@@ -46,8 +25,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /_next/
-Disallow: /login
-Disallow: /sign/
 Disallow: /my-page/
 
 # Bingbot
@@ -56,8 +33,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /_next/
-Disallow: /login
-Disallow: /sign/
 Disallow: /my-page/
 
 # Host
