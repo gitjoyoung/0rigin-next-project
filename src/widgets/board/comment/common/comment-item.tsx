@@ -36,15 +36,13 @@ export default function CommentItem({
       showPasswordModal,
       setShowPasswordModal,
       passwordError,
-   } = useCommentItem({ commentData, refetch })
+   } = useCommentItem({ commentData, refetch, isSelected })
 
    return (
       <>
          <div
             className={cn(
                'group relative py-2 px-1  border border-transparent transition-all duration-200 hover:bg-muted/30 cursor-pointer',
-               isSelected === commentData.id &&
-                  ' border-gray-700 dark:border-gray-200',
             )}
             onClick={() => onSelect(commentData.id)}
          >

@@ -14,10 +14,18 @@ async function updateCommentApi(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content, password }),
    })
+
    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || '댓글 수정에 실패했습니다.')
+      let errorMessage = '댓글 수정에 실패했습니다.'
+      try {
+         const errorData = await response.json()
+         errorMessage = errorData.error || errorMessage
+      } catch {
+         // JSON 파싱 실패 시 기본 메시지 사용
+      }
+      throw new Error(errorMessage)
    }
+
    return response.json()
 }
 
@@ -27,19 +35,29 @@ async function deleteCommentApi(id: number, password?: string) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),
    })
+
    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || '댓글 삭제에 실패했습니다.')
+      let errorMessage = '댓글 삭제에 실패했습니다.'
+      try {
+         const errorData = await response.json()
+         errorMessage = errorData.error || errorMessage
+      } catch {
+         // JSON 파싱 실패 시 기본 메시지 사용
+      }
+      throw new Error(errorMessage)
    }
+
    return response.json()
 }
 
 export function useCommentItem({
    commentData,
    refetch,
+   isSelected,
 }: {
    commentData: Comment
    refetch: () => void
+   isSelected?: number | null
 }) {
    const { user } = useAuthState()
    const [isEditing, setIsEditing] = useState(false)
@@ -55,6 +73,14 @@ export function useCommentItem({
          editContentRef.current.value = commentData.content
       }
    }, [isEditing, commentData.content])
+
+   // 다른 댓글이 선택되었을 때 수정 모드 취소
+   useEffect(() => {
+      if (isSelected !== commentData.id && isEditing) {
+         setIsEditing(false)
+         setPasswordModal(null)
+      }
+   }, [isSelected, commentData.id, isEditing])
 
    const updateMutation = useMutation({
       mutationFn: ({
