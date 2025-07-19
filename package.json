@@ -5,7 +5,6 @@
    "scripts": {
       "dev": "node updatePath.js && NODE_OPTIONS='--inspect' next dev",
       "build": "node updatePath.js && next build",
-      "postbuild": "next-sitemap",
       "start": "next start",
       "lint-staged": "lint-staged",
       "prepare": "husky",
@@ -72,7 +71,6 @@
       "next": "15.3.5",
       "next-auth": "^4.24.11",
       "next-pwa": "^5.6.0",
-      "next-sitemap": "^4.2.3",
       "next-themes": "^0.4.6",
       "openai": "^5.8.2",
       "path-to-regexp": "^8.2.0",
