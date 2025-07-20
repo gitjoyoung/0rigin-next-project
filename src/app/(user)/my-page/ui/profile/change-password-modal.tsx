@@ -1,7 +1,7 @@
 'use client'
 
-import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { useToast } from '@/shared/hooks/use-toast'
+import { SupabaseBrowserClient } from '@/shared/lib/supabase/supabase-browser-client'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Dialog,
@@ -131,6 +131,7 @@ export function ChangePasswordModal({
                               <Input
                                  type="password"
                                  placeholder="현재 비밀번호를 입력하세요"
+                                 autoComplete="current-password"
                                  {...field}
                               />
                            </FormControl>
@@ -148,6 +149,7 @@ export function ChangePasswordModal({
                               <Input
                                  type="password"
                                  placeholder="새 비밀번호를 입력하세요"
+                                 autoComplete="new-password"
                                  {...field}
                               />
                            </FormControl>
@@ -165,6 +167,7 @@ export function ChangePasswordModal({
                               <Input
                                  type="password"
                                  placeholder="비밀번호를 다시 입력하세요"
+                                 autoComplete="new-password"
                                  {...field}
                               />
                            </FormControl>

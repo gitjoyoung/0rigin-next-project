@@ -1,5 +1,6 @@
 'use client'
 
+import type { Post } from '@/entities/post'
 import {
    Table,
    TableBody,
@@ -8,13 +9,12 @@ import {
    TableHeader,
    TableRow,
 } from '@/shared/shadcn/ui/table'
-import type { Database } from '@/shared/types'
 import ClientDayHydration from '@/shared/ui/hydrated-date'
 import { formatNumberCompact } from '@/shared/utils/format-number'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
-type PostData = Database['public']['Tables']['posts']['Row']
+type PostData = Post
 
 interface Props {
    data: PostData[]
@@ -77,17 +77,24 @@ export default function PostList({ data, category }: Props) {
                         key={item.id}
                         className="hover:bg-gray-200 dark:hover:bg-gray-800 text-xs h-[32px] max-sm:h-[24px] "
                      >
-                        <TableCell className="w-[5%] min-w-[40px] text-center ">
+                        <TableCell className="w-[5%] min-w-[40px] text-center text-[10px]">
                            {item.id || '-'}
                         </TableCell>
-                        <TableCell className="w-auto min-w-[100px] overflow-hidden whitespace-nowrap">
+                        <TableCell className="w-full min-w-[100px] whitespace-nowrap">
                            <Link
                               href={`/board/${item.category || 'latest'}/${item.id || 0}?page=${page}`}
-                              className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full overflow-hidden text-xs sm:text-sm font-medium"
+                              className="flex items-center gap-1 group-hover:text-primary dark:group-hover:text-primary w-full  text-xs sm:text-sm font-medium"
                            >
-                              <h2 className="truncate  w-full">
-                                 {item.title || '제목 없음'}
-                              </h2>
+                              <div className="w-full flex gap-1 items-center min-w-0 ">
+                                 <h2 className="font-bold">
+                                    {item.title || '제목 없음'}
+                                 </h2>
+                                 {item.comments_count && (
+                                    <span className="text-xs text-muted-foreground flex-shrink-0">
+                                       {`[${item.comments_count}]`}
+                                    </span>
+                                 )}
+                              </div>
                            </Link>
                         </TableCell>
                         <TableCell className="min-w-[24px] max-w-[120px] text-left  hidden sm:table-cell truncate">
@@ -98,9 +105,6 @@ export default function PostList({ data, category }: Props) {
                         </TableCell>
                         <TableCell className="w-[4%] min-w-[50px] text-center  hidden sm:table-cell">
                            {formatNumberCompact(item.view_count)}
-                        </TableCell>
-                        <TableCell className="w-[4%] min-w-[50px] text-center  hidden sm:table-cell">
-                           {formatNumberCompact(0)}
                         </TableCell>
                      </TableRow>
                   )

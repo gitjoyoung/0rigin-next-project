@@ -291,7 +291,7 @@ export default function Particles() {
          mountedRef.current = false
          ctx.clearRect(0, 0, canvas.width, canvas.height)
       }
-   }, [])
+   }, [pageVisible, prefersReducedMotion]) // 의존성 추가
 
    return (
       <div ref={containerRef} className="absolute inset-0 w-full h-full">

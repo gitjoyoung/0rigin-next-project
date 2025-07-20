@@ -6,7 +6,7 @@ export async function getUser(): Promise<User | null> {
    const {
       data: { user },
    } = await supabase.auth.getUser()
-   return user
+   return user ?? null
 }
 
 export async function checkSignupCompleteServer(): Promise<{

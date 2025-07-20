@@ -47,6 +47,7 @@ export default function CommentDialog({
                      name="password"
                      className="col-span-3"
                      type="password"
+                     autoComplete="current-password"
                   />
                </div>
                <DialogFooter>

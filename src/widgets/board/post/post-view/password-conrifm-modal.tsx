@@ -45,6 +45,7 @@ export default function PasswordConfirmModal({
             <Input
                type="password"
                placeholder="비밀번호를 입력하세요"
+               autoComplete="current-password"
                value={password}
                onChange={(e) => setPassword(e.target.value)}
                disabled={loading}

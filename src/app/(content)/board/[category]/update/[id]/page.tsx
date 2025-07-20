@@ -1,7 +1,7 @@
 import { getCategoryBySlug } from '@/entities/category'
 import { getPostById } from '@/entities/post/api'
 import { getProfile } from '@/entities/profile/api/profile-api'
-import { PostUpdateForm } from '@/widgets/board/post/post-update'
+import PostUpdateWidget from '@/widgets/board/post/post-update/ui'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -35,12 +35,12 @@ export default async function Update({ params }: IParams) {
       redirect(`/board/${category}`)
    }
 
-   const userProfile = await getProfile().catch(() => null)
+   const profile = await getProfile().catch(() => null)
 
    return (
-      <PostUpdateForm
+      <PostUpdateWidget
          category={category}
-         userProfile={userProfile}
+         profile={profile}
          initialData={post}
       />
    )

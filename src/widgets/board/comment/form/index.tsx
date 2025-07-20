@@ -1,7 +1,5 @@
 'use client'
 
-import { useAuthState } from '@/app/providers/auth-client-provider'
-import type { CommentCreate } from '@/entities/comment'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -12,80 +10,16 @@ import {
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
-import {
-   createFormSchema,
-   type CommentFormData,
-} from './schema/comment-form-schema'
+import { useCommentForm } from '../hooks/use-comment-form'
 
 interface Props {
    postId: string
    refetch: () => void
 }
 
-async function createCommentApi(data: CommentCreate) {
-   const response = await fetch('/api/comment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-   })
-   if (!response.ok) {
-      throw new Error('댓글 작성에 실패했습니다.')
-   }
-   return response.json()
-}
-
 export default function CommentForm({ postId, refetch }: Props) {
-   const { status, profile } = useAuthState()
-   const isAuthed = status === 'authed'
-
-   const form = useForm<CommentFormData>({
-      resolver: zodResolver(createFormSchema(isAuthed)),
-      defaultValues: {
-         content: '',
-         nickname: profile?.nickname ?? '',
-         password: '',
-      },
-   })
-
-   const createCommentMutation = useMutation({
-      mutationFn: createCommentApi,
-      onSuccess: () => {
-         form.reset()
-         refetch()
-      },
-      onError: (error) => {
-         console.error('댓글 작성 오류:', error)
-         alert('댓글 작성에 실패했습니다.')
-      },
-   })
-
-   const onSubmit = (data: CommentFormData) => {
-      const commentData: CommentCreate = {
-         post_id: Number(postId),
-         nickname: data.nickname,
-         content: data.content,
-         password: isAuthed ? null : data.password,
-         author_id: isAuthed ? profile?.id : null,
-         is_guest: !isAuthed,
-         depth: 0,
-      }
-
-      createCommentMutation.mutate(commentData)
-   }
-
-   const handleKeyDown = (e: React.KeyboardEvent) => {
-      if (
-         e.key === 'Enter' &&
-         !e.shiftKey &&
-         !createCommentMutation.isPending
-      ) {
-         e.preventDefault()
-         form.handleSubmit(onSubmit)()
-      }
-   }
+   const { form, isAuthed, createCommentMutation, onSubmit, handleKeyDown } =
+      useCommentForm({ postId, refetch })
 
    return (
       <div className="my-2">

@@ -26,12 +26,12 @@ export default async function Create({ params }: IParams) {
    if (!categoryData || !categoryData.can_write) {
       redirect('/board/latest')
    }
-   const userProfile = await getProfile().catch(() => null)
+   const profile = await getProfile().catch(() => null)
 
    return (
       <div className="flex flex-col gap-2 my-2">
          <h1 className="text-2xl px-2 font-bold">{category} 글쓰기</h1>
-         <PostCreateWidget category={category} userProfile={userProfile} />
+         <PostCreateWidget category={category} profile={profile} />
       </div>
    )
 }

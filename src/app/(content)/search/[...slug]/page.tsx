@@ -59,7 +59,7 @@ export default async function page({
             postSearchResult={postSearchResult}
             quizSearchResult={quizSearchResult}
             keyword={keyword}
-            postCount={postCount}
+            postCount={postCount ?? 0}
             quizCount={quizCount}
             totalCount={totalCount}
          />

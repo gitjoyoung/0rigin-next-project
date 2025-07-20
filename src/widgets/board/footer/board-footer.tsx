@@ -8,11 +8,7 @@ const FOOTER_DATA = {
    create: '글쓰기',
 }
 
-interface Props {
-   category: Partial<Category> | null
-}
-
-export default function BoardFooter({ category }: Props) {
+export default function BoardFooter({ category }: { category: Category }) {
    if (!category) {
       return null
    }

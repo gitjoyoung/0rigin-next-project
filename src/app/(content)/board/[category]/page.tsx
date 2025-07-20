@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { getCategoryBySlug } from '@/entities/category'
-import { getPosts } from '@/entities/post'
+import { getPostList } from '@/entities/post'
 import BoardFooter from '@/widgets/board/footer/board-footer'
 import BoardHeader from '@/widgets/board/header/board-header'
 import { CustomPagination } from '@/widgets/board/pagination'
@@ -44,7 +44,7 @@ export default async function Page({ params, searchParams }: IParams) {
       redirect('/board/latest')
    }
 
-   const { items, total } = await getPosts({
+   const { items, totalCount } = await getPostList({
       category: category === 'latest' ? undefined : categoryInfo.slug,
       page: currentPage,
       limit: POST_PER_PAGE,
@@ -57,7 +57,7 @@ export default async function Page({ params, searchParams }: IParams) {
          <BoardFooter category={categoryInfo} />
          <div className=" my-4">
             <CustomPagination
-               count={total}
+               count={totalCount}
                currentPage={currentPage}
                baseRoute={`/board/${category}`}
             />

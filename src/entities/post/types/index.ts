@@ -1,26 +1,10 @@
+import type { Tables } from '@/shared/types'
 import type { User } from '@supabase/supabase-js'
 
-// 게시글 기본 타입 (DB 스키마 기반 - 모든 필드 명시)
-export interface Post {
-   id: number // bigserial (bigint)
-   created_at: string // timestamp with time zone
-   updated_at: string // timestamp with time zone
-   title: string // text
-   slug: string // text (unique, nullable)
-   excerpt: string // text (nullable)
-   summary: string // text (nullable)
-   content: { markdown: string; html?: string } | string // jsonb (예: { markdown: string, html?: string })
-   thumbnail: string // text (nullable)
-   author_id: string // uuid (nullable, 외래키 없음)
-   nickname: string // text (탈퇴해도 이름 보존)
-   password: string // text (nullable)
-   view_count: number // integer (default 0)
-   reading_time: number // integer (nullable)
-   tags: string[] // text[] (nullable)
-   is_pinned: boolean // boolean (default false)
-   category_id: string | null // uuid (외래키, nullable)
-   status: 'published' | 'draft' | 'private' // text (default 'published')
-   category: string // text (nullable)
+export type PostBase = Tables<'posts'>
+
+export interface Post extends PostBase {
+   thumbnail: string
    likes_count?: number
    comments_count?: number
 }
@@ -75,9 +59,8 @@ export interface PostQueryParams {
 // 게시글 목록 응답 타입
 export interface PostListResponse {
    items: Post[]
-   total: number
-   page: number
-   limit: number
+   totalCount: number
+   currentPage: number
    totalPages: number
 }
 

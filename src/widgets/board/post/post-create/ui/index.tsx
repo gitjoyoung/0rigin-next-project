@@ -1,15 +1,16 @@
 'use client'
 
+import type { Profile } from '@/entities/profile'
 import { useForm } from 'react-hook-form'
 import type { BoardFormType } from '../../../common/schema/board-schema'
 import PostForm from '../../post-form'
 import { useCreateBoardPost } from '../hook/use-create-post'
 
 export default function PostCreateWidget({
-   userProfile,
+   profile,
    category,
 }: {
-   userProfile?: any
+   profile: Profile | null
    category: string
 }) {
    const form = useForm<BoardFormType>({
@@ -18,19 +19,19 @@ export default function PostCreateWidget({
          content: '',
          thumbnail: '',
          password: '',
-         nickname: userProfile?.user_metadata.nickname || '',
+         nickname: profile?.nickname || '',
       },
    })
    const { isSubmitting, onSubmit } = useCreateBoardPost({
       category,
-      userProfile,
+      profile,
    })
    return (
       <PostForm
          form={form}
          isSubmitting={isSubmitting}
          onSubmit={onSubmit}
-         userProfile={userProfile}
+         profile={profile}
          submitLabel="제출 하기"
       />
    )

@@ -1,18 +1,7 @@
-// 프로필 기본 타입
-export interface Profile {
-   id: string
-   email: string
-   nickname: string
-   gender: string
-   avatar_url?: string | null
-   bio?: string | null
-   is_email_verified: boolean
-   signup_complete: boolean
-   is_active: boolean
-   created_at: string
-   updated_at: string
-   last_login_at?: string | null
-}
+import type { Tables } from '@/shared/types'
+
+// 프로필 기본 타입 (DB 스키마 기반)
+export type Profile = Tables<'profile'>
 
 // 프로필 업데이트 요청 타입
 export interface UpdateProfileRequest {

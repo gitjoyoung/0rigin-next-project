@@ -1,16 +1,7 @@
-// 카테고리 기본 타입 (DB 스키마 기반 - 모든 필드 명시)
-export interface Category {
-   id: string // uuid (primary key)
-   name: string // text (카테고리 이름)
-   slug: string // text (URL 친화적 식별자, unique)
-   description?: string // text (카테고리 설명, nullable)
-   icon?: string // text (아이콘 클래스나 이미지 URL, nullable)
-   order_index?: number // integer (정렬 순서, nullable)
-   is_active: boolean // boolean (활성화 여부, default true)
-   can_write: boolean // boolean (글쓰기 허용 여부, default true)
-   created_at: string // timestamp with time zone
-   updated_at: string // timestamp with time zone
-   // 집계 필드 (옵셔널)
+import type { Tables } from '@/shared/types'
+
+// 카테고리 기본 타입 (DB 스키마 기반)
+export type Category = Tables<'categories'> & {
    post_count?: number // 해당 카테고리의 게시글 수
 }
 

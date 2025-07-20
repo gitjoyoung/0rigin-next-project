@@ -3,7 +3,7 @@
 
 import type { Tables } from '@/shared/types'
 import type { User } from '@supabase/supabase-js'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { SupabaseBrowserClient } from '../../shared/lib/supabase/supabase-browser-client'
 
 // 인증 상태 타입
@@ -34,7 +34,7 @@ export function AuthClientProvider({
    initial: Snapshot
    children: React.ReactNode
 }) {
-   const supabase = SupabaseBrowserClient()
+   const supabase = useMemo(() => SupabaseBrowserClient(), [])
    const [snap, setSnap] = useState<Snapshot>({
       ...initial,
    })
@@ -56,11 +56,11 @@ export function AuthClientProvider({
             return
          }
          // 세션만 확인하고 profile은 서버에서 받은 것 사용
-         setSnap({
-            status: snap.profile ? 'authed' : 'needsProfile',
+         setSnap((prevSnap) => ({
+            status: prevSnap.profile ? 'authed' : 'needsProfile',
             user: session.user,
-            profile: snap.profile, // 기존 profile 유지
-         })
+            profile: prevSnap.profile, // 기존 profile 유지
+         }))
       }
 
       sync()
@@ -68,7 +68,8 @@ export function AuthClientProvider({
          sync()
       })
       return () => sub.subscription.unsubscribe()
-   }, [supabase])
+   }, [supabase.auth]) // supabase.auth 의존성 추가
+
    return (
       <AuthStateContext.Provider value={snap}>
          <AuthActionContext.Provider value={{ logout }}>

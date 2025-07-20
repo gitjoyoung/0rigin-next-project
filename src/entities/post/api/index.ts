@@ -1,5 +1,5 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
-import type { Tables } from '@/shared/types'
+import type { Tables } from '@/shared/types/database.types'
 import type {
    Post,
    PostCreate,
@@ -17,40 +17,72 @@ function removePasswordFromPost(post: any) {
 }
 
 // 게시글 목록 조회
-export async function getPosts(
+export async function getPostList(
    params: PostQueryParams,
 ): Promise<PostListResponse> {
    const { category, page = 1, limit = 20, search, author_id } = params
    const supabase = await SupabaseServerClient()
    const offset = (page - 1) * limit
 
-   // 필요한 컬럼만 select (password, content 등 제외)
-   let query = supabase
-      .from('posts')
-      .select(
-         'id, title, created_at, author_id, nickname, view_count, category, status, thumbnail',
-         { count: 'exact' },
-      )
+   // LEFT JOIN을 사용한 게시글 목록 조회 (댓글 수 포함)
+   let query = supabase.from('posts').select(
+      `
+         id,
+         title,
+         content,
+         created_at,
+         updated_at,
+         author_id,
+         nickname,
+         view_count,
+         category,
+         status,
+         thumbnail,
+         comments!left(count)
+      `,
+      { count: 'exact' },
+   )
 
-   if (category) query = query.eq('category', category)
-   if (search)
-      query = query.or(`title.ilike.%${search}%,content.ilike.%${search}%`)
-   if (author_id) query = query.eq('author_id', author_id)
+   // 필터링 조건 적용
+   if (category) {
+      query = query.eq('category', category)
+   }
+   if (search) {
+      query = query.ilike('title', `%${search}%`)
+   }
+   if (author_id) {
+      query = query.eq('author_id', author_id)
+   }
 
-   const { data, error, count } = await query
+   // 정렬 및 페이징
+   const {
+      data: posts,
+      error,
+      count,
+   } = await query
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)
 
-   if (error) throw error
+   if (error) {
+      throw new Error(`Failed to fetch posts: ${error.message}`)
+   }
 
-   const totalPages = Math.ceil((count || 0) / limit)
+   // 댓글 수 추출 및 Post 타입으로 변환
+   const postsWithCommentCount = (posts || []).map((post: any) => {
+      const commentCount = post.comments?.[0]?.count || 0
+      const { comments, ...postData } = post // comments 필드 제거
+
+      return {
+         ...postData,
+         comments_count: commentCount > 0 ? commentCount : undefined,
+      }
+   })
 
    return {
-      items: data as Post[], // removePasswordFromPost 불필요
-      total: count || 0,
-      page,
-      limit,
-      totalPages,
+      items: postsWithCommentCount as Post[],
+      totalCount: count || 0,
+      currentPage: page,
+      totalPages: Math.ceil((count || 0) / limit),
    }
 }
 

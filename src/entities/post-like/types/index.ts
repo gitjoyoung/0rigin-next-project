@@ -1,12 +1,7 @@
-// 게시글 좋아요 기본 타입 (DB 스키마 기반 - 모든 필드 명시)
-export interface PostLike {
-   id: string // uuid (primary key)
-   post_id: number // bigint (posts.id 참조)
-   user_id?: string // uuid (로그인 회원 ID, nullable)
-   anon_key?: string // uuid (비회원 식별키, nullable)
-   deleted_at?: string // timestamptz (soft delete, nullable)
-   created_at: string // timestamptz (default now())
-}
+import type { Tables } from '@/shared/types'
+
+// 게시글 좋아요 기본 타입 (DB 스키마 기반)
+export type PostLike = Tables<'post_likes'>
 
 // 좋아요 생성 요청 타입
 export interface PostLikeCreate {

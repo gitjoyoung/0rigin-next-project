@@ -1,8 +1,8 @@
 'use client'
 
 import type { Post, PostCreate } from '@/entities/post/types'
+import type { Profile } from '@/entities/profile'
 import { useToast } from '@/shared/hooks/use-toast'
-import type { User } from '@supabase/supabase-js'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { type BoardFormType } from '../../../common/schema/board-schema'
@@ -22,10 +22,10 @@ async function createPostApi(data: PostCreate): Promise<Post> {
 
 export function useCreateBoardPost({
    category,
-   userProfile,
+   profile,
 }: {
    category: string
-   userProfile?: User
+   profile: Profile | null
 }) {
    const router = useRouter()
    const queryClient = useQueryClient()
@@ -42,7 +42,7 @@ export function useCreateBoardPost({
             category,
             nickname: data.nickname,
             password: data.password ?? undefined,
-            author_id: userProfile?.id ?? undefined,
+            author_id: profile?.id ?? undefined,
          }
          return await createPostApi(postData)
       },

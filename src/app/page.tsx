@@ -1,5 +1,5 @@
 import { ROUTE_BOARD } from '@/constants/pathname'
-import { getBestPosts, getPosts } from '@/entities/post'
+import { getBestPosts, getPostList } from '@/entities/post'
 import AnimatedBanner from '@/widgets/animated-banner'
 import Banner from '@/widgets/banner'
 import PostList from '@/widgets/board/post/post-list'
@@ -22,7 +22,7 @@ export default async function Home() {
       limit: BEST_POSTS_LIMIT,
    })
 
-   const { items } = await getPosts({
+   const { items } = await getPostList({
       page: 1,
       limit: POST_PER_PAGE,
    })

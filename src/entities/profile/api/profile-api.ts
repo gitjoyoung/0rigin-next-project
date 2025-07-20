@@ -10,10 +10,10 @@ import {
 } from '../types'
 
 // 프로필 조회
-export async function getProfile(): Promise<Profile> {
-   const { email, id } = await getUser()
+export async function getProfile(): Promise<Profile | null> {
+   const user = await getUser()
 
-   if (!email) {
+   if (!user) {
       throw new Error('사용자 정보를 불러올 수 없습니다.')
    }
 
@@ -21,14 +21,14 @@ export async function getProfile(): Promise<Profile> {
    const { data, error } = await supabase
       .from('profile')
       .select('*')
-      .eq('id', id)
+      .eq('id', user.id)
       .single()
 
    if (error) {
-      throw new Error('프로필 정보를 불러올 수 없습니다.')
+      return null
    }
 
-   return { ...data, email } as Profile
+   return { ...data, email: user.email ?? '' } as Profile
 }
 
 // 프로필 상세 조회 (통계 포함)

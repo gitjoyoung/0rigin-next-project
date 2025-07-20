@@ -39,15 +39,27 @@ export default function Settings() {
             <CardContent className="space-y-4">
                <div className="space-y-2">
                   <Label htmlFor="current-password">현재 비밀번호</Label>
-                  <Input id="current-password" type="password" />
+                  <Input
+                     id="current-password"
+                     type="password"
+                     autoComplete="current-password"
+                  />
                </div>
                <div className="space-y-2">
                   <Label htmlFor="new-password">새 비밀번호</Label>
-                  <Input id="new-password" type="password" />
+                  <Input
+                     id="new-password"
+                     type="password"
+                     autoComplete="new-password"
+                  />
                </div>
                <div className="space-y-2">
                   <Label htmlFor="confirm-password">새 비밀번호 확인</Label>
-                  <Input id="confirm-password" type="password" />
+                  <Input
+                     id="confirm-password"
+                     type="password"
+                     autoComplete="new-password"
+                  />
                </div>
                <Button>비밀번호 변경</Button>
             </CardContent>

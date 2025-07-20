@@ -21,8 +21,7 @@ import { Loader2 } from 'lucide-react'
 import { usePasswordResetForm } from '../hooks/use-password-reset-hook'
 
 export default function ForgetForm() {
-   const { form, timer, emailStatus, isSubmitted, onFindPassword } =
-      usePasswordResetForm()
+   const { form, timer, emailStatus, onFindPassword } = usePasswordResetForm()
 
    return (
       <div className="flex w-full items-center justify-center mx-1">
@@ -30,12 +29,9 @@ export default function ForgetForm() {
             <CardHeader>
                <CardTitle>이메일 인증</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
                <Form {...form}>
-                  <form
-                     onSubmit={form.handleSubmit(onFindPassword)}
-                     className="space-y-4"
-                  >
+                  <form onSubmit={form.handleSubmit(onFindPassword)}>
                      <div className="flex gap-2">
                         <FormField
                            control={form.control}

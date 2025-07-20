@@ -9,7 +9,7 @@ export async function GET(
 ) {
    try {
       const { id: postId } = await params
-      const post = await getPostById(postId)
+      const post = await getPostById(Number(postId))
 
       if (!post) {
          return NextResponse.json(
@@ -40,7 +40,7 @@ export async function PUT(
       const user = await getUser()
 
       // 게시글 정보 조회
-      const post = await getPostById(postId)
+      const post = await getPostById(Number(postId))
       if (!post) {
          return NextResponse.json(
             { error: '게시글을 찾을 수 없습니다.' },
@@ -65,7 +65,7 @@ export async function PUT(
 
          // 비밀번호 검증
          const { verifyPostPassword } = await import('@/entities/post/api')
-         const isValid = await verifyPostPassword(postId, password)
+         const isValid = await verifyPostPassword(Number(postId), password)
          if (!isValid) {
             return NextResponse.json(
                { error: '비밀번호가 일치하지 않습니다.' },
@@ -75,7 +75,7 @@ export async function PUT(
       }
 
       // 게시글 수정
-      const updatedPost = await updatePost(postId, updateData)
+      const updatedPost = await updatePost(Number(postId), updateData)
 
       return NextResponse.json({
          success: true,
@@ -103,7 +103,7 @@ export async function DELETE(
       const user = await getUser()
 
       // 게시글 정보 조회
-      const post = await getPostById(postId)
+      const post = await getPostById(Number(postId))
       if (!post) {
          return NextResponse.json(
             { error: '게시글을 찾을 수 없습니다.' },
@@ -128,7 +128,7 @@ export async function DELETE(
 
          // 비밀번호 검증
          const { verifyPostPassword } = await import('@/entities/post/api')
-         const isValid = await verifyPostPassword(postId, password)
+         const isValid = await verifyPostPassword(Number(postId), password)
          if (!isValid) {
             return NextResponse.json(
                { error: '비밀번호가 일치하지 않습니다.' },
@@ -138,7 +138,7 @@ export async function DELETE(
       }
 
       // 게시글 삭제
-      await deletePost(postId)
+      await deletePost(Number(postId))
 
       return NextResponse.json({
          success: true,

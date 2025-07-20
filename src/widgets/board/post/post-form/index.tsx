@@ -1,5 +1,6 @@
 'use client'
 
+import type { Profile } from '@/entities/profile'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Form,
@@ -9,10 +10,9 @@ import {
    FormMessage,
 } from '@/shared/shadcn/ui/form'
 import { Input } from '@/shared/shadcn/ui/input'
-import type { User } from '@supabase/supabase-js'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { useState } from 'react'
-import { UseFormReturn } from 'react-hook-form'
+import { UseFormReturn, useForm } from 'react-hook-form'
 import LoadingModal from '../../common/loading-modal'
 import MarkDownEditor from '../../common/mark-down-editor'
 import MarkDownTip from '../../common/markdown-tip'
@@ -26,18 +26,33 @@ interface BoardFormProps {
    form: UseFormReturn<BoardFormType>
    isSubmitting: boolean
    onSubmit: (data: BoardFormType) => void
-   userProfile?: User
-   submitLabel: string
+   profile?: Profile | null
+   submitLabel?: string
 }
 
 export default function PostForm({
-   form,
+   form: externalForm,
    isSubmitting,
    onSubmit,
-   userProfile,
+   profile,
    submitLabel,
 }: BoardFormProps) {
    const [passwordVisible, setPasswordVisible] = useState(false)
+
+   // 외부에서 form이 전달되지 않으면 내부에서 생성
+   const internalForm = useForm<BoardFormType>({
+      defaultValues: {
+         title: '',
+         content: '',
+         thumbnail: undefined,
+         summary: undefined,
+         nickname: profile?.nickname || '',
+         password: '',
+      },
+   })
+
+   const form = externalForm || internalForm
+
    return (
       <section className="w-full py-2">
          <LoadingModal isOpen={isSubmitting} />
@@ -57,15 +72,16 @@ export default function PostForm({
                               <Input
                                  className="text-sm sm:text-base"
                                  placeholder="닉네임"
-                                 disabled={!!userProfile}
+                                 disabled={!!profile}
                                  {...field}
+                                 value={profile?.nickname ?? field.value}
                               />
                            </FormControl>
                            <FormMessage />
                         </FormItem>
                      )}
                   />
-                  {!userProfile && (
+                  {!profile && (
                      <FormField
                         control={form.control}
                         name="password"
@@ -84,6 +100,7 @@ export default function PostForm({
                                                 ? 'text'
                                                 : 'password'
                                           }
+                                          autoComplete="new-password"
                                           {...field}
                                        />
                                        <Button

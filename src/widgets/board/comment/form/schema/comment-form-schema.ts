@@ -31,4 +31,9 @@ export const createFormSchema = (isAuthed: boolean) => {
 // 기본 스키마 (호환성을 위해 유지)
 export const formCommentSchema = guestSchema
 
-export type CommentFormData = z.infer<typeof formCommentSchema>
+// 조건부 타입 정의
+export type CommentFormData = {
+   content: string
+   nickname: string
+   password?: string
+}

@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 
 import { getCategoryBySlug } from '@/entities/category'
-import { getPostById, getPosts } from '@/entities/post'
+import { getPostById, getPostList } from '@/entities/post'
 import Comment from '@/widgets/board/comment'
 import BoardFooter from '@/widgets/board/footer/board-footer'
 import BoardHeader from '@/widgets/board/header/board-header'
@@ -44,7 +44,7 @@ export default async function Page({ params }: IParams) {
    const postData = await getPostById(Number(postId))
    if (!postData) notFound()
 
-   const { items } = await getPosts({
+   const { items } = await getPostList({
       category: category === 'latest' ? undefined : categoryInfo.slug,
       page: 1,
       limit: 30,
