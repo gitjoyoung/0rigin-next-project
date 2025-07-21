@@ -41,16 +41,14 @@ export async function createPostLike(data: PostLikeCreate): Promise<PostLike> {
    const { post_id, anon_key, authenticated } = data
    const postData = {
       post_id: post_id,
-      user_id: authenticated ? anon_key : undefined,
-      anon_key: authenticated ? undefined : anon_key,
+      [authenticated ? 'user_id' : 'anon_key']: anon_key,
    }
    const { data: result, error } = await supabase
       .from('post_likes')
       .insert(postData)
       .select('*')
       .single()
-   console.log('postData', postData)
-   console.log('result', result)
+
    if (error) throw error
    return result
 }
