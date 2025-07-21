@@ -5,27 +5,21 @@ import {
    getPostLikeCount,
 } from '@/entities/post-like'
 import { NextRequest, NextResponse } from 'next/server'
-// 클라이언트에서 보낼 데이터 생성 함수
-export function createClientLikeRequest(
-   userId?: string,
-   anonKey?: string,
-): { userId?: string; anonKey?: string } {
-   if (userId) {
-      return { userId }
-   } else if (anonKey) {
-      return { anonKey }
-   } else {
-      throw new Error('사용자 식별 정보가 필요합니다.')
-   }
-}
+
 export async function GET(
    request: NextRequest,
    { params }: { params: Promise<{ id: string }> },
 ) {
    const { id } = await params
-   const likeCount = await getPostLikeCount(Number(id))
+   const userKey = request.nextUrl.searchParams.get('userKey')
+   const data = await getPostLikeCount(Number(id))
+   const hasLiked = data.some(
+      (item) => item.user_id === userKey || item.anon_key === userKey,
+   )
+
    return NextResponse.json({
-      count: likeCount,
+      count: data.length,
+      hasLiked,
    })
 }
 
@@ -41,7 +35,6 @@ export async function POST(
 
    const existingLike = await getPostLike(postId, anonKey, isAuthenticated)
 
-   console.log('existingLike', existingLike)
    if (existingLike) {
       // 좋아요 취소
       await deletePostLike({

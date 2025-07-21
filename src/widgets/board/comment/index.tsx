@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Comment({ postId }: Props) {
-   const { commentsData, refetch } = useComments({ postId })
+   const { commentsData, refetch } = useComments(postId)
 
    return (
       <div className="my-2">

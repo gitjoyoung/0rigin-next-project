@@ -6,23 +6,23 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 type PostLikeData = {
    count: number
-   hasLiked?: boolean
+   hasLiked: boolean
 }
 
 // API 함수 분리
-const fetchPostLikeData = async (postId: string): Promise<PostLikeData> => {
-   const res = await fetch(`/api/post/${postId}/like`, {
+const getPostLikeCount = async (
+   postId: string,
+   userKey: string,
+): Promise<PostLikeData> => {
+   const res = await fetch(`/api/post/${postId}/like?userKey=${userKey}`, {
       method: 'GET',
       credentials: 'include',
    })
-   if (!res.ok) {
-      throw new Error('좋아요 정보를 불러올 수 없습니다.')
-   }
-   const { count } = await res.json()
-   return { count, hasLiked: true }
+   const { count, hasLiked } = await res.json()
+   return { count, hasLiked }
 }
 
-const togglePostLike = async (
+const updatePostLike = async (
    postId: string,
    anonKey: string,
    isAuthenticated: boolean,
@@ -40,12 +40,6 @@ const togglePostLike = async (
       },
       credentials: 'include', // 쿠키 포함
    })
-
-   if (!res.ok) {
-      const errorText = await res.text()
-      console.error('Server error response:', errorText)
-      throw new Error('좋아요 처리에 실패했습니다.')
-   }
    return res.json()
 }
 
@@ -67,11 +61,11 @@ export function usePostLikes(postId: string): UsePostLikesResult {
 
    const { data, isLoading } = useQuery<PostLikeData>({
       queryKey: ['postLikeData', postId],
-      queryFn: () => fetchPostLikeData(postId),
+      queryFn: () => getPostLikeCount(postId, userKey),
    })
 
    const { mutate, isPending } = useMutation({
-      mutationFn: () => togglePostLike(postId, userKey, isAuthenticated),
+      mutationFn: () => updatePostLike(postId, userKey, isAuthenticated),
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: ['postLikeData', postId] })
       },
@@ -83,9 +77,9 @@ export function usePostLikes(postId: string): UsePostLikesResult {
 
    return {
       likesCount: data?.count ?? 0,
-      hasLiked: data?.hasLiked ?? false,
       isLoading,
       isPending,
       toggleLike,
+      hasLiked: data?.hasLiked ?? false,
    }
 }

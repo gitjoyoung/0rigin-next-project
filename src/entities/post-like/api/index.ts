@@ -1,4 +1,5 @@
 import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-client'
+import type { Tables } from '@/shared/types'
 import type { PostLike, PostLikeCreate } from '../types'
 
 // 게시글 좋아요 조회 (특정 사용자/익명키)
@@ -21,17 +22,19 @@ export async function getPostLike(
 }
 
 // 게시글 좋아요 개수 조회
-export async function getPostLikeCount(postId: number): Promise<number> {
+export async function getPostLikeCount(
+   postId: number,
+): Promise<Tables<'post_likes'>[]> {
    const supabase = await SupabaseServerClient()
 
-   const { count, error } = await supabase
+   const { data, count, error } = await supabase
       .from('post_likes')
       .select('*', { count: 'exact' })
       .eq('post_id', postId)
       .is('deleted_at', null)
 
    if (error) throw error
-   return count || 0
+   return data
 }
 
 // 게시글 좋아요 생성

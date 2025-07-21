@@ -11,7 +11,8 @@ interface Props {
 }
 
 export default function LikeButton({ postId }: Props) {
-   const { likesCount, toggleLike, isLoading, hasLiked } = usePostLikes(postId)
+   const { likesCount, toggleLike, isLoading, isPending, hasLiked } =
+      usePostLikes(postId)
 
    return (
       <motion.div
@@ -25,7 +26,7 @@ export default function LikeButton({ postId }: Props) {
                console.log('toggleLike')
                toggleLike()
             }}
-            disabled={isLoading}
+            disabled={isLoading || isPending}
             className={cn(
                'flex items-center h-auto py-2 transition-all duration-300 rounded-full',
                'hover:bg-pink-50/50 hover:shadow-pink-100/50 hover:border-pink-300',
@@ -53,7 +54,6 @@ export default function LikeButton({ postId }: Props) {
                </motion.div>
             </AnimatePresence>
             <motion.span
-               key={likesCount}
                initial={{ y: -10, opacity: 0 }}
                animate={{ y: 0, opacity: 1 }}
                exit={{ y: 10, opacity: 0 }}
