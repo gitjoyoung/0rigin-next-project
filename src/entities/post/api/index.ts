@@ -88,25 +88,17 @@ export async function getPostList(
 
 // 카테고리별 베스트 게시글 조회 (조회수 기준)
 export async function getBestPosts(params: PostQueryParams): Promise<Post[]> {
-   const { category, limit = 5 } = params
+   const { category, limit } = params
    const supabase = await SupabaseServerClient()
-
-   // 필요한 컬럼만 select
    let query = supabase
       .from('posts')
-      .select(
-         'id, title, created_at, author_id, nickname, view_count, category, status, thumbnail',
-      )
+      .select('*')
       .order('view_count', { ascending: false })
-      .limit(limit)
-
+      .limit(limit || 5)
    if (category) query = query.eq('category', category)
-
    const { data, error } = await query
-
    if (error) throw error
-
-   return data as Post[] // removePasswordFromPost 불필요
+   return data as Post[]
 }
 
 // 게시글 상세 조회
