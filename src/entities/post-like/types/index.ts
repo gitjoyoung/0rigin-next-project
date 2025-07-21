@@ -6,8 +6,8 @@ export type PostLike = Tables<'post_likes'>
 // 좋아요 생성 요청 타입
 export interface PostLikeCreate {
    post_id: number
-   user_id?: string // 로그인 회원
-   anon_key?: string // 비회원
+   anon_key: string // 비회원
+   authenticated: boolean
 }
 
 // 좋아요 토글 요청 타입

@@ -1,4 +1,3 @@
-import { getUser } from '@/entities/auth/api/get-user'
 import {
    createPostLike,
    deletePostLike,
@@ -6,33 +5,26 @@ import {
    getPostLikeCount,
 } from '@/entities/post-like'
 import { NextRequest, NextResponse } from 'next/server'
-
-// GET /api/post/[id]/like - 좋아요 상태 및 수 확인
+// 클라이언트에서 보낼 데이터 생성 함수
+export function createClientLikeRequest(
+   userId?: string,
+   anonKey?: string,
+): { userId?: string; anonKey?: string } {
+   if (userId) {
+      return { userId }
+   } else if (anonKey) {
+      return { anonKey }
+   } else {
+      throw new Error('사용자 식별 정보가 필요합니다.')
+   }
+}
 export async function GET(
    request: NextRequest,
    { params }: { params: Promise<{ id: string }> },
 ) {
    const { id } = await params
-   const postId = parseInt(id)
-
-   // 회원 정보
-   const user = await getUser()
-   const userId = user?.id
-
-   // anonKey(비회원 세션) 쿼리에서 추출
-   const { searchParams } = new URL(request.url)
-   const anonKey = searchParams.get('anonKey') || undefined
-
-   // 좋아요 상태와 수를 병렬로 조회
-   const [postLike, likeCount] = await Promise.all([
-      getPostLike(postId, userId, anonKey),
-      getPostLikeCount(postId),
-   ])
-
+   const likeCount = await getPostLikeCount(Number(id))
    return NextResponse.json({
-      isLiked: !!postLike,
-      likeId: postLike?.id,
-      createdAt: postLike?.created_at,
       count: likeCount,
    })
 }
@@ -44,45 +36,34 @@ export async function POST(
 ) {
    const { id } = await params
    const postId = parseInt(id)
-
-   // 회원 정보
-   const user = await getUser()
-   const userId = user?.id
-
-   // anonKey(비회원 세션) 바디에서 추출
    const body = await request.json().catch(() => ({}))
-   const anonKey = body.anonKey || undefined
+   const { anonKey, isAuthenticated } = body
 
-   if (!userId && !anonKey) {
-      return NextResponse.json(
-         { error: '로그인 또는 세션이 필요합니다.' },
-         { status: 401 },
-      )
-   }
+   const existingLike = await getPostLike(postId, anonKey, isAuthenticated)
 
-   // 기존 좋아요 상태 확인
-   const existingLike = await getPostLike(postId, userId, anonKey)
-
+   console.log('existingLike', existingLike)
    if (existingLike) {
-      await deletePostLike(existingLike.id)
-      const newCount = await getPostLikeCount(postId)
+      // 좋아요 취소
+      await deletePostLike({
+         post_id: postId,
+         anon_key: anonKey,
+         authenticated: isAuthenticated,
+      })
       return NextResponse.json({
          isLiked: false,
-         count: newCount,
          message: '좋아요가 취소되었습니다.',
       })
    } else {
-      const newLike = await createPostLike({
+      const createData = {
          post_id: postId,
-         user_id: userId,
          anon_key: anonKey,
-      })
-      const newCount = await getPostLikeCount(postId)
+         authenticated: isAuthenticated,
+      }
+      const newLike = await createPostLike(createData)
       return NextResponse.json({
          isLiked: true,
          likeId: newLike.id,
          createdAt: newLike.created_at,
-         count: newCount,
          message: '좋아요가 추가되었습니다.',
       })
    }

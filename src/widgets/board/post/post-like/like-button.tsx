@@ -14,7 +14,11 @@ export default function LikeButton({ postId }: Props) {
    const { likesCount, toggleLike, isLoading, hasLiked } = usePostLikes(postId)
 
    return (
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <motion.div
+         whileHover={{ scale: 1.05 }}
+         whileTap={{ scale: 0.95 }}
+         className="flex flex-col items-center my-5 space-y-2"
+      >
          <Button
             variant="ghost"
             onClick={() => {

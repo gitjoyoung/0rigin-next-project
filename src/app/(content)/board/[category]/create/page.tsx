@@ -1,5 +1,5 @@
 import { getCategoryBySlug } from '@/entities/category'
-import { getProfile } from '@/entities/profile/api/profile-api'
+import { getProfile } from '@/entities/profile/api/route'
 import PostCreateWidget from '@/widgets/board/post/post-create/ui'
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
