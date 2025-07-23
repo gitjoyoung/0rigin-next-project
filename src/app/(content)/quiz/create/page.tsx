@@ -1,6 +1,6 @@
 import { getUser } from '@/entities/auth/api/get-user'
-import QuizCreateAuthCheck from '@/widgets/quiz/ui/quiz-create-auth-check'
-import QuizCreateForm from '@/widgets/quiz/ui/quiz-create-form'
+import QuizCreateAuthCheck from '@/widgets/quiz/create/quiz-create-auth-check'
+import QuizCreateForm from '@/widgets/quiz/create/quiz-create-form'
 import type { Metadata } from 'next'
 export const metadata: Metadata = {
    title: '퀴즈 제작',

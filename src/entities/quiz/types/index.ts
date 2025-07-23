@@ -6,9 +6,20 @@ export type QuizQuestion = Tables<'quiz_questions'>
 export type QuizAttempt = Tables<'quiz_attempts'>
 export type QuizAnswer = Tables<'quiz_answers'>
 
+// 옵션 타입 정의
+export interface QuizOption {
+   id: string
+   text: string
+}
+
+// 확장된 퀴즈 문제 타입 (옵션 배열 포함)
+export interface QuizQuestionWithOptions extends QuizQuestion {
+   options: QuizOption[]
+}
+
 // 퀴즈 상세 정보 타입 (문제 포함)
 export interface QuizDetail extends Quiz {
-   questions: QuizQuestion[]
+   questions: QuizQuestionWithOptions[]
    total_questions: number
 }
 

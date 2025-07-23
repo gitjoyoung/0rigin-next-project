@@ -1,4 +1,4 @@
-import { Quiz } from '@/entities/quiz/api/quiz-api'
+import type { Quiz } from '@/entities/quiz'
 import { Badge } from '@/shared/shadcn/ui/badge'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Card, CardContent } from '@/shared/shadcn/ui/card'

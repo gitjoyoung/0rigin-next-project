@@ -1,45 +1,53 @@
 'use client'
-import { QuizQuestion } from '@/entities/quiz/api/quiz-api'
 import { Label } from '@/shared/shadcn/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/shadcn/ui/radio-group'
 import { cn } from '@/shared/utils/cn'
 
+interface QuizOption {
+   id: string
+   text: string
+}
+
 interface Props {
-   question: QuizQuestion
+   options: QuizOption[]
    selectedOption: string
    onSelect: (value: string) => void
 }
 
 export default function QuizRadioButtonGroup({
-   question,
+   options,
    selectedOption,
    onSelect,
 }: Props) {
-   // 옵션들을 배열로 만들기
-   const options = [
-      { id: '1', text: question.option_1 },
-      { id: '2', text: question.option_2 },
-      ...(question.option_3 ? [{ id: '3', text: question.option_3 }] : []),
-      ...(question.option_4 ? [{ id: '4', text: question.option_4 }] : []),
-      ...(question.option_5 ? [{ id: '5', text: question.option_5 }] : []),
-   ]
-
    return (
       <RadioGroup
-         className="flex-col flex gap-3 my-2 justify-center"
+         className="flex-col flex gap-4 my-2 justify-center"
          onValueChange={onSelect}
          value={selectedOption}
          defaultValue=""
       >
          {options.map(({ id, text }) => (
-            <div key={id} className="flex items-center space-x-2">
-               <RadioGroupItem value={id} id={id} />
+            <div
+               key={id}
+               className={cn(
+                  'flex items-center space-x-3 p-4 rounded-xl transition-all duration-200 cursor-pointer',
+                  'bg-white dark:bg-gray-800/50',
+                  'hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow-sm',
+                  selectedOption === id &&
+                     'bg-blue-50 dark:bg-blue-950/30 shadow-md',
+               )}
+               onClick={() => onSelect(id)}
+            >
+               <RadioGroupItem
+                  value={id}
+                  id={id}
+                  className="border-2 border-gray-300 dark:border-gray-500 data-[state=checked]:border-blue-600 dark:data-[state=checked]:border-blue-400"
+               />
                <Label
                   htmlFor={id}
                   className={cn(
-                     'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-                     selectedOption === id &&
-                        'text-blue-600 dark:text-blue-400 font-semibold',
+                     'text-sm font-medium leading-relaxed cursor-pointer flex items-center flex-1',
+                     'text-gray-900 dark:text-gray-100',
                   )}
                >
                   {text}

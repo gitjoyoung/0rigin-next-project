@@ -4,7 +4,9 @@ import {
    CreateQuizRequest,
    Quiz,
    QuizDetail,
+   QuizOption,
    QuizQuestion,
+   QuizQuestionWithOptions,
 } from '../types'
 
 // 퀴즈 목록 조회
@@ -20,6 +22,27 @@ export async function getQuizzes(limit = 10, offset = 0): Promise<Quiz[]> {
 
    if (error) throw error
    return data || []
+}
+
+// 문제의 옵션들을 배열로 변환하는 헬퍼 함수
+function createOptionsArray(question: QuizQuestion): QuizOption[] {
+   const options: QuizOption[] = []
+
+   // option_1부터 option_5까지 동적으로 순회
+   for (let i = 1; i <= question.option_count; i++) {
+      const optionKey = `option_${i}` as keyof QuizQuestion
+      const optionText = question[optionKey]
+
+      if (
+         optionText &&
+         typeof optionText === 'string' &&
+         optionText.trim() !== ''
+      ) {
+         options.push({ id: String(i), text: optionText })
+      }
+   }
+
+   return options
 }
 
 // 퀴즈 상세 조회 (문제 포함)
@@ -48,10 +71,18 @@ export async function getQuizById(id: number): Promise<QuizDetail | null> {
 
    const quizQuestions = (questions || []) as QuizQuestion[]
 
+   // 각 문제에 옵션 배열 추가
+   const questionsWithOptions: QuizQuestionWithOptions[] = quizQuestions.map(
+      (question) => ({
+         ...question,
+         options: createOptionsArray(question),
+      }),
+   )
+
    return {
       ...quiz,
-      questions: quizQuestions,
-      total_questions: quizQuestions.length,
+      questions: questionsWithOptions,
+      total_questions: questionsWithOptions.length,
    }
 }
 

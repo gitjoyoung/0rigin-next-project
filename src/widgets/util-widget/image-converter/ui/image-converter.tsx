@@ -157,7 +157,9 @@ export default function ImageConverter() {
                      초기화
                   </Button>
                   <Button
-                     onClick={handleConvert}
+                     onClick={() => {
+                        void handleConvert()
+                     }}
                      disabled={!canConvert || isLoading}
                      className="w-32"
                   >
@@ -182,14 +184,20 @@ export default function ImageConverter() {
                         <span>변환 전:</span>
                         <span>
                            {conversionInfo?.before.format.toUpperCase()} (
-                           {(conversionInfo?.before.size / 1024).toFixed(2)} KB)
+                           {(conversionInfo?.before.size ?? 0 / 1024).toFixed(
+                              2,
+                           )}{' '}
+                           KB)
                         </span>
                      </div>
                      <div className="flex justify-between">
                         <span>변환 후:</span>
                         <span>
                            {conversionInfo?.after?.format.toUpperCase()} (
-                           {(conversionInfo?.after?.size / 1024).toFixed(2)} KB)
+                           {(conversionInfo?.after?.size ?? 0 / 1024).toFixed(
+                              2,
+                           )}{' '}
+                           KB)
                         </span>
                      </div>
                      <div className="flex justify-between font-semibold">

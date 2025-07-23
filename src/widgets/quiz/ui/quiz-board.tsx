@@ -1,7 +1,7 @@
 'use client'
 
 import { ROUTE_QUIZ } from '@/constants/pathname'
-import { Quiz } from '@/entities/quiz/api/quiz-api'
+import type { Quiz } from '@/entities/quiz'
 import { Button } from '@/shared/shadcn/ui/button'
 import { Input } from '@/shared/shadcn/ui/input'
 import { Separator } from '@/shared/shadcn/ui/separator'

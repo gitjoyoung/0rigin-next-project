@@ -1,5 +1,6 @@
 'use client'
 import { UtilHeader } from '@/shared/ui/util-header'
+import { useRef } from 'react'
 import { utilList } from '../constance/util-list'
 import { useMemoManager } from './hook/useMemoManager'
 import { MemoAppIcon } from './ui/MemoAppIcon'
@@ -10,26 +11,28 @@ export default function MemoManager() {
    const {
       windows,
       focusedId,
-      containerId,
       handleOpen,
       handleClose,
       handleMinimize,
       handleMaximize,
       handleRestore,
       handleFocus,
+      handleUpdateContent,
    } = useMemoManager()
+
+   const containerRef = useRef<HTMLDivElement>(null)
 
    return (
       <div className="min-h-screen h-screen flex flex-col relative">
          <UtilHeader
             icon={utilList.find((util) => util.id === 'memo')?.icon}
-            name={utilList.find((util) => util.id === 'memo')?.name}
+            name={utilList.find((util) => util.id === 'memo')?.name || ''}
             description={
                utilList.find((util) => util.id === 'memo')?.description
             }
          />
          <div
-            id={containerId}
+            ref={containerRef}
             className="flex-1 relative w-full min-h-0 min-w-0 flex flex-col items-start justify-start overflow-hidden"
          >
             <div className="absolute left-4 top-4 z-0">
@@ -44,9 +47,11 @@ export default function MemoManager() {
                   onMaximize={handleMaximize}
                   isMaximized={w.isMaximized}
                   isMinimized={w.isMinimized}
-                  parentSelector={`#${containerId}`}
+                  parentRef={containerRef}
                   zIndex={w.zIndex}
                   onFocus={handleFocus}
+                  onUpdateContent={handleUpdateContent}
+                  content={w.content}
                />
             ))}
          </div>

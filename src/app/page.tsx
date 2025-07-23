@@ -13,20 +13,17 @@ const Title = ({ title, href }: { title: string; href: string }) => (
       </Link>
    </div>
 )
+const POST_PER_PAGE = 20
+const BEST_POSTS_LIMIT = 5
 
 export default async function Home() {
-   const POST_PER_PAGE = 20
-   const BEST_POSTS_LIMIT = 5
-
    const bestPosts = await getBestPosts({
       limit: BEST_POSTS_LIMIT,
    })
-
    const { items } = await getPostList({
       page: 1,
       limit: POST_PER_PAGE,
    })
-
    return (
       <div className="flex flex-col h-full">
          <AnimatedBanner />

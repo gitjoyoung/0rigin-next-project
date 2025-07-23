@@ -21,12 +21,11 @@ export function UtilHeader({
    return (
       <header
          className={cn(
-            'w-full bg-gradient-to-b from-gray-50 to-gray-100 border-b border-gray-200 shadow-sm rounded-b-xl md:rounded-xl px-3 py-2 md:py-4 relative',
-            'min-h-[56px] md:min-h-[72px]',
+            'relative w-full bg-gradient-to-b  shadow-sm rounded-none px-3 py-2 md:py-4  min-h-[56px] md:min-h-[72px]',
             className,
          )}
       >
-         <div className="flex flex-row items-center gap-2  w-full">
+         <div className="flex flex-row items-center gap-2  w-full ">
             {backHref && (
                <Link
                   href={backHref}
@@ -38,10 +37,10 @@ export function UtilHeader({
                </Link>
             )}
             <span className="flex items-center gap-2 ">
-               <span className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-gray-700">
+               <span className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-gray-700 dark:text-gray-300">
                   {icon}
                </span>
-               <span className="text-lg md:text-2xl font-bold text-gray-800 truncate max-w-[60vw] md:max-w-[30vw]">
+               <span className="text-lg md:text-2xl font-bold text-gray-800 dark:text-gray-200 truncate max-w-[60vw] md:max-w-[30vw]">
                   {name}
                </span>
             </span>

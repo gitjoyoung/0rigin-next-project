@@ -1,17 +1,17 @@
 import { useState } from 'react'
 
+type MemoWindow = {
+   id: number
+   isMinimized: boolean
+   isMaximized: boolean
+   zIndex: number
+   content: string
+}
+
 export function useMemoManager() {
-   const [windows, setWindows] = useState<
-      {
-         id: number
-         isMinimized: boolean
-         isMaximized: boolean
-         zIndex: number
-      }[]
-   >([])
+   const [windows, setWindows] = useState<MemoWindow[]>([])
    const [zIndexCounter, setZIndexCounter] = useState(1000)
    const [focusedId, setFocusedId] = useState<number | null>(null)
-   const containerId = 'memo-app-container'
 
    const handleOpen = () => {
       const newId = Date.now() + Math.floor(Math.random() * 1000)
@@ -22,6 +22,7 @@ export function useMemoManager() {
             isMinimized: false,
             isMaximized: false,
             zIndex: zIndexCounter + 1,
+            content: '',
          },
       ])
       setZIndexCounter((z) => z + 1)
@@ -61,15 +62,19 @@ export function useMemoManager() {
       setFocusedId(id)
    }
 
+   const handleUpdateContent = (id: number, content: string) => {
+      setWindows((ws) => ws.map((w) => (w.id === id ? { ...w, content } : w)))
+   }
+
    return {
       windows,
       focusedId,
-      containerId,
       handleOpen,
       handleClose,
       handleMinimize,
       handleMaximize,
       handleRestore,
       handleFocus,
+      handleUpdateContent,
    }
 }
