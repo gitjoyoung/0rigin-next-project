@@ -43,9 +43,6 @@ export default function PostList({ data, category }: Props) {
                <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
                   조회
                </TableHead>
-               <TableHead className="text-center w-[4%] min-w-[40px] hidden sm:table-cell">
-                  추천
-               </TableHead>
             </TableRow>
          </TableHeader>
          <TableBody>

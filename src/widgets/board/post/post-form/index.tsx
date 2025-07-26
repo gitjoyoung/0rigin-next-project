@@ -177,9 +177,8 @@ export default function PostForm({
                {/* 마크다운 입력 필드 */}
                <MarkDownEditor
                   name="content"
-                  setValue={form.setValue}
-                  register={form.register}
-                  initialValue={form.watch('content') || ''}
+                  value={form.watch('content') || ''}
+                  onChange={(value) => form.setValue('content', value)}
                />
 
                <div className="flex gap-6 justify-end my-2 items-center">

@@ -22,7 +22,7 @@ export async function uploadImageToSupabase(file: File) {
          upsert: false,
          contentType: result.file.type,
       })
-   return data.path
+   return data?.path
 }
 
 export function useImageUploadMutation() {

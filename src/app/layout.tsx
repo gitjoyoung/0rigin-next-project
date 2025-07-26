@@ -9,7 +9,6 @@ import localFont from 'next/font/local'
 import { Suspense } from 'react'
 import './globals.css'
 import Loading from './loading'
-import AuthServerProvider from './providers/auth-server-provider'
 
 // 한글 폰트 설정
 const notoSansKR = Noto_Sans_KR({
@@ -94,23 +93,19 @@ export default function RootLayout({
             />
          </head>
          <body>
-            <AuthServerProvider>
-               <AppProviders>
-                  <div id="modal-root" />
-                  <div className="flex min-h-screen flex-col items-center w-full bg-background">
-                     <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
-                        <Ticker />
-                        <Header />
-                        <main className="flex-1 w-full min-h-screen font-mono">
-                           <Suspense fallback={<Loading />}>
-                              {children}
-                           </Suspense>
-                        </main>
-                        <Footer />
-                     </div>
+            <AppProviders>
+               <div id="modal-root" />
+               <div className="flex min-h-screen flex-col items-center w-full bg-background">
+                  <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
+                     <Ticker />
+                     <Header />
+                     <main className="flex-1 w-full min-h-screen font-mono">
+                        <Suspense fallback={<Loading />}>{children}</Suspense>
+                     </main>
+                     <Footer />
                   </div>
-               </AppProviders>
-            </AuthServerProvider>
+               </div>
+            </AppProviders>
          </body>
       </html>
    )

@@ -11,7 +11,8 @@ import {
 import { Input } from '@/shared/shadcn/ui/input'
 import { Label } from '@/shared/shadcn/ui/label'
 import { Textarea } from '@/shared/shadcn/ui/textarea'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { QuizFormData } from '../types/quiz-form-types'
 import { QuizTitleInput } from './quiz-title-input'
 
@@ -21,42 +22,57 @@ interface BasicInfoFormProps {
    onFormDataChange: (data: QuizFormData) => void
 }
 
+interface BasicInfoFormData {
+   title: string
+   description: string
+   questionCount: number
+   pass_score: number
+}
+
 export function BasicInfoForm({
    formData,
    onSubmit,
    onFormDataChange,
 }: BasicInfoFormProps) {
-   const descriptionRef = useRef<HTMLTextAreaElement>(null)
-   const questionCountRef = useRef<HTMLInputElement>(null)
-   const passScoreRef = useRef<HTMLInputElement>(null)
-
-   const refs = useMemo(
-      () => ({
-         description: descriptionRef,
-         questionCount: questionCountRef,
-         passScore: passScoreRef,
-      }),
-      [],
-   )
-
-   useEffect(() => {
-      const { description, questionCount, passScore } = refs
-      if (description.current)
-         description.current.value = formData.description || ''
-      if (questionCount.current)
-         questionCount.current.value = formData.questionCount.toString()
-      if (passScore.current)
-         passScore.current.value = formData.pass_score.toString()
-   }, [formData, refs])
-
-   const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      const { description, questionCount, passScore } = refs
-      onSubmit({
+   const {
+      control,
+      handleSubmit,
+      setValue,
+      watch,
+      formState: { isDirty },
+   } = useForm<BasicInfoFormData>({
+      defaultValues: {
          title: formData.title,
-         description: description.current?.value || '',
-         questionCount: parseInt(questionCount.current?.value || '1'),
-         pass_score: parseInt(passScore.current?.value || '60'),
+         description: formData.description || '',
+         questionCount: formData.questionCount,
+         pass_score: formData.pass_score,
+      },
+      mode: 'onChange',
+   })
+
+   // formData prop이 변경되면 폼 값 업데이트
+   useEffect(() => {
+      setValue('title', formData.title)
+      setValue('description', formData.description || '')
+      setValue('questionCount', formData.questionCount)
+      setValue('pass_score', formData.pass_score)
+   }, [formData, setValue])
+
+   // 폼 값이 변경될 때마다 부모 컴포넌트에 업데이트
+   const watchedValues = watch()
+   useEffect(() => {
+      if (isDirty) {
+         onFormDataChange({
+            ...formData,
+            ...watchedValues,
+         })
+      }
+   }, [watchedValues, onFormDataChange, formData, isDirty])
+
+   const onSubmitForm = (data: BasicInfoFormData) => {
+      onSubmit({
+         ...formData,
+         ...data,
       })
    }
 
@@ -69,7 +85,7 @@ export function BasicInfoForm({
             </p>
          </div>
 
-         <form onSubmit={handleSubmit} className="space-y-6">
+         <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-6">
             <Card>
                <CardHeader>
                   <CardTitle>퀴즈 기본 정보</CardTitle>
@@ -78,42 +94,70 @@ export function BasicInfoForm({
                   </CardDescription>
                </CardHeader>
                <CardContent className="space-y-4">
-                  <QuizTitleInput
-                     value={formData.title}
-                     onChange={(title) =>
-                        onFormDataChange({ ...formData, title })
-                     }
+                  <Controller
+                     name="title"
+                     control={control}
+                     render={({ field }) => (
+                        <QuizTitleInput
+                           value={field.value}
+                           onChange={field.onChange}
+                        />
+                     )}
                   />
 
                   <div>
                      <Label>퀴즈 설명 (선택사항)</Label>
-                     <Textarea
-                        ref={refs.description}
-                        placeholder="퀴즈에 대한 설명을 입력해주세요"
-                        className="mt-1"
+                     <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => (
+                           <Textarea
+                              {...field}
+                              placeholder="퀴즈에 대한 설명을 입력해주세요"
+                              className="mt-1"
+                           />
+                        )}
                      />
                   </div>
 
                   <div>
                      <Label>문제 개수</Label>
-                     <Input
-                        ref={refs.questionCount}
-                        type="number"
-                        min="1"
-                        max="20"
-                        placeholder="문제 개수를 입력해주세요"
-                        className="mt-1"
+                     <Controller
+                        name="questionCount"
+                        control={control}
+                        render={({ field }) => (
+                           <Input
+                              {...field}
+                              type="number"
+                              min="1"
+                              max="20"
+                              placeholder="문제 개수를 입력해주세요"
+                              className="mt-1"
+                              onChange={(e) =>
+                                 field.onChange(parseInt(e.target.value) || 1)
+                              }
+                           />
+                        )}
                      />
                   </div>
 
                   <div>
                      <Label>합격 점수 (%)</Label>
-                     <Input
-                        ref={refs.passScore}
-                        type="number"
-                        min="1"
-                        max="100"
-                        className="mt-1"
+                     <Controller
+                        name="pass_score"
+                        control={control}
+                        render={({ field }) => (
+                           <Input
+                              {...field}
+                              type="number"
+                              min="1"
+                              max="100"
+                              className="mt-1"
+                              onChange={(e) =>
+                                 field.onChange(parseInt(e.target.value) || 60)
+                              }
+                           />
+                        )}
                      />
                   </div>
                </CardContent>

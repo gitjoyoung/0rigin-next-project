@@ -55,7 +55,7 @@ export default async function Page({ params, searchParams }: IParams) {
          <BoardHeader category={categoryInfo} />
          <PostList data={items} category={category} />
          <BoardFooter category={categoryInfo} />
-         <div className=" my-4">
+         <div className="my-4">
             <CustomPagination
                count={totalCount}
                currentPage={currentPage}
