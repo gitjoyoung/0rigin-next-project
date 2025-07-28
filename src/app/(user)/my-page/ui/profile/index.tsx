@@ -168,7 +168,7 @@ export default function Profile() {
                            <FormItem>
                               <FormLabel>이메일</FormLabel>
                               <FormControl>
-                                 <Input value={profile.email} disabled />
+                                 <Input value={profile?.email} disabled />
                               </FormControl>
                               <FormDescription>
                                  이메일은 변경할 수 없습니다.
@@ -181,7 +181,7 @@ export default function Profile() {
                               <FormLabel>가입일</FormLabel>
                               <FormControl>
                                  <Input
-                                    value={dayjs(profile.created_at).format(
+                                    value={dayjs(profile?.created_at).format(
                                        'YYYY-MM-DD',
                                     )}
                                     disabled
