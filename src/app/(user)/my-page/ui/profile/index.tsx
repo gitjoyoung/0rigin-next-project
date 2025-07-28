@@ -1,6 +1,5 @@
 'use client'
 
-import { Badge } from '@/shared/shadcn/ui/badge'
 import { Button } from '@/shared/shadcn/ui/button'
 import {
    Card,
@@ -29,7 +28,7 @@ import {
 } from '@/shared/shadcn/ui/select'
 import { LoadingSpinner } from '@/shared/ui/loading-spinner'
 import dayjs from 'dayjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChangePasswordModal } from './change-password-modal'
 import { useProfile } from './hooks/use-profile'
 
@@ -38,7 +37,21 @@ export default function Profile() {
       useProfile()
    const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
       useState(false)
-   const [editingField, setEditingField] = useState<string | null>(null)
+   const [isEditing, setIsEditing] = useState(false)
+
+   // 업데이트 성공 시 편집 모드 리셋
+   useEffect(() => {
+      if (updateProfileMutation.isSuccess) {
+         console.log('Profile update successful, resetting edit mode')
+         setIsEditing(false)
+      }
+   }, [updateProfileMutation.isSuccess])
+
+   // 폼 제출 핸들러
+   const handleSubmit = (data: any) => {
+      console.log('Form submitted with data:', data)
+      onSubmit(data)
+   }
 
    if (error) {
       return (
@@ -61,13 +74,36 @@ export default function Profile() {
       <div className="flex flex-col items-center justify-center mx-auto ">
          <Card className="w-full ">
             <CardHeader>
-               <CardTitle className="text-2xl font-bold">Profile</CardTitle>
-               <CardDescription>회원 프로필 정보 수정</CardDescription>
+               <div className="flex items-center justify-between sm:flex-row flex-col gap-2 ">
+                  <div className="flex justify-start items-center gap-2">
+                     <CardTitle className="text-2xl font-bold">
+                        Profile
+                     </CardTitle>
+                     <CardDescription>회원 프로필 정보 수정</CardDescription>
+                  </div>
+                  <div className="flex gap-2">
+                     <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsChangePasswordModalOpen(true)}
+                     >
+                        비밀번호 변경
+                     </Button>
+                     <Button
+                        type="button"
+                        variant={isEditing ? 'default' : 'outline'}
+                        onClick={() => setIsEditing(!isEditing)}
+                        disabled={updateProfileMutation.isPending}
+                     >
+                        {isEditing ? '편집 완료' : '편집 하기'}
+                     </Button>
+                  </div>
+               </div>
             </CardHeader>
             <CardContent>
                <Form {...form}>
                   <form
-                     onSubmit={form.handleSubmit(onSubmit)}
+                     onSubmit={form.handleSubmit(handleSubmit)}
                      className="space-y-8"
                   >
                      <div className="grid grid-cols-2 gap-4">
@@ -77,29 +113,15 @@ export default function Profile() {
                               name="nickname"
                               render={({ field }) => (
                                  <FormItem>
-                                    <div className="flex items-center justify-between">
-                                       <FormLabel>닉네임</FormLabel>
-                                       <Badge
-                                          variant="outline"
-                                          className="cursor-pointer hover:bg-secondary"
-                                          onClick={() =>
-                                             setEditingField(
-                                                editingField === 'nickname'
-                                                   ? null
-                                                   : 'nickname',
-                                             )
-                                          }
-                                       >
-                                          {editingField === 'nickname'
-                                             ? 'Done'
-                                             : 'Edit'}
-                                       </Badge>
-                                    </div>
+                                    <FormLabel>닉네임</FormLabel>
                                     <FormControl>
                                        <Input
                                           placeholder="닉네임을 입력하세요"
                                           {...field}
-                                          disabled={editingField !== 'nickname'}
+                                          disabled={
+                                             !isEditing ||
+                                             updateProfileMutation.isPending
+                                          }
                                        />
                                     </FormControl>
                                     <FormMessage />
@@ -114,31 +136,17 @@ export default function Profile() {
                               name="gender"
                               render={({ field }) => (
                                  <FormItem>
-                                    <div className="flex items-center justify-between">
-                                       <FormLabel>성별</FormLabel>
-                                       <Badge
-                                          variant="outline"
-                                          className="cursor-pointer hover:bg-secondary"
-                                          onClick={() =>
-                                             setEditingField(
-                                                editingField === 'gender'
-                                                   ? null
-                                                   : 'gender',
-                                             )
-                                          }
-                                       >
-                                          {editingField === 'gender'
-                                             ? 'Done'
-                                             : 'Edit'}
-                                       </Badge>
-                                    </div>
+                                    <FormLabel>성별</FormLabel>
                                     <FormControl>
                                        <Select
                                           onValueChange={(v) =>
                                              v != '' && field.onChange(v)
                                           }
                                           value={field.value}
-                                          disabled={editingField !== 'gender'}
+                                          disabled={
+                                             !isEditing ||
+                                             updateProfileMutation.isPending
+                                          }
                                        >
                                           <SelectTrigger>
                                              <SelectValue placeholder="성별을 선택하세요" />
@@ -191,23 +199,26 @@ export default function Profile() {
                         </div>
                      </div>
 
-                     <div className="flex justify-end space-x-2">
-                        <Button
-                           type="button"
-                           variant="outline"
-                           onClick={() => setIsChangePasswordModalOpen(true)}
-                        >
-                           비밀번호 변경
-                        </Button>
-                        <Button
-                           type="submit"
-                           disabled={updateProfileMutation.isPending}
-                        >
-                           {updateProfileMutation.isPending
-                              ? '저장중...'
-                              : '저장하기'}
-                        </Button>
-                     </div>
+                     {isEditing && (
+                        <div className="flex justify-end space-x-2">
+                           <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setIsEditing(false)}
+                              disabled={updateProfileMutation.isPending}
+                           >
+                              취소
+                           </Button>
+                           <Button
+                              type="submit"
+                              disabled={updateProfileMutation.isPending}
+                           >
+                              {updateProfileMutation.isPending
+                                 ? '저장중...'
+                                 : '저장하기'}
+                           </Button>
+                        </div>
+                     )}
                   </form>
                </Form>
             </CardContent>

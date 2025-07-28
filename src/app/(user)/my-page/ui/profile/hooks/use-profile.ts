@@ -17,7 +17,12 @@ export const profileFormSchema = z.object({
 export type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 async function fetchProfile(): Promise<Profile> {
-   const response = await fetch('/api/profile')
+   const response = await fetch('/api/profile', {
+      method: 'GET',
+      headers: {
+         'Content-Type': 'application/json',
+      },
+   })
 
    if (!response.ok) {
       const error = await response.json()
@@ -61,6 +66,7 @@ export function useProfile() {
    } = useQuery<Profile, Error>({
       queryKey: ['profile'],
       queryFn: fetchProfile,
+      retry: 1, // 재시도 횟수 제한
    })
 
    const form = useForm<ProfileFormValues>({
@@ -81,24 +87,28 @@ export function useProfile() {
 
    const updateProfileMutation = useMutation({
       mutationFn: updateProfile,
-      onSuccess: () => {
+      onSuccess: (data) => {
+         // 캐시 업데이트
+         queryClient.setQueryData(['profile'], data)
          queryClient.invalidateQueries({ queryKey: ['profile'] })
+
          toast({
             title: '프로필이 업데이트되었습니다.',
             description: '변경사항이 성공적으로 저장되었습니다.',
          })
       },
       onError: (error) => {
+         console.error('Profile update error:', error)
          toast({
             title: '오류가 발생했습니다.',
-            description: error.message,
+            description: error.message || '프로필 업데이트에 실패했습니다.',
             variant: 'destructive',
          })
       },
    })
 
    function onSubmit(data: ProfileFormValues) {
-      console.log('onSubmit', data)
+      console.log('Submitting profile data:', data)
       updateProfileMutation.mutate({
          nickname: data.nickname,
          gender: data.gender,

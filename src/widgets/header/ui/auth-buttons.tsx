@@ -66,7 +66,10 @@ export default function AuthButtons() {
    return (
       <DropdownMenu>
          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-2 px-2">
+            <Button
+               variant="ghost"
+               className="flex items-center gap-2 px-2 focus-visible:ring-0 focus-visible:ring-offset-0"
+            >
                <div className="flex items-center gap-2">
                   <Avatar className="w-8 h-8">
                      <AvatarImage src={profile?.avatar_url || ''} />
@@ -81,7 +84,7 @@ export default function AuthButtons() {
                <ChevronDown className="h-4 w-4 text-muted-foreground" />
             </Button>
          </DropdownMenuTrigger>
-         <DropdownMenuContent align="end">
+         <DropdownMenuContent align="end" className="w-48 focus:outline-none">
             <DropdownMenuItem asChild>
                <Link href={ROUTE_MY_PAGE} className="flex items-center gap-2">
                   <User className="h-4 w-4" />
@@ -93,7 +96,7 @@ export default function AuthButtons() {
                onClick={handleLogout}
                disabled={isLoggingOut}
                className={cn(
-                  'flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950',
+                  'flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 focus:outline-none',
                   isLoggingOut && 'opacity-50 cursor-not-allowed',
                )}
             >

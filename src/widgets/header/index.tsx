@@ -1,7 +1,7 @@
 'use client'
+import Logo from '@/shared/ui/logo'
 import SearchBox from '../search-box'
 import AuthButtons from './ui/auth-buttons'
-import Logo from './ui/logo'
 import MobileSideMenu from './ui/mobile-side-menu'
 import Navigation from './ui/navigation'
 import ThemeToggle from './ui/theme-toggle'
