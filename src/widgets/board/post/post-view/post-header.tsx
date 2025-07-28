@@ -15,10 +15,10 @@ export default function PostHeader({
       <div className="grid gap-2 pb-2 border-b ">
          <h1 className="text-2xl">{title}</h1>
          <ul className="flex gap-1 text-xs items-center text-gray-700 dark:text-gray-400 min-w-0 justify-between">
-            <li className="flex items-center gap-1 min-w-0 flex-shrink font-bold truncate max-w-[80px]">
+            <li className="flex items-center gap-1 min-w-0 flex-shrink font-bold  max-w-[120px] truncate">
                {nickname || '익명'}
             </li>
-            <ClientDayHydration date={created_at} />
+            <ClientDayHydration date={created_at || ''} />
          </ul>
          <div className="flex text-xs items-center justify-between text-gray-700 dark:text-gray-400 min-w-0">
             <ul className="flex gap-2 items-center">
@@ -27,7 +27,10 @@ export default function PostHeader({
                </li>
                <li className="flex min-w-0 flex-shrink ">조회 {view_count}</li>
             </ul>
-            <PostActionButtons postId={id?.toString()} category={category} />
+            <PostActionButtons
+               postId={id?.toString() || ''}
+               category={category || ''}
+            />
          </div>
       </div>
    )
