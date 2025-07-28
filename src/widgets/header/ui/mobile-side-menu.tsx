@@ -66,7 +66,7 @@ export default function MobileSideMenu({ className }: { className?: string }) {
                   side="right"
                   className="w-[250px] p-0 gap-0 flex flex-col"
                >
-                  <SheetHeader className="border-b p-4">
+                  <SheetHeader className="m-2 flex items-center justify-center">
                      <SheetTitle>메뉴</SheetTitle>
                   </SheetHeader>
 
