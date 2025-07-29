@@ -17,13 +17,11 @@ export default function MarkDownViewer({ content }: Props) {
       <MarkdownPreview
          source={content}
          remarkPlugins={[remarkGfm, remarkBreaks]}
-         rehypePlugins={[[rehypeSanitize], [rehypeHighlight, { detect: true }]]}
+         rehypePlugins={[[rehypeSanitize], [rehypeHighlight]]}
          className="markdown-preview"
          style={{
             minHeight: '200px',
             backgroundColor: 'transparent',
-            padding: 0,
-            border: 'none',
             color: 'inherit',
             fontFamily: 'inherit',
          }}

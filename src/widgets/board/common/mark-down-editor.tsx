@@ -26,7 +26,9 @@ import React, {
    useRef,
    useState,
 } from 'react'
+import rehypeHighlight from 'rehype-highlight'
 import { getCodeString } from 'rehype-rewrite'
+import rehypeSanitize from 'rehype-sanitize'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 
@@ -92,9 +94,14 @@ const MarkDownEditor = ({
 }: MarkDownEditorProps) => {
    const [error, setError] = React.useState<string>('')
    const [showErrorDialog, setShowErrorDialog] = React.useState(false)
+   const [mounted, setMounted] = React.useState(false)
    const fileInputRef = React.useRef<HTMLInputElement>(null)
 
    const { theme } = useTheme()
+
+   useEffect(() => {
+      setMounted(true)
+   }, [])
    const handleChange = React.useCallback(
       (val?: string) => {
          const newValue = val || ''
@@ -226,7 +233,7 @@ const MarkDownEditor = ({
             value={value}
             onChange={handleChange}
             style={{
-               backgroundColor: theme === 'dark' ? '#111827' : '#f3f4f6',
+               backgroundColor: 'transparent',
                color: 'inherit',
                border: 'none',
                fontFamily: 'inherit',
@@ -236,15 +243,20 @@ const MarkDownEditor = ({
             previewOptions={{
                className: 'markdown-preview',
                remarkPlugins: [remarkGfm, remarkBreaks],
+               rehypePlugins: [rehypeSanitize, rehypeHighlight],
                style: {
-                  backgroundColor: theme === 'dark' ? '#111827' : '#f3f4f6',
+                  backgroundColor: 'transparent',
                   color: 'inherit',
-                  border: 'none',
                   fontFamily: 'inherit',
                },
                components: {
                   code: Code,
                },
+               wrapperElement: mounted
+                  ? {
+                       'data-color-mode': theme === 'dark' ? 'dark' : 'light',
+                    }
+                  : undefined,
             }}
          />
       </>
