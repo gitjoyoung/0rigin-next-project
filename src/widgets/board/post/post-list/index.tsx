@@ -31,7 +31,7 @@ export default function PostList({ data, category }: Props) {
          <TableHeader className="border-y">
             <TableRow className="text-xs [&_th]:!h-[24px] [&_th]:max-sm:!h-[24px]">
                <TableHead className="text-center w-[5%] min-w-[40px]">
-                  POST ID
+                  PID
                </TableHead>
                <TableHead className="w-auto min-w-[150px]">제목</TableHead>
                <TableHead className=" w-[10%] min-w-[60px] hidden sm:table-cell">
