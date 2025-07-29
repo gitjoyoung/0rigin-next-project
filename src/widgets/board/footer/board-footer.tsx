@@ -24,7 +24,7 @@ export default function BoardFooter({ category }: { category: Category }) {
                className="p-4 flex items-center"
                size="default"
             >
-               <p>{FOOTER_DATA.list}</p>
+               {FOOTER_DATA.list}
             </Button>
          </Link>
          {category.can_write && (
@@ -34,7 +34,7 @@ export default function BoardFooter({ category }: { category: Category }) {
                   className="p-4 flex items-center"
                   size="default"
                >
-                  <p>{FOOTER_DATA.create}</p>
+                  {FOOTER_DATA.create}
                </Button>
             </Link>
          )}
