@@ -17,7 +17,7 @@ export default function BoardFooter({ category }: { category: Category }) {
    const createHref = `${ROUTE_BOARD}/${slug}/create`
 
    return (
-      <div className="flex justify-between items-center font-mono">
+      <div className="flex justify-between items-center ">
          <Link href={listHref}>
             <Button
                variant="secondary"
