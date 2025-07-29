@@ -26,6 +26,9 @@ export default async function Home() {
    })
    return (
       <div className="flex flex-col h-full">
+         {/* <PhilosopherMatcher />
+         // 신규 기능 준비중
+         */}
          <AnimatedBanner />
          <div className="flex flex-col gap-1">
             <Title title="BEST POSTS" href={`${ROUTE_BOARD}/best`} />

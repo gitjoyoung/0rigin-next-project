@@ -104,3 +104,21 @@ html body[data-scroll-locked] {
    overflow: visible !important;
    margin-right: 0 !important;
 }
+
+/* 스크롤바 숨기기 */
+.scrollbar-hide {
+   -ms-overflow-style: none; /* IE and Edge */
+   scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+   display: none; /* Chrome, Safari and Opera */
+}
+
+/* 텍스트 줄임 처리 */
+.line-clamp-3 {
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+}
