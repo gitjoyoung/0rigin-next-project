@@ -17,21 +17,21 @@ export async function checkSignupCompleteServer(): Promise<{
    const supabase = await SupabaseServerClient()
 
    const {
-      data: { session },
-   } = await supabase.auth.getSession()
-   const { data: profile } = session
+      data: { user },
+   } = await supabase.auth.getUser()
+   const { data: profile } = user
       ? await supabase
            .from('profile')
            .select('*')
-           .eq('id', session.user.id)
+           .eq('id', user.id)
            .maybeSingle()
       : { data: null }
 
-   const initial = !session
+   const initial = !user
       ? { status: 'unauth' as const, user: null }
       : profile?.is_active
-        ? { status: 'authed' as const, user: session.user, profile }
-        : { status: 'needsProfile' as const, user: session.user, profile }
+        ? { status: 'authed' as const, user, profile }
+        : { status: 'needsProfile' as const, user, profile }
 
    return initial
 }

@@ -4,6 +4,7 @@ import SearchBox from '../search-box'
 import AuthButtons from './ui/auth-buttons'
 import MobileSideMenu from './ui/mobile-side-menu'
 import Navigation from './ui/navigation'
+import PWAInstallButton from './ui/pwa-install-button'
 import ThemeToggle from './ui/theme-toggle'
 
 export default function Header() {
@@ -15,6 +16,7 @@ export default function Header() {
          </nav>
          <div className="flex items-center gap-2 sm:gap-4">
             <SearchBox />
+            <PWAInstallButton />
             <ThemeToggle />
             <MobileSideMenu className="sm:hidden" />
             <div className="hidden sm:block">

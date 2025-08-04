@@ -1,45 +1,5 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require('next-pwa')({
-   dest: 'public',
-   register: true,
-   skipWaiting: true,
-   disable: process.env.NODE_ENV === 'development',
-   runtimeCaching: [
-      {
-         urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-         handler: 'CacheFirst',
-         options: {
-            cacheName: 'google-fonts-cache',
-            expiration: {
-               maxEntries: 10,
-               maxAgeSeconds: 60 * 60 * 24 * 365, // 1년
-            },
-         },
-      },
-      {
-         urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-         handler: 'CacheFirst',
-         options: {
-            cacheName: 'gstatic-fonts-cache',
-            expiration: {
-               maxEntries: 10,
-               maxAgeSeconds: 60 * 60 * 24 * 365, // 1년
-            },
-         },
-      },
-      {
-         urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp)$/i,
-         handler: 'CacheFirst',
-         options: {
-            cacheName: 'images-cache',
-            expiration: {
-               maxEntries: 100,
-               maxAgeSeconds: 60 * 60 * 24 * 30, // 30일
-            },
-         },
-      },
-   ],
-})
+// 커스텀 PWA 구현 - next-pwa 플러그인 제거
 
 const nextConfig = {
    experimental: {
@@ -71,4 +31,4 @@ const nextConfig = {
    },
 }
 
-module.exports = withPWA(nextConfig)
+module.exports = nextConfig

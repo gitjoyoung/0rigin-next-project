@@ -48,17 +48,17 @@ export function AuthClientProvider({
    useEffect(() => {
       const sync = async () => {
          const {
-            data: { session },
-         } = await supabase.auth.getSession()
+            data: { user },
+         } = await supabase.auth.getUser()
 
-         if (!session) {
+         if (!user) {
             setSnap({ status: 'unauth', user: null, profile: undefined })
             return
          }
-         // 세션만 확인하고 profile은 서버에서 받은 것 사용
+         // 사용자만 확인하고 profile은 서버에서 받은 것 사용
          setSnap((prevSnap) => ({
             status: prevSnap.profile ? 'authed' : 'needsProfile',
-            user: session.user,
+            user,
             profile: prevSnap.profile, // 기존 profile 유지
          }))
       }

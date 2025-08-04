@@ -87,10 +87,19 @@ export default function RootLayout({
             <link rel="icon" href="/favicon.ico" />
             <link rel="apple-touch-icon" href="/images/introduce/logo.png" />
             <link rel="manifest" href="/manifest.json" />
+            <meta name="theme-color" content="#000000" />
+            <meta name="mobile-web-app-capable" content="yes" />
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta
+               name="apple-mobile-web-app-status-bar-style"
+               content="default"
+            />
+            <meta name="apple-mobile-web-app-title" content="0RIGIN SPACE" />
             <meta
                name="naver-site-verification"
                content="f79a49708c95844fd87df7edf84526d803d6f736"
             />
+            <script async src="/sw-register.js"></script>
          </head>
          <body>
             <AppProviders>
