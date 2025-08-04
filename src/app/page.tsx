@@ -1,8 +1,8 @@
 import { ROUTE_BOARD } from '@/constants/pathname'
 import { getBestPosts, getPostList } from '@/entities/post'
 import AnimatedBanner from '@/widgets/animated-banner'
-import Banner from '@/widgets/banner'
 import PostList from '@/widgets/board/post/post-list'
+import QuestionSearch from '@/widgets/questiton-search'
 import Link from 'next/link'
 
 const Title = ({ title, href }: { title: string; href: string }) => (
@@ -26,14 +26,11 @@ export default async function Home() {
    })
    return (
       <div className="flex flex-col h-full">
-         {/* <PhilosopherMatcher />
-         // 신규 기능 준비중
-         */}
+         <QuestionSearch />
          <AnimatedBanner />
-         <div className="flex flex-col gap-1">
-            <Title title="BEST POSTS" href={`${ROUTE_BOARD}/best`} />
+         {/* <div className="flex flex-col gap-1">
             <Banner data={bestPosts} />
-         </div>
+         </div> */}
          <div className="flex flex-col gap-1 flex-grow ">
             <Title title="LATEST POSTS" href={`${ROUTE_BOARD}/latest`} />
             <PostList data={items} />

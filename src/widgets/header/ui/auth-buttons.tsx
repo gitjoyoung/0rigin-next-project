@@ -31,7 +31,7 @@ function MenuButton(props: React.ComponentProps<typeof Button>) {
 }
 
 export default function AuthButtons() {
-   const { status, user, profile } = useAuthState()
+   const { status, profile } = useAuthState()
    const { logout } = useAuthActions()
    const [isLoggingOut, setIsLoggingOut] = useState(false)
 

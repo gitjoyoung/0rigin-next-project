@@ -20,124 +20,89 @@ export interface SubMenuItem {
    icon: LucideIcon
 }
 
-export interface MenuGroup {
-   id: string
-   title?: string
-   items: SubMenuItem[]
-}
-
 export interface MenuItem {
    id: string
    title: string
    url?: string
-   submenuGroups?: MenuGroup[]
+   submenuItems?: SubMenuItem[]
 }
 
 export const HEADER_NAV_LIST: MenuItem[] = [
    {
       id: 'board',
       title: '게시판',
-      submenuGroups: [
+      submenuItems: [
          {
-            id: 'board-group-1',
-            title: '주제별 게시판',
-            items: [
-               {
-                  id: 'philosophy',
-                  title: '실용 철학 게시판',
-                  url: '/board/philosophy',
-                  icon: Code,
-               },
-               {
-                  id: 'technology',
-                  title: '기술 게시판',
-                  url: '/board/technology',
-                  icon: MessageSquare,
-               },
-
-               {
-                  id: 'science',
-                  title: '과학 게시판',
-                  url: '/board/science',
-                  icon: FlaskConical,
-               },
-               {
-                  id: 'mathematics',
-                  title: '수학 게시판',
-                  url: '/board/mathematics',
-                  icon: Calculator,
-               },
-            ],
+            id: 'latest',
+            title: '최신글 게시판',
+            url: '/board/latest',
+            icon: Newspaper,
          },
          {
-            id: 'board-group-2',
-            title: '최신글 게시판',
-            items: [
-               {
-                  id: 'latest',
-                  title: '최신글 게시판',
-                  url: '/board/latest',
-                  icon: Newspaper,
-               },
-            ],
+            id: 'philosophy',
+            title: '실용 철학 게시판',
+            url: '/board/philosophy',
+            icon: Code,
+         },
+         {
+            id: 'technology',
+            title: '기술 게시판',
+            url: '/board/technology',
+            icon: MessageSquare,
+         },
+         {
+            id: 'science',
+            title: '과학 게시판',
+            url: '/board/science',
+            icon: FlaskConical,
+         },
+         {
+            id: 'mathematics',
+            title: '수학 게시판',
+            url: '/board/mathematics',
+            icon: Calculator,
          },
       ],
    },
    {
       id: 'quiz',
       title: '퀴즈',
-      submenuGroups: [
+      submenuItems: [
          {
-            id: 'quiz-group-1',
-            items: [
-               {
-                  id: 'all-quiz',
-                  title: '전체 퀴즈',
-                  url: ROUTE_QUIZ,
-                  icon: LayoutGrid,
-               },
-            ],
+            id: 'all-quiz',
+            title: '전체 퀴즈',
+            url: ROUTE_QUIZ,
+            icon: LayoutGrid,
          },
          {
-            id: 'quiz-group-2',
-            title: '퀴즈 활동',
-            items: [
-               {
-                  id: 'create-quiz',
-                  title: '퀴즈 만들기',
-                  url: '/quiz/create',
-                  icon: PlusSquare,
-               },
-            ],
+            id: 'create-quiz',
+            title: '퀴즈 만들기',
+            url: '/quiz/create',
+            icon: PlusSquare,
          },
       ],
    },
    {
       id: 'utils',
       title: '유틸리티',
-      submenuGroups: [
+      submenuItems: [
          {
-            id: 'utils-group-1',
-            items: [
-               {
-                  id: 'all-utils',
-                  title: '전체 유틸리티',
-                  url: ROUTE_UTILS,
-                  icon: Blocks,
-               },
-               {
-                  id: 'image-converter',
-                  title: '이미지 변환기',
-                  url: '/utils/image-converter',
-                  icon: ImageIcon,
-               },
-               {
-                  id: 'memo',
-                  title: '메모장',
-                  url: '/utils/memo',
-                  icon: ImageIcon,
-               },
-            ],
+            id: 'all-utils',
+            title: '전체 유틸리티',
+            url: ROUTE_UTILS,
+            icon: Blocks,
+         },
+         {
+            id: 'image-converter',
+            title: '이미지 변환기',
+            url: '/utils/image-converter',
+            icon: ImageIcon,
+         },
+         {
+            id: 'memo',
+            title: '메모장',
+            url: '/utils/memo',
+            icon: ImageIcon,
          },
       ],
    },

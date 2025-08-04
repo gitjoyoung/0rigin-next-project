@@ -19,7 +19,6 @@ const RADIUS_RATIO = 0.5
 const TRAIL_ALPHA = 0.1 // 잔상 투명도(0=빨리 지움, 1=잔상 유지)
 const TARGET_FPS = 20 // 내부 타임스텝 제한 (최대)
 
-/* ---------- Types ---------- */
 interface Particle {
    x: number
    y: number
@@ -34,8 +33,6 @@ interface Particle {
    transitionPhase: number
    transitionSpeed: number
 }
-
-/* ---------- Hooks ---------- */
 
 /** 리사이즈 옵저버로 요소 크기 추적 */
 function useElementSize<T extends HTMLElement>() {
@@ -70,7 +67,6 @@ function usePrefersReducedMotion(): boolean {
    return reduced
 }
 
-/** 문서 visibility 상태 */
 function usePageVisibility(): boolean {
    const [visible, setVisible] = useState(true)
    useEffect(() => {

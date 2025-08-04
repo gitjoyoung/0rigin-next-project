@@ -1,11 +1,11 @@
-import { QUOTES } from './\bconstants/quotes'
+import { QUOTES } from './constants/quotes'
 import Particles from './ui/particles'
 
 export default function AnimatedBanner() {
    const currentQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)]
 
    return (
-      <div className="relative w-full sm:h-[400px] h-[300px]">
+      <div className="relative w-full sm:h-[350px] h-[250px]">
          <Particles />
          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center flex flex-col gap-4 w-[90%] ">
             <div className="relative">
