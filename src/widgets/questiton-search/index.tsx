@@ -16,8 +16,7 @@ function getCategoryDisplayName(categoryId: string): string {
 }
 
 export default function QuestionSearch() {
-   const { onSubmit, form, results, isLoading, error, isSuccess } =
-      usePhilosopherSearch()
+   const { onSubmit, form, results, isLoading, error } = usePhilosopherSearch()
 
    return (
       <section className="w-full px-2">
@@ -49,13 +48,6 @@ export default function QuestionSearch() {
                />
             </div>
          </div>
-
-         {/* 에러 상태 */}
-         {error && (
-            <div className="max-w-4xl mx-auto text-center py-8">
-               <p className="text-sm text-red-500">{error.message}</p>
-            </div>
-         )}
       </section>
    )
 }

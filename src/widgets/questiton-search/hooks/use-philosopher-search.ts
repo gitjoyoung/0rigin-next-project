@@ -1,3 +1,4 @@
+import { toast } from '@/shared/hooks/use-toast'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { MatchingResult } from '../types'
@@ -43,7 +44,11 @@ export function usePhilosopherSearch() {
    const mutation = useMutation({
       mutationFn: searchPhilosophers,
       onError: (error) => {
-         console.error('철학가 검색 오류:', error)
+         toast({
+            title: '오류가 발생했습니다.',
+            description: error.message,
+            variant: 'destructive',
+         })
       },
    })
    const form = useForm({
@@ -65,6 +70,5 @@ export function usePhilosopherSearch() {
       results: results,
       isLoading: mutation.isPending,
       error: mutation.error,
-      isSuccess: mutation.isSuccess,
    }
 }
