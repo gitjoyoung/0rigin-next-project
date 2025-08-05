@@ -59,7 +59,7 @@ async function logVisit(
 
    const { browser, device, os } = userAgent(req)
 
-   const { data, error } = await supabase.from('visitors').insert({
+   await supabase.from('visitors').insert({
       visitor_id: visitorId,
       page_url: req.nextUrl.pathname,
       ip_address: req.headers.get('x-forwarded-for') ?? null,

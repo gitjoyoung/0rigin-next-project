@@ -12,9 +12,14 @@ const FOOTER_NAV = Object.freeze([
    { id: 'help', name: '도움말', link: ROUTE_HELP },
    { id: 'sitemap', name: '사이트맵', link: ROUTE_SITEMAP },
 ])
+
+const FOOTER_COPYRIGHT = {
+   copyright: 'Copyright © Origin Corp. All Rights Reserved.',
+   contact: 'Contact Us : admin@0rigin.com',
+}
 export default function Footer() {
    return (
-      <div className="text-xs flex flex-col items-center justify-center gap-2   p-4 w-full border-t-2  border-gray-400 dark:border-white">
+      <div className="relative text-xs flex flex-col items-center justify-center gap-2   p-4 w-full border-t-2  border-gray-400 dark:border-white">
          <ul className="flex flex-wrap font-semibold divide-x divide-black dark:divide-white">
             {FOOTER_NAV.map(({ name, link, id }, index) => (
                <li key={id} className="px-1.5 first:pl-0 last:pr-0">
@@ -27,8 +32,10 @@ export default function Footer() {
                </li>
             ))}
          </ul>
-         <p className="">Contact Us : admin@0rigin.com</p>
-         <p>Copyright © Origin Corp. All Rights Reserved.</p>
+         <div className="flex items-center gap-4">
+            <p className="">{FOOTER_COPYRIGHT.contact}</p>
+         </div>
+         <p>{FOOTER_COPYRIGHT.copyright}</p>
       </div>
    )
 }

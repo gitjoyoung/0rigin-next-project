@@ -10,7 +10,7 @@ export async function POST(
    const { id: postId } = await params
 
    // 게시글 비밀번호 검증
-   const isValid = await verifyPostPassword(postId, password)
+   const isValid = await verifyPostPassword(Number(postId), password)
 
    if (isValid) {
       return NextResponse.json({ success: true })

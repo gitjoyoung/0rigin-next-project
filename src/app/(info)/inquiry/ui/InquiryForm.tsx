@@ -40,7 +40,7 @@ const InquiryForm = () => {
       },
    })
 
-   const handleSubmit = async (data) => {
+   const handleSubmit = async (data: any) => {
       setIsSubmitting(true)
 
       const formData = new FormData()

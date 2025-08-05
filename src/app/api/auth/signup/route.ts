@@ -4,7 +4,14 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
    const body = await request.json().catch(() => ({}))
-   const decryptedBody = decryptObject(body)
+   const decryptedBody: {
+      password: string
+      email: string
+      nickname: string
+      confirmPassword: string
+      gender: string
+   } = decryptObject(body)
+
    const result = await signUp(decryptedBody)
    return NextResponse.json(result)
 }

@@ -7,9 +7,9 @@ export async function POST(request: NextRequest) {
    const body = await request.json().catch(() => ({}))
 
    const decryptedBody = decryptObject(body)
-
-   // 2. 유효성 검사
-   const result = await signIn(decryptedBody)
+   const result = await signIn(
+      decryptedBody as { password: string; email: string },
+   )
 
    // 5. 성공 응답
    return NextResponse.json(result)

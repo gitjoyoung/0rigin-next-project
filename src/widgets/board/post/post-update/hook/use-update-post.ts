@@ -36,6 +36,7 @@ export function useUpdatePostMutation({
             summary,
             thumbnail: data.thumbnail,
             password: data.password,
+            nickname: data.nickname,
          }
          return await updatePostApi(editedPost.id, updateData)
       },

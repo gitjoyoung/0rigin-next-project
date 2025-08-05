@@ -2,11 +2,7 @@ import { ROUTE_BOARD } from '@/constants/pathname'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
-import {
-   Category,
-   getActiveCategories,
-   getCategoryBySlug,
-} from '@/entities/category'
+import { getCategoryBySlug } from '@/entities/category'
 import { getPostList } from '@/entities/post'
 import BoardFooter from '@/widgets/board/footer/board-footer'
 import BoardHeader from '@/widgets/board/header/board-header'
@@ -19,36 +15,6 @@ interface IParams {
    }
    searchParams: { page: string }
 }
-
-// 기본 ISR 설정 - 1 분마다   재생성
-export const revalidate = 60
-
-// 빌드 시 생성할 정적 경로들
-export async function generateStaticParams() {
-   try {
-      const categories = await getActiveCategories()
-
-      // 모든 활성 카테고리 + 'latest' 경로 생성
-      const staticParams = [
-         { category: 'latest' }, // 전체 게시판
-         ...categories.map((cat: Category) => ({
-            category: cat.slug,
-         })),
-      ]
-
-      console.log(
-         '📄 Static params generated:',
-         staticParams.length,
-         'categories',
-      )
-      return staticParams
-   } catch (error) {
-      console.error('❌ Error generating static params:', error)
-      // 기본 경로라도 생성
-      return [{ category: 'latest' }]
-   }
-}
-
 export async function generateMetadata({
    params,
    searchParams,

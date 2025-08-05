@@ -1,5 +1,5 @@
 import { getDailyStatsRange } from '@/entities/stats'
-import Introduce from '@/widgets/introduce/ui'
+import Introduce from '@/widgets/introduce'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

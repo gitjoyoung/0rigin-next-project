@@ -52,6 +52,7 @@ export const authenticatedBoardSchema = z.object({
 
 // Zod 스키마에서 타입스크립트 타입 추출
 export type BoardFormType = z.infer<typeof boardSchema>
-export type AuthenticatedBoardFormType = z.infer<
-   typeof authenticatedBoardSchema
->
+export type AuthenticatedBoardFormType = BoardFormType & {
+   nickname: string
+   password: string
+}

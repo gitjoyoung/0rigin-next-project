@@ -1,6 +1,5 @@
 'use client'
 
-import type { DailyStats } from '@/entities/stats'
 import {
    Card,
    CardContent,
@@ -21,10 +20,6 @@ import {
    YAxis,
 } from 'recharts'
 
-interface StatsChartProps {
-   chartStats: DailyStats[]
-}
-
 const chartConfig = {
    user_count: {
       label: '사용자',
@@ -33,10 +28,6 @@ const chartConfig = {
    post_count: {
       label: '게시글',
       color: '#10b981',
-   },
-   comment_count: {
-      label: '댓글',
-      color: '#f59e0b',
    },
    visitor_count: {
       label: '방문자',
@@ -60,7 +51,7 @@ export default function StatsChart({
    return (
       <Card>
          <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-            <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+            <div className="flex flex-1 flex-col justify-center gap-3 px-6 py-5 sm:py-6">
                <CardTitle>성장 통계</CardTitle>
                <CardDescription>
                   최근 {chartStats.length}일간의 성장 추이를 보여줍니다
@@ -87,7 +78,8 @@ export default function StatsChart({
                })}
             </div>
          </CardHeader>
-         <CardContent className="p-2 sm:p-6">
+         {/* 차트 섹션 */}
+         <CardContent className="p-2 sm:p-6 hover:shadow-none">
             <div className="h-[200px] sm:h-[300px] w-full">
                <ResponsiveContainer width="100%" height="100%">
                   <BarChart

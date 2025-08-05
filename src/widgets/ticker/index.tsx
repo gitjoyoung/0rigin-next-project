@@ -9,7 +9,7 @@ export default async function Ticker() {
          className={cn('relative  bg-black text-white text-xs w-full h-[16px]')}
       >
          <div className=" absolute right-0 flex items-center">
-            <TickerList statsData={statsData} />
+            <TickerList statsData={statsData ?? null} />
          </div>
       </aside>
    )

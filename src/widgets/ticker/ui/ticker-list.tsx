@@ -2,7 +2,7 @@ import type { DailyStats } from '@/entities/stats'
 import TickerItem from './ticker-item'
 
 interface TickerListProps {
-   statsData?: Partial<DailyStats>
+   statsData: Partial<DailyStats> | null
 }
 
 export default function TickerList({ statsData }: TickerListProps) {

@@ -131,7 +131,7 @@ export default function MobileSideMenu({ className }: { className?: string }) {
                      <nav className="flex flex-col flex-1">
                         {HEADER_NAV_LIST.map((item) => (
                            <div key={item.id}>
-                              {item.submenuGroups ? (
+                              {item.submenuItems ? (
                                  // 하위메뉴가 있는 경우
                                  <div>
                                     <button
@@ -149,33 +149,19 @@ export default function MobileSideMenu({ className }: { className?: string }) {
                                     </button>
                                     {expandedMenus.includes(item.id) && (
                                        <div className="bg-gray-50 py-1 dark:bg-gray-800">
-                                          {item.submenuGroups?.map((group) => (
-                                             <div
-                                                key={group.id}
-                                                className="py-1"
+                                          {item.submenuItems.map((subItem) => (
+                                             <SheetClose
+                                                asChild
+                                                key={subItem.id}
                                              >
-                                                {group.title && (
-                                                   <h4 className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                                      {group.title}
-                                                   </h4>
-                                                )}
-                                                {group.items.map((subItem) => (
-                                                   <SheetClose
-                                                      asChild
-                                                      key={subItem.id}
-                                                   >
-                                                      <Link
-                                                         href={subItem.url}
-                                                         className="flex items-center gap-3 py-2 pl-6 pr-4 text-sm hover:bg-accent hover:text-accent-foreground"
-                                                      >
-                                                         <subItem.icon className="h-4 w-4 text-muted-foreground" />
-                                                         <span>
-                                                            {subItem.title}
-                                                         </span>
-                                                      </Link>
-                                                   </SheetClose>
-                                                ))}
-                                             </div>
+                                                <Link
+                                                   href={subItem.url}
+                                                   className="flex items-center gap-3 py-2 pl-6 pr-4 text-sm hover:bg-accent hover:text-accent-foreground"
+                                                >
+                                                   <subItem.icon className="h-4 w-4 text-muted-foreground" />
+                                                   {subItem.title}
+                                                </Link>
+                                             </SheetClose>
                                           ))}
                                        </div>
                                     )}

@@ -1,7 +1,7 @@
 import type { Database } from '@/shared/types'
 import ClientDayHydration from '@/shared/ui/hydrated-date'
 import { formatNumberCompact } from '@/shared/utils/format-number'
-import PostActionButtons from '../post-action-button/post-action-buttons'
+import PostActionButtons from '../post-action-button/post-action-button'
 
 export default function PostHeader({
    title,
@@ -28,8 +28,11 @@ export default function PostHeader({
                <li className="flex min-w-0 flex-shrink ">조회 {view_count}</li>
             </ul>
             <PostActionButtons
-               postId={id?.toString() || ''}
-               category={category || ''}
+               post={{
+                  postId: id?.toString() || '',
+                  category: category || '',
+                  nickname: nickname || '',
+               }}
             />
          </div>
       </div>

@@ -2,6 +2,7 @@
 
 import type { Profile } from '@/entities/profile'
 import type { Tables } from '@/shared/types'
+import { useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { type BoardFormType } from '../../../common/schema/board-schema'
 import { extractFirstImageUrl } from '../../../common/utils/markdown-util'
@@ -19,14 +20,18 @@ export default function PostUpdateWidget({
    profile,
    category,
 }: Props) {
+   const searchParams = useSearchParams()
+   const verifiedPassword = searchParams.get('verifiedPassword')
+   const nickname = searchParams.get('nickname')
+
    const form = useForm<BoardFormType>({
       defaultValues: {
          title: initialData.title || '',
          content: (initialData.content as string) || '',
          thumbnail: initialData.thumbnail || undefined,
          summary: initialData.summary || undefined,
-         nickname: profile?.nickname || '',
-         password: '',
+         nickname: initialData.nickname || nickname || profile?.nickname || '', // 원본 글의 닉네임 우선 사용
+         password: verifiedPassword || '', // 검증된 비밀번호 사용
       },
    })
 

@@ -50,16 +50,6 @@ export default function QuestionSearch() {
             </div>
          </div>
 
-         {/* 로딩 상태 */}
-         {isLoading && (
-            <div className="text-center py-8">
-               <p className="text-sm text-muted-foreground">
-                  {getCategoryDisplayName(form.watch('category')) || '철학'}{' '}
-                  분야의 인물들을 찾고 있습니다...
-               </p>
-            </div>
-         )}
-
          {/* 에러 상태 */}
          {error && (
             <div className="max-w-4xl mx-auto text-center py-8">

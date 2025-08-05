@@ -16,7 +16,7 @@ export default function MyComments() {
          <h2 className="text-2xl font-bold">내가 작성한 댓글</h2>
 
          <div className="grid gap-4">
-            {comments.map((comment) => (
+            {comments?.map((comment) => (
                <Card
                   key={comment.id}
                   className="hover:shadow-lg transition-shadow"

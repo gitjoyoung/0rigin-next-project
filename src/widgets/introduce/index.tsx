@@ -12,7 +12,7 @@ import { Separator } from '@/shared/shadcn/ui/separator'
 import type { Tables } from '@/shared/types'
 import Image from 'next/image'
 import Link from 'next/link'
-import StatsChart from './stats-chart'
+import StatsChart from './ui/stats-chart'
 
 const INTRODUCE_DATA = {
    story: {
@@ -122,14 +122,12 @@ export default function Introduce({ chartStats }: IntroduceProps) {
             <Separator className="my-16" />
 
             {/* 통계 섹션 */}
-            <div className="">
-               <div className="text-center mb-4">
-                  <h2 className="text-lg sm:text-2xl font-semibold">
-                     {INTRODUCE_DATA.stats.title}
-                  </h2>
-               </div>
-               <StatsChart chartStats={chartStats} />
+            <div className="text-center mb-4">
+               <h2 className="text-lg sm:text-2xl font-semibold">
+                  {INTRODUCE_DATA.stats.title}
+               </h2>
             </div>
+            <StatsChart chartStats={chartStats} />
 
             <Separator className="my-16" />
 

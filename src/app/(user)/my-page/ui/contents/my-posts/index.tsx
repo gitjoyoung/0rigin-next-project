@@ -40,7 +40,7 @@ export default function MyPosts() {
                   </TableRow>
                </TableHeader>
                <TableBody>
-                  {posts.map((post) => (
+                  {posts?.map((post) => (
                      <TableRow key={post.id} className="hover:bg-gray-50">
                         <TableCell>
                            <Link

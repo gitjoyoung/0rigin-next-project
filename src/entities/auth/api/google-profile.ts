@@ -54,7 +54,7 @@ export const createGoogleProfileAddServer = async ({
 
       const insertData = {
          id: user.id,
-         email: user.email,
+         email: user.email ?? '',
          nickname: validatedData.nickname,
          gender: validatedData.gender,
          signup_complete: true,
@@ -64,7 +64,7 @@ export const createGoogleProfileAddServer = async ({
       // profiles 테이블에 레코드 생성
       const { error: insertError } = await supabase
          .from('profile')
-         .insert(insertData)
+         .insert({ ...insertData })
 
       if (insertError) {
          return {

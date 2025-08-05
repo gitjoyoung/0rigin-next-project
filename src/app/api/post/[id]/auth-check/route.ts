@@ -14,7 +14,7 @@ export async function GET(
       const user = await getUser()
 
       // 게시글 정보 조회
-      const post = await getPostById(postId)
+      const post = await getPostById(Number(postId))
       if (!post) {
          return NextResponse.json(
             { error: '게시글을 찾을 수 없습니다.' },

@@ -2,7 +2,7 @@ import { SupabaseServerClient } from '@/shared/lib/supabase/supabase-server-clie
 import type { Tables } from '@/shared/types'
 
 // 최신 일일 통계 조회 (제네릭)
-export async function getDailyStats(): Promise<Tables<'daily_stats'>> {
+export async function getDailyStats(): Promise<Tables<'daily_stats'> | null> {
    const supabase = await SupabaseServerClient()
 
    const { data: dailyStats } = await supabase

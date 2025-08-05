@@ -8,6 +8,7 @@ import {
    AlertDialogHeader,
    AlertDialogTitle,
 } from '@/shared/shadcn/ui/alert-dialog'
+import { cn } from '@/shared/utils/cn'
 
 interface Props {
    open: boolean
@@ -26,7 +27,17 @@ export default function ConfirmActionModal({
 }: Props) {
    return (
       <AlertDialog open={open} onOpenChange={onOpenChange}>
-         <AlertDialogContent className="max-h-[80vh] overflow-y-auto pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
+         <AlertDialogContent
+            className={cn(
+               'fixed inset-x-0 top-0 left-0 right-0 bottom-auto',
+               'translate-x-0 translate-y-0 rounded-b-2xl',
+               'max-h-[calc(100dvh-32px)] overflow-y-auto',
+               'pt-[calc(env(safe-area-inset-top,0px)+16px)]',
+               'sm:inset-auto sm:top-1/2 sm:left-1/2',
+               'sm:-translate-x-1/2 sm:-translate-y-1/2',
+               'sm:rounded-lg',
+            )}
+         >
             <AlertDialogHeader>
                <AlertDialogTitle>
                   {mode === 'delete' ? '게시글 삭제' : '게시글 수정'}
