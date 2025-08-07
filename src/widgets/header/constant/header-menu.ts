@@ -34,7 +34,6 @@ export const BOARD_MENU_LIST: SubMenuItem[] = [
     url: "/board/latest",
     icon: Newspaper,
   },
-  { id: "latest", title: "철학 게시판", url: "/board/philosophy", icon: Code },
   {
     id: "philosophy",
     title: "철학 게시판",

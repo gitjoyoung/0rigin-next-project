@@ -1,5 +1,5 @@
-import SignupLanding from './ui/signup-landing'
+import SignUpLanding from "@/widgets/signup/signup-landing";
 
 export default function Page() {
-   return <SignupLanding />
+  return <SignUpLanding />;
 }

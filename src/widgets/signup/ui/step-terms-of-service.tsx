@@ -1,14 +1,14 @@
-'use client'
-import { Button } from '@/shared/shadcn/ui/button'
-import { Checkbox } from '@/shared/shadcn/ui/checkbox'
-import { ScrollArea } from '@/shared/shadcn/ui/scroll-area'
-import { useState } from 'react'
+"use client";
+import { Button } from "@/shared/shadcn/ui/button";
+import { Checkbox } from "@/shared/shadcn/ui/checkbox";
+import { ScrollArea } from "@/shared/shadcn/ui/scroll-area";
+import { useState } from "react";
 
 export const TERMS_CONTENT = {
-   title: '서비스 이용약관 및 개인정보처리방침',
-   agreeTerms: '0RIGIN(제로리진) 이용약관에 동의합니다.',
-   agreePrivacy: '개인정보 수집 및 이용에 동의합니다.',
-   content: `제1조 (서비스의 목적)
+  title: "서비스 이용약관 및 개인정보처리방침",
+  agreeTerms: "0RIGIN(제로리진) 이용약관에 동의합니다.",
+  agreePrivacy: "개인정보 수집 및 이용에 동의합니다.",
+  content: `제1조 (서비스의 목적)
  본 서비스는 회원에게 0RIGIN(제로리진)이 제공하는 다양한 콘텐츠 및 기능을 통한 창의적인 활동과 소통의 기회를 제공하기 위해 제공됩니다.
  
  회원은 0RIGIN(제로리진) 서비스를 통해 자신의 창작물을 공유하고 다른 회원들과 소통할 수 있습니다.
@@ -76,80 +76,80 @@ export const TERMS_CONTENT = {
  약관 변경 시 최소 7일 전 공지하며, 중요한 변경사항은 30일 전 공지합니다.
  
  변경된 약관에 동의하지 않는 경우 서비스 이용을 중단하고 탈퇴할 수 있습니다.`,
-}
+};
 
 interface StepTermsOfServiceProps {
-   onAccept: () => void
+  onAccept: () => void;
 }
 
 export default function StepTermsOfService({
-   onAccept,
+  onAccept,
 }: StepTermsOfServiceProps) {
-   // 이용약관 및 개인정보처리방침 동의 체크박스
-   const [checkTerms, setCheckTerms] = useState<boolean>(false)
-   const [checkPrivacy, setCheckPrivacy] = useState<boolean>(false)
+  // 이용약관 및 개인정보처리방침 동의 체크박스
+  const [checkTerms, setCheckTerms] = useState<boolean>(false);
+  const [checkPrivacy, setCheckPrivacy] = useState<boolean>(false);
 
-   const handleAccept = (): void => {
-      if (checkTerms && checkPrivacy) {
-         onAccept()
-      } else {
-         alert('이용약관 및 개인정보처리방침에 모두 동의해주세요.')
-      }
-   }
+  const handleAccept = (): void => {
+    if (checkTerms && checkPrivacy) {
+      onAccept();
+    } else {
+      alert("이용약관 및 개인정보처리방침에 모두 동의해주세요.");
+    }
+  };
 
-   const allAgreed = checkTerms && checkPrivacy
+  const allAgreed = checkTerms && checkPrivacy;
 
-   return (
-      <section className="w-full sm:w-[400px] flex flex-col m-auto items-center mt-10 gap-2">
-         <div className="space-y-2">
-            <h2 className="font-bold text-lg">{TERMS_CONTENT.title}</h2>
-            <ScrollArea className="h-80 w-full rounded-lg border">
-               <div className="p-3">
-                  <p className="mb-4 leading-6 whitespace-pre-line text-sm">
-                     {TERMS_CONTENT.content}
-                  </p>
-               </div>
-            </ScrollArea>
-         </div>
-         <div className="flex flex-col p-1 gap-3 w-full justify-start">
-            <div className="flex items-center gap-2">
-               <Checkbox
-                  checked={checkTerms}
-                  onCheckedChange={(checked) => {
-                     setCheckTerms(!!checked)
-                  }}
-                  id="agree-terms"
-               />
-               <label htmlFor="agree-terms" className="text-sm">
-                  {TERMS_CONTENT.agreeTerms}
-               </label>
-            </div>
+  return (
+    <section className="w-full sm:w-[400px] flex flex-col m-auto items-center mt-10 gap-2">
+      <div className="space-y-2">
+        <h2 className="font-bold text-lg">{TERMS_CONTENT.title}</h2>
+        <ScrollArea className="h-80 w-full rounded-lg border">
+          <div className="p-3">
+            <p className="mb-4 leading-6 whitespace-pre-line text-sm">
+              {TERMS_CONTENT.content}
+            </p>
+          </div>
+        </ScrollArea>
+      </div>
+      <div className="flex flex-col p-1 gap-3 w-full justify-start">
+        <div className="flex items-center gap-2">
+          <Checkbox
+            checked={checkTerms}
+            onCheckedChange={(checked) => {
+              setCheckTerms(!!checked);
+            }}
+            id="agree-terms"
+          />
+          <label htmlFor="agree-terms" className="text-sm">
+            {TERMS_CONTENT.agreeTerms}
+          </label>
+        </div>
 
-            <div className="flex items-center gap-2">
-               <Checkbox
-                  checked={checkPrivacy}
-                  onCheckedChange={(checked) => {
-                     setCheckPrivacy(!!checked)
-                  }}
-                  id="agree-privacy"
-               />
-               <label htmlFor="agree-privacy" className="text-sm">
-                  {TERMS_CONTENT.agreePrivacy}
-               </label>
-            </div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            checked={checkPrivacy}
+            onCheckedChange={(checked) => {
+              setCheckPrivacy(!!checked);
+            }}
+            id="agree-privacy"
+          />
+          <label htmlFor="agree-privacy" className="text-sm">
+            {TERMS_CONTENT.agreePrivacy}
+          </label>
+        </div>
 
-            <div className="flex justify-center">
-               <Button
-                  className="px-16 py-4"
-                  size="lg"
-                  type="button"
-                  onClick={handleAccept}
-                  disabled={!allAgreed}
-               >
-                  확인
-               </Button>
-            </div>
-         </div>
-      </section>
-   )
+        <div className="flex justify-center">
+          <Button
+            className="px-16 py-4"
+            size="lg"
+            type="button"
+            onClick={handleAccept}
+            disabled={!allAgreed}
+          >
+            확인
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
 }
