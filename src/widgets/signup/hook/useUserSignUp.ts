@@ -1,6 +1,6 @@
 "use client";
 
-import type { SignUpParams } from "@/entities/auth/types/sign-up";
+import type { SignUpRequest } from "@/entities/auth";
 import { encryptObject } from "@/shared/utils/crypto-helper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ interface SignUpResponse {
 }
 
 // 회원가입 API 요청 함수
-const fetchSignUp = async (values: SignUpParams): Promise<SignUpResponse> => {
+const fetchSignUp = async (values: SignUpRequest): Promise<SignUpResponse> => {
   try {
     const encryptedValues = encryptObject(values);
     const response = await fetch("/api/auth/signup", {
@@ -76,7 +76,7 @@ export const useUserSignUp = () => {
     },
   });
 
-  const handleSubmit = (data: SignUpParams) => {
+  const handleSubmit = (data: SignUpRequest) => {
     mutate(data);
   };
 

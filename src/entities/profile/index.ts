@@ -1,3 +1,3 @@
 // Profile Entity - Feature-Sliced Design Pattern
-export * from './api/route'
-export * from './types'
+export * from "./api/profile.service";
+export * from "./types";
