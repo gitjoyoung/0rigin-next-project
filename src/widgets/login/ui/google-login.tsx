@@ -1,15 +1,21 @@
 "use client";
 
-import { signInWithGoogle } from "@/entities/auth/api/google";
+import { signInWithGoogle } from "@/entities/auth";
 import { Button } from "@/shared/shadcn/ui/button";
 import { Chrome } from "lucide-react";
 
 export default function GoogleLogin() {
+  const getOrigin = () => {
+    if (typeof window !== "undefined") {
+      return window.location.origin;
+    }
+    return "";
+  };
   return (
     <form
       action={async () => {
         await signInWithGoogle({
-          next: "/sign/complete-profile?required=true",
+          next: `${getOrigin()}/callback?next=${getOrigin()}/sign/complete-profile`,
         });
       }}
     >

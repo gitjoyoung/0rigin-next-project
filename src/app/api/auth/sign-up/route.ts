@@ -1,5 +1,4 @@
-import { signUp } from "@/entities/auth/api/sign";
-import { updateProfile } from "@/entities/profile";
+import { signUp } from "@/entities/auth";
 import { decryptObject } from "@/shared/utils/crypto-helper";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -18,18 +17,7 @@ export async function POST(request: NextRequest) {
     password: decryptedBody.password,
     nickname: decryptedBody.nickname,
     gender: decryptedBody.gender as "man" | "women" | "etc",
+    confirmPassword: decryptedBody.confirmPassword,
   });
   return NextResponse.json(result);
-}
-
-export async function PUT(request: NextRequest) {
-  const body = await request.json().catch(() => ({}));
-  const decryptedBody: {
-    nickname: string;
-    gender: string;
-  } = decryptObject(body);
-
-  await updateProfile(decryptedBody);
-
-  return NextResponse.json(true);
 }

@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // 로그인 성공 시 미들웨어가 프로필 상태를 확인하고 적절한 페이지로 리다이렉트
       return NextResponse.redirect(`${origin}${next}`);
     }
   }

@@ -4,16 +4,13 @@ import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-clie
 import type { User } from "@supabase/supabase-js";
 import type { AuthResponse, SignupStatusResponse } from "../model/dto";
 
-export async function getCurrentUser(): Promise<User | null> {
+export async function getUser(): Promise<User | null> {
   const supabase = await SupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   return user ?? null;
 }
-
-// getUser 별칭 (기존 호환성)
-export const getUser = getCurrentUser;
 
 export async function checkSignupCompleteServer(): Promise<SignupStatusResponse> {
   const supabase = await SupabaseServerClient();
@@ -33,7 +30,7 @@ export async function checkSignupCompleteServer(): Promise<SignupStatusResponse>
     .maybeSingle();
 
   if (error) {
-    return { status: "unauth", user: null };
+    return { status: "unauth", user: null, profile: null };
   }
 
   if (!profile?.is_active) {
@@ -45,7 +42,7 @@ export async function checkSignupCompleteServer(): Promise<SignupStatusResponse>
 
 export async function updateEmail(email: string): Promise<AuthResponse> {
   try {
-    const user = await getCurrentUser();
+    const user = await getUser();
 
     if (!user) {
       return { success: false, message: "로그인이 필요합니다." };

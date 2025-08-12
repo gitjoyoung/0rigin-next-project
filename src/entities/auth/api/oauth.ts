@@ -16,7 +16,7 @@ export async function signInWithOAuth({
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: redirectTo || `${process.env.NEXT_PUBLIC_API_URL}/`,
+      redirectTo: redirectTo,
       queryParams: provider === "google" ? { prompt: "select_account" } : {},
     },
   });
