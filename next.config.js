@@ -1,6 +1,3 @@
-/** @type {import('next').NextConfig} */
-// 커스텀 PWA 구현 - next-pwa 플러그인 제거
-
 const nextConfig = {
   experimental: {
     scrollRestoration: false, // 스크롤 복원 비활성화
