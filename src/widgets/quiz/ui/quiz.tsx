@@ -1,135 +1,129 @@
-'use client'
+"use client";
 
-import { QuizDetail } from '@/entities/quiz'
+import { QuizDetail } from "@/entities/quiz";
 import {
-   Accordion,
-   AccordionContent,
-   AccordionItem,
-   AccordionTrigger,
-} from '@/shared/shadcn/ui/accordion'
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/shared/shadcn/ui/accordion";
 import {
-   Card,
-   CardContent,
-   CardDescription,
-   CardHeader,
-   CardTitle,
-} from '@/shared/shadcn/ui/card'
-import { cn } from '@/shared/utils/cn'
-import QuizNavButton from '@/widgets/quiz/ui/quiz-nav-button'
-import QuizRadioButtonGroup from '@/widgets/quiz/ui/quiz-radio-button-group'
-import QuizResult from '@/widgets/quiz/ui/quiz-result'
-import { FileQuestion } from 'lucide-react'
-import { useQuiz } from '../hooks/use-quiz'
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/shadcn/ui/card";
+import { Progress } from "@/shared/shadcn/ui/progress";
+import QuizNavButton from "@/widgets/quiz/ui/quiz-nav-button";
+import QuizRadioButtonGroup from "@/widgets/quiz/ui/quiz-radio-button-group";
+import QuizResult from "@/widgets/quiz/ui/quiz-result";
+import { FileQuestion } from "lucide-react";
+import { useQuiz } from "../hooks/use-quiz";
 
-export default function Quiz({ quizData }: { quizData: QuizDetail }) {
-   const {
-      quizDataLength,
-      curIndex,
-      selectedOption,
-      showResult,
-      progress,
-      currentQuestion,
-      handleIndexChange,
-      handleOptionSelect,
-      handleShowResult,
-      userAnswers,
-   } = useQuiz({ quizData })
+interface Props {
+  quizData: QuizDetail | null;
+}
 
-   if (showResult) {
-      console.log(
-         'Quiz component - quizData.id:',
-         quizData.id,
-         typeof quizData.id,
-      )
-      return (
-         <QuizResult
-            quizId={quizData.id}
-            totalQuestions={quizDataLength}
-            userAnswers={userAnswers}
-            questions={quizData.questions}
-         />
-      )
-   }
+export default function Quiz({ quizData }: Props) {
+  const {
+    quizDataLength,
+    curIndex,
+    selectedOption,
+    showResult,
+    progress,
+    currentQuestion,
+    handleIndexChange,
+    handleOptionSelect,
+    handleShowResult,
+    userAnswers,
+  } = useQuiz({ quizData });
 
-   if (quizDataLength === 0 || !currentQuestion) {
-      return (
-         <Card>
-            <CardContent className="pt-6">
-               <div className="text-center">
-                  <p className="text-muted-foreground">
-                     이 퀴즈에는 문제가 없습니다. 다른 퀴즈를 선택해주세요.
+  if (!quizData) return null;
+
+  if (showResult) {
+    return (
+      <QuizResult
+        quizId={quizData.id}
+        totalQuestions={quizDataLength}
+        userAnswers={userAnswers}
+        questions={quizData.questions}
+      />
+    );
+  }
+
+  if (quizDataLength === 0 || !currentQuestion) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <p className="text-muted-foreground">
+              이 퀴즈에는 문제가 없습니다. 다른 퀴즈를 선택해주세요.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <section className="flex flex-col justify-center w-full gap-4">
+      {/* Progress Bar */}
+      <div className="w-full rounded-none overflow-hidden">
+        <div className="relative h-4">
+          <Progress value={progress} className="rounded-none h-4  " />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-xs font-bold mix-blend-difference text-white">
+              {curIndex + 1} / {quizDataLength}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Question Card */}
+      <Card className="border border-black bg-white dark:bg-black dark:border-white shadow-none rounded-lg overflow-hidden">
+        <CardHeader className=" bg-black dark:bg-black text-white dark:text-white">
+          <CardTitle className="font-bold text-xl leading-relaxed">
+            Q{curIndex + 1}. {currentQuestion.question_text}
+          </CardTitle>
+          {currentQuestion.explanation && (
+            <Accordion
+              type="single"
+              collapsible
+              className="w-full"
+              defaultValue="item-1"
+            >
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  <div className="flex items-center gap-2 text-sm">
+                    <FileQuestion size={20} />
+                    <span className="font-semibold">힌트 보기</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="flex text-balance">
+                  <p className="font-medium leading-relaxed whitespace-pre-line">
+                    {currentQuestion.explanation}
                   </p>
-               </div>
-            </CardContent>
-         </Card>
-      )
-   }
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          )}
+        </CardHeader>
 
-   return (
-      <section className="flex flex-col justify-center w-full gap-3">
-         <Card className="font-noto rounded-none border-0 shadow-xl bg-white dark:bg-gray-900">
-            <div className="relative">
-               <div className="w-full h-5 bg-gray-400 rounded-none overflow-hidden">
-                  <div
-                     className={cn(
-                        'h-full bg-gradient-to-r from-gray-900 via-gray-700 to-gray-600 transition-all duration-500 ease-out shadow-lg',
-                        progress === 100 &&
-                           'from-gray-800 via-gray-600 to-gray-500 shadow-gray-500/30',
-                     )}
-                     style={{ width: `${progress}%` }}
-                  />
-               </div>
-               <div className="flex justify-center items-center py-2 absolute top-0 left-0 w-full h-full z-10">
-                  <p className="text-xs font-semibold text-white drop-shadow-lg">
-                     {curIndex + 1} / {quizDataLength}
-                  </p>
-               </div>
-            </div>
+        <CardContent className=" bg-white dark:bg-black">
+          <QuizRadioButtonGroup
+            options={currentQuestion.options}
+            selectedOption={selectedOption}
+            onSelect={handleOptionSelect}
+          />
+        </CardContent>
+      </Card>
 
-            <CardHeader className="pb-6">
-               <CardTitle className="leading-relaxed text-gray-800 dark:text-gray-100 text-lg font-bold">
-                  {curIndex + 1}. {currentQuestion.question_text}
-               </CardTitle>
-               {currentQuestion.explanation && (
-                  <CardDescription className="text-gray-600 dark:text-gray-300">
-                     <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem
-                           value="item-1"
-                           className="border-gray-200 dark:border-gray-600"
-                        >
-                           <AccordionTrigger className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                              <div className="flex items-center gap-2">
-                                 <FileQuestion
-                                    size={20}
-                                    className="text-emerald-500"
-                                 />
-                                 <p>힌트 보기</p>
-                              </div>
-                           </AccordionTrigger>
-                           <AccordionContent className="text-gray-700 dark:text-gray-200">
-                              <p className="font-semibold leading-7 break-words whitespace-pre-line">
-                                 {currentQuestion.explanation}
-                              </p>
-                           </AccordionContent>
-                        </AccordionItem>
-                     </Accordion>
-                  </CardDescription>
-               )}
-            </CardHeader>
-            <CardContent className="pb-6">
-               <QuizRadioButtonGroup
-                  options={currentQuestion.options}
-                  selectedOption={selectedOption}
-                  onSelect={handleOptionSelect}
-               />
-            </CardContent>
-         </Card>
-         <QuizNavButton
-            curIndex={curIndex}
-            setCurIndex={handleIndexChange}
-            quizDataLength={quizDataLength}
-            onShowResult={handleShowResult}
-         />
-      </section>
-   )
+      <QuizNavButton
+        curIndex={curIndex}
+        setCurIndex={handleIndexChange}
+        quizDataLength={quizDataLength}
+        onShowResult={handleShowResult}
+      />
+    </section>
+  );
 }

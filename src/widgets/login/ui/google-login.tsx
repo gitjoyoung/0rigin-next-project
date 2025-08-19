@@ -5,20 +5,13 @@ import { Button } from "@/shared/shadcn/ui/button";
 import { Chrome } from "lucide-react";
 
 export default function GoogleLogin() {
-  const getOrigin = () => {
-    if (typeof window !== "undefined") {
-      return window.location.origin;
-    }
-    return "";
+  const handleGoogleLogin = async () => {
+    await signInWithGoogle({
+      next: `${window.location.origin}/callback?next=${window.location.origin}/sign/complete-profile`,
+    });
   };
   return (
-    <form
-      action={async () => {
-        await signInWithGoogle({
-          next: `${getOrigin()}/callback?next=${getOrigin()}/sign/complete-profile`,
-        });
-      }}
-    >
+    <form action={handleGoogleLogin}>
       <Button
         variant="outline"
         className="w-full flex items-center justify-center gap-2"

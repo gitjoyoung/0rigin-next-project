@@ -23,16 +23,14 @@ import { useGoogleProfileForm } from "../hook/useGoogleProfileForm";
 import GenderRadioButton from "./gender-radio-button";
 
 export default function GoogleProfileForm() {
+  const { data: user } = useUser();
   const { error, mutate, isPending } = useGoogleProfile();
   const form = useGoogleProfileForm();
-  const { data: user } = useUser();
-  const email = user?.user?.email;
 
   const handleSubmit = form.handleSubmit((data) => {
     mutate(data);
   });
 
-  // 기존 Card 모드 (회원가입 페이지)
   return (
     <section className="w-full flex justify-center">
       {isPending && (
@@ -49,7 +47,7 @@ export default function GoogleProfileForm() {
           <CardTitle className="text-xl">Google Oauth 회원 가입</CardTitle>
           <div className="flex items-center gap-1">
             <Check className="w-3 h-3 text-blue-500" />
-            <p className="text-sm text-muted-foreground">{email}</p>
+            <p className="text-sm text-muted-foreground">{user?.user?.email}</p>
           </div>
         </CardHeader>
 
