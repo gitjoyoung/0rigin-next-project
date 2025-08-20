@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import Loading from "@/app/loading";
 import { getCategoryBySlug } from "@/entities/category";
 import { getPostById, getPostList } from "@/entities/post";
+import { getPostLikeCount } from "@/entities/post-like";
 import Comment from "@/widgets/board/comment";
 import BoardFooter from "@/widgets/board/footer/board-footer";
 import BoardHeader from "@/widgets/board/header/board-header";
@@ -33,16 +34,17 @@ export async function generateMetadata({ params }: IParams): Promise<Metadata> {
     title: `${(postData && postData.title) || category} - 0RIGIN(제로리진)`,
     description: `${(postData && postData.summary) || category} - 0RIGIN(제로리진)`,
   };
-  // 타이틀  - 0RIGIN(제로리진)
-  // 디스크립션 - 0RIGIN(제로리진)
   return metaData;
 }
 
 const PostViewWrapper = async ({ postId }: { postId: string }) => {
   const postData = await getCachedPostById(Number(postId));
+  const likeInfo = await getPostLikeCount(Number(postId));
+  const count = likeInfo?.length || 0;
   if (!postData) notFound();
-  return <PostView postData={postData} />;
+  return <PostView postData={postData} likeCount={count} />;
 };
+
 const PostListWrapper = async ({ category }: { category: string }) => {
   const { items } = await getPostList({
     category: category,
@@ -55,9 +57,7 @@ const PostListWrapper = async ({ category }: { category: string }) => {
 export default async function Page({ params }: IParams) {
   const { category, postId } = await params;
   if (!category || !postId || isNaN(Number(postId))) redirect(ROUTE_BOARD);
-
   const [categoryInfo] = await Promise.all([getCategoryBySlug(category)]);
-
   if (!categoryInfo) redirect(ROUTE_BOARD);
 
   return (

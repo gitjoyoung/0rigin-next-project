@@ -35,7 +35,7 @@ export async function GET() {
 
     // 현재 세션 정보 반환 (민감한 정보 제외)
     return NextResponse.json({
-      created_at: session.created_at,
+      created_at: session.user.created_at,
       expires_at: session.expires_at,
       refresh_token: session.refresh_token ? "***" : null, // 보안상 실제 토큰은 숨김
       user: {
