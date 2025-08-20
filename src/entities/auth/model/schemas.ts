@@ -46,11 +46,17 @@ export const SignUpRequestSchema = z
   });
 
 export const ResetPasswordRequestSchema = z.object({
-  email: emailSchema,
+  password: passwordSchema,
+  confirmPassword: confirmPasswordSchema,
 });
 
 export const UpdatePasswordRequestSchema = z.object({
   password: passwordSchema,
+});
+
+export const ResetPasswordResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
 });
 
 export const UpdateEmailRequestSchema = z.object({

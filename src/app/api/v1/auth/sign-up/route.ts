@@ -1,4 +1,4 @@
-import { signUp } from "@/entities/auth/api/sign";
+import { signUp } from "@/entities/auth";
 import { updateProfile } from "@/entities/profile";
 import { decryptObject } from "@/shared/utils/crypto-helper";
 import { NextRequest, NextResponse } from "next/server";
@@ -14,14 +14,18 @@ export async function POST(request: NextRequest) {
       gender: string;
     } = decryptObject(body);
 
-    const result = await signUp({
+    await signUp({
       email: decryptedBody.email,
       password: decryptedBody.password,
+      confirmPassword: decryptedBody.confirmPassword,
       nickname: decryptedBody.nickname,
       gender: decryptedBody.gender as "man" | "women" | "etc",
     });
 
-    return NextResponse.json(result);
+    return NextResponse.json({
+      success: true,
+      message: "회원가입이 완료되었습니다.",
+    });
   } catch (error) {
     console.error("Sign-up error:", error);
     return NextResponse.json(

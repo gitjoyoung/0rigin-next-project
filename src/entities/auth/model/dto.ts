@@ -12,6 +12,7 @@ import {
   UpdateEmailRequestSchema,
   UpdatePasswordRequestSchema,
   UserResponseSchema,
+  type ResetPasswordResponseSchema,
 } from "./schemas";
 
 // 요청 DTO 타입들
@@ -21,6 +22,7 @@ export type ResetPasswordRequest = z.infer<typeof ResetPasswordRequestSchema>;
 export type UpdatePasswordRequest = z.infer<typeof UpdatePasswordRequestSchema>;
 export type UpdateEmailRequest = z.infer<typeof UpdateEmailRequestSchema>;
 export type OAuthRequest = z.infer<typeof OAuthRequestSchema>;
+export type ResetPasswordResponse = z.infer<typeof ResetPasswordResponseSchema>;
 
 // 응답 DTO 타입들
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;

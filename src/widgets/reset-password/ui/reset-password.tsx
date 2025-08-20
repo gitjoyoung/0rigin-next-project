@@ -1,10 +1,9 @@
 "use client";
 
 import {
-  confirmPasswordSchema,
-  passwordSchema,
-} from "@/entities/auth/types/common";
-import { SupabaseBrowserClient } from "@/shared/lib/supabase/supabase-browser-client";
+  ResetPasswordRequestSchema,
+  type ResetPasswordRequest,
+} from "@/entities/auth";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
   Card,
@@ -22,61 +21,22 @@ import {
 } from "@/shared/shadcn/ui/form";
 import { Input } from "@/shared/shadcn/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import useResetPassword from "../hook";
 
-const formSchema = z
-  .object({
-    password: passwordSchema,
-    confirmPassword: confirmPasswordSchema,
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "비밀번호가 일치하지 않습니다",
-    path: ["confirmPassword"],
-  });
+export default function ResetPassword({ code }: { code: string }) {
+  const { mutate, isPending } = useResetPassword(code);
 
-export default function ResetPassword() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const supabase = SupabaseBrowserClient();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ResetPasswordRequest>({
+    resolver: zodResolver(ResetPasswordRequestSchema),
     defaultValues: {
       password: "",
       confirmPassword: "",
     },
   });
 
-  useEffect(() => {
-    const code = searchParams.get("code");
-    if (!code) {
-      router.push("/login");
-    }
-  }, [searchParams, router]);
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const code = searchParams.get("code");
-    if (!code) return;
-
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (error) {
-      console.error("Error exchanging code for session:", error);
-      return;
-    }
-
-    const { error: updateError } = await supabase.auth.updateUser({
-      password: values.password,
-    });
-
-    if (updateError) {
-      console.error("Error updating password:", updateError);
-      return;
-    }
-
-    router.push("/login");
+  const onSubmit = (values: ResetPasswordRequest) => {
+    mutate(values);
   };
 
   return (
@@ -124,7 +84,7 @@ export default function ResetPassword() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isPending}>
                 비밀번호 재설정
               </Button>
             </form>

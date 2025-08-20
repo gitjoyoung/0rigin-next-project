@@ -1,4 +1,4 @@
-import { getUser } from "@/entities/auth/api/get-user";
+import { getUser } from "@/entities/auth";
 import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-client";
 import { NextRequest, NextResponse } from "next/server";
 

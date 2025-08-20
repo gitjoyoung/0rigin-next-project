@@ -1,4 +1,4 @@
-import { resetPassword } from "@/entities/auth/api/reset-password";
+import { resetPassword } from "@/entities/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -15,13 +15,9 @@ export async function POST(request: NextRequest) {
 
     const result = await resetPassword(email);
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.message }, { status: 400 });
-    }
-
     return NextResponse.json({
       success: true,
-      message: result.message,
+      message: "비밀번호 재설정 이메일이 발송되었습니다.",
     });
   } catch (error) {
     console.error("Password reset request error:", error);

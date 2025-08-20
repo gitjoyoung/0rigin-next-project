@@ -1,4 +1,4 @@
-import { updatePassword } from "@/entities/auth/api/update-password";
+import { updatePassword } from "@/entities/auth";
 import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -37,13 +37,9 @@ export async function POST(request: NextRequest) {
     // 비밀번호 업데이트
     const result = await updatePassword(password);
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.message }, { status: 400 });
-    }
-
     return NextResponse.json({
       success: true,
-      message: result.message,
+      message: "비밀번호가 성공적으로 변경되었습니다.",
     });
   } catch (error) {
     console.error("Password reset completion error:", error);
