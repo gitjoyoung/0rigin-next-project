@@ -44,14 +44,12 @@ const PostViewWrapper = async ({ postId }: { postId: string }) => {
   return <PostView postData={postData} />;
 };
 const PostListWrapper = async ({ category }: { category: string }) => {
-  if (category) return;
-
   const { items } = await getPostList({
-    category,
+    category: category,
     page: 1,
     limit: 30,
   });
-  return <PostList data={items} />;
+  return <PostList data={items} category={category} />;
 };
 
 export default async function Page({ params }: IParams) {
