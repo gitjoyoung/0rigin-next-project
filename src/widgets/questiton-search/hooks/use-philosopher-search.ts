@@ -15,8 +15,6 @@ interface SearchResponse {
 async function searchPhilosophers(
   data: SearchRequest,
 ): Promise<SearchResponse> {
-  console.log("🔍 API 요청 시작:", data);
-
   const response = await fetch("/api/ai", {
     method: "POST",
     headers: {
@@ -55,15 +53,9 @@ export function usePhilosopherSearch() {
 
   const results = mutation.data?.results || [];
 
-  const onSubmit = (data: { category: string; question: string }) => {
-    mutation.mutate(data);
-  };
-
   return {
-    onSubmit,
+    mutation,
     form,
     results: results,
-    isLoading: mutation.isPending,
-    error: mutation.error,
   };
 }

@@ -2,7 +2,6 @@ import { ROUTE_BOARD } from "@/constants/pathname";
 import { getPostList } from "@/entities/post";
 import AnimatedBanner from "@/widgets/animated-banner";
 import PostList from "@/widgets/board/post/post-list";
-import QuestionSearch from "@/widgets/questiton-search";
 import Link from "next/link";
 import { Suspense } from "react";
 import Loading from "./loading";
@@ -33,8 +32,9 @@ async function CurrentPostView() {
 export default async function Home() {
   return (
     <div className="flex flex-col h-full">
-      <QuestionSearch />
       <AnimatedBanner />
+      {/* <Philosophy /> */}
+      {/* <QuestionSearch /> */}
       <div className="flex flex-col gap-1 flex-grow ">
         <TitleAndMoreButton
           title="LATEST POSTS"
