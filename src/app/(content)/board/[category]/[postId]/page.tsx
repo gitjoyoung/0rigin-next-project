@@ -62,10 +62,13 @@ export default async function Page({ params }: IParams) {
 
   return (
     <section className="flex flex-col gap-4 my-2 px-2">
-      <BreadcrumbWidget />
-      <Suspense fallback={<Loading />}>
-        <PostViewWrapper postId={postId} />
-      </Suspense>
+      <div className="flex flex-col gap-2">
+        <BreadcrumbWidget />
+        <Suspense fallback={<Loading />}>
+          <PostViewWrapper postId={postId} />
+        </Suspense>
+      </div>
+
       <Suspense fallback={<Loading />}>
         <PostLike postId={postId} />
       </Suspense>
