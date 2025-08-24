@@ -1,2 +1,2 @@
-export * from './api/stats-api'
-export * from './types'
+export * from "./api/stats.service";
+export * from "./types";

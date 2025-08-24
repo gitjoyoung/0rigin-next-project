@@ -8,7 +8,6 @@ import StepTermsOfService from "./step-terms-of-service";
 export default function SignUpFlow() {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const secondStepLabel = "회원가입";
-  // 1. 약관 동의가 안 된 경우
   if (!isTermsAccepted) {
     return (
       <div className="w-full">
@@ -21,7 +20,6 @@ export default function SignUpFlow() {
     );
   }
 
-  // 2. 약관 동의가 된 경우
   return (
     <div className="w-full">
       <SignUpProgressHeader

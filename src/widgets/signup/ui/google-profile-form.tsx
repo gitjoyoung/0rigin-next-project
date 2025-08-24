@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser } from "@/shared/hooks/auth";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
   Card,
@@ -22,9 +21,16 @@ import { useGoogleProfile } from "../hook/useGoogleProfile";
 import { useGoogleProfileForm } from "../hook/useGoogleProfileForm";
 import GenderRadioButton from "./gender-radio-button";
 
-export default function GoogleProfileForm() {
-  const { data: user } = useUser();
-  const { error, mutate, isPending } = useGoogleProfile();
+interface GoogleProfileFormProps {
+  userId: string;
+  email: string;
+}
+
+export default function GoogleProfileForm({
+  userId,
+  email,
+}: GoogleProfileFormProps) {
+  const { error, mutate, isPending } = useGoogleProfile(userId, email);
   const form = useGoogleProfileForm();
 
   const handleSubmit = form.handleSubmit((data) => {
@@ -47,7 +53,7 @@ export default function GoogleProfileForm() {
           <CardTitle className="text-xl">Google Oauth 회원 가입</CardTitle>
           <div className="flex items-center gap-1">
             <Check className="w-3 h-3 text-blue-500" />
-            <p className="text-sm text-muted-foreground">{user?.user?.email}</p>
+            <p className="text-sm text-muted-foreground">{email}</p>
           </div>
         </CardHeader>
 

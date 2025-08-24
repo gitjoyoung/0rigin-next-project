@@ -76,11 +76,6 @@ async function logVisit(
 /* ──────────────────────────────
  * 3. Auth Gate
  * ──────────────────────────────*/
-// … 생략 …
-
-/* ──────────────────────────────
- * 3. Auth Gate
- * ──────────────────────────────*/
 async function authGate(req: NextRequest) {
   // 3-1  Supabase 세션 ↔ 쿠키 동기화
   const { supabase, supabaseResponse, user } = await updateSession(req);
@@ -108,49 +103,6 @@ async function authGate(req: NextRequest) {
   /* ─── 로그인했는데 로그인/회원가입 페이지 접근 시 → 홈으로 ───*/
   if (user && AUTH_FORBIDDEN.includes(req.nextUrl.pathname)) {
     return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  /* ─── 3-4. complete-profile 페이지 접근 제어 ───*/
-  if (req.nextUrl.pathname.startsWith("/sign/complete-profile")) {
-    // 세션이 없으면 로그인 페이지로
-    if (!user) {
-      return NextResponse.redirect(new URL(ROUTE_LOGIN, req.url));
-    }
-
-    // 세션이 있으면 프로필 상태 확인
-    const { data: profile, error: profErr } = await supabase
-      .from("profile")
-      .select("signup_complete")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    // 프로필 조회 실패하거나 이미 완료된 경우 홈으로
-    if (profErr || !profile || profile.signup_complete === true) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-
-    // 조건 만족 (세션 ✓ + signup_complete false) → 접근 허용
-  }
-
-  /* ─── 3-5. signup_complete 체크 (다른 페이지들) ───*/
-  if (user) {
-    const { data: profile, error: profErr } = await supabase
-      .from("profile")
-      .select("signup_complete")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    // 조회 성공 & signup_complete false & 현재 페이지가 complete-profile이 아니면 리다이렉트
-    if (
-      !profErr &&
-      profile &&
-      profile.signup_complete === false &&
-      !req.nextUrl.pathname.startsWith("/sign/complete-profile")
-    ) {
-      return NextResponse.redirect(
-        new URL("/sign/complete-profile?required=true", req.url),
-      );
-    }
   }
 
   /* ─── viewport 쿼리 주입 ───*/

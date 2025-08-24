@@ -1,16 +1,19 @@
 "use client";
 
+import { toast } from "@/shared/hooks/use-toast";
 import { encryptObject } from "@/shared/utils/crypto-helper";
 import type { GoogleProfileParams } from "@/shared/utils/validators/auth/google-profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 // 구글 프로필 생성 API 요청 함수
-const fetchGoogleProfile = async (values: GoogleProfileParams) => {
+const fetchGoogleProfile = async (
+  values: GoogleProfileParams & { userId: string; email: string },
+) => {
   try {
     const encryptedValues = encryptObject(values);
-    const response = await fetch("/api/auth/signup", {
-      method: "PUT",
+    const response = await fetch("/api/auth/google-profile", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -30,7 +33,7 @@ const fetchGoogleProfile = async (values: GoogleProfileParams) => {
 };
 
 // 구글 프로필 생성 훅
-export const useGoogleProfile = () => {
+export const useGoogleProfile = (userId: string, email: string) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -40,20 +43,33 @@ export const useGoogleProfile = () => {
     isPending = false,
   } = useMutation({
     mutationKey: ["google-profile"],
-    mutationFn: fetchGoogleProfile,
+    mutationFn: (values: GoogleProfileParams) => {
+      console.log({ ...values, userId, email });
+      return fetchGoogleProfile({
+        ...values,
+        userId: userId,
+        email: email,
+      });
+    },
     onSuccess: (data) => {
-      console.log("성공 콜백 데이터:", data);
-      if (data.success) {
-        console.log("웰컴 페이지로 이동");
-        // 사용자 정보 캐시 무효화
-        queryClient.invalidateQueries({ queryKey: ["user"] });
-        router.push("/sign/welcome");
-      } else {
-        console.log("성공이지만 data.success가 false:", data);
-      }
+      console.log(data);
+      // if (data.success) {
+      //   queryClient.invalidateQueries({ queryKey: ["user"] });
+      //   router.push("/sign/welcome");
+      // } else {
+      //   toast({
+      //     title: "프로필 생성에 실패했습니다.",
+      //     description: data.message,
+      //     variant: "destructive",
+      //   });
+      // }
     },
     onError: (error) => {
-      console.error("에러 콜백:", error);
+      toast({
+        title: "프로필 생성에 실패했습니다.",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 

@@ -1,4 +1,4 @@
-import { getQuizById } from "@/entities/quiz/api/quiz-api";
+import { getQuizById } from "@/entities/quiz/api/quiz.service";
 import Quiz from "@/widgets/quiz/ui/quiz";
 import QuizHeader from "@/widgets/quiz/ui/quiz-header";
 import { Metadata } from "next";
