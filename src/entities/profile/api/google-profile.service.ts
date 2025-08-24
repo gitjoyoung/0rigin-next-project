@@ -9,7 +9,17 @@ export const createGoogleProfile = async (
   const supabase = await SupabaseServerClient();
   const response = await supabase
     .from("profile")
-    .insert({ id: userId, email, nickname, gender, signup_complete: true })
+    .upsert(
+      {
+        id: userId,
+        email,
+        nickname,
+        gender,
+        signup_complete: true,
+        is_email_verified: true,
+      },
+      { onConflict: "id" },
+    )
     .select()
     .single();
 

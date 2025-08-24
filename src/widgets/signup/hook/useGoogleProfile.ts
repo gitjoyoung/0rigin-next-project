@@ -44,7 +44,6 @@ export const useGoogleProfile = (userId: string, email: string) => {
   } = useMutation({
     mutationKey: ["google-profile"],
     mutationFn: (values: GoogleProfileParams) => {
-      console.log({ ...values, userId, email });
       return fetchGoogleProfile({
         ...values,
         userId: userId,
@@ -52,17 +51,16 @@ export const useGoogleProfile = (userId: string, email: string) => {
       });
     },
     onSuccess: (data) => {
-      console.log(data);
-      // if (data.success) {
-      //   queryClient.invalidateQueries({ queryKey: ["user"] });
-      //   router.push("/sign/welcome");
-      // } else {
-      //   toast({
-      //     title: "프로필 생성에 실패했습니다.",
-      //     description: data.message,
-      //     variant: "destructive",
-      //   });
-      // }
+      if (data.success) {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+        router.push("/sign/welcome");
+      } else {
+        toast({
+          title: "프로필 생성에 실패했습니다.",
+          description: data.message,
+          variant: "destructive",
+        });
+      }
     },
     onError: (error) => {
       toast({

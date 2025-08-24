@@ -9,6 +9,6 @@ export const metadata: Metadata = {
 
 export default async function page() {
   const user = await getUser();
-  const userEmail = user?.email ?? "";
+  const userEmail = user?.email ?? null;
   return <WelcomeCelebration userEmail={userEmail} />;
 }

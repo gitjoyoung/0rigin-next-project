@@ -1,3 +1,4 @@
+"use client";
 import { SupabaseBrowserClient } from "@/shared/lib/supabase/supabase-browser-client";
 
 export const oauthClient = async () => {

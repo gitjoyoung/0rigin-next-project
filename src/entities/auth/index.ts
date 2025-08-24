@@ -1,7 +1,6 @@
 // Auth Entity - 배럴 export: 외부에 노출할 API 모음
 
 // API 함수들
-export * from "./api/oauth";
 export * from "./api/password";
 export * from "./api/sessions";
 export * from "./api/user";
