@@ -1,4 +1,4 @@
-import Login from "@/widgets/login";
+import { LoginForm, SignButton } from "@/widgets/login";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,7 +19,8 @@ export default function LoginPage() {
   return (
     <article className="flex justify-center items-center flex-col mx-1 mt-10 gap-8">
       <Description />
-      <Login />
+      <LoginForm />
+      <SignButton />
     </article>
   );
 }

@@ -1,5 +1,5 @@
 "use server"; // ✅ 서버 컴포넌트임을 명시
-import { checkSignupCompleteServer } from "@/entities/auth";
+import { checkSignupCompleteServer } from "@/entities/auth/api/user";
 import type { ReactNode } from "react";
 import { AuthClientProvider } from "./auth-client-provider";
 

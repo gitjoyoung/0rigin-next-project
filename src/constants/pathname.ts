@@ -1,5 +1,5 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-08-25 01:26:20
+// 생성 시간: 2025-08-27 16:35:51
 // 동적 라우트([param])는 제외됨
 
 export const ROUTE_FORGET_PASSWORD = "/forget/password";
@@ -9,8 +9,6 @@ export const ROUTE_SIGN_COMPLETE_PROFILE = "/sign/complete-profile";
 export const ROUTE_SIGN_FORM = "/sign/form";
 export const ROUTE_SIGN = "/sign";
 export const ROUTE_SIGN_WELCOME = "/sign/welcome";
-export const ROUTE_TEST_A = "/test/a";
-export const ROUTE_TEST_B = "/test/b";
 export const ROUTE_BOARD = "/board";
 export const ROUTE_QUESTION = "/question";
 export const ROUTE_QUIZ_CREATE = "/quiz/create";

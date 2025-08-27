@@ -1,6 +1,6 @@
 "use client";
 
-import { SignUpRequestSchema, type SignUpRequest } from "@/entities/auth";
+import { SignUpRequestSchema, type SignUpRequest } from "@/entities/auth/model";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

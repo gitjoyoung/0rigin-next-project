@@ -16,6 +16,7 @@ import {
   ROUTE_MY_PAGE,
   ROUTE_RESET_PASSWORD,
   ROUTE_SIGN,
+  ROUTE_SIGN_FORM,
 } from "@/constants/pathname";
 import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-client";
 import { updateSession } from "@/shared/lib/supabase/supabase-session";
@@ -27,7 +28,12 @@ import { match } from "path-to-regexp";
  * 0. 보호·차단 경로 매처
  * ──────────────────────────────*/
 const PROTECTED = [ROUTE_MY_PAGE];
-const AUTH_FORBIDDEN = [ROUTE_LOGIN, ROUTE_SIGN, ROUTE_RESET_PASSWORD];
+const AUTH_FORBIDDEN = [
+  ROUTE_LOGIN,
+  ROUTE_SIGN,
+  ROUTE_RESET_PASSWORD,
+  ROUTE_SIGN_FORM,
+];
 const matchProtected = (pathname: string) =>
   PROTECTED.some((p) => match(p)(pathname));
 

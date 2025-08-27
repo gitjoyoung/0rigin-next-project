@@ -17,13 +17,13 @@ import {
 } from "@/shared/shadcn/ui/form";
 import { Input } from "@/shared/shadcn/ui/input";
 import { LoadingSpinner } from "@/shared/ui/loading-spinner";
-import { Frown, RefreshCcw } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { useSignUpForm } from "../hook/useSignUpForm";
 import { useUserSignUp } from "../hook/useUserSignUp";
 import GenderRadioButton from "./gender-radio-button";
 
 export default function NormalSignUpForm() {
-  const { handleSubmit, isPending, error, serverMessage } = useUserSignUp();
+  const { handleSubmit, isPending, error } = useUserSignUp();
   const form = useSignUpForm();
 
   const onSubmit = form.handleSubmit((data) => {
@@ -151,14 +151,10 @@ export default function NormalSignUpForm() {
 
               {/* 에러 메시지 */}
               {error && (
-                <div className="flex justify-center items-center gap-1 text-red-500">
-                  <Frown className="w-4 h-4" />
-                  <p className="text-xs text-center whitespace-pre-line font-medium">
-                    {error}
-                  </p>
-                </div>
+                <p className="bg-red-50 border border-red-200 rounded-md p-3 text-sm text-center whitespace-pre-line font-medium leading-relaxed text-red-600">
+                  {error}
+                </p>
               )}
-              {serverMessage && <p>{serverMessage}</p>}
 
               {/* 제출 버튼 */}
               <Button

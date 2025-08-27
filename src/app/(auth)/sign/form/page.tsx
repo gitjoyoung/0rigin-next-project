@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default async function SignFormPage() {
-  return <SignUpFlow />;
+  return (
+    <div className="py-6 px-4">
+      <SignUpFlow />
+    </div>
+  );
 }

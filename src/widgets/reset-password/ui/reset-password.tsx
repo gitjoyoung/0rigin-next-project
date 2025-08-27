@@ -3,7 +3,7 @@
 import {
   ResetPasswordRequestSchema,
   type ResetPasswordRequest,
-} from "@/entities/auth";
+} from "@/entities/auth/model";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
   Card,

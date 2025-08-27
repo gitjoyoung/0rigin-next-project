@@ -1,4 +1,4 @@
-import { getUser } from "@/entities/auth";
+import { getUser } from "@/entities/auth/api/user";
 import QuizCreateAuthCheck from "@/widgets/quiz/create/quiz-create-auth-check";
 import QuizCreateForm from "@/widgets/quiz/create/quiz-create-form";
 import type { Metadata } from "next";

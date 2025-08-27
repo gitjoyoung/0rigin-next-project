@@ -2,53 +2,6 @@
 
 import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-client";
 import type { AuthResponse, Session } from "@supabase/supabase-js";
-import type { LoginRequest, SignUpRequest } from "../model/dto";
-
-// 회원가입
-export async function signUp({
-  email,
-  password,
-  nickname,
-  gender,
-}: SignUpRequest): Promise<AuthResponse["data"]> {
-  const supabase = await SupabaseServerClient();
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { display_name: nickname, nickname, gender },
-    },
-  });
-
-  if (error) throw new Error(error.message);
-
-  return data;
-}
-
-/**
- * 로그인
- * @param email
- * @param password
- * @returns
- * @throws InvalidEmailError: 이메일 형식이 유효하지 않을 때 발생합니다.
- * @throws InvalidPasswordError: 비밀번호가 유효하지 않을 때 발생합니다.
- * @throws UserNotFoundError: 해당 이메일 또는 전화번호로 등록된 사용자가 없을 때 발생합니다.
- * @throws TooManyRequestsError: 너무 많은 요청이 발생했을 때 발생합니다.
- * WeakPasswordError: 비밀번호가 너무 약할 때 발생합니다.
- */
-export async function signIn({
-  email,
-  password,
-}: LoginRequest): Promise<AuthResponse> {
-  const supabase = await SupabaseServerClient();
-  const result = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  return result;
-}
 
 // 로그아웃
 export async function signOut(): Promise<boolean> {

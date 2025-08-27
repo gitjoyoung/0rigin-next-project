@@ -1,4 +1,4 @@
-import { getUser } from "@/entities/auth";
+import { getUser } from "@/entities/auth/api/user";
 import { getPostsByUserId } from "@/entities/post";
 import { NextResponse } from "next/server";
 

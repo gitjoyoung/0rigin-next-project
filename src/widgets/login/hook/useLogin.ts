@@ -1,42 +1,42 @@
 "use client";
 
-import type { LoginRequest } from "@/entities/auth";
+import type { LoginRequest } from "@/entities/auth/model";
 import { encryptObject } from "@/shared/utils/crypto-helper";
 import { useMutation } from "@tanstack/react-query";
 
 // 로그인 API 요청 함수 분리
 const fetchLogin = async (values: LoginRequest) => {
-  try {
-    const encryptedValues = encryptObject(values); // 암호화
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + "/api/auth/sign-in",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(encryptedValues),
-      },
-    ).then((res) => res.json());
+  const encryptedValues = encryptObject(values);
+  const response = await fetch("/api/auth/sign-in", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(encryptedValues),
+  });
 
-    return response;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
+  const result = await response.json();
+
+  // 에러 응답 처리
+  if (!response.ok) {
+    throw new Error(result.error || "로그인에 실패했습니다.");
   }
+
+  return result;
 };
 
 export const useLogin = () => {
   const { mutate, error, isPending } = useMutation({
     mutationFn: fetchLogin,
-    onSuccess: (result) => {
+    onSuccess: () => {
       window.location.href = "/";
     },
     onError: (error) => {
-      throw new Error(error.message);
+      console.log("Login mutation error:", error);
     },
   });
+
+  console.log("useLogin state:", { error: error?.message, isPending });
 
   return {
     loginError: error?.message ?? null,

@@ -1,6 +1,5 @@
 "use client";
-import { ROUTE_FORGET_PASSWORD, ROUTE_SIGN } from "@/constants/pathname";
-import { LoginRequestSchema, type LoginRequest } from "@/entities/auth";
+import { LoginRequestSchema, type LoginRequest } from "@/entities/auth/model";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
   Card,
@@ -8,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/shadcn/ui/card";
+import { FloatingInput } from "@/shared/shadcn/ui/floating-input";
 import {
   Form,
   FormControl,
@@ -15,10 +15,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/shared/shadcn/ui/form";
-import { Input } from "@/shared/shadcn/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../hook/useLogin";
 import GoogleLogin from "./google-login";
@@ -52,10 +50,10 @@ export default function LoginForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <FloatingInput
                       disabled={isPending}
                       type="email"
-                      placeholder="이메일"
+                      label="이메일"
                       autoComplete="email"
                       {...field}
                     />
@@ -71,10 +69,10 @@ export default function LoginForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <FloatingInput
                       disabled={isPending}
                       type="password"
-                      placeholder="비밀번호"
+                      label="비밀번호"
                       autoComplete="current-password"
                       {...field}
                     />
@@ -102,15 +100,6 @@ export default function LoginForm() {
           {/* 구글 로그인 */}
           <div className="my-2">
             <GoogleLogin />
-          </div>
-
-          <div className="my-2 flex gap-4 justify-between">
-            <Button disabled={isPending} variant="outline" asChild>
-              <Link href={ROUTE_SIGN}>회원가입</Link>
-            </Button>
-            <Button disabled={isPending} variant="outline" asChild>
-              <Link href={ROUTE_FORGET_PASSWORD}>비밀번호 분실</Link>
-            </Button>
           </div>
         </Form>
       </CardContent>

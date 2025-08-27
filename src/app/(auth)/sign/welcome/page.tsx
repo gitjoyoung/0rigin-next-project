@@ -1,4 +1,4 @@
-import { getUser } from "@/entities/auth";
+import { getUser } from "@/entities/auth/api/user";
 import WelcomeCelebration from "@/widgets/welcome-celebration";
 import type { Metadata } from "next";
 
