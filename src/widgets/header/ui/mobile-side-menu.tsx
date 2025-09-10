@@ -15,7 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/shared/shadcn/ui/alert-dialog";
-import { Avatar } from "@/shared/shadcn/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/shadcn/ui/avatar";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
   Sheet,
@@ -76,23 +76,23 @@ export default function MobileSideMenu({ className }: { className?: string }) {
                   <div className="flex flex-col items-center justify-center gap-3 w-full">
                     {/* 사용자 프로필 정보 */}
                     <div className="flex items-center gap-3 w-full p-4 bg-gray-50 dark:bg-primary-foreground rounded-lg">
-                      <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                        <Avatar className="w-5 h-5 text-primary-foreground" />
-                      </div>
-                      <div className="flex-1 min-w-0">
+                      <Avatar className="w-8 h-8 text-primary-foreground">
+                        <AvatarImage src={profile?.avatar_url || ""} />
+                        <AvatarFallback>
+                          {profile?.nickname?.slice(0, 2)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="w-full min-w-0 flex flex-col justify-center flex-1">
                         <SheetClose asChild>
                           <Link
                             href={ROUTE_MY_PAGE}
-                            className="text-sm font-medium truncate "
+                            className="text-xs font-medium truncate "
                           >
-                            {profile?.nickname || "닉네임을 설정해주세요"}{" "}
-                            <span className="text-xs text-muted-foreground w-2">
-                              &gt;
-                            </span>
+                            {profile?.nickname || ""}
                           </Link>
                         </SheetClose>
                         <p className="text-xs text-muted-foreground truncate">
-                          {user?.email}
+                          {user?.email || ""}
                         </p>
                       </div>
                     </div>

@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/shadcn/ui/dropdown-menu";
@@ -74,6 +75,14 @@ export default function AuthButtons() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 focus:outline-none">
+        <DropdownMenuLabel>
+          <div className="flex flex-col gap-1 text-xs">
+            <span className=" font-medium ">{profile?.nickname || ""}</span>
+            <span className=" font-medium text-muted-foreground ">
+              {profile?.email || ""}
+            </span>
+          </div>
+        </DropdownMenuLabel>
         <DropdownMenuItem asChild>
           <Link href={ROUTE_MY_PAGE} className="flex items-center gap-2">
             <User className="h-4 w-4" />
