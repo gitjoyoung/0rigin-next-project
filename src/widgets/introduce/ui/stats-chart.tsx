@@ -30,7 +30,7 @@ const chartConfig = {
     color: "#10b981",
   },
   visitor_count: {
-    label: "평균 방문자",
+    label: "방문자",
     color: "#8b5cf6",
   },
 } as const;
@@ -70,7 +70,7 @@ export default function StatsChart({
         <div className="flex flex-1 flex-col justify-center gap-3 px-6 py-5 sm:py-6">
           <CardTitle>성장 통계</CardTitle>
           <CardDescription>
-            최근 {chartStats.length}일간의 성장 추이를 보여줍니다
+            최근 {chartStats.length}일간의 성장 추이
           </CardDescription>
         </div>
         <div className="flex flex-1">
@@ -113,7 +113,10 @@ export default function StatsChart({
                 tickFormatter={(value) => dayjs(value).format("MM/DD")}
               />
               <YAxis
-                domain={[0, "dataMax"]} // 최소 0, 최대값에 딱 맞춤
+                domain={[
+                  0,
+                  (dataMax: number) => Math.ceil((dataMax * 1.2) / 10) * 10,
+                ]}
                 tickLine={false}
                 axisLine={false}
                 width={60}

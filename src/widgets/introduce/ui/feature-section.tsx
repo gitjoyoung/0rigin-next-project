@@ -18,8 +18,8 @@ interface FeatureSectionProps {
 
 export default function FeatureSection({ features }: FeatureSectionProps) {
   return (
-    <div className="mb-16">
-      <h2 className="text-lg sm:text-2xl font-semibold text-center mb-4">
+    <div className="mb-16 space-y-8">
+      <h2 className="text-lg sm:text-2xl font-semibold text-center">
         주요 카테고리
       </h2>
       {/* 데스크톱 그리드 */}
