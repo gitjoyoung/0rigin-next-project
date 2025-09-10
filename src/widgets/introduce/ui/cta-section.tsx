@@ -1,7 +1,7 @@
 import { Button } from "@/shared/shadcn/ui/button";
 import Link from "next/link";
 
-export default function CTASection() {
+export default function CtaSection() {
   return (
     <div className="text-center">
       <h2 className="text-lg sm:text-2xl font-semibold mb-4">

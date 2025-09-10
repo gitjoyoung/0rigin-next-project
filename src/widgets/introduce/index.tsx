@@ -2,7 +2,7 @@
 
 import { Separator } from "@/shared/shadcn/ui/separator";
 import type { Tables } from "@/shared/types";
-import CTASection from "./ui/cta-section";
+import CtaSection from "./ui/cta-section";
 import FeatureSection from "./ui/feature-section";
 import IntroHeader from "./ui/intro-header";
 import StatsSection from "./ui/stats-section";
@@ -56,8 +56,8 @@ export default function Introduce({ chartStats }: IntroduceProps) {
 
         <Separator className="my-16" />
 
-        {/* CTA 섹션 */}
-        <CTASection />
+        {/* Call To Action 의 약자로 호출 행동을 의미합니다. */}
+        <CtaSection />
       </div>
     </div>
   );
