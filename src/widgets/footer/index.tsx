@@ -19,24 +19,18 @@ const FOOTER_COPYRIGHT = {
 };
 export default function Footer() {
   return (
-    <div className="relative text-xs flex flex-col items-center justify-center gap-2   p-4 w-full border-t-2  border-gray-400 dark:border-white">
-      <ul className="flex flex-wrap font-semibold  dark:divide-white">
-        {FOOTER_NAV &&
-          FOOTER_NAV.length > 0 &&
-          FOOTER_NAV.map(({ name, link, id }) => (
-            <li key={id} className="px-1.5 first:pl-0 last:pr-0">
-              <Link
-                href={link}
-                className="hover:text-gray-900 dark:hover:text-white"
-              >
-                {name}
-              </Link>
-            </li>
-          ))}
-      </ul>
-      <div className="flex items-center gap-4">
-        <p>{FOOTER_COPYRIGHT.contact}</p>
+    <div className="relative text-xs flex flex-col items-center justify-center gap-2 py-4 w-full border-t">
+      <div className="flex flex-wrap font-semibold">
+        {FOOTER_NAV.map(({ name, link, id }, index) => (
+          <div key={id} className="flex items-center">
+            {index > 0 && <span className="px-1 text-gray-400">|</span>}
+            <Link href={link} className="px-1 hover:text-gray-900">
+              {name}
+            </Link>
+          </div>
+        ))}
       </div>
+      <p>{FOOTER_COPYRIGHT.contact}</p>
       <p>{FOOTER_COPYRIGHT.copyright}</p>
     </div>
   );

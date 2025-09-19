@@ -15,7 +15,7 @@ import { HEADER_NAV_LIST } from "../constant/header-menu";
 
 export default function Navigation() {
   return (
-    <nav className="ml-4 items-end text-base hidden md:flex">
+    <nav className=" items-end text-base hidden md:flex">
       <Menubar className="border-none bg-transparent p-0 shadow-none">
         {HEADER_NAV_LIST.map((item) => (
           <MenubarMenu key={item.id}>
@@ -33,7 +33,7 @@ export default function Navigation() {
                               "
                   />
                 </MenubarTrigger>
-                <MenubarContent className="min-w-[250px] ">
+                <MenubarContent className="min-w-[180px] ">
                   {item.submenuItems.map((subItem) => (
                     <MenubarItem asChild key={subItem.id}>
                       <Link
