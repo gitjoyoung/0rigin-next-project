@@ -1,6 +1,6 @@
 import { getQuizById } from "@/entities/quiz/api/quiz.service";
-import Quiz from "@/widgets/quiz/ui/quiz";
-import QuizHeader from "@/widgets/quiz/ui/quiz-header";
+import Quiz from "@/feature/quiz/ui/quiz";
+import QuizHeader from "@/feature/quiz/ui/quiz-header";
 import { Metadata } from "next";
 import { cache } from "react";
 

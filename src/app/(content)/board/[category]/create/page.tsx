@@ -1,6 +1,6 @@
 import { getCategoryBySlug } from "@/entities/category";
 import { getProfile } from "@/entities/profile/api/profile.service";
-import PostCreateWidget from "@/widgets/board/post/post-create/ui";
+import PostCreateWidget from "@/feature/board/post/post-create";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -30,7 +30,6 @@ export default async function Create({ params }: IParams) {
 
   return (
     <div className="flex flex-col gap-2 my-2">
-      <h1 className="text-2xl px-2 font-bold">{category} 글쓰기</h1>
       <PostCreateWidget category={category} profile={profile} />
     </div>
   );

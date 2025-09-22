@@ -1,5 +1,5 @@
 import { getQuizzes } from "@/entities/quiz/api/quiz.service";
-import QuizBoard from "@/widgets/quiz/ui/quiz-board";
+import QuizBoard from "@/feature/quiz/ui/quiz-board";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "퀴즈",

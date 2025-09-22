@@ -1,7 +1,7 @@
 import { ROUTE_BOARD } from "@/constants/pathname";
 import { getPostList } from "@/entities/post";
-import AnimatedBanner from "@/widgets/animated-banner";
-import PostList from "@/widgets/board/post/post-list";
+import AnimatedBanner from "@/feature/animated-banner";
+import PostList from "@/feature/board/post/post-list";
 import Link from "next/link";
 import { Suspense } from "react";
 import Loading from "./loading";

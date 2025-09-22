@@ -1,4 +1,4 @@
-import ResetPassword from "@/widgets/reset-password";
+import ResetPassword from "@/feature/reset-password";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

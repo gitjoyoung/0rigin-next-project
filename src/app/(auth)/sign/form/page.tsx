@@ -1,4 +1,4 @@
-import SignUpFlow from "@/widgets/signup/ui/signup-flow";
+import SignUpFlow from "@/feature/signup/ui/signup-flow";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

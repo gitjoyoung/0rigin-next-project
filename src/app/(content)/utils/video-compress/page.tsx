@@ -1,5 +1,5 @@
+import VideoCompressor from "@/feature/util-widget/video-compressor";
 import { generateMetadata } from "@/shared/metadata";
-import VideoCompressor from "@/widgets/util-widget/video-compressor";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = generateMetadata({

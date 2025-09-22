@@ -1,8 +1,8 @@
 import AppProviders from "@/app/providers";
+import Footer from "@/feature/footer";
+import Header from "@/feature/header";
+import Ticker from "@/feature/ticker";
 import { baseMetadata } from "@/shared/metadata";
-import Footer from "@/widgets/footer";
-import Header from "@/widgets/header";
-import Ticker from "@/widgets/ticker";
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import localFont from "next/font/local";

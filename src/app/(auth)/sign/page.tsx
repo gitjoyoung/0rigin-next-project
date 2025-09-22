@@ -1,4 +1,4 @@
-import SignUpLanding from "@/widgets/signup/signup-landing";
+import SignUpLanding from "@/feature/signup/signup-landing";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,4 +1,4 @@
-import { LoginForm, SignButton } from "@/widgets/login";
+import { LoginForm, SignButton } from "@/feature/login";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

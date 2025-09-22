@@ -6,13 +6,13 @@ import Loading from "@/app/loading";
 import { getCategoryBySlug } from "@/entities/category";
 import { getPostById, getPostList } from "@/entities/post";
 import { getPostLikeCount } from "@/entities/post-like";
-import Comment from "@/widgets/board/comment";
-import BoardFooter from "@/widgets/board/footer/board-footer";
-import BoardHeader from "@/widgets/board/header/board-header";
-import PostLike from "@/widgets/board/post/post-like";
-import PostList from "@/widgets/board/post/post-list";
-import PostView from "@/widgets/board/post/post-view";
-import BreadcrumbWidget from "@/widgets/bread-crumb";
+import Comment from "@/feature/board/comment";
+import BoardFooter from "@/feature/board/footer/board-footer";
+import BoardHeader from "@/feature/board/header/board-header";
+import PostLike from "@/feature/board/post/post-like";
+import PostList from "@/feature/board/post/post-list";
+import PostView from "@/feature/board/post/post-view";
+import BreadcrumbWidget from "@/feature/bread-crumb";
 import { cache, Suspense } from "react";
 
 interface IParams {

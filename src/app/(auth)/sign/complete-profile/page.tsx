@@ -1,4 +1,4 @@
-import GoogleProfileForm from "@/widgets/signup/ui/google-profile-form";
+import GoogleProfileForm from "@/feature/signup/ui/google-profile-form";
 
 interface PageProps {
   searchParams: {
