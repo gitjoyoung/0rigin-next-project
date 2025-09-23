@@ -10,6 +10,7 @@ export default function PostHeader({
   view_count,
   id,
   category,
+  author_id,
   likeCount,
 }: Partial<Database["public"]["Tables"]["posts"]["Row"]> & {
   likeCount: number;
@@ -40,6 +41,7 @@ export default function PostHeader({
             postId: id?.toString() || "",
             category: category || "",
             nickname: nickname || "",
+            author_id: author_id || undefined,
           }}
         />
       </div>

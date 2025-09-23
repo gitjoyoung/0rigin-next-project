@@ -6,11 +6,12 @@ import PasswordConfirmModal from "../post-view/password-conrifm-modal";
 import { usePostActions } from "./hook/use-post-action";
 import ConfirmActionModal from "./ui/confirm-action-modal";
 
-interface PostActionButtonsProps {
+export interface PostActionButtonsProps {
   post?: {
     postId: string;
     category: string;
     nickname?: string;
+    author_id?: string;
   };
 }
 
@@ -19,7 +20,7 @@ export default function PostActionButtons({ post }: PostActionButtonsProps) {
     action,
     passwordModal,
     confirmModal,
-    openPasswordModal,
+    handleEditDeleteState,
     closePasswordModal,
     closeConfirmModal,
     verifyPassword,
@@ -27,6 +28,8 @@ export default function PostActionButtons({ post }: PostActionButtonsProps) {
   } = usePostActions({
     post,
   });
+  console.log({ ...post });
+
   return (
     <>
       <div className="flex gap-2 items-center">
@@ -36,7 +39,7 @@ export default function PostActionButtons({ post }: PostActionButtonsProps) {
           className={cn("text-xs cursor-pointer p-0")}
           disabled={passwordModal.loading || confirmModal.loading}
           onClick={() => {
-            openPasswordModal("edit");
+            handleEditDeleteState("edit");
           }}
         >
           수정
@@ -47,7 +50,7 @@ export default function PostActionButtons({ post }: PostActionButtonsProps) {
           className={cn("text-xs cursor-pointer p-0")}
           disabled={passwordModal.loading || confirmModal.loading}
           onClick={() => {
-            openPasswordModal("delete");
+            handleEditDeleteState("delete");
           }}
         >
           삭제

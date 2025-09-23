@@ -30,6 +30,7 @@ export default function PostUpdateWidget({
       content: (initialData.content as string) || "",
       thumbnail: initialData.thumbnail || undefined,
       summary: initialData.summary || undefined,
+      category: category,
       nickname: initialData.nickname || nickname || profile?.nickname || "", // 원본 글의 닉네임 우선 사용
       password: verifiedPassword || "", // 검증된 비밀번호 사용
     },

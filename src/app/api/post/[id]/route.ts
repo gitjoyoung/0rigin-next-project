@@ -1,3 +1,4 @@
+import { getUser } from "@/entities/auth/api/user";
 import { deletePost, getPostById, updatePost } from "@/entities/post/api";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -98,10 +99,6 @@ export async function DELETE(
   try {
     const { id: postId } = await params;
 
-    // 현재 로그인한 사용자 정보 가져오기
-    const user = await getUser();
-
-    // 게시글 정보 조회
     const post = await getPostById(Number(postId));
     if (!post) {
       return NextResponse.json(
@@ -109,10 +106,10 @@ export async function DELETE(
         { status: 404 },
       );
     }
-
-    // 로그인한 사용자가 작성자인지 확인
+    const user = await getUser();
     const isAuthor = user && post.author_id && user.id === post.author_id;
 
+    console.log("현재 사용자가 작성자인지 확인", isAuthor);
     if (!isAuthor) {
       // 비회원 게시글인 경우 비밀번호 검증 필요
       const body = await request.json().catch(() => ({}));

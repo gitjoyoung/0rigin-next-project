@@ -13,30 +13,18 @@ import { Button } from "@/shared/shadcn/ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// 경로명을 한국어로 변환하는 매핑 객체
-const pathNameMap: Record<string, string> = {
-  board: "게시판",
-  philosophy: "철학",
-  components: "컴포넌트",
-  // 필요한 경로명들을 추가하세요
-};
-
 export default function BreadcrumbWidget() {
   const [pathname, setPathname] = useState("");
 
   useEffect(() => {
     setPathname(window.location.pathname);
-
-    // 경로 변경 감지를 위한 이벤트 리스너
     const handleRouteChange = () => {
       setPathname(window.location.pathname);
     };
-
     window.addEventListener("popstate", handleRouteChange);
     return () => window.removeEventListener("popstate", handleRouteChange);
   }, []);
 
-  // board로 시작하지 않는 경로면 breadcrumb을 표시하지 않음
   if (!pathname.startsWith("/board")) {
     return null;
   }
@@ -56,8 +44,7 @@ export default function BreadcrumbWidget() {
     // 숫자인 경우 (게시글 ID 등) 그대로 표시, 아니면 매핑된 이름 사용
     const displayName = /^\d+$/.test(segment)
       ? segment
-      : pathNameMap[segment] ||
-        segment.charAt(0).toUpperCase() + segment.slice(1);
+      : segment.charAt(0).toUpperCase() + segment.slice(1);
 
     return {
       segment,
@@ -81,7 +68,7 @@ export default function BreadcrumbWidget() {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/board">게시판</Link>
+            <Link href="/board">Board</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
 

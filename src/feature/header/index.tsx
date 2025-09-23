@@ -8,7 +8,7 @@ import ThemeToggle from "./ui/theme-toggle";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between w-full border-y  ">
+    <header className="flex items-center justify-between w-full border-t  ">
       <nav className="flex gap-4 items-center justify-end">
         <Logo />
         <Navigation />

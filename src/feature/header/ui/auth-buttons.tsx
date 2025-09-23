@@ -62,12 +62,12 @@ export default function AuthButtons() {
           variant="ghost"
           className="flex items-center gap-2 px-2 focus-visible:ring-0 focus-visible:ring-offset-0"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-xs">
             <Avatar className="w-8 h-8">
               <AvatarImage src={profile?.avatar_url || ""} />
               <AvatarFallback>{profile?.nickname?.slice(0, 2)}</AvatarFallback>
             </Avatar>
-            <span className="text-sm font-medium">
+            <span className="font-medium">
               {profile?.nickname || "닉네임을 설정해주세요"}
             </span>
           </div>

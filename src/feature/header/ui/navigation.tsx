@@ -21,13 +21,13 @@ export default function Navigation() {
           <MenubarMenu key={item.id}>
             {item.submenuItems ? (
               <>
-                <MenubarTrigger className="group flex cursor-pointer items-center gap-1 hover:font-semibold data-[state=open]:font-semibold text-md transition-all duration-200 bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                <MenubarTrigger className="group flex cursor-pointer items-center hover:font-semibold data-[state=open]:font-semibold text-sm transition-all duration-200 bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
                   {item.title}
                   <ChevronRight
                     className="
                                  relative h-4 w-4 text-transparent
                                  group-hover:text-current
-                                 group-data-[state=open]:text-current
+                                 group-data-[state=open]:text-current 
                                  transition-all duration-200
                                  group-data-[state=open]:rotate-90
                               "
