@@ -53,6 +53,9 @@ export default function PostForm({
   return (
     <section className="w-full py-2">
       <LoadingModal isOpen={isSubmitting} />
+      {/* 마크다운 사용법 */}
+      <MarkDownTip />
+
       <Form {...form}>
         <form
           className="w-full flex flex-col gap-2"
@@ -139,9 +142,6 @@ export default function PostForm({
               </FormItem>
             )}
           />
-
-          {/* 마크다운 사용법 */}
-          <MarkDownTip />
 
           {/* 마크다운 입력 필드 */}
           <MarkDownEditor

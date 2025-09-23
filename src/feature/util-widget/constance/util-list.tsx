@@ -1,4 +1,4 @@
-import { FileTextIcon, ImageIcon, VideoIcon } from "lucide-react";
+import { FileTextIcon, ImageIcon, QrCodeIcon, VideoIcon } from "lucide-react";
 
 export const utilList = [
   {
@@ -23,5 +23,13 @@ export const utilList = [
     href: "/utils/memo",
     description: "메모를 작성할 수 있습니다.",
     icon: <FileTextIcon className="h-6 w-6" />,
+  },
+  {
+    id: "qr-generator",
+    name: "QR 코드 생성기",
+    href: "/utils/qr",
+    description:
+      "0rigin.space를 위한 QR 코드를 생성하고 다운로드할 수 있습니다. URL 입력, 크기 조절, PNG 다운로드, 클립보드 복사 기능을 제공합니다.",
+    icon: <QrCodeIcon className="h-6 w-6" />,
   },
 ];
