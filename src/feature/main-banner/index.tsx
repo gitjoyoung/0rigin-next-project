@@ -3,16 +3,16 @@ import Image from "next/image";
 export default function MainBanner() {
   return (
     <div className="relative w-full sm:h-[350px] h-[250px] text-black dark:text-white ">
-      <div className="flex absolute inset-0 items-center justify-center px-8">
-        <div className="flex items-start ">
+      <div className="flex absolute inset-0 items-center justify-center   ">
+        <div className="flex items-start bg-white ">
           <Image
             src="/0rigin-qr.png"
             alt="QR Code"
             width={173}
             height={173}
-            className="object-contain flex-shrink-0"
+            className="object-contain  flex-shrink-0"
           />
-          <div className="flex flex-col font-dos font-bold antialiased mt-5">
+          <div className="flex flex-col font-dos font-bold antialiased py-5 pr-4 pl-0 dark:text-black ">
             <h1 className="text-xl ">0RIGIN.SPACE</h1>
             <h2 className="text-xl">VERSION</h2>
             <h2 className="text-xl">1.7.3</h2>
