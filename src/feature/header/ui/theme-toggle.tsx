@@ -14,7 +14,7 @@ export default function ThemeToggle() {
 
   return (
     <button
-      aria-label="다크모드 토글"
+      aria-label="dark mode toggle"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       className="flex items-center justify-center w-8 h-8 rounded transition-all duration-300 cursor-pointer"
     >

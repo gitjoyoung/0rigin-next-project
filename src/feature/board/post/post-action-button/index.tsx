@@ -28,7 +28,6 @@ export default function PostActionButtons({ post }: PostActionButtonsProps) {
   } = usePostActions({
     post,
   });
-  console.log({ ...post });
 
   return (
     <>

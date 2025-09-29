@@ -1,4 +1,5 @@
 "use client";
+
 import Logo from "@/shared/ui/logo";
 import SearchBox from "../search-box";
 import AuthButtons from "./ui/auth-buttons";
@@ -8,7 +9,7 @@ import ThemeToggle from "./ui/theme-toggle";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between w-full border-t  ">
+    <header className="flex items-center justify-between w-full">
       <nav className="flex gap-4 items-center justify-end">
         <Logo />
         <Navigation />

@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/shadcn/ui/dropdown-menu";
 import { cn } from "@/shared/utils/cn";
-import { ChevronDown, LogOut, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -60,31 +60,25 @@ export default function AuthButtons() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="flex items-center gap-2 px-2 focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="flex items-center text-xs gap-1 px-2 focus-visible:ring-0 focus-visible:ring-offset-0
+          focus:outline-none focus:bg-transparent"
         >
-          <div className="flex items-center gap-2 text-xs">
-            <Avatar className="w-8 h-8">
-              <AvatarImage src={profile?.avatar_url || ""} />
-              <AvatarFallback>{profile?.nickname?.slice(0, 2)}</AvatarFallback>
-            </Avatar>
-            <span className="font-medium">
-              {profile?.nickname || "닉네임을 설정해주세요"}
-            </span>
-          </div>
-          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          <Avatar className="w-6 h-6">
+            <AvatarImage src={profile?.avatar_url || ""} />
+            <AvatarFallback>{profile?.nickname?.slice(0, 2)}</AvatarFallback>
+          </Avatar>
+          <span className=" font-medium ">{profile?.nickname || ""}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 focus:outline-none">
-        <DropdownMenuLabel>
-          <div className="flex flex-col gap-1 text-xs">
-            <span className=" font-medium ">{profile?.nickname || ""}</span>
-            <span className=" font-medium text-muted-foreground ">
-              {profile?.email || ""}
-            </span>
-          </div>
+      <DropdownMenuContent align="end" className="focus:outline-none px-2 ">
+        <DropdownMenuLabel className="text-xs mb-2 text-gray-500 dark:text-gray-400">
+          {profile?.email || ""}
         </DropdownMenuLabel>
         <DropdownMenuItem asChild>
-          <Link href={ROUTE_MY_PAGE} className="flex items-center gap-2">
+          <Link
+            href={ROUTE_MY_PAGE}
+            className="flex items-center gap-2 text-xs"
+          >
             <User className="h-4 w-4" />
             마이페이지
           </Link>
@@ -94,8 +88,7 @@ export default function AuthButtons() {
           onClick={handleLogout}
           disabled={isLoggingOut}
           className={cn(
-            "flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 focus:outline-none",
-            isLoggingOut && "opacity-50 cursor-not-allowed",
+            "flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 focus:outline-none text-xs",
           )}
         >
           <LogOut className="h-4 w-4" />

@@ -50,8 +50,6 @@ export const checkPostAuthorApi = async (postId: string) => {
 
 type PostAccess = "author" | "guest";
 
-// ---------------------------------------------------------------------------
-
 export function usePostActions({ post }: PostActionButtonsProps) {
   if (!post) throw new Error("post is required");
 
@@ -106,13 +104,11 @@ export function usePostActions({ post }: PostActionButtonsProps) {
     refetch: refetchAccess,
   } = useQuery({
     queryKey: ["postAccess", postId],
-    // author_id가 없으면 바로 guest
     queryFn: async () => {
       if (!author_id) return "guest" as const;
       const flags = await checkPostAuthorApi(postId);
       return toAccess(flags);
     },
-    staleTime: 60_000, // 1분 캐시
   });
 
   // ---------- 비밀번호 검증 ----------
