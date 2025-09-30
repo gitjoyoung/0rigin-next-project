@@ -17,6 +17,7 @@ import {
 } from "@/shared/shadcn/ui/dropdown-menu";
 import { cn } from "@/shared/utils/cn";
 import { LogOut, User } from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -35,6 +36,8 @@ export default function AuthButtons() {
   const { status, profile } = useAuthState();
   const { logout } = useAuthActions();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const { theme } = useTheme();
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -60,12 +63,19 @@ export default function AuthButtons() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="flex items-center text-xs gap-1 px-2 focus-visible:ring-0 focus-visible:ring-offset-0
-          focus:outline-none focus:bg-transparent"
+          className={cn(
+            "dark:text-black text-white",
+            "dark:bg-white bg-black",
+            "hover:bg-transparent hover:text-current",
+            "flex items-center text-xs gap-1 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none",
+          )}
         >
-          <Avatar className="w-6 h-6">
+          <Avatar className="w-7 h-7  rounded-sm">
             <AvatarImage src={profile?.avatar_url || ""} />
-            <AvatarFallback>{profile?.nickname?.slice(0, 2)}</AvatarFallback>
+            <AvatarFallback className="dark:text-white text-black">
+              {" "}
+              {profile?.nickname?.slice(0, 2)}
+            </AvatarFallback>
           </Avatar>
           <span className=" font-medium ">{profile?.nickname || ""}</span>
         </Button>

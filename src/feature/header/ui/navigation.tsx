@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -15,32 +14,24 @@ import { HEADER_NAV_LIST } from "../constant/header-menu";
 
 export default function Navigation() {
   return (
-    <nav className=" items-end text-base hidden md:flex">
+    <nav className="hidden md:flex gap-2">
       <Menubar className="border-none bg-transparent p-0 shadow-none">
         {HEADER_NAV_LIST.map((item) => (
           <MenubarMenu key={item.id}>
             {item.submenuItems ? (
               <>
-                <MenubarTrigger className="group flex cursor-pointer items-center hover:font-semibold data-[state=open]:font-semibold text-sm transition-all duration-200 bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
-                  {item.title}
-                  <ChevronRight
-                    className="
-                                 relative h-4 w-4 text-transparent
-                                 group-hover:text-current
-                                 group-data-[state=open]:text-current 
-                                 transition-all duration-200
-                                 group-data-[state=open]:rotate-90
-                              "
-                  />
+                <MenubarTrigger className="m-0 rounded-none w-[80px] flex justify-center hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                  <p className="text-white dark:text-black"> {item.title}</p>
                 </MenubarTrigger>
-                <MenubarContent className="min-w-[180px] ">
+
+                <MenubarContent>
                   {item.submenuItems.map((subItem) => (
-                    <MenubarItem asChild key={subItem.id}>
+                    <MenubarItem asChild key={subItem.id} onClick={() => {}}>
                       <Link
                         href={subItem.url || "#"}
-                        className="flex items-center gap-2 px-2 py-2"
+                        className="text-sm flex items-center gap-2 px-1 py-2"
                       >
-                        <subItem.icon className="h-4 w-4 text-muted-foreground" />
+                        <subItem.icon className="h-4 w-4" />
                         <span>{subItem.title}</span>
                       </Link>
                     </MenubarItem>
@@ -51,7 +42,7 @@ export default function Navigation() {
               item.url && (
                 <MenubarItem asChild>
                   <Link
-                    className="hover:font-semibold text-md transition-all duration-200 focus:bg-transparent"
+                    className="text-md focus:bg-transparent hover:bg-transparent text-white dark:text-black"
                     href={item.url}
                   >
                     {item.title}

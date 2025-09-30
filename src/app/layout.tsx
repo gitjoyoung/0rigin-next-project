@@ -92,15 +92,13 @@ export default function RootLayout({
       <body>
         <AppProviders>
           <div id="modal-root" />
-          <div className="flex min-h-screen flex-col items-center w-full bg-background">
-            <div className="w-full max-w-[1280px] px-auto flex flex-col flex-1">
-              <Ticker />
-              <Header />
-              <main className="flex-1 w-full min-h-screen font-sans">
-                <Suspense fallback={<Loading />}>{children}</Suspense>
-              </main>
-              <Footer />
-            </div>
+          <div className="flex min-h-screen flex-col items-center w-full ">
+            <Ticker />
+            <Header />
+            <main className="w-full max-w-[1280px] pb-4 px-auto min-h-screen ">
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            </main>
+            <Footer />
           </div>
         </AppProviders>
       </body>
