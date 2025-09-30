@@ -1,5 +1,5 @@
 import { getUser } from "@/entities/auth/api/user";
-import WelcomeCelebration from "@/feature/welcome-celebration";
+import WelcomeCelebration from "@/feature/sign-sucsses";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
