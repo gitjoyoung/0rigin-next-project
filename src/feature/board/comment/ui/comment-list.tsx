@@ -13,7 +13,7 @@ interface Props {
   refetch: () => void;
 }
 
-const COMMENTS_PER_PAGE = 30;
+const COMMENTS_PER_PAGE = 20;
 
 export default function CommentList({ commentsData, refetch }: Props) {
   const [isSelected, setIsSelected] = useState<number | null>(null);

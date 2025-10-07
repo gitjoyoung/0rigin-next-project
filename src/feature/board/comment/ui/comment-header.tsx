@@ -1,10 +1,12 @@
 "use client";
 import { Button } from "@/shared/shadcn/ui/button";
+import { cn } from "@/shared/utils/cn";
 import { RefreshCcw } from "lucide-react";
 
 interface Props {
   commentCount: number;
   refetch: () => void;
+  isFetching: boolean;
 }
 
 const COMMENT_HEADER_DATA = {
@@ -16,6 +18,7 @@ const COMMENT_HEADER_DATA = {
 export default function CommentHeader({
   commentCount: commentLength,
   refetch,
+  isFetching,
 }: Props) {
   return (
     <div className="border-b border-t border-gray-200 dark:border-gray-700 flex justify-between text-xs  p-1">
@@ -25,13 +28,18 @@ export default function CommentHeader({
         <p>{COMMENT_HEADER_DATA.count}</p>
       </div>
       <Button
-        variant="link"
+        variant="ghost"
         className="p-1 py-0 text-xs flex gap-1  text-black dark:text-white 
             items-center h-5"
         onClick={() => refetch()}
+        disabled={isFetching}
       >
-        <RefreshCcw className="h-4 w-4" />
-        <p className="text-xs">{COMMENT_HEADER_DATA.refresh}</p>
+        <div className="flex gap-1 items-center">
+          <RefreshCcw
+            className={cn("h-4 w-4 ", isFetching && "animate-spin")}
+          />
+          <p className="text-xs">{COMMENT_HEADER_DATA.refresh}</p>
+        </div>
       </Button>
     </div>
   );

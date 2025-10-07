@@ -13,7 +13,11 @@ async function fetchComments(postId: string): Promise<Comment[]> {
 }
 
 export function useComments(postId: string) {
-  const { data: commentsData = [], refetch } = useQuery<Comment[]>({
+  const {
+    data: commentsData = [],
+    refetch,
+    isFetching,
+  } = useQuery<Comment[]>({
     queryKey: ["comments", postId],
     queryFn: () => fetchComments(postId),
   });
@@ -21,5 +25,6 @@ export function useComments(postId: string) {
   return {
     commentsData,
     refetch,
+    isFetching,
   };
 }
