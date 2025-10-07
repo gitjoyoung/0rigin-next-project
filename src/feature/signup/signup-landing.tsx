@@ -5,7 +5,7 @@ export default function SignUpLanding() {
   return (
     <div className="min-h-screen flex flex-col items-center py-4 px-4">
       <div className="max-w-xl mx-auto text-center space-y-8">
-        <div className="space-y-6">
+        <div className="space-y-4">
           <h1 className="font-bold text-3xl leading-relaxed">
             {SIGN_UP_TERMS.welcomeMessage}
           </h1>
@@ -14,7 +14,7 @@ export default function SignUpLanding() {
           </h3>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <div className="flex items-center justify-between w-full">
           <Link
             href={SIGN_UP_TERMS.login.href}
             className="w-full sm:w-auto px-6 py-3 border border-black dark:border-white flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"

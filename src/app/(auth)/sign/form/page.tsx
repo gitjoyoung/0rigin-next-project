@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 export default async function SignFormPage() {
   return (
-    <div className="py-6 px-4">
+    <article className="py-6 px-4">
       <SignUpFlow />
-    </div>
+    </article>
   );
 }

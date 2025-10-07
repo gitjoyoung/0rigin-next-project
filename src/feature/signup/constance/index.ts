@@ -1,10 +1,10 @@
 import { ROUTE_LOGIN, ROUTE_SIGN_FORM } from "@/constants/pathname";
 
 export const SIGN_UP_TERMS = {
-  welcomeMessage: `0RIGIN SIGN-UP`,
+  welcomeMessage: `SIGN-UP`,
   registration: {
     question:
-      "제로리진의 모든 기능을 이용하기 위해 회원가입을 진행합니다. \n 자신의 내면과 우주의 무한함을 탐험할 준비가 되셨나요?",
+      "0RIGIN(제로리진) 회원가입 \n 회원 가입시 모든 서비스를 이용할 수 있습니다.",
     alreadyMemberMessage: "이미 회원이신가요? 로그인 하기",
   },
   login: {

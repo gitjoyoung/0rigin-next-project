@@ -85,13 +85,13 @@ export default function QuizBoardList({ quizList, isLoading = false }: Props) {
       {quizList.map((quiz, index) => (
         <Card
           key={nanoid()}
-          className="group overflow-hidden hover:shadow-md transition-shadow h-24"
+          className="group overflow-hidden hover:shadow-md transition-shadow h-24 relative"
           role="article"
           aria-labelledby={`quiz-title-${index}`}
         >
           <Link
             href={`/quiz/${quiz.id}`}
-            className="flex p-3 gap-3 h-full items-center "
+            className="flex p-3 gap-3 h-full justify-start "
             aria-describedby={
               quiz.description ? `quiz-description-${index}` : undefined
             }
@@ -132,22 +132,11 @@ export default function QuizBoardList({ quizList, isLoading = false }: Props) {
                   </p>
                 )}
               </div>
-              <div className="flex items-center justify-between mt-1">
-                <time
-                  dateTime={quiz.created_at}
-                  className="text-xs text-gray-400 dark:text-gray-500"
-                >
-                  {new Date(quiz.created_at).toLocaleDateString("ko-KR", {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </time>
-                <ArrowRight
-                  className="w-3 h-3 text-gray-400 "
-                  aria-hidden="true"
-                />
-              </div>
             </CardContent>
+            <ArrowRight
+              className="w-4 h-4 text-gray-400  absolute right-3 bottom-3 "
+              aria-hidden="true"
+            />
           </Link>
         </Card>
       ))}

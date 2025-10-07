@@ -1,6 +1,5 @@
 import { getQuizById } from "@/entities/quiz/api/quiz.service";
 import Quiz from "@/feature/quiz/ui/quiz";
-import QuizHeader from "@/feature/quiz/ui/quiz-header";
 import { Metadata } from "next";
 import { cache } from "react";
 
@@ -33,8 +32,7 @@ export default async function QuizDetailPage({ params }: Params) {
 
   return (
     <div className="w-full min-h-screen flex flex-col justify-start items-center">
-      <div className="flex flex-col justify-start px-4 py-6 max-w-[600px] w-full">
-        <QuizHeader quizData={quiz} />
+      <div className="flex  justify-start px-4 py-6 max-w-[600px] w-full">
         <Quiz quizData={quiz} />
       </div>
     </div>

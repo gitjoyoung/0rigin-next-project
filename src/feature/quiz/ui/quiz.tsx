@@ -19,6 +19,7 @@ import {
 import { Progress } from "@/shared/shadcn/ui/progress";
 import { FileQuestion } from "lucide-react";
 import { useQuiz } from "../hooks/use-quiz";
+import QuizHeader from "./quiz-header";
 
 interface Props {
   quizData: QuizDetail | null;
@@ -66,56 +67,57 @@ export default function Quiz({ quizData }: Props) {
   }
 
   return (
-    <section className="flex flex-col justify-center w-full gap-4">
+    <section className="flex flex-col justify-center w-full gap-6">
       {/* Progress Bar */}
-      <div className="w-full rounded-none overflow-hidden">
-        <div className="relative h-4">
-          <Progress value={progress} className="rounded-none h-4  " />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xs font-bold mix-blend-difference text-white">
-              {curIndex + 1} / {quizDataLength}
-            </span>
+      <div className="w-full flex flex-col gap-2">
+        <QuizHeader quizData={quizData} />
+        <div className="relative h-3">
+          <Progress value={progress} className="rounded-none h-3" />
+          <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold  text-white">
+            {curIndex + 1} / {quizDataLength}
           </div>
         </div>
       </div>
 
       {/* Question Card */}
-      <Card className="border border-black bg-white dark:bg-black dark:border-white shadow-none rounded-lg overflow-hidden">
-        <CardHeader className=" bg-black dark:bg-black text-white dark:text-white">
-          <CardTitle className="font-bold text-xl leading-relaxed">
-            Q{curIndex + 1}. {currentQuestion.question_text}
+      <Card className="border-none bg-transparent dark:border-white shadow-none rounded-lg overflow-hidden">
+        <CardHeader className="p-0 py-3">
+          <CardTitle className="font-bold flex flex-col gap-2 leading-relaxed">
+            <h1 className="text-xl">{curIndex + 1}. </h1>
+            <p className="text-base">{currentQuestion.question_text}</p>
           </CardTitle>
-          {currentQuestion.explanation && (
-            <Accordion
-              type="single"
-              collapsible
-              className="w-full"
-              defaultValue="item-1"
-            >
-              <AccordionItem value="item-1">
-                <AccordionTrigger>
-                  <div className="flex items-center gap-2 text-sm">
-                    <FileQuestion size={20} />
-                    <span className="font-semibold">힌트 보기</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="flex text-balance">
-                  <p className="font-medium leading-relaxed whitespace-pre-line">
-                    {currentQuestion.explanation}
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          )}
         </CardHeader>
 
-        <CardContent className=" bg-white dark:bg-black">
+        <CardContent className="py-2 px-0">
           <QuizRadioButtonGroup
             options={currentQuestion.options}
             selectedOption={selectedOption}
             onSelect={handleOptionSelect}
           />
         </CardContent>
+
+        {currentQuestion.explanation && (
+          <Accordion
+            key={curIndex}
+            type="single"
+            collapsible
+            className="w-full"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <div className="flex items-center gap-2 text-sm">
+                  <FileQuestion size={20} />
+                  <span className="font-semibold">힌트 보기</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4 text-balance">
+                <p className="font-medium leading-relaxed whitespace-pre-line">
+                  {currentQuestion.explanation}
+                </p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
       </Card>
 
       <QuizNavButton
