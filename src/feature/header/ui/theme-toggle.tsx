@@ -1,12 +1,16 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Loader, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  const handleThemeToggle = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -15,15 +19,16 @@ export default function ThemeToggle() {
   return (
     <button
       aria-label="dark mode toggle"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={handleThemeToggle}
       className="flex items-center justify-center w-8 h-8 rounded transition-all duration-300 cursor-pointer"
     >
-      {mounted &&
-        (resolvedTheme === "dark" ? (
-          <Moon size={18} className="animate-rotate-fade-in" />
-        ) : (
-          <Sun size={18} className="animate-rotate-fade-in" />
-        ))}
+      {!mounted ? (
+        <Loader size={18} className="animate-spin" />
+      ) : resolvedTheme === "dark" ? (
+        <Moon size={18} className="animate-rotate-fade-in" />
+      ) : (
+        <Sun size={18} className="animate-rotate-fade-in" />
+      )}
     </button>
   );
 }

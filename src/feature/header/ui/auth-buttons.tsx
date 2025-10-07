@@ -25,7 +25,7 @@ function MenuButton(props: React.ComponentProps<typeof Button>) {
     <Button
       size="sm"
       variant="outline"
-      className="dark:bg-white bg-black text-white dark:text-black"
+      className="dark:bg-white bg-black text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white"
       {...props}
     />
   );
@@ -44,7 +44,7 @@ export default function AuthButtons() {
   if (status === "unauth") {
     return (
       <nav className="flex gap-2 text-xs">
-        <MenuButton asChild>
+        <MenuButton variant="outline" asChild>
           <Link href={ROUTE_LOGIN}>로그인</Link>
         </MenuButton>
         <MenuButton variant="outline" asChild>
