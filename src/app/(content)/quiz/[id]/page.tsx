@@ -31,10 +31,8 @@ export default async function QuizDetailPage({ params }: Params) {
   const quiz = await getCachedQuizById(Number(id));
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-start items-center">
-      <div className="flex  justify-start px-4 py-6 max-w-[600px] w-full">
-        <Quiz quizData={quiz} />
-      </div>
-    </div>
+    <section className="w-full min-h-screen flex flex-col justify-start items-center max-w-[600px] px-4 py-6">
+      <Quiz quizData={quiz} />
+    </section>
   );
 }

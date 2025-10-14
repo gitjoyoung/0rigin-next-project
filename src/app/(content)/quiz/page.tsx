@@ -9,8 +9,8 @@ export default async function QuizPage() {
   const quizzes = await getQuizzes(50, 0);
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <section className="container mx-auto px-4 py-6">
       <QuizBoard quizList={quizzes} />
-    </div>
+    </section>
   );
 }

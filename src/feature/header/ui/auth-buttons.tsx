@@ -4,7 +4,7 @@ import {
   useAuthActions,
   useAuthState,
 } from "@/app/providers/auth-client-provider";
-import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from "@/constants/pathname";
+import { ROUTE_LOGIN, ROUTE_MY_PAGE } from "@/constants/pathname";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/shadcn/ui/avatar";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
@@ -43,13 +43,8 @@ export default function AuthButtons() {
 
   if (status === "unauth") {
     return (
-      <nav className="flex gap-2 text-xs">
-        <MenuButton variant="outline" asChild>
-          <Link href={ROUTE_LOGIN}>로그인</Link>
-        </MenuButton>
-        <MenuButton variant="outline" asChild>
-          <Link href={ROUTE_SIGN}>회원가입</Link>
-        </MenuButton>
+      <nav className="flex text-xs items-center">
+        <Link href={ROUTE_LOGIN}>SIGN</Link>
       </nav>
     );
   }

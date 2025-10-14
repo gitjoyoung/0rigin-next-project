@@ -13,12 +13,12 @@ const TitleAndMoreButton = ({
   title: string;
   href: string;
 }) => (
-  <div className="flex justify-between m-1">
+  <article className="flex justify-between m-1">
     <h1 className="sm:text-base text-sm font-bold ">{title}</h1>
     <Link href={href} className="text-xs text-end self-end text-gray-500 ">
       더보기
     </Link>
-  </div>
+  </article>
 );
 
 async function CurrentPostView() {
@@ -31,7 +31,7 @@ async function CurrentPostView() {
 
 export default async function Home() {
   return (
-    <div className="flex flex-col h-full">
+    <section className="flex flex-col h-full">
       <MainBanner />
       {/* <Philosophy /> */}
       {/* <QuestionSearch /> */}
@@ -44,6 +44,6 @@ export default async function Home() {
           <CurrentPostView />
         </Suspense>
       </div>
-    </div>
+    </section>
   );
 }

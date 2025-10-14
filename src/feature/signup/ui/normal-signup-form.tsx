@@ -43,9 +43,9 @@ export default function NormalSignUpForm() {
 
       <Card className="w-full max-w-[350px]">
         <CardHeader className="flex flex-col">
-          <CardTitle className="text-2xl">0rigin 회원가입</CardTitle>
+          <CardTitle className="text-2xl">0RIGIN 회원가입</CardTitle>
           <CardDescription className="text-transparent text-sm">
-            자유 의지란 존재하나요?
+            자유 의지란 존재 할까요?
           </CardDescription>
         </CardHeader>
 
