@@ -15,10 +15,11 @@ export default function PostView({ postData, likeCount }: Props) {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [postData.id]);
 
+  const { content, ...rest } = postData;
   return (
     <section className="flex flex-col gap-3 ">
-      <PostHeader {...postData} likeCount={likeCount} />
-      <MarkDownViewer content={postData.content as string} />
+      <PostHeader {...rest} likeCount={likeCount} />
+      <MarkDownViewer content={postData.content} />
     </section>
   );
 }

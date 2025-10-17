@@ -3,9 +3,7 @@
 import { toast } from "@/shared/hooks/use-toast";
 import { SupabaseBrowserClient } from "@/shared/lib/supabase/supabase-browser-client";
 import { compressImage } from "@/shared/utils/compress-image";
-import "@uiw/react-markdown-preview/markdown.css";
 import { commands } from "@uiw/react-md-editor";
-import "@uiw/react-md-editor/markdown-editor.css";
 import dayjs from "dayjs";
 import { ImageUp } from "lucide-react";
 import mermaid from "mermaid";
@@ -225,53 +223,15 @@ const MarkDownEditor = ({
         height={500}
         commands={editorCommands}
         previewOptions={{
-          className: "markdown-preview-custom",
           remarkPlugins: [remarkGfm, remarkBreaks],
           rehypePlugins: [rehypeSanitize, rehypeHighlight],
-          style: {
-            backgroundColor: "transparent",
-            color: "inherit",
-            fontFamily: "inherit",
-            fontSize: "14px",
-            lineHeight: "1.5",
-            "--md-preview-p-margin": "0.5em 0",
-            "--md-preview-h-border": "none",
-          } as React.CSSProperties,
           components: {
             code: Code,
-            h1: ({ children, ...props }) => (
-              <h1
-                {...props}
-                style={{
-                  borderBottom: "none",
-                  lineHeight: "1.3",
-                  margin: "1em 0 0.5em 0",
-                }}
-              >
-                {children}
-              </h1>
-            ),
-            h2: ({ children, ...props }) => (
-              <h2
-                {...props}
-                style={{
-                  borderBottom: "none",
-                  lineHeight: "1.3",
-                  margin: "1em 0 0.5em 0",
-                }}
-              >
-                {children}
-              </h2>
-            ),
-            p: ({ children, ...props }) => (
-              <p {...props} style={{ margin: "0.5em 0", lineHeight: "1.5" }}>
-                {children}
-              </p>
-            ),
           },
           wrapperElement: mounted
             ? {
                 "data-color-mode": theme === "dark" ? "dark" : "light",
+                className: `prose max-w-none prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0 ${theme === "dark" ? "prose-invert" : ""}`,
               }
             : undefined,
         }}

@@ -3,18 +3,22 @@ import ClientDayHydration from "@/shared/ui/hydrated-date";
 import { formatNumberCompact } from "@/shared/utils/format-number";
 import PostActionButtons from "../post-action-button";
 
-export default function PostHeader({
-  title,
-  nickname,
-  created_at,
-  view_count,
-  id,
-  category,
-  author_id,
-  likeCount,
-}: Partial<Database["public"]["Tables"]["posts"]["Row"]> & {
-  likeCount: number;
-}) {
+export default function PostHeader(
+  Props: Partial<Database["public"]["Tables"]["posts"]["Row"]> & {
+    likeCount: number;
+  },
+) {
+  const {
+    title,
+    nickname,
+    created_at,
+    view_count,
+    id,
+    category,
+    author_id,
+    likeCount,
+  } = Props;
+
   return (
     <div className=" border-b ">
       <div className="flex flex-col gap-2">

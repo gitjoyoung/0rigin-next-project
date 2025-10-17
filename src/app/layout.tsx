@@ -3,6 +3,8 @@ import Footer from "@/feature/footer";
 import Header from "@/feature/header";
 import Ticker from "@/feature/ticker";
 import { baseMetadata } from "@/shared/metadata";
+import "@uiw/react-markdown-preview/markdown.css";
+import "@uiw/react-md-editor/markdown-editor.css";
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import localFont from "next/font/local";
