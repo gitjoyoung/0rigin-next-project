@@ -7,7 +7,7 @@ export default async function Ticker() {
   return (
     <aside
       className={cn(
-        "relative bg-transparent text-black dark:text-white text-xs w-full h-[16px] border-b",
+        "relative bg-transparent text-black dark:text-white text-xs w-full h-[16px]",
       )}
     >
       <div className=" absolute right-0 flex items-center">
