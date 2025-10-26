@@ -7,7 +7,7 @@ import { Textarea } from "@/shared/shadcn/ui/textarea";
 import { cn } from "@/shared/utils/cn";
 import { formatSmartDate } from "@/shared/utils/dayjs-config";
 import { Edit3, Trash2 } from "lucide-react";
-import PasswordConfirmModal from "../../post/post-view/password-conrifm-modal";
+import PasswordConfirmModal from "../../post/modal/password-conrifm-modal";
 import { useCommentItem } from "../hooks/use-comment-item";
 
 interface Props {

@@ -2,7 +2,7 @@
 
 import { Button } from "@/shared/shadcn/ui/button";
 import { cn } from "@/shared/utils/cn";
-import PasswordConfirmModal from "../post-view/password-conrifm-modal";
+import PasswordConfirmModal from "../modal/password-conrifm-modal";
 import { usePostActions } from "./hook/use-post-action";
 import ConfirmActionModal from "./ui/confirm-action-modal";
 
