@@ -1,7 +1,7 @@
 import type { Database } from "@/shared/types";
 import ClientDayHydration from "@/shared/ui/hydrated-date";
 import { formatNumberCompact } from "@/shared/utils/format-number";
-import PostActionButtons from "../post-action-button";
+import PostActionButtons from "../../post-action-button";
 
 export default function PostHeader(
   Props: Partial<Database["public"]["Tables"]["posts"]["Row"]> & {

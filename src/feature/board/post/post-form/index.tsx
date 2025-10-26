@@ -10,12 +10,12 @@ import {
   FormMessage,
 } from "@/shared/shadcn/ui/form";
 import { Input } from "@/shared/shadcn/ui/input";
+import { MarkdownEditor } from "@/shared/ui/markdown";
 import { cn } from "@/shared/utils/cn";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import LoadingModal from "../../common/loading-modal";
-import MarkDownEditor from "../../common/mark-down-editor";
 import type { BoardFormType } from "../../common/schema/board-schema";
 import FormActionBuuton from "./ui/form-action-buuton";
 import MarkDownTip from "./ui/markdown-tip";
@@ -144,7 +144,7 @@ export default function PostForm({
           />
 
           {/* 마크다운 입력 필드 */}
-          <MarkDownEditor
+          <MarkdownEditor
             name="content"
             value={form.watch("content") || ""}
             onChange={(value) => form.setValue("content", value)}

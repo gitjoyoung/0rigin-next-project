@@ -3,10 +3,10 @@
 import type { Post, PostCreate } from "@/entities/post/types";
 import type { Profile } from "@/entities/profile";
 import { useToast } from "@/shared/hooks/use-toast";
+import { removeImagesAndMarkdown } from "@/shared/ui/markdown";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { type BoardFormType } from "../../../common/schema/board-schema";
-import { removeImagesAndMarkdown } from "../../../common/utils/markdown-util";
 
 async function createPostApi(data: PostCreate): Promise<Post> {
   const response = await fetch("/api/post", {

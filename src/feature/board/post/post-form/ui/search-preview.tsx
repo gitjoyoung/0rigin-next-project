@@ -2,7 +2,7 @@ import type { BoardFormType } from "@/feature/board/common/schema";
 import {
   extractFirstImageUrl,
   removeImagesAndMarkdown,
-} from "@/feature/board/common/utils/markdown-util";
+} from "@/shared/ui/markdown";
 import type { UseFormReturn } from "react-hook-form";
 
 export default function SearchPreview({

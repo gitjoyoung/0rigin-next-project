@@ -1,8 +1,8 @@
 import { useToast } from "@/shared/hooks/use-toast";
+import { removeImagesAndMarkdown } from "@/shared/ui/markdown";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { BoardFormType } from "../../../common/schema/board-schema";
-import { removeImagesAndMarkdown } from "../../../common/utils/markdown-util";
 
 // 클라이언트에서 사용할 게시글 수정 함수
 async function updatePostApi(postId: string, data: BoardFormType) {

@@ -2,10 +2,10 @@
 
 import type { Profile } from "@/entities/profile";
 import type { Tables } from "@/shared/types";
+import { extractFirstImageUrl } from "@/shared/ui/markdown";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { type BoardFormType } from "../../../common/schema/board-schema";
-import { extractFirstImageUrl } from "../../../common/utils/markdown-util";
 import PostForm from "../../post-form";
 import { useUpdateBoardPost } from "../hook/use-update-post";
 

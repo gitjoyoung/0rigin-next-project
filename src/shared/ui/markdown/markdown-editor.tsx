@@ -231,7 +231,7 @@ const MarkDownEditor = ({
           wrapperElement: mounted
             ? {
                 "data-color-mode": theme === "dark" ? "dark" : "light",
-                className: `prose max-w-none prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0 ${theme === "dark" ? "prose-invert" : ""}`,
+                className: "prose",
               }
             : undefined,
         }}

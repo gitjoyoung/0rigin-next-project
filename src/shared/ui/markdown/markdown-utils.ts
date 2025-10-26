@@ -15,3 +15,19 @@ export function removeImagesAndMarkdown(
   const noImages = markdown.replace(/!\[[^\]]*\]\([^)]*\)/g, "");
   return removeMd(noImages).replace(/\n+/g, " ").trim();
 }
+
+// TOC 관련 타입 정의
+export interface TocHeading {
+  id: string;
+  text: string;
+  level: 1 | 2 | 3;
+}
+
+// 문자열을 URL 친화적인 ID로 변환
+export function generateHeadingId(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s가-힣ㄱ-ㅎㅏ-ㅣ-]/g, "") // 특수문자 제거 (한글 포함)
+    .replace(/\s+/g, "-") // 공백을 하이픈으로
+    .trim();
+}
