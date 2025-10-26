@@ -10,7 +10,7 @@ import ThemeToggle from "./ui/theme-toggle";
 export default function Header() {
   return (
     <>
-      <header className="w-full dark:bg-white bg-black dark:text-black text-white">
+      <header className="w-full bg-black text-white dark:border-y border-white">
         <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto px-auto">
           <nav className="flex gap-4 items-center justify-end">
             <Logo />

@@ -25,7 +25,7 @@ function MenuButton(props: React.ComponentProps<typeof Button>) {
     <Button
       size="sm"
       variant="outline"
-      className="dark:bg-white bg-black text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white"
+      className="bg-black text-white hover:bg-gray-800 hover:text-white border-gray-700"
       {...props}
     />
   );
@@ -55,22 +55,22 @@ export default function AuthButtons() {
         <Button
           variant="ghost"
           className={cn(
-            "dark:text-black text-white dark:bg-white bg-black",
-            "hover:bg-transparent hover:text-current",
+            "text-white bg-transparent",
+            "hover:bg-gray-800 hover:text-white",
             "flex items-center text-xs gap-1 px-2 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none",
           )}
         >
-          <Avatar className="w-7 h-7  rounded-sm">
+          <Avatar className="w-7 h-7 rounded-sm">
             <AvatarImage src={profile?.avatar_url || ""} />
-            <AvatarFallback className="dark:text-white text-black">
+            <AvatarFallback className="text-black bg-white">
               {profile?.nickname?.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
-          <span className=" font-medium ">{profile?.nickname || ""}</span>
+          <span className="font-medium">{profile?.nickname || ""}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="focus:outline-none px-2 ">
-        <DropdownMenuLabel className="text-xs mb-2 text-gray-500 dark:text-gray-400">
+      <DropdownMenuContent align="end" className="focus:outline-none px-2">
+        <DropdownMenuLabel className="text-xs mb-2 text-gray-500">
           {profile?.email || ""}
         </DropdownMenuLabel>
         <DropdownMenuItem asChild>
@@ -86,9 +86,7 @@ export default function AuthButtons() {
         <DropdownMenuItem
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className={cn(
-            "flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 focus:outline-none text-xs",
-          )}
+          className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 focus:outline-none text-xs"
         >
           <LogOut className="h-4 w-4" />
           {isLoggingOut ? "로그아웃 중..." : "로그아웃"}

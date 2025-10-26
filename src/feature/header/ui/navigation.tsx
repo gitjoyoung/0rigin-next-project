@@ -21,7 +21,7 @@ export default function Navigation() {
             {item.submenuItems ? (
               <>
                 <MenubarTrigger className="m-0 rounded-none w-[80px] flex justify-center hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
-                  <p className="text-white dark:text-black"> {item.title}</p>
+                  <p className="text-white">{item.title}</p>
                 </MenubarTrigger>
 
                 <MenubarContent>
@@ -42,7 +42,7 @@ export default function Navigation() {
               item.url && (
                 <MenubarItem asChild>
                   <Link
-                    className="text-md focus:bg-transparent hover:bg-transparent text-white dark:text-black"
+                    className="text-md focus:bg-transparent hover:bg-transparent text-white"
                     href={item.url}
                   >
                     {item.title}
