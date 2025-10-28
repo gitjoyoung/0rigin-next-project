@@ -1,7 +1,5 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-10-27 06:45:32
-// 동적 라우트([param])는 제외됨
-
+// 생성 시간: 2025-10-28 14:07:05
 export const ROUTE_FORGET_PASSWORD = "/forget/password";
 export const ROUTE_LOGIN = "/login";
 export const ROUTE_RESET_PASSWORD = "/reset/password";
@@ -21,5 +19,8 @@ export const ROUTE_UTILS_VIDEO_COMPRESS = "/utils/video-compress";
 export const ROUTE_HELP = "/help";
 export const ROUTE_INQUIRY = "/inquiry";
 export const ROUTE_INTRODUCE = "/introduce";
-export const ROUTE_SITEMAP = "/sitemap";
+export const ROUTE_SITE_MAP = "/site-map";
 export const ROUTE_MY_PAGE = "/my-page";
+
+// 동적 라우트 헬퍼 함수
+export const getProfileRoute = (userId: string) => `/profile/${userId}`;
