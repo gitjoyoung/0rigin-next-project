@@ -1,45 +1,27 @@
-/**
- * middleware.ts
- * ---------------------------------------------------------------
- * Next.js 15 · App Router · Edge Middleware
- * 1) Supabase 세션 ↔ 쿠키 동기화
- * 2) 로그인 상태 판정·보호 페이지 가드
- * 3) 방문자(Log) 기록  — visitors 테이블
- *    · 비회원 : nanoid() 로 임시 visitor_id 생성 → 24 h 쿠키
- *    · 회원   : user.id 를 visitor_id 로 사용
- * 4) viewport(mobile / tablet / desktop) 파라미터 주입
- * ---------------------------------------------------------------
- */
-
+// middleware.ts
+import { ROUTE_LOGIN } from "@/constants/pathname";
 import {
-  ROUTE_LOGIN,
-  ROUTE_MY_PAGE,
-  ROUTE_RESET_PASSWORD,
-  ROUTE_SIGN,
-  ROUTE_SIGN_FORM,
-} from "@/constants/pathname";
-import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-client";
+  AUTH_FORBIDDEN_PATHS,
+  PROTECTED_PREFIXES,
+} from "@/shared/constants/protected-routes";
 import { updateSession } from "@/shared/lib/supabase/supabase-session";
-import { nanoid } from "nanoid";
 import { NextRequest, NextResponse, userAgent } from "next/server";
-import { match } from "path-to-regexp";
 
-/* ──────────────────────────────
- * 0. 보호·차단 경로 매처
- * ──────────────────────────────*/
-const PROTECTED = [ROUTE_MY_PAGE];
-const AUTH_FORBIDDEN = [
-  ROUTE_LOGIN,
-  ROUTE_SIGN,
-  ROUTE_RESET_PASSWORD,
-  ROUTE_SIGN_FORM,
-];
-const matchProtected = (pathname: string) =>
-  PROTECTED.some((p) => match(p)(pathname));
+const isProd = process.env.NODE_ENV === "production";
+const isSecure = isProd || process.env.FORCE_HTTPS === "true";
 
-/* ──────────────────────────────
- * 1. Viewport Helper
- * ──────────────────────────────*/
+function isProtected(pathname: string) {
+  // 예: ['/dashboard', '/account'] 같은 prefix만 관리
+  return PROTECTED_PREFIXES.some(
+    (p) => pathname === p || pathname.startsWith(p + "/"),
+  );
+}
+
+function isAuthForbidden(pathname: string) {
+  // 예: ['/login', '/sign', '/reset/password']
+  return AUTH_FORBIDDEN_PATHS.has(pathname);
+}
+
 function getViewport(req: NextRequest): "mobile" | "tablet" | "desktop" {
   const { device } = userAgent(req);
   if (device.type === "mobile") return "mobile";
@@ -47,90 +29,73 @@ function getViewport(req: NextRequest): "mobile" | "tablet" | "desktop" {
   return "desktop";
 }
 
-/* ──────────────────────────────
- * 2. 방문자 로그 기록
- * ──────────────────────────────*/
-async function logVisit(
-  req: NextRequest,
-  supabase: Awaited<ReturnType<typeof SupabaseServerClient>>,
-) {
-  // 1. 응답에 이미 쿠키가 있는지 확인 (최우선)
-  let visitorId = req.cookies.get("visitor_id")?.value;
-  let isFirst = false;
+export async function middleware(req: NextRequest) {
+  const pathname = req.nextUrl.pathname;
+  const needsAuth = isProtected(pathname);
+  let user: any = null;
+  let res = NextResponse.next();
 
-  if (!visitorId) {
-    visitorId = nanoid();
-    isFirst = true;
+  // 보호 라우트 또는 금지 라우트일 때만 세션 동기화
+  if (needsAuth || isAuthForbidden(pathname)) {
+    try {
+      const session = await updateSession(req);
+      res = session.supabaseResponse; // 쿠키 동기화
+      user = session.user;
+    } catch (e) {
+      if (!isProd) console.warn("updateSession failed:", e);
+    }
   }
 
-  const { browser, device, os } = userAgent(req);
+  // 인증 가드
+  if (needsAuth && !user) {
+    return NextResponse.redirect(new URL(ROUTE_LOGIN, req.url));
+  }
+  if (user && isAuthForbidden(pathname)) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
 
-  await supabase.from("visitors").insert({
-    visitor_id: visitorId,
-    page_url: req.nextUrl.pathname,
-    ip_address: req.headers.get("x-forwarded-for") ?? null,
-    device_type: device.type ?? null,
-    browser: browser.name ?? null,
-    os: os.name ?? null,
-    language: req.headers.get("accept-language")?.split(",")[0] ?? null,
-    referrer: req.headers.get("referer") ?? null,
-  });
+  // URL 변형(rewrite) 대신 헤더로 전달 → 캐싱/링크 안정성↑
+  res.headers.set("x-viewport", getViewport(req));
 
-  return { visitorId, isFirst };
+  // 방문자 로깅은 비동기 API로 위임 (실패해도 무시)
+  queueVisitorLog(req, res).catch(() => {});
+
+  return res;
 }
 
-/* ──────────────────────────────
- * 3. Auth Gate
- * ──────────────────────────────*/
-async function authGate(req: NextRequest) {
-  // 3-1  Supabase 세션 ↔ 쿠키 동기화
-  const { supabase, supabaseResponse, user } = await updateSession(req);
+async function queueVisitorLog(req: NextRequest, res: NextResponse) {
+  const ua = req.headers.get("user-agent") || "";
+  if (/bot|crawl|spider|healthcheck/i.test(ua)) return;
 
-  // 3-2  방문자 로그 (비동기)
-  const { visitorId, isFirst } = await logVisit(req, supabase);
-
-  // 3-3  visitor_id 쿠키가 없다면 심어 주기
-  if (isFirst) {
-    supabaseResponse.cookies.set({
-      name: "visitor_id",
-      value: visitorId,
+  let visitorId = req.cookies.get("visitor_id")?.value;
+  if (!visitorId) {
+    visitorId = crypto.randomUUID();
+    res.cookies.set("visitor_id", visitorId, {
       httpOnly: true,
+      secure: isSecure,
       maxAge: 60 * 60 * 24,
       sameSite: "lax",
       path: "/",
     });
   }
-
-  /* ─── 회원이 아니고 보호 페이지면 → 로그인으로 ───*/
-  if (!user && matchProtected(req.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL(ROUTE_LOGIN, req.url));
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), 120);
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/visitors`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ vid: visitorId, path: req.nextUrl.pathname }),
+      signal: ac.signal,
+      keepalive: true,
+    });
+  } finally {
+    clearTimeout(t);
   }
-
-  /* ─── 로그인했는데 로그인/회원가입 페이지 접근 시 → 홈으로 ───*/
-  if (user && AUTH_FORBIDDEN.includes(req.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
-  /* ─── viewport 쿼리 주입 ───*/
-  const rewriteUrl = new URL(req.url);
-  rewriteUrl.searchParams.set("viewport", getViewport(req));
-  supabaseResponse.headers.set("x-middleware-rewrite", rewriteUrl.toString());
-
-  return supabaseResponse;
 }
 
-/* ──────────────────────────────
- * 4. Middleware Entry
- * ──────────────────────────────*/
-export async function middleware(req: NextRequest) {
-  return authGate(req);
-}
-
-/* ──────────────────────────────
- * 5. Config (정적·이미지·API 제외)
- * ──────────────────────────────*/
 export const config = {
   matcher: [
+    // 정적/이미지/API 제외
     "/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
