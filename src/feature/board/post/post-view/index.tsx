@@ -1,6 +1,5 @@
 "use client";
 
-import { Separator } from "@/shared/shadcn/ui/separator";
 import type { Database } from "@/shared/types";
 import {
   MarkdownViewer,
@@ -31,15 +30,10 @@ export default function PostView({ postData, likeCount }: Props) {
       {/* 콘텐츠와 TOC 레이아웃 조립 */}
       <section className="flex gap-4 relative w-full items-stretch">
         {/* 메인 콘텐츠 */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 ">
           <MarkdownViewer ref={markdownRef} content={postData.content} />
         </div>
-
-        {/* 구분선 - 최소 공간 차지 */}
-        <Separator
-          orientation="vertical"
-          className="hidden lg:block w-px shrink-0"
-        />
+        <div className="border-r hidden lg:block h-full" />
 
         {/* TOC 사이드바 - 포지셔닝 및 반응형 제어 */}
         <div className="hidden lg:block sticky top-20 h-fit max-h-[calc(100vh-6rem)] overflow-y-auto">

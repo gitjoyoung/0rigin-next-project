@@ -10,9 +10,9 @@ interface TableOfContentsProps {
 }
 
 const LEVEL_INDENT_MAP = {
-  1: "pl-0",
-  2: "pl-2",
-  3: "pl-4",
+  1: "pl-0 font-bold text-[13px]",
+  2: "pl-2 text-[12px]",
+  3: "pl-4 text-[8px]",
 } as const;
 
 export default function TableOfContents({
@@ -138,7 +138,7 @@ export default function TableOfContents({
   return (
     <nav className={cn("w-64 shrink-0", className)} aria-label="목차">
       <div className="space-y-1 py-4">
-        <ul className="space-y-2 text-sm">
+        <ul className="space-y-2 ">
           {headings.map((heading) => {
             const isActive = activeId === heading.id;
             return (
