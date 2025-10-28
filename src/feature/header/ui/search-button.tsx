@@ -25,7 +25,7 @@ export default function SearchButton() {
         aria-label="검색"
         title="검색 (⌘J / Ctrl+J)"
       >
-        <Search size={16} />
+        <Search size={18} />
       </button>
       <SearchOverlay open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </>

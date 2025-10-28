@@ -1,5 +1,5 @@
 // 자동 생성된 경로 상수 - 수정하지 마세요
-// 생성 시간: 2025-10-28 15:55:28
+// 생성 시간: 2025-10-28 16:06:41
 export const ROUTE_FORGET_PASSWORD = "/forget/password";
 export const ROUTE_LOGIN = "/login";
 export const ROUTE_RESET_PASSWORD = "/reset/password";

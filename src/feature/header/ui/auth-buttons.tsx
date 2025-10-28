@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/shadcn/ui/dropdown-menu";
 import { cn } from "@/shared/utils/cn";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -44,7 +44,9 @@ export default function AuthButtons() {
   if (status === "unauth") {
     return (
       <nav className="flex text-xs items-center">
-        <Link href={ROUTE_LOGIN}>SIGN</Link>
+        <Link href={ROUTE_LOGIN}>
+          <User2Icon size={18} />
+        </Link>
       </nav>
     );
   }
