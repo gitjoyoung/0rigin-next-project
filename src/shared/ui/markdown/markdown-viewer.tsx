@@ -2,7 +2,8 @@
 
 import type { Database } from "@/shared/types";
 import MarkdownPreview from "@uiw/react-markdown-preview";
-import { forwardRef, useEffect } from "react";
+import { useTheme } from "next-themes";
+import { forwardRef, useEffect, useState } from "react";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
@@ -41,7 +42,6 @@ function createHeadingComponent(level: 1 | 2 | 3) {
   }: React.HTMLAttributes<HTMLHeadingElement>) {
     const text = extractTextFromChildren(children);
     let id: string | undefined;
-
     if (text) {
       const baseId = generateHeadingId(text);
       const count = headingCounters.get(baseId) || 0;
@@ -72,13 +72,24 @@ function createHeadingComponent(level: 1 | 2 | 3) {
 
 // 순수한 렌더링 컴포넌트: ref를 받아서 content만 렌더링
 const MarkDownViewer = forwardRef<HTMLDivElement, Props>(({ content }, ref) => {
-  // 컨텐츠 변경 시 카운터 초기화
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []); // ← 클라이언트에서만 true
   useEffect(() => {
     headingCounters.clear();
   }, [content]);
 
+  // 마운트되기 전에는 data-color-mode를 아예 안 줘서 SSR/CSR 불일치 방지
+  const effective = theme === "system" ? resolvedTheme : theme;
+  const dataColorMode = mounted
+    ? effective === "dark"
+      ? "dark"
+      : "light"
+    : undefined;
+
   return (
-    <div ref={ref} suppressHydrationWarning className="prose max-w-none ">
+    <div ref={ref} suppressHydrationWarning>
+      {/* suppressHydrationWarning을 사용하면 data-color-mode를 명시적으로 주입해야 함 */}
       <MarkdownPreview
         source={content as unknown as string}
         remarkPlugins={[remarkGfm, remarkBreaks]}
@@ -88,6 +99,8 @@ const MarkDownViewer = forwardRef<HTMLDivElement, Props>(({ content }, ref) => {
           h2: createHeadingComponent(2),
           h3: createHeadingComponent(3),
         }}
+        // wrapperElement도 마운트 후에만 주입 (동일 이유)
+        wrapperElement={mounted ? { "data-color-mode": dataColorMode } : {}}
         style={{ backgroundColor: "transparent", color: "inherit" }}
       />
     </div>
