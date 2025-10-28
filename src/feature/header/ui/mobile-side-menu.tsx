@@ -4,7 +4,7 @@ import {
   useAuthActions,
   useAuthState,
 } from "@/app/providers/auth-client-provider";
-import { ROUTE_LOGIN, ROUTE_MY_PAGE, ROUTE_SIGN } from "@/constants/pathname";
+import { ROUTE_LOGIN, ROUTE_SIGN, getProfileRoute } from "@/constants/pathname";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -85,8 +85,8 @@ export default function MobileSideMenu({ className }: { className?: string }) {
                       <div className="w-full min-w-0 flex flex-col justify-center flex-1">
                         <SheetClose asChild>
                           <Link
-                            href={ROUTE_MY_PAGE}
-                            className="text-xs font-medium truncate "
+                            href={user?.id ? getProfileRoute(user.id) : "/"}
+                            className="text-xs font-medium truncate"
                           >
                             {profile?.nickname || ""}
                           </Link>

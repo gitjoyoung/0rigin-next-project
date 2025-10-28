@@ -4,7 +4,7 @@ import {
   useAuthActions,
   useAuthState,
 } from "@/app/providers/auth-client-provider";
-import { ROUTE_LOGIN, ROUTE_MY_PAGE } from "@/constants/pathname";
+import { ROUTE_LOGIN, getProfileRoute } from "@/constants/pathname";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/shadcn/ui/avatar";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
@@ -32,7 +32,7 @@ function MenuButton(props: React.ComponentProps<typeof Button>) {
 }
 
 export default function AuthButtons() {
-  const { status, profile } = useAuthState();
+  const { status, profile, user } = useAuthState();
   const { logout } = useAuthActions();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const handleLogout = async () => {
@@ -75,11 +75,10 @@ export default function AuthButtons() {
         </DropdownMenuLabel>
         <DropdownMenuItem asChild>
           <Link
-            href={ROUTE_MY_PAGE}
+            href={user?.id ? getProfileRoute(user.id) : "/"}
             className="flex items-center gap-2 text-xs"
           >
-            <User className="h-4 w-4" />
-            마이페이지
+            <User className="h-4 w-4" />내 프로필
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
