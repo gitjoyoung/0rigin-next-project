@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <>
       <header className="w-full bg-black text-white border-y border-transparent dark:border-white">
-        <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto px-4">
+        <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto ">
           <nav className="flex gap-4 items-center justify-end">
             <Logo />
             <Navigation />
