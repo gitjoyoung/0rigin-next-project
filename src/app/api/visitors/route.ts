@@ -1,4 +1,3 @@
-// app/api/visitors/route.ts
 import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-client";
 import { NextRequest, NextResponse, userAgent } from "next/server";
 

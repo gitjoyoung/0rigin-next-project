@@ -1,4 +1,3 @@
-// src/server/services/profile.service.ts
 import { SupabaseServerClient } from "@/shared/lib/supabase/supabase-server-client";
 import type { Tables, TablesInsert, TablesUpdate } from "@/shared/types";
 import "server-only";
@@ -25,7 +24,7 @@ export async function getProfile(): Promise<Profile | null> {
     .from("profile")
     .select("*")
     .eq("id", userId)
-    .maybeSingle(); // 없을 수도 있으면 maybeSingle 권장
+    .maybeSingle();
   if (error) throw new Error(error.message);
   return data;
 }

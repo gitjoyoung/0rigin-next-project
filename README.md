@@ -108,14 +108,13 @@ pnpm install
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-# OpenAI (선택사항)
-OPENAI_API_KEY=your_openai_api_key
+# Gemini AI (AI 기능 사용시)
+GEMINI_API_KEY=your_gemini_api_key
 
-# NextAuth (필요시)
-NEXTAUTH_SECRET=your_nextauth_secret
-NEXTAUTH_URL=http://localhost:3000
+# 사이트 설정
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 ```
 
 ### 4. 개발 서버 실행

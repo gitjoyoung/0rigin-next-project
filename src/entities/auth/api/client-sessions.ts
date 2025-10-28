@@ -1,6 +1,6 @@
-import { ProfileData } from "@/entities/profile";
-import { getProfile } from "@/entities/profile/api";
+import { getProfile } from "@/entities/profile";
 import { SupabaseBrowserClient } from "@/shared/lib/supabase/supabase-browser-client";
+import type { Tables } from "@/shared/types";
 import { Session, User } from "@supabase/supabase-js";
 
 // 현재 사용자 정보 조회
@@ -50,7 +50,7 @@ export async function signOut(): Promise<void> {
 export async function checkAuthStatus(): Promise<{
   status: "auth" | "unauth";
   user: User | null;
-  profile: ProfileData | null;
+  profile: Tables<"profile"> | null;
 }> {
   const user = await getCurrentUser();
 
@@ -63,7 +63,7 @@ export async function checkAuthStatus(): Promise<{
   }
 
   try {
-    const profile = await getProfile(user.id);
+    const profile = await getProfile();
     return {
       status: "auth",
       user,

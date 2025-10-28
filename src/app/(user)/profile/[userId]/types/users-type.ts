@@ -1,1 +1,1 @@
-type Gender = "man" | "women" | "etc";
+export type { Gender } from "@/entities/auth/model/dto";

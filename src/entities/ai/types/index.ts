@@ -31,34 +31,34 @@ export interface AIRequest {
 
 // Gemini 응답 스키마 상수
 export const AI_RESPONSE_SCHEMA = {
-  type: SchemaType.OBJECT,
+  type: SchemaType.OBJECT as const,
   properties: {
     results: {
-      type: SchemaType.ARRAY,
+      type: SchemaType.ARRAY as const,
       items: {
-        type: SchemaType.OBJECT,
+        type: SchemaType.OBJECT as const,
         properties: {
           philosopher: {
-            type: SchemaType.OBJECT,
+            type: SchemaType.OBJECT as const,
             properties: {
-              id: { type: SchemaType.STRING },
-              name: { type: SchemaType.STRING },
-              era: { type: SchemaType.STRING },
-              nationality: { type: SchemaType.STRING },
-              mainPhilosophy: { type: SchemaType.STRING },
+              id: { type: SchemaType.STRING as const },
+              name: { type: SchemaType.STRING as const },
+              era: { type: SchemaType.STRING as const },
+              nationality: { type: SchemaType.STRING as const },
+              mainPhilosophy: { type: SchemaType.STRING as const },
               concerns: {
-                type: SchemaType.ARRAY,
-                items: { type: SchemaType.STRING },
+                type: SchemaType.ARRAY as const,
+                items: { type: SchemaType.STRING as const },
               },
               answers: {
-                type: SchemaType.ARRAY,
-                items: { type: SchemaType.STRING },
+                type: SchemaType.ARRAY as const,
+                items: { type: SchemaType.STRING as const },
               },
               keywords: {
-                type: SchemaType.ARRAY,
-                items: { type: SchemaType.STRING },
+                type: SchemaType.ARRAY as const,
+                items: { type: SchemaType.STRING as const },
               },
-              description: { type: SchemaType.STRING },
+              description: { type: SchemaType.STRING as const },
             },
             required: [
               "id",
@@ -70,23 +70,23 @@ export const AI_RESPONSE_SCHEMA = {
               "answers",
               "keywords",
               "description",
-            ],
+            ] as string[],
           },
-          relevanceScore: { type: SchemaType.NUMBER },
+          relevanceScore: { type: SchemaType.NUMBER as const },
           matchedKeywords: {
-            type: SchemaType.ARRAY,
-            items: { type: SchemaType.STRING },
+            type: SchemaType.ARRAY as const,
+            items: { type: SchemaType.STRING as const },
           },
-          suggestedAnswer: { type: SchemaType.STRING },
+          suggestedAnswer: { type: SchemaType.STRING as const },
         },
         required: [
           "philosopher",
           "relevanceScore",
           "matchedKeywords",
           "suggestedAnswer",
-        ],
+        ] as string[],
       },
     },
   },
-  required: ["results"],
-} as const;
+  required: ["results"] as string[],
+};
