@@ -3,6 +3,7 @@ import Footer from "@/feature/footer";
 import Header from "@/feature/header";
 import Ticker from "@/feature/ticker";
 import { baseMetadata } from "@/shared/metadata";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "@uiw/react-markdown-preview/markdown.css";
 import "@uiw/react-md-editor/markdown-editor.css";
 import type { Metadata } from "next";
@@ -44,6 +45,7 @@ const modernDOS = localFont({
   preload: true,
 });
 
+// 글로벌 메타데이터 (baseMetadata에서 모든 설정을 가져옴)
 export const metadata: Metadata = baseMetadata;
 
 export default function RootLayout({
@@ -57,16 +59,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${notoSansKR.variable} ${modernDOS.variable}`}
     >
+      <GoogleTagManager gtmId="GTM-NNRM5BTB" />
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NNRM5BTB');`,
-          }}
-        />
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="naver-site-verification"
@@ -74,15 +68,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
       </head>
       <body>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-NNRM5BTB"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
         <AppProviders>
           <div id="modal-root" />
           <div className="flex min-h-screen flex-col items-center w-full ">
