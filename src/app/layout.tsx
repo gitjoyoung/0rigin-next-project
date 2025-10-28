@@ -20,7 +20,7 @@ const notoSansKR = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
 });
 
-// DOS 폰트 설정 (숫자 전용)
+// DOS 폰트 설정
 const modernDOS = localFont({
   src: [
     {
@@ -42,36 +42,9 @@ const modernDOS = localFont({
   variable: "--font-dos",
   display: "swap",
   preload: true,
-  // 숫자와 관련 기호만 DOS 폰트 적용
 });
 
-// 글로벌 메타데이터 (분리된 모듈 사용)
-export const metadata: Metadata = {
-  ...baseMetadata,
-  // 추가 설정들
-  creator: "0RIGIN(제로리진)",
-  publisher: "0RIGIN(제로리진)",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL("https://0rigin.space"),
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  verification: {
-    google: "9N9lYYZS6l2HaeOTiw2oBwDSd3rln6z8zuWBI0rTesw",
-  },
-};
+export const metadata: Metadata = baseMetadata;
 
 export default function RootLayout({
   children,
@@ -85,6 +58,15 @@ export default function RootLayout({
       className={`${notoSansKR.variable} ${modernDOS.variable}`}
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NNRM5BTB');`,
+          }}
+        />
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="naver-site-verification"
@@ -92,6 +74,15 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-NNRM5BTB"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <AppProviders>
           <div id="modal-root" />
           <div className="flex min-h-screen flex-col items-center w-full ">
